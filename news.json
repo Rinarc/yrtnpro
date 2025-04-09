@@ -1,0 +1,14 @@
+{
+    "articles": [
+        {
+            "id": 1,
+            "title": "渊迂地铁19号线开始建设！",
+            "summary": "信源：渊迂地铁Yuanyu Metro",
+            "content": "<p>虚拟城市新机场于今日正式投入运营...</p><p>该机场设计年吞吐量达5000万人次...</p>",
+            "image": "images/news1.jpg",
+            "category": "交通",
+            "date": "2023-10-25",
+            "isBreaking": true
+        }
+    ]
+}

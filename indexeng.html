@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YRTN+</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="branding">
+               
+                <span class="brand-red">Yuanyu Reality TV Network +</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="indexeng.html" class="active">HOME</a></li>
+                    <li><a href="#news">NEWS</a></li>
+                    <li><a href="#video">VIDEOS</a></li>
+                    <li><a href="index.html">简体中文</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 突发新闻 -->
+    <section class="breaking-news">
+        <div class="container">
+            <div class="breaking-label">HOTSPOT</div>
+            <div id="breaking-content" class="breaking-text"></div>
+        </div>
+    </section>
+
+    <!-- 新闻列表 -->
+    <section class="news-grid" id="news">
+        <div class="container">
+            <h2 class="section-title">Yuanyu Today</h2>
+            <div class="grid" id="news-container"></div>
+        </div>
+    </section>
+
+    <!-- 视频区 -->
+    <section class="video-section" id="video">
+        <div class="container">
+            <h2 class="section-title">Video News</h2>
+            <div class="video-grid" id="video-container"></div>
+        </div>
+    </section>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
