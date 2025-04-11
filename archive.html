@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>历史新闻 | YRTN+</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-container">
+            <div class="branding">
+                
+                <span class="brand-red">YRTN PRO-渊迂电视新闻网+</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">返回首页</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="archive-page">
+        <div class="container">
+            <!-- 控制面板 -->
+            <div class="control-panel">
+                <div class="search-box">
+                    <input type="text" id="archive-search" placeholder="输入关键词...">
+                    <button id="archive-search-btn">搜索</button>
+                </div>
+                <div class="tag-filters" id="tag-container"></div>
+            </div>
+
+            <!-- 新闻列表 -->
+            <div class="archive-grid" id="archive-container"></div>
+
+            <!-- 加载更多 -->
+            <div class="load-more">
+                <button id="load-more">加载更多</button>
+                <div class="page-info" id="page-info"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
