@@ -9,6 +9,16 @@
             "category": "交通",
             "date": "2025-03-30",
             "isBreaking": false
+        },
+        {
+            "id": 2,
+            "title": "**渊迂电视台S1演播室正在建造，即将与大家见面",
+            "summary": "信源：渊迂电视台 Yuanyu Media Group",
+            "content": "<p>**渊迂电视新闻网 4月10日电**</p><p>渊迂电视台今日宣布，全新的S1演播室即将与众人见面，S1演播室位于渊迂电视台大楼，渊迂新闻节目《朝闻》《锋报》《纵横》《夜鉴》将于此演播室播出！</p>",
+            "image": "https://img.picgo.net/2025/04/09/IMG_41220c0f94fd87ab4d18.jpeg",
+            "category": "科技",
+            "date": "2025-04-11",
+            "isBreaking": true
         }
     ]
 }
