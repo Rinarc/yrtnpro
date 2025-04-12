@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YRTN+ 地铁之声</title>
+</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="branding">
+               
+                <span class="brand-red">渊迂电视新闻网+</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html" class="active">首页</a></li>
+                    <li><a href="#news">新闻</a></li>
+                    <li><a href="#video">视界</a></li>
+                    <li><a href="archive.html">历史新闻</a></li>
+                    <li><a href="metroann.html">YRTN+</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <style>
+        /* 基础样式 */
+        :root {
+            --primary-color: #BB1919;
+            --bg-color: #f8f8f8;
+            --text-color: #333;
+        }
+
+        /* 通用播放器样式 */
+        .music-player {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            overflow: hidden;
+        }
+
+        /* 电脑端优化 */
+        @media (min-width: 768px) {
+            .music-player {
+                display: grid;
+                grid-template-columns: 1fr 300px;
+                height: 500px;
+            }
+            .playlist {
+                border-left: 1px solid #eee;
+            }
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 767px) {
+            .controls {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .progress-container {
+                order: 3;
+                width: 100%;
+            }
+        }
+
+        /* 统一控制面板 */
+        .controls {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem;
+            gap: 1.5rem;
+            background: var(--bg-color);
+        }
+
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .progress-container {
+            flex-grow: 1;
+        }
+
+        /* 字幕显示区 */
+        .subtitles {
+            padding: 2rem;
+            min-height: 150px;
+            text-align: center;
+            font-size: 1.2rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* 播放列表 */
+        .playlist {
+            overflow-y: auto;
+            max-height: 400px;
+        }
+
+        .playlist-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .playlist-item.playing {
+            background: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="music-player">
+        <!-- 主播放区 -->
+        <div class="main-panel">
+            <div class="subtitles" id="subtitles">加载字幕中...</div>
+            <div class="controls">
+                <button class="control-btn" id="prev">◁</button>
+                <button class="control-btn" id="play">▶</button>
+                <button class="control-btn" id="next">▷</button>
+                <div class="progress-container">
+                    <input type="range" id="progress" class="progress">
+                    <div class="time-display">
+                        <span id="current-time">0:00</span> / 
+                        <span id="total-time">0:00</span>
+                    </div>
+                </div>
+                <input type="range" id="volume" min="0" max="1" step="0.1" value="1">
+            </div>
+        </div>
+
+        <!-- 播放列表 -->
+        <div class="playlist" id="playlist"></div>
+    </div>
+
+    <script>
+        class MusicPlayer {
+            constructor() {
+                this.audio = new Audio();
+                this.playlist = [];
+                this.currentTrack = 0;
+                this.subtitles = [];
+                this.init();
+            }
+
+            async init() {
+                await this.loadPlaylist();
+                this.initEvents();
+                this.renderPlaylist();
+                this.loadTrack(0);
+            }
+
+            async loadPlaylist() {
+                const response = await fetch('playlist.json');
+                this.playlist = await response.json();
+            }
+
+            initEvents() {
+                // 按钮事件
+                document.getElementById('play').addEventListener('click', () => this.togglePlay());
+                document.getElementById('prev').addEventListener('click', () => this.prevTrack());
+                document.getElementById('next').addEventListener('click', () => this.nextTrack());
+                
+                // 进度控制
+                document.getElementById('progress').addEventListener('input', (e) => {
+                    this.audio.currentTime = (e.target.value / 100) * this.audio.duration;
+                });
+
+                // 音量控制
+                document.getElementById('volume').addEventListener('input', (e) => {
+                    this.audio.volume = e.target.value;
+                });
+
+                // 音频事件
+                this.audio.addEventListener('timeupdate', () => this.updateProgress());
+                this.audio.addEventListener('loadedmetadata', () => this.updateDuration());
+                this.audio.addEventListener('ended', () => this.nextTrack());
+            }
+
+            async loadTrack(index) {
+                this.currentTrack = index;
+                const track = this.playlist[index];
+                
+                // 加载音频
+                this.audio.src = track.audio;
+                await this.audio.load();
+                
+                // 加载字幕
+                if(track.subtitle) await this.loadSubtitles(track.subtitle);
+                
+                // 更新界面
+                this.updatePlaylistUI();
+                this.audio.play();
+            }
+
+            async loadSubtitles(url) {
+                try {
+                    const response = await fetch(url);
+                    const text = await response.text();
+                    this.parseSubtitles(text);
+                } catch {
+                    this.subtitles = [];
+                }
+            }
+
+            parseSubtitles(vtt) {
+                this.subtitles = vtt.split('\n\n')
+                    .slice(1)
+                    .map(entry => {
+                        const [time, ...text] = entry.split('\n');
+                        const [start, end] = time.split(' --> ')
+                            .map(t => this.parseVttTime(t));
+                        return { start, end, text: text.join(' ') };
+                    });
+            }
+
+            parseVttTime(time) {
+                const [hms, ms] = time.split('.');
+                const [h, m, s] = hms.split(':');
+                return (+h * 3600) + (+m * 60) + (+s) + (+ms / 1000);
+            }
+
+            updateSubtitles() {
+                const current = this.subtitles.find(sub => 
+                    this.audio.currentTime >= sub.start && 
+                    this.audio.currentTime <= sub.end
+                );
+                document.getElementById('subtitles').textContent = current?.text || '';
+            }
+
+            updateProgress() {
+                const progress = (this.audio.currentTime / this.audio.duration) * 100 || 0;
+                document.getElementById('progress').value = progress;
+                document.getElementById('current-time').textContent = 
+                    this.formatTime(this.audio.currentTime);
+                this.updateSubtitles();
+            }
+
+            updateDuration() {
+                document.getElementById('total-time').textContent = 
+                    this.formatTime(this.audio.duration);
+            }
+
+            formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+
+            renderPlaylist() {
+                const container = document.getElementById('playlist');
+                container.innerHTML = this.playlist.map((track, index) => `
+                    <div class="playlist-item ${index === 0 ? 'playing' : ''}" 
+                         data-index="${index}" 
+                         onclick="player.loadTrack(${index})">
+                        ${track.title}
+                    </div>
+                `).join('');
+            }
+
+            updatePlaylistUI() {
+                document.querySelectorAll('.playlist-item').forEach(item => 
+                    item.classList.remove('playing')
+                );
+                document.querySelector(`[data-index="${this.currentTrack}"]`)
+                    .classList.add('playing');
+            }
+
+            togglePlay() {
+                this.audio.paused ? this.audio.play() : this.audio.pause();
+                document.getElementById('play').textContent = 
+                    this.audio.paused ? '▶' : 'Ⅱ';
+            }
+
+            nextTrack() {
+                this.loadTrack((this.currentTrack + 1) % this.playlist.length);
+            }
+
+            prevTrack() {
+                this.loadTrack((this.currentTrack - 1 + this.playlist.length) % this.playlist.length);
+            }
+        }
+
+        // 初始化播放器
+        const player = new MusicPlayer();
+    </script>
+</body>
+</html>
