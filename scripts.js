@@ -298,7 +298,163 @@ class ArchiveManager {
             `显示 ${showing} / ${this.filteredNews.length} 条`;
     }
 }
+// 音乐播放器模块
+class MusicPlayer {
+    constructor() {
+        this.audio = document.getElementById('audio-player');
+        this.playlist = [];
+        this.currentTrack = 0;
+        this.subtitles = [];
+        this.init();
+    }
 
+    // 初始化
+    async init() {
+        // 加载播放列表
+        const response = await fetch('music/playlist.json');
+        this.playlist = await response.json();
+        
+        // 初始化事件监听
+        this.initEvents();
+        // 渲染播放列表
+        this.renderPlaylist();
+        // 加载第一首
+        this.loadTrack(0);
+    }
+
+    // 事件绑定
+    initEvents() {
+        const playButton = document.getElementById('play-pause');
+        const progress = document.getElementById('progress');
+        const volume = document.getElementById('volume');
+
+        playButton.addEventListener('click', () => this.togglePlay());
+        progress.addEventListener('input', (e) => this.seek(e.target.value));
+        volume.addEventListener('input', (e) => this.setVolume(e.target.value));
+
+        this.audio.addEventListener('timeupdate', () => this.updateProgress());
+        this.audio.addEventListener('loadedmetadata', () => this.updateDuration());
+        this.audio.addEventListener('ended', () => this.nextTrack());
+    }
+
+    // 加载曲目
+    async loadTrack(index) {
+        this.currentTrack = index;
+        const track = this.playlist[index];
+        
+        // 加载音频
+        this.audio.src = track.audioUrl;
+        this.audio.load();
+        
+        // 加载字幕
+        if (track.subtitleUrl) {
+            await this.loadSubtitles(track.subtitleUrl);
+        }
+        
+        // 更新播放列表样式
+        document.querySelectorAll('.playlist-item').forEach(item => 
+            item.classList.remove('playing')
+        );
+        document.querySelector(`[data-index="${index}"]`).classList.add('playing');
+    }
+
+    // 加载字幕文件
+    async loadSubtitles(url) {
+        const response = await fetch(url);
+        const text = await response.text();
+        this.parseSubtitles(text);
+    }
+
+    // 解析VTT字幕
+    parseSubtitles(vttText) {
+        this.subtitles = [];
+        const lines = vttText.split('\n');
+        
+        lines.forEach(line => {
+            if (line.includes(' --> ')) {
+                const [timecode, text] = line.split(') ');
+                const [start, end] = timecode.split(' --> ').map(t => 
+                    this.vttTimeToSeconds(t)
+                );
+                this.subtitles.push({ start, end, text });
+            }
+        });
+    }
+
+    // VTT时间转秒数
+    vttTimeToSeconds(time) {
+        const parts = time.split(/[:,]/);
+        return (+parts[0]) * 3600 + 
+               (+parts[1]) * 60 + 
+               (+parts[2]) + 
+               (+parts[3]) / 1000;
+    }
+
+    // 更新字幕显示
+    updateLyrics() {
+        const currentTime = this.audio.currentTime;
+        const currentSub = this.subtitles.find(sub => 
+            currentTime >= sub.start && currentTime <= sub.end
+        );
+        
+        const lyricsEl = document.getElementById('lyrics-text');
+        lyricsEl.textContent = currentSub ? currentSub.text : '';
+    }
+
+    // 播放控制方法
+    togglePlay() {
+        this.audio.paused ? this.audio.play() : this.audio.pause();
+        document.getElementById('play-pause').classList.toggle('playing');
+    }
+
+    nextTrack() {
+        this.loadTrack((this.currentTrack + 1) % this.playlist.length);
+        this.audio.play();
+    }
+
+    seek(value) {
+        this.audio.currentTime = (value / 100) * this.audio.duration;
+    }
+
+    setVolume(value) {
+        this.audio.volume = value;
+    }
+
+    // 渲染播放列表
+    renderPlaylist() {
+        const container = document.getElementById('playlist');
+        container.innerHTML = this.playlist.map((track, index) => `
+            <div class="playlist-item" data-index="${index}" 
+                 onclick="musicPlayer.loadTrack(${index})">
+                <span class="title">${track.title}</span>
+                <span class="duration">${track.duration}</span>
+            </div>
+        `).join('');
+    }
+
+    // 更新进度条
+    updateProgress() {
+        const progress = (this.audio.currentTime / this.audio.duration) * 100 || 0;
+        document.getElementById('progress').value = progress;
+        document.getElementById('current-time').textContent = 
+            this.formatTime(this.audio.currentTime);
+        this.updateLyrics();
+    }
+
+    updateDuration() {
+        document.getElementById('duration').textContent = 
+            this.formatTime(this.audio.duration);
+    }
+
+    formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+}
+
+// 初始化播放器
+const musicPlayer = new MusicPlayer();
 // ================= Disqus评论系统 =================
 function initDisqus() {
     window.disqus_config = function () {
