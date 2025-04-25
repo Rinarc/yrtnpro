@@ -1,0 +1,135 @@
+<!-- player.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频播放 - YRTN+</title>
+    <style>
+        /* 播放器核心样式 */
+        :root {
+            --primary-color: #BB1919;
+        }
+
+        .player-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        #video-player {
+            width: 100%;
+            height: 70vh;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* 通用播放器样式 */
+        .video-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .native-player {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 768px) {
+            .player-container {
+                padding: 0;
+            }
+            
+            #video-player {
+                height: 60vh;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="site-header">
+        <div class="header-container">
+            <div class="branding">
+                
+                <span class="brand-red">YRTN PRO-渊迂电视新闻网+</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">返回首页</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="player-container">
+        <div id="video-player"></div>
+    </div>
+
+    <script>
+        // 智能播放器初始化
+        function initPlayer() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const videoUrl = decodeURIComponent(urlParams.get('video'));
+            const container = document.getElementById('video-player');
+
+            // 清空容器
+            container.innerHTML = '';
+
+            // B站视频处理
+            if (videoUrl.includes('bilibili.com')) {
+                const bvid = videoUrl.split('/video/')[1].split('/')[0];
+                container.innerHTML = `
+                    <iframe class="video-iframe"
+                            src="//player.bilibili.com/player.html?bvid=${bvid}&autoplay=1"
+                            scrolling="no"
+                            allowfullscreen>
+                    </iframe>
+                `;
+            }
+            // YouTube视频处理
+            else if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+                const videoId = videoUrl.split('v=')[1]?.split('&')[0] || videoUrl.split('youtu.be/')[1];
+                container.innerHTML = `
+                    <iframe class="video-iframe"
+                            src="https://www.youtube.com/embed/${videoId}?autoplay=1"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                    </iframe>
+                `;
+            }
+            // 本地/直链视频
+            else if (videoUrl.match(/\.(mp4|mov|mkv|webm)$/i)) {
+                container.innerHTML = `
+                    <video class="native-player" controls autoplay>
+                        <source src="${videoUrl}" type="${getVideoType(videoUrl)}">
+                        您的浏览器不支持视频播放
+                    </video>
+                `;
+            }
+            // 无效链接处理
+            else {
+                container.innerHTML = '<div class="error-msg">不支持的视频格式</div>';
+            }
+        }
+
+        // 获取视频类型
+        function getVideoType(url) {
+            const ext = url.split('.').pop().toLowerCase();
+            const typeMap = {
+                mp4: 'video/mp4',
+                mov: 'video/quicktime',
+                mkv: 'video/x-matroska',
+                webm: 'video/webm'
+            };
+            return typeMap[ext] || 'video/mp4';
+        }
+
+        // 初始化播放器
+        window.onload = initPlayer;
+    </script>
+</body>
+</html>
