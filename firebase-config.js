@@ -3,7 +3,7 @@ const firebaseConfig = {
   authDomain: "yrtnpro.firebaseapp.com",
   projectId: "yrtnpro",
   storageBucket: "yrtn-news.appspot.com",
-  messagingSenderId: "123456789",
+  messagingSenderId: "918761047660",
   appId: "1:918761047660:web:1b963d7cae358e30237a49"
 };
 
