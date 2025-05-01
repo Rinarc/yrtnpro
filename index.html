@@ -8,6 +8,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <!-- Markdown解析库 -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <!-- Firebase SDK 必须按顺序加载 -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
+    <script src="firebase-config.js"></script>
 </head>
 <body>
     <!-- 导航栏 -->
@@ -54,136 +60,118 @@
         </div>
     </section>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
-    <script src="firebase-config.js"></script>
-    <script src="scripts.js"></script>
-
     <script>
+        // Firebase服务引用
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
         // 初始化函数
         function initHomePage() {
-            // 加载突发新闻
+            // 加载突发新闻（带错误处理）
             db.collection("news")
                 .where("isBreaking", "==", true)
                 .limit(1)
-                .onSnapshot(snapshot => {
-                    const breakingContent = document.getElementById('breaking-content');
-                    snapshot.forEach(doc => {
-                        const news = doc.data();
-                        breakingContent.innerHTML = `
-                            <a href="news-detail.html?id=${doc.id}">${news.title}</a>
-                        `;
-                    });
-                });
+                .onSnapshot(
+                    (snapshot) => {
+                        const breakingContent = document.getElementById('breaking-content');
+                        breakingContent.innerHTML = snapshot.empty 
+                            ? '<span>当前无突发新闻</span>'
+                            : snapshot.docs.map(doc => `
+                                <a href="news-detail.html?id=${doc.id}">${doc.data().title}</a>
+                            `).join('');
+                    },
+                    (error) => console.error("突发新闻加载失败:", error)
+                );
 
-            // 加载常规新闻
+            // 加载常规新闻（带日期容错）
             db.collection("news")
                 .orderBy("timestamp", "desc")
                 .limit(6)
-                .onSnapshot(snapshot => {
-                    const container = document.getElementById('news-container');
-                    container.innerHTML = '';
-                    
-                    snapshot.forEach(doc => {
-                        const news = doc.data();
-                        container.innerHTML += `
-                            <div class="news-card">
-                                <a href="news-detail.html?id=${doc.id}">
-                                    <h3>${news.title}</h3>
-                                    <div class="news-meta">
-                                        <time>${new Date(news.timestamp?.toDate()).toLocaleDateString()}</time>
-                                        <span class="category-tag">${news.category || '综合'}</span>
-                                    </div>
-                                    <p>${news.summary || ''}</p>
-                                </a>
-                            </div>
-                        `;
-                    });
-                });
+                .onSnapshot(
+                    (snapshot) => {
+                        const container = document.getElementById('news-container');
+                        container.innerHTML = snapshot.docs.map(doc => {
+                            const data = doc.data();
+                            return `
+                                <div class="news-card">
+                                    <a href="news-detail.html?id=${doc.id}">
+                                        <h3>${data.title}</h3>
+                                        <div class="news-meta">
+                                            <time>${formatFirebaseDate(data.timestamp)}</time>
+                                            <span class="category-tag">${data.category || '综合'}</span>
+                                        </div>
+                                        <p>${data.summary || ''}</p>
+                                    </a>
+                                </div>
+                            `;
+                        }).join('');
+                    },
+                    (error) => console.error("新闻加载失败:", error)
+                );
 
-            // 加载视评
+            // 加载视评（带评分容错）
             db.collection("commentaries")
                 .orderBy("publishDate", "desc")
-                .onSnapshot(snapshot => {
-                    const container = document.getElementById('commentary-container');
-                    container.innerHTML = '';
-                    
-                    snapshot.forEach(doc => {
-                        const commentary = doc.data();
-                        const stars = '★'.repeat(Math.floor(commentary.rating)) + '☆'.repeat(5 - Math.floor(commentary.rating));
-                        
-                        container.innerHTML += `
-                            <div class="commentary-card">
-                                <div class="commentary-header">
-                                    <img src="icons/analysis.svg" class="commentary-icon" alt="视评图标">
-                                    <div>
-                                        <h3>${commentary.title}</h3>
-                                        <div class="commentary-meta">
-                                            <span>${commentary.author}</span> · 
-                                            <span>${new Date(commentary.publishDate).toLocaleDateString()}</span> · 
-                                            <span>${stars}</span>
+                .onSnapshot(
+                    (snapshot) => {
+                        const container = document.getElementById('commentary-container');
+                        container.innerHTML = snapshot.docs.map(doc => {
+                            const data = doc.data();
+                            const rating = Math.min(Math.max(data.rating || 0, 0), 5);
+                            return `
+                                <div class="commentary-card">
+                                    <div class="commentary-header">
+                                        <img src="icons/analysis.svg" class="commentary-icon" alt="视评图标">
+                                        <div>
+                                            <h3>${data.title}</h3>
+                                            <div class="commentary-meta">
+                                                <span>${data.author || '特邀评论员'}</span> · 
+                                                <span>${formatFirebaseDate(data.publishDate)}</span> · 
+                                                <span>${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}</span>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="commentary-content">${marked.parse(data.content)}</div>
+                                    <div class="commentary-source">
+                                        关联报道：<a href="news-detail.html?id=${data.relatedArticle || ''}">查看原文</a>
+                                    </div>
                                 </div>
-                                <div class="commentary-content">${marked.parse(commentary.content)}</div>
-                                <div class="commentary-source">
-                                    关联报道：<a href="news-detail.html?id=${commentary.relatedArticle}">查看原文</a>
-                                </div>
-                            </div>
-                        `;
-                    });
-                });
+                            `;
+                        }).join('');
+                    },
+                    (error) => console.error("视评加载失败:", error)
+                );
 
             // 登录状态管理
-            auth.onAuthStateChanged(user => {
+            auth.onAuthStateChanged((user) => {
                 const loginLink = document.getElementById('login-link');
                 const adminLinks = document.querySelectorAll('.admin-link');
                 
                 if (user) {
                     loginLink.textContent = '注销';
-                    loginLink.href = 'javascript:logout()';
+                    loginLink.href = 'javascript:void(0)';
+                    loginLink.onclick = () => auth.signOut().then(() => window.location.reload());
                     adminLinks.forEach(link => link.style.display = 'block');
                 } else {
                     loginLink.textContent = '登录';
                     loginLink.href = 'login.html';
+                    loginLink.onclick = null;
                     adminLinks.forEach(link => link.style.display = 'none');
                 }
             });
         }
 
-        // 注销函数
-        function logout() {
-            auth.signOut().then(() => window.location.reload());
+        // 日期格式化辅助函数
+        function formatFirebaseDate(timestamp) {
+            try {
+                return timestamp?.toDate?.().toLocaleDateString() || '日期未记录';
+            } catch {
+                return new Date().toLocaleDateString();
+            }
         }
 
-        // 页面加载初始化
-        window.onload = initHomePage;
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', initHomePage);
     </script>
-    <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyDjrGup3nSXN5SHdG8w0lRHQZ5OmLrQCtQ",
-    authDomain: "yrtnpro.firebaseapp.com",
-    databaseURL: "https://yrtnpro-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "yrtnpro",
-    storageBucket: "yrtnpro.firebasestorage.app",
-    messagingSenderId: "918761047660",
-    appId: "1:918761047660:web:1b963d7cae358e30237a49",
-    measurementId: "G-1180PKPR3Y"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
 </body>
 </html>
