@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内容管理 - 渊迂新闻</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 复用网站头部 -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="branding">
+                <span class="brand-red">「架空」渊迂电视新闻网+</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 登录表单 -->
+    <section class="auth-section">
+        <div class="container">
+            <div class="auth-box">
+                <h2 class="section-title">内容管理通道</h2>
+                <div id="auth-error" class="error-msg"></div>
+                <input type="email" id="login-email" placeholder="认证邮箱">
+                <input type="password" id="login-pwd" placeholder="安全密钥">
+                <button class="auth-btn" onclick="handleLogin()">验证身份</button>
+            </div>
+        </div>
+    </section>
+
+    <script src="firebase-config.js"></script>
+    <script>
+        async function handleLogin() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-pwd').value;
+            
+            try {
+                await firebase.auth().signInWithEmailAndPassword(email, password);
+                window.location.href = "admin.html";
+            } catch (error) {
+                document.getElementById('auth-error').textContent = "认证失败：" + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

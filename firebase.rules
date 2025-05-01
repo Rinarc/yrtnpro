@@ -1,0 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isCertified() {
+      return request.auth.token.firebase.sign_in_provider == 'password'
+        && request.auth.token.email_verified == true
+        && request.auth.token.email.matches('.*@yrtn\\.news$');
+    }
+
+    function isQuantumAdmin() {
+      return get(/databases/$(database)/documents/permissions/$(request.auth.uid)).data.clearance >= 5;
+    }
+
+    match /news/{docId} {
+      allow read: if true;
+      allow create: if isCertified() && isQuantumAdmin();
+      allow update, delete: if isCertified() && isQuantumAdmin()
+        && request.time < resource.data.createTime + duration.value(24, 'h');
+    }
+
+    match /permissions/{userId} {
+      allow read: if isCertified();
+      allow write: if isCertified() && isQuantumAdmin()
+        && request.auth.uid != userId;
+    }
+  }
+}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内容管理 - 渊迂新闻</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-container">
+            <div class="branding">
+                <span class="brand-red">「架空」渊迂电视新闻网+</span>
+            </div>
+            <nav class="main-nav">
+                <button class="logout-btn" onclick="handleLogout()">安全退出</button>
+            </nav>
+        </div>
+    </header>
+
+    <section class="manage-section">
+        <div class="container">
+            <!-- 发布表单 -->
+            <div class="editor-box">
+                <input type="text" id="post-title" placeholder="新闻标题（最多50字）" maxlength="50">
+                <textarea id="post-content" placeholder="用Markdown书写内容..."></textarea>
+                <div class="form-actions">
+                    <button class="publish-btn" onclick="publishPost()">发布文章</button>
+                </div>
+            </div>
+
+            <!-- 已发布文章 -->
+            <div class="post-list">
+                <h3 class="section-title">已发布内容</h3>
+                <div id="post-container"></div>
+            </div>
+        </div>
+    </section>
+
+    <script src="firebase-config.js"></script>
+    <script>
+        // 实时加载文章
+        firebase.firestore().collection("posts")
+            .orderBy("timestamp", "desc")
+            .onSnapshot(snap => {
+                const container = document.getElementById('post-container');
+                container.innerHTML = "";
+                
+                snap.forEach(doc => {
+                    const post = doc.data();
+                    container.innerHTML += `
+                        <div class="post-card">
+                            <h4>${post.title}</h4>
+                            <div class="post-meta">
+                                <span>${new Date(post.timestamp?.toDate()).toLocaleDateString()}</span>
+                                <button onclick="deletePost('${doc.id}')">删除</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+
+        // 发布文章
+        async function publishPost() {
+            const title = document.getElementById('post-title').value.trim();
+            const content = document.getElementById('post-content').value.trim();
+            
+            if (!title || !content) return alert("请填写完整内容");
+            
+            await firebase.firestore().collection("posts").add({
+                title,
+                content,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            
+            document.getElementById('post-title').value = "";
+            document.getElementById('post-content').value = "";
+        }
+
+        // 删除文章
+        async function deletePost(id) {
+            if (!confirm("确定删除这篇报道吗？")) return;
+            await firebase.firestore().collection("posts").doc(id).delete();
+        }
+
+        // 退出登录
+        function handleLogout() {
+            firebase.auth().signOut().then(() => window.location.href = "/");
+        }
+
+        // 登录状态检查
+        firebase.auth().onAuthStateChanged(user => {
+            if (!user) window.location.href = "login.html";
+        });
+    </script>
+</body>
+</html>
