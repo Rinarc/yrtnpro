@@ -6,13 +6,14 @@
     <title>YRTN+ | 渊迂新闻（架空）</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Markdown解析库 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <!-- 导航栏 -->
     <header class="site-header">
         <div class="header-container">
             <div class="branding">
-               
                 <span class="brand-red">「架空」渊迂电视新闻网+</span>
             </div>
             <nav class="main-nav">
@@ -22,6 +23,8 @@
                     <li><a href="replay.html">节目回看</a></li>
                     <li><a href="archive.html">历史新闻</a></li>
                     <li><a href="metroann.html">地铁之声</a></li>
+                    <li class="admin-link" style="display:none;"><a href="admin.html">发布文章</a></li>
+                    <li><a href="login.html" id="login-link">登录</a></li>
                 </ul>
             </nav>
         </div>
@@ -43,14 +46,120 @@
         </div>
     </section>
 
-    <!-- 视频区 -->
-    <section class="video-section" id="video">
+    <!-- 视评专区 -->
+    <section class="commentary-section" id="commentary">
         <div class="container">
-            <h2 class="section-title">©YRTN+</h2>
-            <div class="video-grid" id="video-container"></div>
+            <h2 class="section-title">渊迂视评</h2>
+            <div class="commentary-grid" id="commentary-container"></div>
         </div>
     </section>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
+    <script src="firebase-config.js"></script>
     <script src="scripts.js"></script>
+
+    <script>
+        // 初始化函数
+        function initHomePage() {
+            // 加载突发新闻
+            db.collection("news")
+                .where("isBreaking", "==", true)
+                .limit(1)
+                .onSnapshot(snapshot => {
+                    const breakingContent = document.getElementById('breaking-content');
+                    snapshot.forEach(doc => {
+                        const news = doc.data();
+                        breakingContent.innerHTML = `
+                            <a href="news-detail.html?id=${doc.id}">${news.title}</a>
+                        `;
+                    });
+                });
+
+            // 加载常规新闻
+            db.collection("news")
+                .orderBy("timestamp", "desc")
+                .limit(6)
+                .onSnapshot(snapshot => {
+                    const container = document.getElementById('news-container');
+                    container.innerHTML = '';
+                    
+                    snapshot.forEach(doc => {
+                        const news = doc.data();
+                        container.innerHTML += `
+                            <div class="news-card">
+                                <a href="news-detail.html?id=${doc.id}">
+                                    <h3>${news.title}</h3>
+                                    <div class="news-meta">
+                                        <time>${new Date(news.timestamp?.toDate()).toLocaleDateString()}</time>
+                                        <span class="category-tag">${news.category || '综合'}</span>
+                                    </div>
+                                    <p>${news.summary || ''}</p>
+                                </a>
+                            </div>
+                        `;
+                    });
+                });
+
+            // 加载视评
+            db.collection("commentaries")
+                .orderBy("publishDate", "desc")
+                .onSnapshot(snapshot => {
+                    const container = document.getElementById('commentary-container');
+                    container.innerHTML = '';
+                    
+                    snapshot.forEach(doc => {
+                        const commentary = doc.data();
+                        const stars = '★'.repeat(Math.floor(commentary.rating)) + '☆'.repeat(5 - Math.floor(commentary.rating));
+                        
+                        container.innerHTML += `
+                            <div class="commentary-card">
+                                <div class="commentary-header">
+                                    <img src="icons/analysis.svg" class="commentary-icon" alt="视评图标">
+                                    <div>
+                                        <h3>${commentary.title}</h3>
+                                        <div class="commentary-meta">
+                                            <span>${commentary.author}</span> · 
+                                            <span>${new Date(commentary.publishDate).toLocaleDateString()}</span> · 
+                                            <span>${stars}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="commentary-content">${marked.parse(commentary.content)}</div>
+                                <div class="commentary-source">
+                                    关联报道：<a href="news-detail.html?id=${commentary.relatedArticle}">查看原文</a>
+                                </div>
+                            </div>
+                        `;
+                    });
+                });
+
+            // 登录状态管理
+            auth.onAuthStateChanged(user => {
+                const loginLink = document.getElementById('login-link');
+                const adminLinks = document.querySelectorAll('.admin-link');
+                
+                if (user) {
+                    loginLink.textContent = '注销';
+                    loginLink.href = 'javascript:logout()';
+                    adminLinks.forEach(link => link.style.display = 'block');
+                } else {
+                    loginLink.textContent = '登录';
+                    loginLink.href = 'login.html';
+                    adminLinks.forEach(link => link.style.display = 'none');
+                }
+            });
+        }
+
+        // 注销函数
+        function logout() {
+            auth.signOut().then(() => window.location.reload());
+        }
+
+        // 页面加载初始化
+        window.onload = initHomePage;
+    </script>
 </body>
 </html>
