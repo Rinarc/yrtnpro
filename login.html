@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>内容管理 - 渊迂新闻</title>
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- 必须添加的核心SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
 </head>
 <body>
     <!-- 复用网站头部 -->
@@ -22,27 +26,40 @@
             <div class="auth-box">
                 <h2 class="section-title">内容管理通道</h2>
                 <div id="auth-error" class="error-msg"></div>
-                <input type="email" id="login-email" placeholder="认证邮箱">
-                <input type="password" id="login-pwd" placeholder="安全密钥">
-                <button class="auth-btn" onclick="handleLogin()">验证身份</button>
+                <input type="email" id="login-email" placeholder="认证邮箱" required>
+                <input type="password" id="login-pwd" placeholder="安全密钥" minlength="6" required>
+                <button class="auth-btn" onclick="handleLogin(event)">验证身份</button>
             </div>
         </div>
     </section>
 
-    <script src="firebase-config.js"></script>
+    <!-- 正确的加载顺序 -->
+    <script src="firebase-config.js"></script> <!-- 必须在SDK之后 -->
     <script>
-        async function handleLogin() {
+        // 预防表单默认提交
+        function handleLogin(e) {
+            e.preventDefault();
+            
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-pwd').value;
             
-            try {
-                await firebase.auth().signInWithEmailAndPassword(email, password);
-                window.location.href = "admin.html";
-            } catch (error) {
-                document.getElementById('auth-error').textContent = "认证失败：" + error.message;
-            }
+            // 添加加载状态
+            const btn = document.querySelector('.auth-btn');
+            btn.disabled = true;
+            btn.textContent = '验证中...';
+
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    window.location.href = "admin.html";
+                })
+                .catch(error => {
+                    document.getElementById('auth-error').textContent = `认证失败：${error.message}`;
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.textContent = '验证身份';
+                });
         }
     </script>
 </body>
-    
 </html>
