@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YRTN+ | 渊迂新闻（架空）</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="branding">
+               
+                <span class="brand-red">「架空」渊迂电视新闻网+</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html" class="active">首页</a></li>
+                    <li><a href="#news">新闻</a></li>
+                    <li><a href="replay.html">节目回看</a></li>
+                    <li><a href="archive.html">历史新闻</a></li>
+                    <li><a href="metroann.html">地铁之声</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 突发新闻 -->
+    <section class="breaking-news">
+        <div class="container">
+            <div class="breaking-label">热点</div>
+            <div id="breaking-content" class="breaking-text"></div>
+        </div>
+    </section>
+
+    <!-- 新闻列表 -->
+    <section class="news-grid" id="news">
+        <div class="container">
+            <h2 class="section-title">渊迂时讯</h2>
+            <div class="grid" id="news-container"></div>
+        </div>
+    </section>
+
+    <!-- 视频区 -->
+    <section class="video-section" id="video">
+        <div class="container">
+            <h2 class="section-title">©YRTN+</h2>
+            <div class="video-grid" id="video-container"></div>
+        </div>
+    </section>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
