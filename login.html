@@ -249,12 +249,63 @@
     </section>
 
     <script type="module">
-        // Firebase 初始化代码（保持与之前相同）
-                const firebaseConfig = {
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword,
+            signInWithPopup, 
+            GoogleAuthProvider 
+        } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+
+        // 初始化 Firebase
+        const firebaseConfig = {
             apiKey: "AIzaSyDjrGup3nSXN5SHdG8w0lRHQZ5OmLrQCtQ",
             authDomain: "yrtnpro.firebaseapp.com",
             projectId: "yrtnpro",
-        // 此处需替换为你的实际配置
+            // 其他配置
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        // 邮箱登录
+        window.handleLogin = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-pwd').value;
+            
+            const btn = document.querySelector('.auth-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 验证中...';
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                window.location.href = "admin.html";
+            } catch (error) {
+                // 错误处理逻辑
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '验证身份';
+            }
+        };
+
+        // Google 登录
+        window.handleGoogleLogin = async (e) => {
+            e.preventDefault();
+            const btn = e.currentTarget;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 正在跳转...';
+
+            try {
+                await signInWithPopup(auth, googleProvider);
+                window.location.href = "admin.html";
+            } catch (error) {
+                // 错误处理逻辑
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '使用 Google 登录';
+            }
+        };
     </script>
 </body>
 </html>
