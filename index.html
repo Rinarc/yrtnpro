@@ -5,15 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YRTN+ | 渊迂新闻（架空）</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Markdown解析库 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     
-    <!-- Firebase SDK 必须按顺序加载 -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
     <script src="firebase-config.js"></script>
+    
+    <style>
+        /* 新增文章预览样式 */
+        .news-preview {
+            color: #444;
+            line-height: 1.6;
+            margin-top: 1rem;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .views-count {
+            margin-left: auto;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body>
     <!-- 导航栏 -->
@@ -47,16 +65,8 @@
     <!-- 新闻列表 -->
     <section class="news-grid" id="news">
         <div class="container">
-            <h2 class="section-title">渊迂时讯</h2>
+            <h2 class="section-title">最新动态</h2>
             <div class="grid" id="news-container"></div>
-        </div>
-    </section>
-
-    <!-- 视评专区 -->
-    <section class="commentary-section" id="commentary">
-        <div class="container">
-            <h2 class="section-title">渊迂视评</h2>
-            <div class="commentary-grid" id="commentary-container"></div>
         </div>
     </section>
 
@@ -67,10 +77,11 @@
 
         // 初始化函数
         function initHomePage() {
-            // 加载突发新闻（带错误处理）
-            db.collection("news")
+            // 加载突发新闻（最新3篇带紧急标记的文章）
+            db.collection("posts")
                 .where("isBreaking", "==", true)
-                .limit(1)
+                .orderBy("timestamp", "desc")
+                .limit(3)
                 .onSnapshot(
                     (snapshot) => {
                         const breakingContent = document.getElementById('breaking-content');
@@ -78,15 +89,15 @@
                             ? '<span>当前无突发新闻</span>'
                             : snapshot.docs.map(doc => `
                                 <a href="news-detail.html?id=${doc.id}">${doc.data().title}</a>
-                            `).join('');
+                            `).join(' · ');
                     },
                     (error) => console.error("突发新闻加载失败:", error)
                 );
 
-            // 加载常规新闻（带日期容错）
-            db.collection("news")
+            // 加载常规文章列表
+            db.collection("posts")
                 .orderBy("timestamp", "desc")
-                .limit(6)
+                .limit(9)
                 .onSnapshot(
                     (snapshot) => {
                         const container = document.getElementById('news-container');
@@ -98,48 +109,18 @@
                                         <h3>${data.title}</h3>
                                         <div class="news-meta">
                                             <time>${formatFirebaseDate(data.timestamp)}</time>
-                                            <span class="category-tag">${data.category || '综合'}</span>
+                                            <span class="category-tag">${data.category || '综合报道'}</span>
+                                            <span class="views-count">👁️ ${data.views || 0}</span>
                                         </div>
-                                        <p>${data.summary || ''}</p>
+                                        <div class="news-preview">
+                                            ${marked.parse(data.content.substring(0, 150) + '...'}
+                                        </div>
                                     </a>
                                 </div>
                             `;
                         }).join('');
                     },
                     (error) => console.error("新闻加载失败:", error)
-                );
-
-            // 加载视评（带评分容错）
-            db.collection("commentaries")
-                .orderBy("publishDate", "desc")
-                .onSnapshot(
-                    (snapshot) => {
-                        const container = document.getElementById('commentary-container');
-                        container.innerHTML = snapshot.docs.map(doc => {
-                            const data = doc.data();
-                            const rating = Math.min(Math.max(data.rating || 0, 0), 5);
-                            return `
-                                <div class="commentary-card">
-                                    <div class="commentary-header">
-                                        <img src="icons/analysis.svg" class="commentary-icon" alt="视评图标">
-                                        <div>
-                                            <h3>${data.title}</h3>
-                                            <div class="commentary-meta">
-                                                <span>${data.author || '特邀评论员'}</span> · 
-                                                <span>${formatFirebaseDate(data.publishDate)}</span> · 
-                                                <span>${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="commentary-content">${marked.parse(data.content)}</div>
-                                    <div class="commentary-source">
-                                        关联报道：<a href="news-detail.html?id=${data.relatedArticle || ''}">查看原文</a>
-                                    </div>
-                                </div>
-                            `;
-                        }).join('');
-                    },
-                    (error) => console.error("视评加载失败:", error)
                 );
 
             // 登录状态管理
@@ -159,12 +140,26 @@
                     adminLinks.forEach(link => link.style.display = 'none');
                 }
             });
+
+            // 阅读量统计
+            document.addEventListener('click', async (e) => {
+                if (e.target.closest('a[href*="news-detail"]')) {
+                    const articleId = new URL(e.target.href).searchParams.get('id');
+                    await db.collection("posts").doc(articleId).update({
+                        views: firebase.firestore.FieldValue.increment(1)
+                    });
+                }
+            });
         }
 
         // 日期格式化辅助函数
         function formatFirebaseDate(timestamp) {
             try {
-                return timestamp?.toDate?.().toLocaleDateString() || '日期未记录';
+                return timestamp?.toDate?.().toLocaleDateString('zh-CN', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                }) || '日期未记录';
             } catch {
                 return new Date().toLocaleDateString();
             }
