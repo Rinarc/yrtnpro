@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>「架空」叩击 | YRTN+</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bbc-red: #BB1919;
+      --dark-gray: #1A1A1A;
+      --text-gray: #333;
+    }
+
+    /* 基础样式 */
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      line-height: 1.6;
+      background: #000;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* 导航栏 */
+    .site-header {
+      background: var(--dark-gray);
+      padding: 1rem 0;
+      border-bottom: 3px solid var(--bbc-red);
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .branding {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-red {
+      color: var(--bbc-red);
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+
+    .main-nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .main-nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .main-nav a.active, .main-nav a:hover {
+      color: var(--bbc-red);
+    }
+
+    /* 突发新闻条 */
+    .breaking-news {
+      background: var(--bbc-red);
+      color: white;
+      padding: 12px 0;
+      font-size: 0.9rem;
+    }
+
+    .breaking-label {
+      background: rgba(0,0,0,0.2);
+      padding: 4px 8px;
+      border-radius: 3px;
+      margin-right: 1rem;
+      font-weight: bold;
+    }
+
+    /* 视频网格布局 */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+
+    .video-card {
+      background-color: #111;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      transition: transform 0.3s ease;
+    }
+
+    .video-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(187, 25, 25, 0.3);
+    }
+
+    .video-user {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .video-user img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--bbc-red);
+    }
+
+    video, iframe {
+      width: 100%;
+      height: 400px;
+      border-radius: 8px;
+      margin-top: 1rem;
+      background: #000;
+    }
+
+    .like-button {
+      margin-top: 0.5rem;
+      background: var(--bbc-red);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .like-button:hover {
+      background: #d01616;
+    }
+
+    a.username {
+      color: #4ea9ff;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .section-title {
+      border-left: 4px solid var(--bbc-red);
+      padding-left: 1rem;
+      font-size: 1.8rem;
+      margin-top: 2rem;
+    }
+
+    /* 页脚样式 */
+    footer {
+      background: var(--dark-gray);
+      padding: 2rem 0;
+      margin-top: 3rem;
+      border-top: 1px solid #333;
+    }
+
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer small {
+      color: #aaa;
+    }
+
+    footer a {
+      color: #ccc;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--bbc-red);
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      video, iframe {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 统一风格的头部 -->
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="branding">
+        <span class="brand-red">叩击渊迂</span>
+      </div>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="#" onclick="showAll()" class="active">首页</a></li>
+          <li><a href="index.html">返回主页</a></li>
+          <li><a href="#" role="button">YRTN+</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 突发新闻条 -->
+  <section class="breaking-news">
+    <div class="container">
+      <span class="breaking-label">热点</span>
+      <span id="breaking-content">叩击渊迂正式上线！</span>
+    </div>
+  </section>
+
+  <main class="container">
+    <h2 class="section-title">热门</h2>
+    <div class="video-grid" id="videoContainer">
+      <p>加载中...</p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <small><a href="#">隐私政策</a> • <a href="#">服务条款</a> • <a href="#">关于我们</a></small>
+      <small>© 2025 YRTN+ </small>
+    </div>
+  </footer>
+
+  <script>
+    const videos = [
+      {
+        username: "Infinite",
+        avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80",
+        description: "即可封神…",
+        src: "https://dlink.host/1drv/aHR0cHM6Ly8xZHJ2Lm1zL3YvYy83ZjkzYmM0ZDA3N2U1NjA3L0VjNHdhVlJ3TjY5Sm1Uel92cmlFNEJ3QmgteHh4QXg0QmxVbm04UU5MTTVCQmc.mov",
+        likes: 1245
+      },
+      {
+        username: "鲁肃02",
+        avatar: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80",
+        description: "第一支视频求三连！",
+        src: "https://player.bilibili.com/player.html?bvid=BV1VGbGesEZP",
+        likes: 876
+      },
+      {
+        username: "鲁肃02",
+        avatar: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80",
+        description: "第一本：时间囚笼里的救赎（一）",
+        src: "https://player.bilibili.com/player.html?bvid=BV11NZPYuEcJ",
+        likes: 932
+      },
+      {
+        username: "鲁肃02",
+        avatar: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80",
+        description: "时间囚笼中的救赎（二）",
+        src: "https://player.bilibili.com/player.html?bvid=BV1AMZPYTEW8",
+        likes: 1056
+      },
+      {
+        username: "TechReview",
+        avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80",
+        description: "2023年最值得期待的5款科技产品",
+        src: "https://player.bilibili.com/player.html?bvid=BV1VG411n7dE",
+        likes: 2310
+      },
+      {
+        username: "TravelDiaries",
+        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80",
+        description: "日本京都的隐藏宝藏景点",
+        src: "https://player.bilibili.com/player.html?bvid=BV1VG411n7dF",
+        likes: 1872
+      }
+    ];
+
+    let allVideos = [];
+
+    function renderVideos(filterUsername = null) {
+      const container = document.getElementById("videoContainer");
+      container.innerHTML = ""; // 清空加载提示
+
+      const filtered = filterUsername
+        ? allVideos.filter(v => v.username === filterUsername)
+        : allVideos;
+
+      if (filtered.length === 0) {
+        container.innerHTML = "<p>未找到视频</p>";
+        return;
+      }
+
+      if (filterUsername) {
+        const title = document.createElement("h3");
+        title.innerText = `@${filterUsername} 的视频`;
+        title.style.color = "#fff";
+        title.style.marginLeft = "1rem";
+        container.appendChild(title);
+      }
+
+      filtered.forEach(video => {
+        const section = document.createElement("section");
+        section.className = "video-card";
+
+        // 改进视频类型检测
+        const url = new URL(video.src);
+        const isMP4 = url.pathname.endsWith(".mp4");
+        const isMOV = url.pathname.endsWith(".mov");
+        const isBilibili = url.hostname.includes("bilibili");
+        const isVimeo = url.hostname.includes("vimeo");
+
+        let playerHTML = "";
+        if (isMP4 || isMOV) {
+          playerHTML = `
+            <video controls autoplay loop muted playsinline>
+              <source src="${video.src}" type="${isMP4 ? 'video/mp4' : 'video/quicktime'}">
+              您的浏览器不支持视频播放
+            </video>`;
+        } else if (isBilibili) {
+          playerHTML = `<iframe src="${video.src}" allow="autoplay; fullscreen" frameborder="0" allowfullscreen></iframe>`;
+        } else if (isVimeo) {
+          // 处理Vimeo嵌入链接
+          const match = video.src.match(/\/external\/(\d+)/);
+          if (match) {
+            playerHTML = `<iframe src="https://player.vimeo.com/video/${match[1]}" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+          } else {
+            playerHTML = `<p>不支持的Vimeo链接格式</p>`;
+          }
+        } else {
+          playerHTML = `<p>不支持的视频来源</p>`;
+        }
+
+        section.innerHTML = `
+          <div class="video-user">
+            
+            <div><strong><a class="username" onclick="gotoUser('${video.username}')">@${video.username}</a></strong></div>
+          </div>
+          <p>${video.description}</p>
+          ${playerHTML}
+          <button class="like-button" onclick="likeVideo(this)">♥ ${video.likes} 喜欢</button>
+        `;
+        container.appendChild(section);
+      });
+    }
+
+    function gotoUser(username) {
+      window.location.hash = `#user-${encodeURIComponent(username)}`;
+    }
+
+    function showAll() {
+      window.location.hash = "";
+      // 更新导航栏活动状态
+      document.querySelectorAll('.main-nav a').forEach(a => {
+        a.classList.remove('active');
+      });
+      document.querySelector('.main-nav a:first-child').classList.add('active');
+    }
+
+    function route() {
+      const hash = window.location.hash;
+      if (hash.startsWith("#user-")) {
+        const username = decodeURIComponent(hash.replace("#user-", ""));
+        renderVideos(username);
+      } else {
+        renderVideos();
+      }
+    }
+
+    function loadVideos() {
+      allVideos = [...videos];
+      route();
+    }
+
+    function likeVideo(button) {
+      const currentLikes = parseInt(button.innerText.match(/\d+/)[0]);
+      button.innerHTML = `♥ ${currentLikes + 1} 喜欢`;
+      button.style.background = "#d01616";
+      
+      // 添加动画效果
+      button.classList.add('liked');
+      setTimeout(() => {
+        button.classList.remove('liked');
+      }, 300);
+    }
+
+    window.addEventListener("load", loadVideos);
+    window.addEventListener("hashchange", route);
+  </script>
+</body>
+</html>
