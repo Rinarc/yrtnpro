@@ -3,37 +3,542 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YRTN+ | 虚拟新闻详情</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>YRTN+ | 新闻详情 - 渊迂新闻</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        :root {
+            --primary-color: #BB1919;
+            --dark-bg: #1A1A1A;
+            --light-bg: #f8f9fa;
+            --text-dark: #333;
+            --text-light: #666;
+            --text-white: #ffffff;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* 头部样式 */
+        /* 导航栏 */
+.site-header {
+    background: var(--dark-bg);
+    padding: 1rem 0;
+    border-bottom: 3px solid var(--primary-colour);
+}
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .branding {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .brand-red {
+            color: var(--primary-color);
+        }
+
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .main-nav a {
+            color: var(--text-white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        .main-nav a:hover {
+            color: var(--primary-color);
+            background-color: rgba(26,26,26,1.00);
+        }
+
+        /* 新闻详情区域 */
+        .news-detail {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            padding: 3rem;
+            position: relative;
+        }
+
+        #news-title {
+            font-size: 2.5rem;
+            color: var(--dark-bg);
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+
+        .meta {
+            display: flex;
+            gap: 1.5rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .featured-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+
+        .content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .content img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 2rem 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .content img:hover {
+            transform: scale(1.01);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .content h2, .content h3 {
+            color: var(--dark-bg);
+            margin: 2rem 0 1rem;
+        }
+
+        .content blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            background: #fff5f5;
+            border-radius: 4px;
+            font-style: italic;
+        }
+
+        .content ul, .content ol {
+            padding-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .content li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* 模态框样式 */
+        #image-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            overflow: auto;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            display: block;
+            margin: 60px auto;
+            max-width: 90%;
+            max-height: 80vh;
+            animation: zoom 0.3s;
+            border: 3px solid #fff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        @keyframes zoom {
+            from { transform: scale(0.5); }
+            to { transform: scale(1); }
+        }
+
+        #caption {
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 1.2rem;
+            max-width: 80%;
+            margin: 0 auto;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: var(--primary-color);
+            transform: rotate(90deg);
+        }
+
+        /* 加载状态 */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+
+        .loading::after {
+            content: "";
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(230, 57, 70, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 错误提示 */
+        .error-message {
+            text-align: center;
+            padding: 3rem;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .error-message a {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .error-message a:hover {
+            background-color: #c1121f;
+        }
+
+        /* 分类标签 */
+        .category-tag {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* 底部样式 */
+        .site-footer {
+            background-color: var(--dark-bg);
+            color: var(--text-white);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-section h3::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #a8dadc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a8dadc;
+            font-size: 0.9rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .main-nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .featured-image {
+                height: 300px;
+            }
+            
+            .container {
+                padding: 1.5rem;
+            }
+            
+            #news-title {
+                font-size: 1.8rem;
+            }
+            
+            .meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
+<!-- 导航栏 -->
     <header class="site-header">
         <div class="header-container">
             <div class="branding">
-                
+               
                 <span class="brand-red">「架空」渊迂电视新闻网+</span>
             </div>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="index.html">返回首页</a></li>
+                    <li><a href="index.html" class="active">首页</a></li>
+                    <li><a href="replay.html">回看</a></li>
+                    <li><a href="short.html">叩击</a></li>
                     <li><a href="archive.html">历史新闻</a></li>
                 </ul>
             </nav>
         </div>
     </header>
-
+    <!-- 新闻详情 -->
     <main class="news-detail">
         <div class="container">
-            <h1 id="news-title"></h1>
-            <div class="meta">
-                <span id="news-date"></span>
-                <span id="news-category"></span>
+            <div class="loading">正在加载新闻...</div>
+            
+            <article id="article-content" style="display: none;">
+                <h1 id="news-title"></h1>
+                <div class="meta">
+                    <span id="news-date"></span>
+                    <span id="news-category"></span>
+                    <span>来源：<span id="news-source"></span></span>
+                </div>
+                <img id="news-image" class="featured-image" alt="新闻配图">
+                <div id="news-content" class="content"></div>
+            </article>
+            
+            <div id="error-message" class="error-message" style="display: none;">
+                <p>新闻加载失败，请稍后再试</p>
+                <a href="index.html">返回首页</a>
             </div>
-            <img id="news-image" class="featured-image">
-            <div id="news-content" class="content"></div>
         </div>
     </main>
 
-    <script src="scripts.js"></script>
+    <!-- 图片模态框 -->
+    <div id="image-modal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modal-image">
+        <div id="caption"></div>
+    </div>
+
+    <!-- 网站底部 -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-section">
+               
+        
+        <div class="copyright">
+            &copy; 2025 YRTN+ All right reserved.
+        </div>
+    </footer>
+
+    <script>
+        // 获取URL参数
+        function getUrlParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // 日期格式化
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // 图片模态框功能
+        let currentModal = null;
+
+        function openModal(imgElement) {
+            const modal = document.getElementById("image-modal");
+            const modalImg = document.getElementById("modal-image");
+            const captionText = document.getElementById("caption");
+            
+            modal.style.display = "block";
+            modalImg.src = imgElement.src;
+            captionText.innerHTML = imgElement.alt || "新闻配图";
+            currentModal = modal;
+        }
+
+        function closeModal() {
+            if (currentModal) {
+                currentModal.style.display = "none";
+            }
+        }
+
+        // 绑定事件
+        function setupModalEvents() {
+            // 点击关闭
+            document.querySelector('.close').onclick = closeModal;
+            
+            // ESC键关闭
+            document.onkeydown = (e) => {
+                if (e.key === "Escape" && currentModal) {
+                    closeModal();
+                }
+            };
+            
+            // 点击模态框背景关闭
+            document.getElementById('image-modal').onclick = (e) => {
+                if (e.target === currentModal) {
+                    closeModal();
+                }
+            };
+            
+            // 为所有图片添加点击事件
+            document.querySelectorAll('.featured-image, .content img').forEach(img => {
+                img.onclick = () => openModal(img);
+            });
+        }
+
+        // 加载新闻数据
+        async function loadArticle() {
+            try {
+                const articleId = parseInt(getUrlParam('id'));
+                if (!articleId) throw new Error("无效的新闻ID");
+                
+                const response = await fetch('news.json');
+                if (!response.ok) throw new Error("无法加载新闻数据");
+                
+                const data = await response.json();
+                const article = data.articles.find(a => a.id === articleId);
+                
+                if (!article) throw new Error("未找到相关新闻");
+                
+                // 填充数据
+                document.getElementById('news-title').textContent = article.title;
+                document.getElementById('news-date').textContent = formatDate(article.date);
+                document.getElementById('news-category').innerHTML = `<span class="category-tag">${article.category}</span>`;
+                document.getElementById('news-source').textContent = article.summary.split('：')[1];
+                
+                const newsImage = document.getElementById('news-image');
+                newsImage.src = article.image;
+                newsImage.alt = article.title;
+                
+                document.getElementById('news-content').innerHTML = article.content;
+                
+                // 隐藏加载状态，显示内容
+                document.querySelector('.loading').style.display = 'none';
+                document.getElementById('article-content').style.display = 'block';
+                
+                // 设置图片点击事件
+                setupModalEvents();
+                
+            } catch (error) {
+                console.error("加载新闻失败:", error);
+                document.querySelector('.loading').style.display = 'none';
+                document.getElementById('error-message').style.display = 'block';
+            }
+        }
+
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', loadArticle);
+    </script>
 </body>
 </html>
