@@ -196,6 +196,14 @@
             margin-top: 15px;
         }
         
+        .breaking-tag {
+            background-color: var(--primary-red);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
         .loading {
             text-align: center;
             padding: 30px;
@@ -256,11 +264,10 @@
                     <li><a href="index-en.html" class="active">Home</a></li>
                     <li><a href="Arent-support.html">Replay</a></li>
                     <li><a href="Arent-support.html">Review</a></li>
-<li><a href="index.html">切换中文</a></li>
+                    <li><a href="index.html">中文</a></li>
                 </ul>
             </nav>
             
-         
         </div>
     </header>
 
@@ -291,7 +298,13 @@
     <section class="video-section" id="video">
         <div class="container">
             <h2 class="section-title">©️YRTN+</h2>
-          
+            <div class="video-grid" id="video-container">
+        
+                    
+                </div>
+                
+            
+            </div>
         </div>
     </section>
 
@@ -307,6 +320,15 @@
                 minute: '2-digit'
             };
             return date.toLocaleDateString('en-US', options);
+        }
+        
+        // Function to get English text with fallback
+        function getEnglishText(article, field) {
+            const englishField = `${field}_en`;
+            // Use English field if exists and not empty, otherwise use Chinese field
+            return article[englishField] && article[englishField].trim() !== '' ? 
+                   article[englishField] : 
+                   article[field];
         }
         
         // Function to load news data
@@ -334,8 +356,10 @@
                 
                 // Display the latest breaking news
                 const latestBreaking = breakingNews[0];
+                const englishTitle = getEnglishText(latestBreaking, 'title');
+                
                 breakingContainer.innerHTML = `
-                    <a href="news-detail-en.html?id=${latestBreaking.id}">${latestBreaking.title}</a>
+                    <a href="news-detail-en.html?id=${latestBreaking.id}">${englishTitle}</a>
                 `;
             } else {
                 breakingContainer.textContent = 'No breaking news at this time';
@@ -361,14 +385,19 @@
             
             // Create news cards
             articlesToShow.forEach(article => {
+                // Get English content with fallback to Chinese
+                const englishTitle = getEnglishText(article, 'title');
+                const englishSummary = getEnglishText(article, 'summary');
+                const englishCategory = getEnglishText(article, 'category');
+                
                 const newsCard = document.createElement('div');
                 newsCard.className = 'news-card';
                 newsCard.innerHTML = `
                     <div class="news-image" style="background-image: url('${article.image}')"></div>
                     <div class="news-content">
-                        <span class="news-category">${article.category}</span>
-                        <h3>${article.title}</h3>
-                        <p>${article.summary}</p>
+                        <span class="news-category">${englishCategory}</span>
+                        <h3>${englishTitle}</h3>
+                        <p>${englishSummary}</p>
                         <div class="news-meta">
                             <span>${formatDate(article.date)}</span>
                             ${article.isBreaking ? '<span class="breaking-tag">Breaking</span>' : ''}
