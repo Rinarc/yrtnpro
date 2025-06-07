@@ -6,13 +6,269 @@
     <title>YRTN+ | 渊迂新闻（架空）</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-red: #1A1A1A;
+            --header-bg: #BB1919;
+            --light-bg: #f1faee;
+            --light-red: #BB1919;
+--light-color: #e63946;
+        }
+        
+        /* 保持原有的红色头部设计 */
+        .site-header {
+            background-color: var(--primary-red);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .brand-red {
+            color: #BB1919;
+        }
+        
+        .main-nav a {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .main-nav a:hover, .main-nav a.active {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* 突发新闻样式 */
+        .breaking-news {
+            background-color: #BB1919;
+            color: white;
+            padding: 10px 0;
+        }
+        
+        .breaking-label {
+            background-color: var(--light-color);
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-right: 15px;
+        }
+        
+        .breaking-text a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .breaking-text a:hover {
+            text-decoration: underline;
+        }
+        
+        /* 内容区域样式 */
+        .section-title {
+            border-left: 5px solid var(--light-red);
+            padding-left: 15px;
+            margin-bottom: 20px;
+            color: #1d3557;
+        }
+        
+        .news-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #1d3557;
+        }
+        
+        /* 视频区域样式 */
+        .video-section {
+            background-color: var(--light-bg);
+            padding: 40px 0;
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .video-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .video-thumbnail {
+            width: 100%;
+            height: 180px;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+        }
+        
+        .play-icon {
+            font-size: 3rem;
+            z-index: 2;
+        }
+        
+        .video-info {
+            padding: 15px;
+        }
+        
+        .video-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1d3557;
+        }
+        
+        .video-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .language-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+        
+        .language-btn {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .language-btn:hover {
+            text-decoration: underline;
+        }
+        
+        /* 新闻网格样式 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .news-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-5px);
+            cursor: pointer;
+        }
+        
+        .news-image {
+            width: 100%;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .news-content {
+            padding: 20px;
+        }
+        
+        .news-category {
+            display: inline-block;
+            background-color: #e63946;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+        
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 15px;
+        }
+        
+        .breaking-tag {
+            background-color: var(--primary-red);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 30px;
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        .loading::after {
+            content: "";
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(230, 57, 70, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-red);
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            text-align: center;
+            padding: 20px;
+            color: var(--light-red);
+            font-size: 1.1rem;
+            grid-column: 1 / -1;
+        }
+        
+        @media (max-width: 768px) {
+            .video-grid, .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .video-thumbnail, .news-image {
+                height: 150px;
+            }
+            
+            .header-container {
+                flex-wrap: wrap;
+            }
+            
+            .language-switcher {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin-top: 10px;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- 导航栏 -->
     <header class="site-header">
         <div class="header-container">
             <div class="branding">
-               
                 <span class="brand-red">「架空」渊迂电视新闻网+</span>
             </div>
             <nav class="main-nav">
@@ -21,7 +277,7 @@
                     <li><a href="replay.html">回看</a></li>
                     <li><a href="short.html">叩击</a></li>
                     <li><a href="archive.html">历史新闻</a></li>
-                    <li><a href="index-en.html">EN</a></li>
+<li><a href="index-en.html">EN</a></li>
                 </ul>
             </nav>
         </div>
@@ -30,8 +286,12 @@
     <!-- 突发新闻 -->
     <section class="breaking-news">
         <div class="container">
-            <div class="breaking-label">// 热点 HOTSPOT</div>
-            <div id="breaking-content" class="breaking-text"></div>
+            <div class="breaking-content">
+                <span class="breaking-label">突发</span>
+                <div id="breaking-text" class="breaking-text">
+                    <!-- 突发新闻将在这里加载 -->
+                </div>
+            </div>
         </div>
     </section>
 
@@ -39,18 +299,150 @@
     <section class="news-grid" id="news">
         <div class="container">
             <h2 class="section-title">渊迂时讯</h2>
-            <div class="grid" id="news-container"></div>
+            <div class="loading">正在加载新闻...</div>
+            <div class="grid" id="news-container">
+                <!-- 新闻卡片将在这里动态生成 -->
+            </div>
         </div>
     </section>
 
     <!-- 视频区 -->
     <section class="video-section" id="video">
         <div class="container">
-            <h2 class="section-title">©YRTN+</h2>
-            <div class="video-grid" id="video-container"></div>
+            <h2 class="section-title">©️ YRTN+</h2>
+          
+                </div>
+            </div>
         </div>
     </section>
 
-    <script src="scripts.js"></script>
+    <script>
+        // 日期格式化函数
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            return date.toLocaleDateString('zh-CN', options);
+        }
+        
+        // 加载新闻数据
+        async function loadNewsData() {
+            try {
+                const response = await fetch('news.json');
+                if (!response.ok) throw new Error('加载新闻数据失败');
+                
+                const data = await response.json();
+                return data.articles;
+            } catch (error) {
+                console.error('加载新闻数据时出错:', error);
+                return [];
+            }
+        }
+        
+        // 显示突发新闻
+        function displayBreakingNews(articles) {
+            const breakingContainer = document.getElementById('breaking-text');
+            const breakingNews = articles.filter(article => article.isBreaking);
+            
+            if (breakingNews.length > 0) {
+                // 按日期排序（最新优先）
+                breakingNews.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                // 显示最新突发新闻
+                const latestBreaking = breakingNews[0];
+                breakingContainer.innerHTML = `
+                    <a href="news-detail.html?id=${latestBreaking.id}">${latestBreaking.title}</a>
+                `;
+            } else {
+                breakingContainer.textContent = '当前没有突发新闻';
+            }
+        }
+        
+        // 渲染新闻卡片
+        function renderNewsCards(articles) {
+            const container = document.getElementById('news-container');
+            const loading = document.querySelector('.loading');
+            
+            // 隐藏加载指示器
+            if (loading) loading.style.display = 'none';
+            
+            // 清空现有内容
+            container.innerHTML = '';
+            
+            // 按日期排序（最新优先）
+            articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // 限制首页显示8条新闻
+            const articlesToShow = articles.slice(0, 8);
+            
+            // 创建新闻卡片
+            articlesToShow.forEach(article => {
+                const newsCard = document.createElement('div');
+                newsCard.className = 'news-card';
+                newsCard.innerHTML = `
+                    <div class="news-image" style="background-image: url('${article.image}')"></div>
+                    <div class="news-content">
+                        <span class="news-category">${article.category}</span>
+                        <h3>${article.title}</h3>
+                        <p>${article.summary}</p>
+                        <div class="news-meta">
+                            <span>${formatDate(article.date)}</span>
+                            ${article.isBreaking ? '<span class="breaking-tag">突发</span>' : ''}
+                        </div>
+                    </div>
+                `;
+                
+                // 添加点击事件跳转到详情页
+                newsCard.addEventListener('click', () => {
+                    window.location.href = `news-detail.html?id=${article.id}`;
+                });
+                
+                container.appendChild(newsCard);
+            });
+        }
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 加载新闻数据
+            const articles = await loadNewsData();
+            
+            if (articles.length > 0) {
+                // 显示突发新闻
+                displayBreakingNews(articles);
+                
+                // 渲染新闻卡片
+                renderNewsCards(articles);
+            } else {
+                // 如果没有加载到文章，显示错误信息
+                const container = document.getElementById('news-container');
+                const loading = document.querySelector('.loading');
+                
+                if (loading) loading.style.display = 'none';
+                
+                container.innerHTML = `
+                    <div class="error-message">
+                        <p>未找到新闻文章，请稍后再试。</p>
+                    </div>
+                `;
+            }
+            
+            // 根据当前页面设置活动链接
+            const currentPage = window.location.pathname.split('/').pop();
+            const navLinks = document.querySelectorAll('.main-nav a');
+            
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
