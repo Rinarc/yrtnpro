@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unsupport Pages</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-red: #e63946;
+            --header-bg: #1d3557;
+            --light-bg: #f1faee;
+        }
+        
+        /* Header with blue background */
+        .site-header {
+            background-color: var(--header-bg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .brand-red {
+            color: #fff;
+        }
+        
+        .main-nav a {
+            color: #a8dadc;
+        }
+        
+        .main-nav a:hover, .main-nav a.active {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Breaking news style */
+        .breaking-news {
+            background-color: var(--primary-red);
+            color: white;
+            padding: 10px 0;
+        }
+        
+        .breaking-label {
+            background-color: #ff9e00;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-right: 15px;
+        }
+        
+        .breaking-text a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .breaking-text a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Additional styling for English content */
+        .section-title {
+            border-left: 5px solid var(--primary-red);
+            padding-left: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .news-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        
+        /* Video section styling */
+        .video-section {
+            background-color: var(--light-bg);
+            padding: 40px 0;
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .video-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .video-thumbnail {
+            width: 100%;
+            height: 180px;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+        }
+        
+        .play-icon {
+            font-size: 3rem;
+            z-index: 2;
+        }
+        
+        .video-info {
+            padding: 15px;
+        }
+        
+        .video-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1d3557;
+        }
+        
+        .video-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .language-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+        
+        .language-btn {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .language-btn:hover {
+            text-decoration: underline;
+        }
+        
+        /* News grid styles */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .news-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-5px);
+            cursor: pointer;
+        }
+        
+        .news-image {
+            width: 100%;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .news-content {
+            padding: 20px;
+        }
+        
+        .news-category {
+            display: inline-block;
+            background-color: var(--primary-red);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+        
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 15px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 30px;
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        .loading::after {
+            content: "";
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(230, 57, 70, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-red);
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .video-grid, .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .video-thumbnail, .news-image {
+                height: 150px;
+            }
+            
+            .header-container {
+                flex-wrap: wrap;
+            }
+            
+            .language-switcher {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin-top: 10px;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="branding">
+                <span class="brand-red">Yuanyu Television News Network+</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index-en.html" class="active">Home</a></li>
+                    <li><a href="replay.html">Replay</a></li>
+                    <li><a href="archive.html">Review</a></li>
+<li><a href="index.html">切换中文</a></li>
+                </ul>
+            </nav>
+            
+         
+        </div>
+    </header>
+<p><h1>//Sorry,we will support this pages soon(：</h4></p>
+</body>
