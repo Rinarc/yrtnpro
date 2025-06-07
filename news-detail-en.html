@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YRTN+ | News Detail - Yuanyu News</title>
+    <style>
+        :root {
+            --primary-color: #e63946;
+            --dark-bg: #1d3557;
+            --light-bg: #f1faee;
+            --text-dark: #333;
+            --text-light: #666;
+            --text-white: #f8f9fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        /* Header Styles */
+        .site-header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .branding {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .brand-red {
+            color: var(--primary-color);
+        }
+        
+        .language-switcher {
+            margin-left: auto;
+            margin-right: 2rem;
+        }
+        
+        .language-btn {
+            background: #f1faee;
+            border: 1px solid #a8dadc;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .language-btn:hover {
+            background: #e63946;
+            color: white;
+            border-color: #e63946;
+        }
+        
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        
+        .main-nav a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+        
+        .main-nav a:hover {
+            color: var(--primary-color);
+            background-color: rgba(230, 57, 70, 0.1);
+        }
+        
+        /* News Detail Section */
+        .news-detail {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            padding: 3rem;
+            position: relative;
+        }
+        
+        #news-title {
+            font-size: 2.5rem;
+            color: var(--dark-bg);
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+        
+        .meta {
+            display: flex;
+            gap: 1.5rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+            flex-wrap: wrap;
+        }
+        
+        .featured-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        
+        .content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .content p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .content img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 2rem 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .content img:hover {
+            transform: scale(1.01);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .content h2, .content h3 {
+            color: var(--dark-bg);
+            margin: 2rem 0 1rem;
+        }
+        
+        .content blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            background: #fff5f5;
+            border-radius: 4px;
+            font-style: italic;
+        }
+        
+        /* Image Modal */
+        #image-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            overflow: auto;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            display: block;
+            margin: 60px auto;
+            max-width: 90%;
+            max-height: 80vh;
+            animation: zoom 0.3s;
+            border: 3px solid #fff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        
+        @keyframes zoom {
+            from { transform: scale(0.5); }
+            to { transform: scale(1); }
+        }
+        
+        #caption {
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 1.2rem;
+            max-width: 80%;
+            margin: 0 auto;
+        }
+        
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: var(--primary-color);
+            transform: rotate(90deg);
+        }
+        
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+        
+        .loading::after {
+            content: "";
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(230, 57, 70, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Error Message */
+        .error-message {
+            text-align: center;
+            padding: 3rem;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        .error-message a {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .error-message a:hover {
+            background-color: #c1121f;
+        }
+        
+        /* Category Tag */
+        .category-tag {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        /* Footer */
+        .site-footer {
+            background-color: var(--dark-bg);
+            color: var(--text-white);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .footer-section h3::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: #a8dadc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a8dadc;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .main-nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .featured-image {
+                height: 300px;
+            }
+            
+            .container {
+                padding: 1.5rem;
+            }
+            
+            #news-title {
+                font-size: 1.8rem;
+            }
+            
+            .meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .language-switcher {
+                margin: 1rem auto;
+                order: 3;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Site Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="branding">
+                <span class="brand-red">Yuanyu Television News Network+</span>
+            </div>
+            
+            <div class="language-switcher">
+                <button class="language-btn" id="switch-to-chinese">中文版</button>
+            </div>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index-en.html">Home</a></li>
+                   
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- News Detail Section -->
+    <main class="news-detail">
+        <div class="container">
+            <div class="loading">Loading news...</div>
+            
+            <article id="article-content" style="display: none;">
+                <h1 id="news-title"></h1>
+                <div class="meta">
+                    <span id="news-date"></span>
+                    <span id="news-category"></span>
+                    <span>Source: <span id="news-source"></span></span>
+                </div>
+                <img id="news-image" class="featured-image" alt="News image">
+                <div id="news-content" class="content"></div>
+            </article>
+            
+            <div id="error-message" class="error-message" style="display: none;">
+                <p>Failed to load news, please try again later</p>
+                <a href="index-en.html">Back to Home</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Image Modal -->
+    <div id="image-modal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modal-image">
+        <div id="caption"></div>
+    </div>
+
+    <!-- Site Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>Yuanyu Television News Network is the official news platform of the fictional city, dedicated to providing the latest and most authentic urban news.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index-en.html">Home</a></li>
+                    <li><a href="#news">Latest News</a></li>
+                    <li><a href="#traffic">Transportation</a></li>
+                    <li><a href="#city">Urban Development</a></li>
+                    <li><a href="archive-en.html">News Archive</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: news@yrtn.media</p>
+                <p>Phone: +86 123 4567 8910</p>
+                <p>Address: Yuanyu News Building</p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2025 Yuanyu Television News Network. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        // 获取URL参数
+        function getUrlParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // 日期格式化
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // 图片模态框功能
+        let currentModal = null;
+
+        function openModal(imgElement) {
+            const modal = document.getElementById("image-modal");
+            const modalImg = document.getElementById("modal-image");
+            const captionText = document.getElementById("caption");
+            
+            modal.style.display = "block";
+            modalImg.src = imgElement.src;
+            captionText.innerHTML = imgElement.alt || "News image";
+            currentModal = modal;
+        }
+
+        function closeModal() {
+            if (currentModal) {
+                currentModal.style.display = "none";
+            }
+        }
+
+        // 绑定事件
+        function setupModalEvents() {
+            // 点击关闭
+            document.querySelector('.close').onclick = closeModal;
+            
+            // ESC键关闭
+            document.onkeydown = (e) => {
+                if (e.key === "Escape" && currentModal) {
+                    closeModal();
+                }
+            };
+            
+            // 点击模态框背景关闭
+            document.getElementById('image-modal').onclick = (e) => {
+                if (e.target === currentModal) {
+                    closeModal();
+                }
+            };
+            
+            // 为所有图片添加点击事件
+            document.querySelectorAll('.featured-image, .content img').forEach(img => {
+                img.onclick = () => openModal(img);
+            });
+        }
+
+        // 加载新闻数据
+        async function loadArticle() {
+            try {
+                const articleId = parseInt(getUrlParam('id'));
+                if (!articleId) throw new Error("Invalid news ID");
+                
+                const response = await fetch('news.json');
+                if (!response.ok) throw new Error("Failed to load news data");
+                
+                const data = await response.json();
+                const article = data.articles.find(a => a.id === articleId);
+                
+                if (!article) throw new Error("News article not found");
+                
+                // 填充英文数据
+                document.getElementById('news-title').textContent = article.title_en || article.title;
+                document.getElementById('news-date').textContent = formatDate(article.date);
+                document.getElementById('news-category').innerHTML = `<span class="category-tag">${article.category_en || article.category}</span>`;
+                
+                const sourceText = article.summary.split('：')[1] || article.summary;
+                document.getElementById('news-source').textContent = sourceText;
+                
+                const newsImage = document.getElementById('news-image');
+                newsImage.src = article.image;
+                newsImage.alt = article.title_en || article.title;
+                
+                document.getElementById('news-content').innerHTML = article.content_en || article.content;
+                
+                // 隐藏加载状态，显示内容
+                document.querySelector('.loading').style.display = 'none';
+                document.getElementById('article-content').style.display = 'block';
+                
+                // 设置图片点击事件
+                setupModalEvents();
+                
+            } catch (error) {
+                console.error("Failed to load news:", error);
+                document.querySelector('.loading').style.display = 'none';
+                document.getElementById('error-message').style.display = 'block';
+            }
+        }
+
+        // 语言切换
+        document.getElementById('switch-to-chinese').addEventListener('click', () => {
+            const articleId = getUrlParam('id');
+            window.location.href = `news-detail.html?id=${articleId}`;
+        });
+
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', loadArticle);
+    </script>
+</body>
+</html>
