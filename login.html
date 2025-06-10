@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>管理员登录 - 渊迂新闻</title>
+    <title>Login - YRTN+</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* 全局样式 */
@@ -210,7 +210,7 @@
     <header class="site-header">
         <div class="header-container">
             <div class="branding">
-                <span class="brand-red">「架空」渊迂电视新闻网+</span>
+                <span class="brand-red">「Unreal」YRTN+</span>
             </div>
         </div>
     </header>
@@ -219,31 +219,32 @@
     <section class="auth-section">
         <div class="auth-box">
             <div class="auth-header">
-                <h2>内容管理通道</h2>
-                <p>欢迎回到新闻编辑中心</p>
+                <h2>Login</h2>
+                <p>Welcome back！</p>
             </div>
             
             <div id="auth-error" class="error-msg"></div>
             
             <div class="input-group">
-                <label for="login-email"><i class="fas fa-envelope"></i> 邮箱</label>
+                <label for="login-email"><i class="fas fa-envelope"></i> E-mail</label>
                 <input type="email" id="login-email" placeholder="name@example.com">
             </div>
             
             <div class="input-group">
-                <label for="login-pwd"><i class="fas fa-lock"></i> 密码</label>
+                <label for="login-pwd"><i class="fas fa-lock"></i> Password</label>
                 <input type="password" id="login-pwd" placeholder="••••••••">
             </div>
             
             <button class="auth-btn" onclick="handleLogin(event)">
-                <span class="btn-text">进入编辑中心</span>
+                <span class="btn-text">
+                    Enter</span>
             </button>
             
-            <div class="divider">其他登录方式</div>
+            <div class="divider">Other ways</div>
             
             <button class="google-btn" onclick="handleGoogleLogin(event)">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo">
-                使用 Google 登录
+                Login with Google
             </button>
         </div>
     </section>
