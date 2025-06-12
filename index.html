@@ -3,216 +3,534 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YRTN+ | 渊迂新闻（架空）</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>YRTN+ | 渊迂电视新闻网</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-red: #1A1A1A;
-            --header-bg: #BB1919;
-            --light-bg: #f1faee;
-            --light-red: #BB1919;
---light-color: #e63946;
+            --primary: #BB1919;
+            --primary-dark: #8a1212;
+            --secondary: #1d3557;
+            --accent: #a8dadc;
+            --light: #f1faee;
+            --dark: #0d1b2a;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --header-bg: rgba(26, 26, 26, 0.95);
+            
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.2);
         }
         
-        /* 保持原有的红色头部设计 */
+        .dark-mode {
+            --card-bg: rgba(29, 53, 87, 0.9);
+            --header-bg: rgba(13, 27, 42, 0.95);
+            --light: #0d1b2a;
+            --dark: #f1faee;
+            --gray: #adb5bd;
+            --light-gray: #1e2a3a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #1d3557 0%, #0d1b2a 100%);
+            color: var(--light);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            background-attachment: fixed;
+        }
+        
+        /* 粒子背景 */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        /* 头部样式 */
         .site-header {
-            background-color: var(--primary-red);
+            background: var(--header-bg);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            padding: 0.8rem 0;
         }
         
-        .brand-red {
-            color: #BB1919;
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .branding {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            box-shadow: 0 0 20px rgba(187, 25, 25, 0.5);
+            animation: pulse 2s infinite;
+        }
+        
+        .brand-text {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+        
+        .brand-highlight {
+            color: var(--accent);
+        }
+        
+        /* 导航 */
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.8rem;
         }
         
         .main-nav a {
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .main-nav a:hover, .main-nav a.active {
-            color: #fff;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-        
-        /* 突发新闻样式 */
-        .breaking-news {
-            background-color: #BB1919;
             color: white;
-            padding: 10px 0;
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
         }
         
-        .breaking-label {
-            background-color: var(--light-color);
-            padding: 3px 10px;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 0.9rem;
-            margin-right: 15px;
+        .main-nav i {
+            font-size: 1.1rem;
         }
         
-        .breaking-text a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
+        /* 头部控制 */
+        .header-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
         }
         
-        .breaking-text a:hover {
-            text-decoration: underline;
-        }
-        
-        /* 内容区域样式 */
-        .section-title {
-            border-left: 5px solid var(--light-red);
-            padding-left: 15px;
-            margin-bottom: 20px;
-            color: #1d3557;
-        }
-        
-        .news-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            color: #1d3557;
-        }
-        
-        /* 视频区域样式 */
-        .video-section {
-            background-color: var(--light-bg);
-            padding: 40px 0;
-        }
-        
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
-        }
-        
-        .video-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-        
-        .video-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .video-thumbnail {
-            width: 100%;
-            height: 180px;
-            background-color: #333;
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.2rem;
         }
         
-        .play-icon {
-            font-size: 3rem;
-            z-index: 2;
-        }
-        
-        .video-info {
-            padding: 15px;
-        }
-        
-        .video-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #1d3557;
-        }
-        
-        .video-date {
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        .language-switcher {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 15px;
-            border-radius: 20px;
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: rotate(15deg);
         }
         
         .language-btn {
+            background: rgba(255, 255, 255, 0.15);
             color: white;
-            text-decoration: none;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
         }
         
         .language-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        /* 突发新闻 */
+        .breaking-news {
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 0.7rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .breaking-news::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255, 255, 255, 0.1) 10px,
+                rgba(255, 255, 255, 0.1) 20px
+            );
+            pointer-events: none;
+        }
+        
+        .breaking-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            animation: slideIn 0.8s ease-out;
+        }
+        
+        .breaking-label {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-right: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+        
+        .breaking-text {
+            flex-grow: 1;
+            overflow: hidden;
+        }
+        
+        .breaking-content {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 25s linear infinite;
+            padding-left: 100%;
+        }
+        
+        .breaking-content a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin-right: 3rem;
+        }
+        
+        .breaking-content a:hover {
+            color: var(--accent);
             text-decoration: underline;
         }
         
-        /* 新闻网格样式 */
-        .grid {
+        /* 主要内容 */
+        .main-content {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: white;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        .view-all {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .view-all:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        /* 新闻网格 */
+        .news-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 4rem;
         }
         
         .news-card {
-            background: white;
-            border-radius: 10px;
+            background: var(--card-bg);
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            animation: cardAppear 0.6s ease-out;
+            animation-fill-mode: backwards;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .news-card:hover {
-            transform: translateY(-5px);
-            cursor: pointer;
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+            z-index: 10;
         }
         
         .news-image {
-            width: 100%;
-            height: 180px;
+            height: 220px;
             background-size: cover;
             background-position: center;
+            position: relative;
+        }
+        
+        .category-tag {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+        
+        .breaking-tag {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ff9e00;
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 2;
+            animation: pulse 1.5s infinite;
         }
         
         .news-content {
-            padding: 20px;
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
         
-        .news-category {
-            display: inline-block;
-            background-color: #e63946;
-            color: white;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            margin-bottom: 10px;
+        .news-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--secondary);
+            transition: color 0.3s;
+            line-height: 1.4;
+        }
+        
+        .dark-mode .news-title {
+            color: var(--accent);
+        }
+        
+        .news-card:hover .news-title {
+            color: var(--primary);
+        }
+        
+        .news-summary {
+            color: var(--gray);
+            margin-bottom: 20px;
+            flex-grow: 1;
+            line-height: 1.6;
         }
         
         .news-meta {
             display: flex;
             justify-content: space-between;
-            color: #666;
+            color: var(--gray);
             font-size: 0.9rem;
-            margin-top: 15px;
+            border-top: 1px solid var(--light-gray);
+            padding-top: 15px;
+            margin-top: auto;
         }
         
-        .breaking-tag {
-            background-color: var(--primary-red);
+        .read-more {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+        
+        .read-more:hover {
+            color: var(--primary-dark);
+            gap: 12px;
+        }
+        
+        /* 视频区 */
+        .video-section {
+            margin-top: 4rem;
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .video-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            animation: cardAppear 0.6s ease-out;
+            animation-fill-mode: backwards;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .video-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .video-thumbnail {
+            height: 180px;
+            background: #2c3e50;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .video-thumbnail::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(187, 25, 25, 0.3), rgba(29, 53, 87, 0.5));
+            z-index: 1;
+        }
+        
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
+            font-size: 1.5rem;
+            z-index: 2;
+            transition: var(--transition);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
         }
         
+        .video-card:hover .play-btn {
+            transform: translate(-50%, -50%) scale(1.1);
+            background: var(--primary-dark);
+        }
+        
+        .video-info {
+            padding: 20px;
+        }
+        
+        .video-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--secondary);
+            line-height: 1.4;
+        }
+        
+        .dark-mode .video-title {
+            color: var(--accent);
+        }
+        
+        .video-date {
+            color: var(--gray);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* 加载动画 */
         .loading {
             text-align: center;
             padding: 30px;
             font-size: 1.2rem;
-            color: #666;
+            color: var(--gray);
+            grid-column: 1 / -1;
         }
         
         .loading::after {
@@ -220,103 +538,256 @@
             display: inline-block;
             width: 20px;
             height: 20px;
-            border: 3px solid rgba(230, 57, 70, 0.3);
+            border: 3px solid rgba(187, 25, 25, 0.3);
             border-radius: 50%;
-            border-top-color: var(--primary-red);
+            border-top-color: var(--primary);
             animation: spin 1s linear infinite;
             margin-left: 10px;
             vertical-align: middle;
+        }
+        
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes cardAppear {
+            0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(187, 25, 25, 0.5); }
+            70% { box-shadow: 0 0 0 15px rgba(187, 25, 25, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(187, 25, 25, 0); }
         }
         
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
         
-        .error-message {
-            text-align: center;
-            padding: 20px;
-            color: var(--light-red);
-            font-size: 1.1rem;
-            grid-column: 1 / -1;
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .news-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
         }
         
         @media (max-width: 768px) {
-            .video-grid, .grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .video-thumbnail, .news-image {
-                height: 150px;
-            }
-            
-            .header-container {
+            .main-nav ul {
+                gap: 0.8rem;
                 flex-wrap: wrap;
+                justify-content: center;
             }
             
-            .language-switcher {
-                position: relative;
-                top: 0;
-                right: 0;
-                margin-top: 10px;
-                width: 100%;
-                text-align: center;
+            .header-controls {
+                margin-top: 15px;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .breaking-label {
+                margin-right: 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .breaking-container {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+            
+            .breaking-content {
+                padding-left: 0;
+                animation: none;
+                white-space: normal;
+            }
+            
+            .breaking-content a {
+                margin-right: 0;
+                display: block;
+                margin-bottom: 0.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- 导航栏 -->
+    <!-- 粒子背景 -->
+    <div id="particles-js"></div>
+    
+    <!-- 网站头部 -->
     <header class="site-header">
         <div class="header-container">
             <div class="branding">
-                <span class="brand-red">「架空」渊迂电视新闻网+</span>
+                <div class="logo">架空</div>
+                <div class="brand-text">渊迂电视新闻网<span class="brand-highlight">+</span></div>
             </div>
+            
             <nav class="main-nav">
                 <ul>
-                    <li><a href="index.html" class="active">首页</a></li>
-                    <li><a href="replay.html">回看</a></li>
-                    <li><a href="short.html">叩击</a></li>
-                    <li><a href="archive.html">历史新闻</a></li>
-<li><a href="index-en.html">EN</a></li>
+                    <li><a href="index.html" class="active"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="replay.html"><i class="fas fa-play-circle"></i> 回看</a></li>
+                    <li><a href="short.html"><i class="fas fa-bolt"></i> 叩击</a></li>
+                    <li><a href="archive.html"><i class="fas fa-archive"></i> 历史新闻</a></li>
                 </ul>
             </nav>
+            
+            <div class="header-controls">
+                <button class="theme-toggle" id="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="language-btn" id="language-btn">
+                    <i class="fas fa-globe"></i> English
+                </button>
+            </div>
         </div>
     </header>
 
     <!-- 突发新闻 -->
     <section class="breaking-news">
-        <div class="container">
-            <div class="breaking-content">
-                <span class="breaking-label">突发</span>
-                <div id="breaking-text" class="breaking-text">
+        <div class="breaking-container">
+            <div class="breaking-label">
+                <i class="fas fa-bolt"></i> 热点
+            </div>
+            <div class="breaking-text">
+                <div class="breaking-content" id="breaking-content">
                     <!-- 突发新闻将在这里加载 -->
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 新闻列表 -->
-    <section class="news-grid" id="news">
-        <div class="container">
-            <h2 class="section-title">渊迂时讯</h2>
-            <div class="loading">正在加载新闻...</div>
-            <div class="grid" id="news-container">
+    <!-- 主要内容 -->
+    <div class="main-content">
+        <!-- 最新新闻区 -->
+        <section class="news-section">
+            <div class="section-header">
+                <h2 class="section-title">渊迂时讯</h2>
+                <button class="view-all" id="view-all-news">
+                    查看更多 <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            
+            <div class="news-grid" id="news-container">
+                <div class="loading">正在加载新闻...</div>
                 <!-- 新闻卡片将在这里动态生成 -->
             </div>
-        </div>
-    </section>
-
-    <!-- 视频区 -->
-    <section class="video-section" id="video">
-        <div class="container">
-            <h2 class="section-title">©️ YRTN+</h2>
-          
-                </div>
+        </section>
+        
+        <!-- 视频区 -->
+        <section class="video-section">
+            <div class="section-header">
+                <h2 class="section-title">©️YRTN+</h2>
+                <button class="view-all">
+                    查看更多 <i class="fas fa-arrow-right"></i>
+                </button>
             </div>
-        </div>
-    </section>
+            
+            <div class="video-grid" id="video-container">
+                <!-- 视频卡片将在这里动态生成 -->
+            </div>
+        </section>
+    </div>
 
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
+        // 初始化粒子背景
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#a8dadc" },
+                shape: { type: "circle" },
+                opacity: { value: 0.3, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#a8dadc",
+                    opacity: 0.1,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 1,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
+        
+        // 主题切换
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+            
+            // 保存主题偏好
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        });
+        
+        // 语言切换
+        document.getElementById('language-btn').addEventListener('click', () => {
+            window.location.href = 'index-en.html';
+        });
+        
+        // 查看更多新闻按钮
+        document.getElementById('view-all-news').addEventListener('click', () => {
+            window.location.href = 'archive.html';
+        });
+        
+        // 应用保存的主题偏好
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+        
         // 日期格式化函数
         function formatDate(dateString) {
             const date = new Date(dateString);
@@ -346,7 +817,7 @@
         
         // 显示突发新闻
         function displayBreakingNews(articles) {
-            const breakingContainer = document.getElementById('breaking-text');
+            const breakingContainer = document.getElementById('breaking-content');
             const breakingNews = articles.filter(article => article.isBreaking);
             
             if (breakingNews.length > 0) {
@@ -355,11 +826,14 @@
                 
                 // 显示最新突发新闻
                 const latestBreaking = breakingNews[0];
+                
                 breakingContainer.innerHTML = `
                     <a href="news-detail.html?id=${latestBreaking.id}">${latestBreaking.title}</a>
                 `;
             } else {
-                breakingContainer.textContent = '当前没有突发新闻';
+                breakingContainer.innerHTML = `
+                    <a href="#">当前没有热点新闻</a>
+                `;
             }
         }
         
@@ -382,27 +856,78 @@
             
             // 创建新闻卡片
             articlesToShow.forEach(article => {
-                const newsCard = document.createElement('div');
+                const newsCard = document.createElement('article');
                 newsCard.className = 'news-card';
                 newsCard.innerHTML = `
-                    <div class="news-image" style="background-image: url('${article.image}')"></div>
+                    <div class="news-image" style="background-image: url('${article.image}')">
+                        <div class="category-tag">${article.category}</div>
+                        ${article.isBreaking ? '<div class="breaking-tag">热点</div>' : ''}
+                    </div>
                     <div class="news-content">
-                        <span class="news-category">${article.category}</span>
-                        <h3>${article.title}</h3>
-                        <p>${article.summary}</p>
+                        <h3 class="news-title">${article.title}</h3>
+                        <p class="news-summary">${article.summary}</p>
                         <div class="news-meta">
-                            <span>${formatDate(article.date)}</span>
-                            ${article.isBreaking ? '<span class="breaking-tag">突发</span>' : ''}
+                            <span><i class="far fa-calendar"></i> ${formatDate(article.date)}</span>
+                            <a href="news-detail.html?id=${article.id}" class="read-more">阅读更多 <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                 `;
                 
                 // 添加点击事件跳转到详情页
-                newsCard.addEventListener('click', () => {
-                    window.location.href = `news-detail.html?id=${article.id}`;
+                newsCard.addEventListener('click', (e) => {
+                    // 防止点击阅读更多链接时触发卡片点击
+                    if (e.target.tagName !== 'A' && e.target.parentElement.tagName !== 'A') {
+                        window.location.href = `news-detail.html?id=${article.id}`;
+                    }
                 });
                 
                 container.appendChild(newsCard);
+            });
+        }
+        
+        // 渲染视频卡片
+        function renderVideoCards() {
+            const container = document.getElementById('video-container');
+            
+            // 示例视频数据
+            const videos = [
+                {
+                    id: 1,
+                    title: "地铁19号线测试阶段",
+                    date: "2025-03-30T14:00:00",
+                    gradient: "linear-gradient(45deg, #2c3e50, #4a6491)"
+                },
+                {
+                    id: 2,
+                    title: "YRTN新演播室启用",
+                    date: "2025-04-10T11:30:00",
+                    gradient: "linear-gradient(45deg, #2c3e50, #8e5a7d)"
+                },
+                {
+                    id: 3,
+                    title: "2025城市发展论坛",
+                    date: "2025-05-15T09:00:00",
+                    gradient: "linear-gradient(45deg, #2c3e50, #3a7d8c)"
+                }
+            ];
+            
+            // 创建视频卡片
+            videos.forEach(video => {
+                const videoCard = document.createElement('div');
+                videoCard.className = 'video-card';
+                videoCard.innerHTML = `
+                    <div class="video-thumbnail" style="background: ${video.gradient}">
+                        <div class="play-btn">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">${video.title}</h3>
+                        <p class="video-date"><i class="far fa-calendar"></i> ${formatDate(video.date)}</p>
+                    </div>
+                `;
+                
+                container.appendChild(videoCard);
             });
         }
         
@@ -425,22 +950,25 @@
                 if (loading) loading.style.display = 'none';
                 
                 container.innerHTML = `
-                    <div class="error-message">
+                    <div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem;">
                         <p>未找到新闻文章，请稍后再试。</p>
                     </div>
                 `;
             }
             
-            // 根据当前页面设置活动链接
-            const currentPage = window.location.pathname.split('/').pop();
-            const navLinks = document.querySelectorAll('.main-nav a');
+            // 渲染视频卡片
+            renderVideoCards();
             
-            navLinks.forEach(link => {
-                if (link.getAttribute('href') === currentPage) {
-                    link.classList.add('active');
-                } else {
-                    link.classList.remove('active');
-                }
+            // 卡片动画延迟
+            const newsCards = document.querySelectorAll('.news-card');
+            const videoCards = document.querySelectorAll('.video-card');
+            
+            newsCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+            
+            videoCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
             });
         });
     </script>
