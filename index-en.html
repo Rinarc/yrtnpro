@@ -650,7 +650,7 @@
             
             
             <div class="header-controls">
-                <button class="language-btn" id="language-btn">
+                <button class="homepage" id="homepage">
                     <i class="fas fa-home"></i> HOME
                 </button>
                 <button class="theme-toggle" id="theme-toggle">
@@ -769,6 +769,11 @@
         // Language switch
         document.getElementById('language-btn').addEventListener('click', () => {
             window.location.href = 'index.html';
+        });
+
+          // HOME
+        document.getElementById('homepage').addEventListener('click', () => {
+            window.location.href = 'index-en.html';
         });
         
         // Apply saved theme preference
