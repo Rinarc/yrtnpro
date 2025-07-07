@@ -8,14 +8,14 @@
         {
           "id": "news-1",
           "title": "纵横 ZOOM",
-          "image": "https://img.picgo.net/2025/04/13/IMG_4139fd8d95b40ead3359.jpeg",
+          "image": "https://img.picgo.net/2025/05/25/IMG_44596b8576728a8f9980.jpeg",
           "description": "渊迂本地新闻，深入民生，提供最专业的新闻",
           "episodes": [
             {
               "id": "ep-1",
               "title": "20250413",
               "date": "2025-04-13",
-              "thumbnail": "https://example.com/ep1-thumb.jpg",
+              "thumbnail": "https://img.picgo.net/2025/05/25/IMG_44596b8576728a8f9980.jpeg",
               "videoUrl": "https://dlink.host/1drv/aHR0cHM6Ly8xZHJ2Lm1zL3YvYy83ZjkzYmM0ZDA3N2U1NjA3L0VVU0xsb3U0SG5wT3AwNE1tUHQ0S1VnQkd4NENNY2xqOWJKUTdxNlFKVWJlOVE.MOV",
               "duration": "5:22",
               "views": "120万"
