@@ -72,6 +72,74 @@
               "views": "75万"
             }
           ]
+        },
+{
+          "id": "sports-vog",
+          "title": "VOG X-TREME 21",
+          "image": "https://img.picgo.net/2025/03/31/IMG_4076b19089c77cb9b5b2.jpeg",
+          "description": "无极限羽球赛",
+          "episodes": [
+            {
+              "id": "vog-1",
+              "title": "20250110",
+              "date": "2025-01-10",
+              "thumbnail": "https://img.picgo.net/2025/03/31/IMG_4074e831e9ab4d23c6d3.jpeg",
+              "videoUrl": "https://dlink.host/1drv/aHR0cHM6Ly8xZHJ2Lm1zL3YvYy83ZjkzYmM0ZDA3N2U1NjA3L0VaYU52cXVub2l0Sm9TSHZCdHNaNU1RQnlydW5OdlgteEt6SndwZDNQVjZiTlE.mp4",
+              "duration": "32:45",
+              "views": "75万"
+            },
+{
+              "id": "vog-2",
+              "title": "20250112",
+              "date": "2025-01-12",
+              "thumbnail": "https://img.picgo.net/2025/03/31/IMG_4074e831e9ab4d23c6d3.jpeg",
+              "videoUrl": "https://dlink.host/1drv/aHR0cHM6Ly8xZHJ2Lm1zL3YvYy83ZjkzYmM0ZDA3N2U1NjA3L0VXVmRCTVNsVmw1S3NlaTd5ZU5YR0FRQmxXV2cyQW1ULXdYT1RkOVJ4QVlveUE.MOV",
+              "duration": "16:55",
+              "views": "75万"
+            },
+{
+              "id": "vog-3",
+              "title": "20250125",
+              "date": "2025-01-25",
+              "thumbnail": "https://img.picgo.net/2025/03/31/IMG_4074e831e9ab4d23c6d3.jpeg",
+              "videoUrl": "https://dlink.host/1drv/aHR0cHM6Ly8xZHJ2Lm1zL3YvYy83ZjkzYmM0ZDA3N2U1NjA3L0VZQ1JlTE1rVnVCQ3NhaXgza3k1VjdBQlpiZlE5QmhkTHBYWjlDdUk5N2lYS3c.MOV",
+              "duration": "18:44",
+              "views": "75万"
+            },
+{
+              "id": "vog-4",
+              "title": "20250322",
+              "date": "2025-03-22",
+              "thumbnail": "https://img.picgo.net/2025/03/31/IMG_4074e831e9ab4d23c6d3.jpeg",
+              "videoUrl": "https://dlink.host/1drv/aHR0cHM6Ly8xZHJ2Lm1zL3YvYy83ZjkzYmM0ZDA3N2U1NjA3L0VaM09TY1paOWVWTG1icGhOUFY1SWZVQnVPN0ZRcWo4a1NuMXFGcm1qMnl1RUE.MOV",
+              "duration": "16:20",
+              "views": "75万"
+            }
+          ]
+        }
+      ]
+    },
+{
+      "id": "life",
+      "name": "生活方式",
+      "image": "https://img.picgo.net/2025/07/07/IMG_4883499fba68b224f51e.jpeg",
+      "shows": [
+        {
+          "id": "life-1",
+          "title": "综合节目 [RTD]The Daily Whistle",
+          "image": "https://img.picgo.net/2025/04/16/6bc8113d8e9bdb176c518ddfd62e09cfd6be06c921875e6f.jpeg",
+          "description": "华兴出品",
+          "episodes": [
+            {
+              "id": "rtdtdw-1",
+              "title": "第二卷综",
+              "date": "1900-01-01",
+              "thumbnail": "https://img.picgo.net/2025/04/16/6bc8113d8e9bdb176c518ddfd62e09cfd6be06c921875e6f.jpeg",
+              "videoUrl": "https://dlink.host/1drv/aHR0cHM6Ly8xZHJ2Lm1zL3YvYy82OGY4YTM2NjY5MzhiNDMwL0VicWxfVmg0VHA5SXZYVkd1NW1KMzhBQnhiNjBEY0JTQzVwcjIxSm5PNGRMVHc_ZT1SV0czTzQ.mp4",
+              "duration": "5:22",
+              "views": "120万"
+            }
+          ]
         }
       ]
     }
