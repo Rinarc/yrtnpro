@@ -3,7 +3,7 @@
     {
       "id": "news",
       "name": "新闻叩击",
-      "image": "https://img.picgo.net/2025/07/06/IMG_4871f4d74704da4a12f3.jpeg",
+      "image": "https://img.picgo.net/2025/07/07/IMG_4878dfe7cb9d06ca96fa.jpeg",
       "shows": [
         {
           "id": "news-1",
@@ -27,7 +27,7 @@
     {
       "id": "sport",
       "name": "体育视界",
-      "image": "https://example.com/news.jpg",
+      "image": "https://img.picgo.net/2025/07/07/IMG_4881e7ad5e0f21d9ee7f.jpeg",
       "shows": [
         {
           "id": "sports-1",
