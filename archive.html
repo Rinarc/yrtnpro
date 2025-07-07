@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>历史新闻（虚拟） | YRTN+</title>
+    <title>历史新闻 | 渊迂电视新闻网+</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -43,7 +43,8 @@
             color: var(--dark);
             line-height: 1.6;
             overflow-x: hidden;
-            padding-bottom: 90px;
+            min-height: 100vh;
+            position: relative;
         }
         
         /* 动态波浪背景 */
@@ -64,7 +65,30 @@
             100% { background-position-x: 1440px; }
         }
         
-        /* 顶部导航栏 - 灵动设计 */
+        /* 动态粒子背景 */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255, 62, 77, 0.2);
+            border-radius: 50%;
+            animation: float linear infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+        
+        /* 顶部导航栏 */
         .app-header {
             position: sticky;
             top: 0;
@@ -77,12 +101,6 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: var(--shadow-sm);
-            transform: translateY(0);
-            transition: var(--transition-fast);
-        }
-        
-        .app-header.hidden {
-            transform: translateY(-100%);
         }
         
         .branding {
@@ -162,7 +180,7 @@
             100% { transform: scale(1); }
         }
         
-        /* 底部导航栏 - 灵动浮动设计 */
+        /* 底部导航栏 */
         .bottom-nav {
             position: fixed;
             bottom: 20px;
@@ -179,12 +197,6 @@
             width: calc(100% - 40px);
             max-width: 500px;
             justify-content: space-around;
-            transition: var(--transition);
-        }
-        
-        .bottom-nav.hidden {
-            transform: translateX(-50%) translateY(100px);
-            opacity: 0;
         }
         
         .nav-item {
@@ -235,126 +247,143 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 20px;
             position: relative;
         }
         
-        /* 动态标题 */
-        .section-title {
+        /* 页面标题 */
+        .page-header {
+            text-align: center;
+            margin: 30px 0;
             position: relative;
-            margin: 30px 0 25px;
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--dark);
+        }
+        
+        .page-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            position: relative;
             display: inline-block;
-            padding-left: 15px;
         }
         
-        .section-title::before {
+        .page-title::after {
             content: '';
             position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 4px;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
             background: var(--gradient-primary);
-            border-radius: 4px;
-            animation: titleUnderline 3s infinite alternate;
+            border-radius: 2px;
+            animation: underline 3s infinite alternate;
         }
         
-        @keyframes titleUnderline {
-            0% { height: 100%; background: var(--gradient-primary); }
-            50% { height: 70%; background: var(--gradient-secondary); }
-            100% { height: 100%; background: var(--gradient-primary); }
+        @keyframes underline {
+            0% { width: 100px; background: var(--gradient-primary); }
+            50% { width: 150px; background: var(--gradient-secondary); }
+            100% { width: 100px; background: var(--gradient-primary); }
+        }
+        
+        .page-subtitle {
+            color: var(--dark);
+            opacity: 0.7;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
         }
         
         /* 控制面板 */
         .control-panel {
             background: white;
             border-radius: var(--radius-md);
-            padding: 20px;
-            margin: 30px 0;
             box-shadow: var(--shadow-sm);
-            transition: var(--transition);
-        }
-        
-        .control-panel:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
+            padding: 25px;
+            margin-bottom: 30px;
+            position: sticky;
+            top: 80px;
+            z-index: 900;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.8);
         }
         
         .search-box {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 15px;
+            margin-bottom: 25px;
         }
         
-        .search-box input {
+        #archive-search {
             flex: 1;
-            padding: 12px 20px;
-            border: 2px solid rgba(0,0,0,0.1);
-            border-radius: 50px;
+            padding: 14px 20px;
+            border: 2px solid #e1e5eb;
+            border-radius: var(--radius-sm);
             font-size: 1rem;
             transition: var(--transition-fast);
             outline: none;
         }
         
-        .search-box input:focus {
+        #archive-search:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(255, 62, 77, 0.2);
         }
         
-        .search-box button {
+        #archive-search-btn {
             background: var(--gradient-primary);
             color: white;
             border: none;
             padding: 0 25px;
-            border-radius: 50px;
+            border-radius: var(--radius-sm);
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
-            box-shadow: 0 4px 12px rgba(255, 62, 77, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 62, 77, 0.3);
         }
         
-        .search-box button:hover {
+        #archive-search-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(255, 62, 77, 0.4);
+            box-shadow: 0 8px 20px rgba(255, 62, 77, 0.4);
         }
         
         .tag-filters {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
         }
         
-        .tag-btn {
-            background: rgba(0,0,0,0.05);
-            color: var(--dark);
-            border: none;
-            padding: 8px 16px;
+        .filter-tag {
+            background: rgba(74, 144, 226, 0.1);
+            color: var(--secondary);
+            padding: 8px 18px;
             border-radius: 50px;
             font-size: 0.9rem;
             cursor: pointer;
             transition: var(--transition-fast);
+            border: 1px solid transparent;
         }
         
-        .tag-btn:hover {
-            background: rgba(0,0,0,0.1);
-        }
-        
-        .tag-btn.active {
-            background: var(--gradient-primary);
+        .filter-tag:hover, .filter-tag.active {
+            background: var(--secondary);
             color: white;
-            box-shadow: 0 4px 12px rgba(255, 62, 77, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
         }
         
-        /* 新闻卡片 - 3D浮动效果 */
+        .filter-tag.active {
+            background: var(--gradient-secondary);
+            border: 1px solid white;
+            box-shadow: 0 0 0 2px var(--secondary);
+        }
+        
+        /* 新闻卡片 */
         .archive-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 25px;
-            margin: 30px 0;
-            perspective: 1000px;
+            margin-bottom: 40px;
         }
         
         .archive-card {
@@ -383,7 +412,7 @@
             box-shadow: var(--shadow-lg);
         }
         
-        .archive-image {
+        .card-image {
             width: 100%;
             height: 200px;
             background-size: cover;
@@ -393,11 +422,11 @@
             transform-origin: top center;
         }
         
-        .archive-card:hover .archive-image {
+        .archive-card:hover .card-image {
             transform: scale(1.1);
         }
         
-        .archive-badge {
+        .card-badge {
             position: absolute;
             top: 15px;
             left: 15px;
@@ -411,31 +440,27 @@
             box-shadow: var(--shadow-sm);
         }
         
-        .archive-content {
+        .card-content {
             padding: 20px;
             position: relative;
             z-index: 2;
             background: white;
         }
         
-        .archive-title {
+        .card-title {
             font-size: 1.3rem;
             font-weight: 700;
             margin-bottom: 15px;
             color: var(--dark);
             line-height: 1.4;
             transition: var(--transition-fast);
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
         }
         
-        .archive-card:hover .archive-title {
+        .archive-card:hover .card-title {
             color: var(--primary);
         }
         
-        .archive-summary {
+        .card-summary {
             color: var(--dark);
             opacity: 0.8;
             font-size: 0.95rem;
@@ -446,7 +471,7 @@
             overflow: hidden;
         }
         
-        .archive-meta {
+        .card-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -457,60 +482,34 @@
             border-top: 1px dashed rgba(0,0,0,0.1);
         }
         
-        .archive-date {
+        .card-date {
             display: flex;
             align-items: center;
             gap: 6px;
         }
         
-        /* 加载更多按钮 */
+        /* 加载更多 */
         .load-more {
             text-align: center;
-            margin: 40px 0;
+            margin: 30px 0;
         }
         
-        .load-more button {
-            background: var(--gradient-primary);
-            color: white;
+        #load-more {
+            background: var(--gradient-accent);
+            color: var(--dark);
             border: none;
-            padding: 12px 30px;
+            padding: 14px 40px;
             border-radius: 50px;
             font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
             transition: var(--transition);
-            box-shadow: 0 4px 12px rgba(255, 62, 77, 0.3);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(255, 209, 102, 0.3);
         }
         
-        .load-more button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(255, 62, 77, 0.4);
-        }
-        
-        .load-more button::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom right,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.1) 45%,
-                rgba(255, 255, 255, 0.5) 50%,
-                rgba(255, 255, 255, 0.1) 55%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            transform: rotate(30deg);
-            animation: shine 3s infinite;
-        }
-        
-        @keyframes shine {
-            0% { transform: translateX(-100%) rotate(30deg); }
-            100% { transform: translateX(100%) rotate(30deg); }
+        #load-more:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 209, 102, 0.4);
         }
         
         .page-info {
@@ -520,93 +519,26 @@
             font-size: 0.9rem;
         }
         
-        /* 加载动画 - 高级效果 */
-        .loading-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 200px;
-            grid-column: 1 / -1;
-        }
-        
-        .loading {
-            display: inline-block;
-            position: relative;
-            width: 80px;
-            height: 80px;
-        }
-        
-        .loading div {
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            background: var(--primary);
-            border-radius: 50%;
-            animation: loading 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-            transform-origin: 40px 40px;
-        }
-        
-        .loading div:nth-child(1) {
-            animation-delay: -0.036s;
-            background: var(--primary);
-        }
-        
-        .loading div:nth-child(2) {
-            animation-delay: -0.072s;
-            background: var(--secondary);
-        }
-        
-        .loading div:nth-child(3) {
-            animation-delay: -0.108s;
-            background: var(--accent);
-        }
-        
-        .loading div:nth-child(4) {
-            animation-delay: -0.144s;
-            background: var(--success);
-        }
-        
-        @keyframes loading {
-            0% { transform: rotate(0deg) scale(0.8); opacity: 1; }
-            100% { transform: rotate(360deg) scale(1.2); opacity: 0.5; }
-        }
-        
         /* 响应式设计 */
         @media (max-width: 768px) {
             .archive-grid {
                 grid-template-columns: 1fr;
             }
             
-            .app-header {
-                padding: 12px 15px;
-            }
-            
-            .logo {
-                width: 36px;
-                height: 36px;
-                font-size: 18px;
-            }
-            
-            .brand-name {
-                font-size: 1.1rem;
-            }
-            
-            .nav-actions {
-                gap: 15px;
+            .control-panel {
+                padding: 15px;
             }
             
             .search-box {
                 flex-direction: column;
             }
             
-            .search-box button {
-                padding: 12px;
+            #archive-search-btn {
+                padding: 14px;
             }
             
-            .bottom-nav {
-                bottom: 10px;
-                width: calc(100% - 20px);
-                padding: 10px;
+            .page-title {
+                font-size: 1.8rem;
             }
         }
     </style>
@@ -614,6 +546,7 @@
 <body>
     <!-- 动态背景元素 -->
     <div class="wave-bg"></div>
+    <div class="particles" id="particles"></div>
     
     <!-- 顶部导航栏 -->
     <header class="app-header">
@@ -621,52 +554,41 @@
             <div class="logo">Y</div>
             <div class="brand-name">渊迂电视新闻网+</div>
         </div>
-        <div class="nav-actions">
-            <a href="#" class="nav-icon">
-                <i class="fas fa-search"></i>
-            </a>
-            <a href="#" class="nav-icon">
-                <i class="fas fa-bell"></i>
-                <span class="notification-badge">3</span>
-            </a>
-            <a href="#" class="nav-icon">
-                <i class="fas fa-user"></i>
+        
             </a>
         </div>
     </header>
 
     <!-- 内容区域 -->
     <div class="container">
-        <h1 class="section-title">历史新闻存档</h1>
+        <div class="page-header">
+            <h1 class="page-title">历史新闻档案</h1>
+            <p class="page-subtitle">ARCHIVE</p>
+        </div>
         
         <!-- 控制面板 -->
         <div class="control-panel">
             <div class="search-box">
-                <input type="text" id="archive-search" placeholder="输入关键词搜索历史新闻...">
+                <input type="text" id="archive-search" placeholder="搜索历史新闻...">
                 <button id="archive-search-btn">
                     <i class="fas fa-search"></i> 搜索
                 </button>
             </div>
             <div class="tag-filters" id="tag-container">
-                <!-- 标签将通过JavaScript动态生成 -->
+                <div class="filter-tag active" data-category="all">全部</div>
+                <!-- 分类标签将通过JS动态生成 -->
             </div>
         </div>
 
-        <!-- 新闻存档列表 -->
+        <!-- 新闻列表 -->
         <div class="archive-grid" id="archive-container">
-            <div class="loading-container">
-                <div class="loading">
-                    <div></div><div></div><div></div><div></div>
-                </div>
-            </div>
+            <!-- 新闻卡片将通过JS动态生成 -->
         </div>
 
         <!-- 加载更多 -->
         <div class="load-more">
-            <button id="load-more">
-                <i class="fas fa-arrow-down"></i> 加载更多
-            </button>
-            <div class="page-info" id="page-info">第1页，共5页</div>
+            <button id="load-more">加载更多新闻</button>
+            <div class="page-info" id="page-info">显示 8 条中的 8 条新闻</div>
         </div>
     </div>
     
@@ -688,34 +610,38 @@
             <i class="fas fa-history"></i>
             <span>历史</span>
         </a>
-    
+      
     </nav>
 
     <script>
-        // 滚动时隐藏/显示导航栏
-        let lastScroll = 0;
-        function handleScroll() {
-            const currentScroll = window.pageYOffset;
-            const header = document.querySelector('.app-header');
-            const bottomNav = document.querySelector('.bottom-nav');
+        // 创建动态粒子背景
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = window.innerWidth < 768 ? 20 : 50;
             
-            if (currentScroll <= 0) {
-                header.classList.remove('hidden');
-                bottomNav.classList.remove('hidden');
-                return;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // 随机大小
+                const size = Math.random() * 10 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // 随机位置
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.bottom = `-${size}px`;
+                
+                // 随机动画
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 10;
+                particle.style.animation = `float ${duration}s linear ${delay}s infinite`;
+                
+                // 随机透明度
+                particle.style.opacity = Math.random() * 0.4 + 0.1;
+                
+                particlesContainer.appendChild(particle);
             }
-            
-            if (currentScroll > lastScroll && currentScroll > 100) {
-                // 向下滚动
-                header.classList.add('hidden');
-                bottomNav.classList.add('hidden');
-            } else if (currentScroll < lastScroll) {
-                // 向上滚动
-                header.classList.remove('hidden');
-                bottomNav.classList.remove('hidden');
-            }
-            
-            lastScroll = currentScroll;
         }
         
         // 日期格式化函数
@@ -731,121 +657,41 @@
             return date.toLocaleDateString('zh-CN', options);
         }
         
-        // 模拟新闻数据
-        async function loadArchiveData(page = 1, limit = 8) {
+        // 加载新闻数据
+        async function loadNewsData() {
             try {
                 const response = await fetch('news.json');
                 if (!response.ok) throw new Error('加载新闻数据失败');
                 
                 const data = await response.json();
-                const start = (page - 1) * limit;
-                const end = start + limit;
-                return {
-                    articles: data.articles.slice(start, end),
-                    total: data.articles.length,
-                    page,
-                    totalPages: Math.ceil(data.articles.length / limit)
-                };
+                return data.articles;
             } catch (error) {
                 console.error('加载新闻数据时出错:', error);
-                return { articles: [], total: 0, page: 1, totalPages: 1 };
+                return [];
             }
         }
         
-        // 获取所有分类标签
-        function getAllTags(articles) {
-            const tags = new Set();
-            articles.forEach(article => {
-                tags.add(article.category);
-            });
-            return Array.from(tags);
-        }
-        
-        // 渲染标签过滤器
-        function renderTagFilters(tags) {
-            const container = document.getElementById('tag-container');
-            container.innerHTML = '';
+        // 渲染新闻卡片
+        function renderNewsCards(articles, containerId) {
+            const container = document.getElementById(containerId);
             
-            // 添加"全部"标签
-            const allTag = document.createElement('button');
-            allTag.className = 'tag-btn active';
-            allTag.textContent = '全部';
-            allTag.addEventListener('click', () => {
-                document.querySelectorAll('.tag-btn').forEach(btn => btn.classList.remove('active'));
-                allTag.classList.add('active');
-                filterArticles();
-            });
-            container.appendChild(allTag);
+            // 按日期排序（最新优先）
+            articles.sort((a, b) => new Date(b.date) - new Date(a.date));
             
-            // 添加其他标签
-            tags.forEach(tag => {
-                const tagBtn = document.createElement('button');
-                tagBtn.className = 'tag-btn';
-                tagBtn.textContent = tag;
-                tagBtn.addEventListener('click', () => {
-                    document.querySelectorAll('.tag-btn').forEach(btn => btn.classList.remove('active'));
-                    tagBtn.classList.add('active');
-                    filterArticles(tag);
-                });
-                container.appendChild(tagBtn);
-            });
-        }
-        
-        // 过滤文章
-        function filterArticles(tag = null) {
-            const searchTerm = document.getElementById('archive-search').value.toLowerCase();
-            const articles = document.querySelectorAll('.archive-card');
-            
-            articles.forEach(article => {
-                const articleTag = article.dataset.tag;
-                const title = article.querySelector('.archive-title').textContent.toLowerCase();
-                const summary = article.querySelector('.archive-summary').textContent.toLowerCase();
-                
-                const matchesTag = !tag || articleTag === tag;
-                const matchesSearch = !searchTerm || 
-                    title.includes(searchTerm) || 
-                    summary.includes(searchTerm);
-                
-                if (matchesTag && matchesSearch) {
-                    article.style.display = 'block';
-                    article.style.animation = 'cardAppear 0.5s forwards';
-                } else {
-                    article.style.display = 'none';
-                }
-            });
-        }
-        
-        // 渲染存档文章
-        function renderArchiveArticles(articles, append = false) {
-            const container = document.getElementById('archive-container');
-            
-            if (!append) {
-                container.innerHTML = '';
-            }
-            
-            if (articles.length === 0) {
-                container.innerHTML = `
-                    <div class="error-message" style="grid-column: 1 / -1">
-                        <p>没有找到匹配的新闻文章</p>
-                    </div>
-                `;
-                return;
-            }
-            
+            // 创建新闻卡片
             articles.forEach((article, index) => {
-                const archiveCard = document.createElement('div');
-                archiveCard.className = 'archive-card';
-                archiveCard.dataset.tag = article.category;
-                archiveCard.style.animationDelay = `${index * 0.1}s`;
-                archiveCard.innerHTML = `
-                    <div class="archive-image" style="background-image: url('${article.image}')">
-                        <span class="archive-badge">${article.category}</span>
+                const newsCard = document.createElement('div');
+                newsCard.className = 'archive-card';
+                newsCard.style.animationDelay = `${index * 0.1}s`;
+                newsCard.innerHTML = `
+                    <div class="card-image" style="background-image: url('${article.image}')">
+                        <span class="card-badge">${article.category}</span>
                     </div>
-                    <div class="archive-content">
-                        <h3 class="archive-title">${article.title}</h3>
-                        <p class="archive-summary">${article.summary}</p>
-                        <div class="archive-meta">
-                            <span class="archive-date">
+                    <div class="card-content">
+                        <h3 class="card-title">${article.title}</h3>
+                        <p class="card-summary">${article.summary}</p>
+                        <div class="card-meta">
+                            <span class="card-date">
                                 <i class="far fa-clock"></i>
                                 ${formatDate(article.date)}
                             </span>
@@ -855,55 +701,113 @@
                 `;
                 
                 // 添加点击事件跳转到详情页
-                archiveCard.addEventListener('click', () => {
+                newsCard.addEventListener('click', () => {
                     window.location.href = `news-detail.html?id=${article.id}`;
                 });
                 
-                container.appendChild(archiveCard);
+                container.appendChild(newsCard);
+            });
+        }
+        
+        // 生成分类标签
+        function generateCategoryTags(articles) {
+            const tagContainer = document.getElementById('tag-container');
+            
+            // 获取所有分类
+            const categories = [...new Set(articles.map(article => article.category))];
+            
+            // 生成标签
+            categories.forEach(category => {
+                const tag = document.createElement('div');
+                tag.className = 'filter-tag';
+                tag.dataset.category = category;
+                tag.textContent = category;
+                tagContainer.appendChild(tag);
+            });
+            
+            // 添加标签点击事件
+            document.querySelectorAll('.filter-tag').forEach(tag => {
+                tag.addEventListener('click', function() {
+                    // 更新活动标签
+                    document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 过滤新闻
+                    const category = this.dataset.category;
+                    const filteredArticles = category === 'all' 
+                        ? articles 
+                        : articles.filter(article => article.category === category);
+                    
+                    // 重新渲染新闻
+                    document.getElementById('archive-container').innerHTML = '';
+                    renderNewsCards(filteredArticles, 'archive-container');
+                    
+                    // 更新分页信息
+                    document.getElementById('page-info').textContent = 
+                        `显示 ${filteredArticles.length} 条中的 ${filteredArticles.length} 条新闻`;
+                });
             });
         }
         
         // 初始化页面
         document.addEventListener('DOMContentLoaded', async () => {
-            // 添加滚动事件监听
-            window.addEventListener('scroll', handleScroll);
+            // 创建动态背景
+            createParticles();
             
-            // 加载第一页数据
-            let currentPage = 1;
-            const { articles, total, totalPages } = await loadArchiveData(currentPage);
+            // 加载新闻数据
+            const articles = await loadNewsData();
             
-            // 渲染标签过滤器
-            const tags = getAllTags(articles);
-            renderTagFilters(tags);
-            
-            // 渲染文章
-            renderArchiveArticles(articles);
-            
-            // 更新分页信息
-            document.getElementById('page-info').textContent = `第${currentPage}页，共${totalPages}页`;
+            if (articles.length > 0) {
+                // 渲染新闻卡片
+                renderNewsCards(articles, 'archive-container');
+                
+                // 生成分类标签
+                generateCategoryTags(articles);
+                
+                // 初始化分页信息
+                document.getElementById('page-info').textContent = 
+                    `显示 ${articles.length} 条中的 ${articles.length} 条新闻`;
+            } else {
+                // 如果没有加载到文章，显示错误信息
+                const container = document.getElementById('archive-container');
+                container.innerHTML = `
+                    <div class="error-message">
+                        <p>未找到历史新闻，请稍后再试。</p>
+                    </div>
+                `;
+            }
             
             // 搜索功能
-            document.getElementById('archive-search-btn').addEventListener('click', filterArticles);
-            document.getElementById('archive-search').addEventListener('keyup', (e) => {
-                if (e.key === 'Enter') filterArticles();
+            document.getElementById('archive-search-btn').addEventListener('click', function() {
+                const searchTerm = document.getElementById('archive-search').value.toLowerCase();
+                if (!searchTerm) return;
+                
+                const filteredArticles = articles.filter(article => 
+                    article.title.toLowerCase().includes(searchTerm) || 
+                    article.summary.toLowerCase().includes(searchTerm)
+                );
+                
+                // 重新渲染新闻
+                document.getElementById('archive-container').innerHTML = '';
+                renderNewsCards(filteredArticles, 'archive-container');
+                
+                // 更新分页信息
+                document.getElementById('page-info').textContent = 
+                    `找到 ${filteredArticles.length} 条相关新闻`;
             });
             
             // 加载更多功能
-            document.getElementById('load-more').addEventListener('click', async () => {
-                if (currentPage >= totalPages) return;
+            document.getElementById('load-more').addEventListener('click', function() {
+                // 在实际应用中，这里会加载更多数据
+                // 本示例中我们只是显示一个通知
+                this.textContent = "正在加载更多新闻...";
+                this.disabled = true;
                 
-                currentPage++;
-                const { articles: newArticles, totalPages: newTotalPages } = await loadArchiveData(currentPage);
-                renderArchiveArticles(newArticles, true);
-                
-                // 更新分页信息
-                document.getElementById('page-info').textContent = `第${currentPage}页，共${newTotalPages}页`;
-                
-                // 如果已经是最后一页，禁用按钮
-                if (currentPage >= newTotalPages) {
-                    document.getElementById('load-more').disabled = true;
-                    document.getElementById('load-more').innerHTML = '<i class="fas fa-check"></i> 已加载全部';
-                }
+                setTimeout(() => {
+                    this.textContent = "已加载所有新闻";
+                    document.getElementById('page-info').textContent = 
+                        `已显示所有 ${articles.length} 条新闻`;
+                }, 1500);
             });
         });
     </script>
