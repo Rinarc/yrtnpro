@@ -629,7 +629,175 @@
             color: var(--secondary);
         }
         
-        /* 响应式设计 */
+        /* 新增评论区域样式 */
+        .comments-section {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .comments-section h2 {
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .comments-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+        
+        .comment-form {
+            background: rgba(0,0,0,0.02);
+            padding: 25px;
+            border-radius: var(--radius-md);
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: var(--radius-sm);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition-fast);
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 62, 77, 0.2);
+        }
+        
+        .submit-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(255, 62, 77, 0.3);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(255, 62, 77, 0.4);
+        }
+        
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .comment-item {
+            background: white;
+            padding: 20px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        
+        .comment-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--gradient-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .comment-nickname {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .comment-date {
+            color: rgba(0,0,0,0.5);
+            font-size: 0.85rem;
+        }
+        
+        .comment-content {
+            line-height: 1.7;
+            color: var(--dark);
+            padding-left: 46px;
+        }
+        
+        .no-comments {
+            text-align: center;
+            padding: 30px;
+            color: rgba(0,0,0,0.5);
+            font-style: italic;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .comment-form {
+                padding: 20px;
+            }
+            
+            .comment-content {
+                padding-left: 0;
+            }
+            
+            .user-avatar {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+            }
+        }
+
+/* 响应式设计 */
         @media (max-width: 768px) {
             .news-detail {
                 padding: 0 15px;
@@ -739,20 +907,31 @@
                     
                     <div id="news-content" class="content"></div>
                     
-                    <div class="share-buttons">
-                        <div class="share-btn share-weibo">
-                            <i class="fab fa-weibo"></i>
+                    <!-- 评论区域 -->
+                    <section class="comments-section">
+                        <h2>用户评论</h2>
+                        
+                        <div class="comment-form">
+                            <div class="form-group">
+                                <label for="comment-nickname">昵称</label>
+                                <input type="text" id="comment-nickname" placeholder="您的昵称" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="comment-content">评论内容</label>
+        <textarea id="comment-content" rows="4" placeholder="发表您的评论..." required></textarea>
+                            </div>
+                            <button id="submit-comment" class="submit-btn">提交评论</button>
                         </div>
-                        <div class="share-btn share-wechat">
-                            <i class="fab fa-weixin"></i>
+                        
+                        <div id="comments-container" class="comments-list">
+                            <div class="loading-comments">
+                                <div class="loading" style="width: 50px; height: 50px; margin: 0 auto;">
+                                    <div></div><div></div><div></div><div></div>
+                                </div>
+                                <p style="text-align: center; margin-top: 15px;">正在加载评论...</p>
+                            </div>
                         </div>
-                        <div class="share-btn share-twitter">
-                            <i class="fab fa-twitter"></i>
-                        </div>
-                        <div class="share-btn share-facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </div>
-                    </div>
+                    </section>
                 </article>
                 
                 <div id="error-message" class="error-message">
@@ -765,7 +944,7 @@
     
     <!-- 底部导航栏 -->
     <nav class="bottom-nav">
-        <a href="index.html" class="nav-item">
+        <a href="index_app.html" class="nav-item">
             <i class="fas fa-home"></i>
             <span>首页</span>
         </a>
@@ -777,11 +956,10 @@
             <i class="fas fa-bolt"></i>
             <span>叩击</span>
         </a>
-        <a href="archive.html" class="nav-item">
+        <a href="archive_app.html" class="nav-item">
             <i class="fas fa-history"></i>
             <span>历史</span>
         </a>
-     
     </nav>
 
     <!-- 图片模态框 -->
@@ -791,7 +969,21 @@
         <div id="caption"></div>
     </div>
 
+    <!-- LeanCloud SDK -->
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.13.2/dist/av-min.js"></script>
+    
     <script>
+        // 初始化LeanCloud - 替换为你的应用ID和Key
+        const APP_ID = 'ftZjxqlRzkkUIOFgaxoJHsql-MdYXbMMI';
+        const APP_KEY = 'F3YKH7SxITdq5r2TmKRTmDGX';
+        
+        // 初始化LeanCloud
+        AV.init({
+            appId: APP_ID,
+            appKey: APP_KEY,
+            serverURLs: 'https://ftzjxqlr.api.lncldglobal.com' // 如果你使用自定义域名，请替换
+        });
+        
         // 获取URL参数
         function getUrlParam(name) {
             const urlParams = new URLSearchParams(window.location.search);
@@ -921,10 +1113,109 @@
                 // 设置图片点击事件
                 setupModalEvents();
                 
+                // 加载评论
+                loadComments(articleId);
+                
             } catch (error) {
                 console.error("加载新闻失败:", error);
                 document.querySelector('.loading-container').style.display = 'none';
                 document.getElementById('error-message').style.display = 'block';
+            }
+        }
+
+        // 加载评论
+        async function loadComments(articleId) {
+            try {
+                const Comment = AV.Object.extend('Comment');
+                const query = new AV.Query(Comment);
+                query.equalTo('articleId', articleId.toString());
+                query.descending('createdAt');
+                
+                const comments = await query.find();
+                renderComments(comments);
+            } catch (error) {
+                console.error('加载评论失败:', error);
+                document.getElementById('comments-container').innerHTML = `
+                    <div class="no-comments">
+                        <p>评论加载失败，请稍后再试</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // 渲染评论
+        function renderComments(comments) {
+            const container = document.getElementById('comments-container');
+            
+            if (!comments || comments.length === 0) {
+                container.innerHTML = `
+                    <div class="no-comments">
+                        <p>暂无评论，成为第一个评论者吧！</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            comments.forEach(comment => {
+                const nickname = comment.get('nickname') || '匿名用户';
+                const content = comment.get('content');
+                const createdAt = new Date(comment.createdAt);
+                
+                const commentElement = document.createElement('div');
+                commentElement.className = 'comment-item';
+                commentElement.innerHTML = `
+                    <div class="comment-header">
+                        <div class="user-info">
+                            <div class="user-avatar">${nickname.charAt(0).toUpperCase()}</div>
+                            <div class="comment-nickname">${nickname}</div>
+                        </div>
+                        <div class="comment-date">${formatDate(createdAt)}</div>
+                    </div>
+                    <div class="comment-content">${content}</div>
+                `;
+                
+                container.appendChild(commentElement);
+            });
+        }
+        
+        // 提交评论
+        async function submitComment() {
+            const nickname = document.getElementById('comment-nickname').value.trim();
+            const content = document.getElementById('comment-content').value.trim();
+            const articleId = parseInt(getUrlParam('id'));
+            
+            if (!nickname || !content) {
+                alert('请填写昵称和评论内容');
+                return;
+            }
+            
+            if (!articleId) {
+                alert('无法获取新闻ID');
+                return;
+            }
+            
+            try {
+                const Comment = AV.Object.extend('Comment');
+                const comment = new Comment();
+                
+                comment.set('nickname', nickname);
+                comment.set('content', content);
+                comment.set('articleId', articleId.toString());
+                
+                await comment.save();
+                
+                // 清空表单
+                document.getElementById('comment-nickname').value = '';
+                document.getElementById('comment-content').value = '';
+                
+                // 重新加载评论
+                loadComments(articleId);
+                
+            } catch (error) {
+                console.error('提交评论失败:', error);
+                alert('评论提交失败，请稍后再试');
             }
         }
 
@@ -948,6 +1239,9 @@
                     item.classList.remove('active');
                 }
             });
+            
+            // 绑定提交评论事件
+            document.getElementById('submit-comment').addEventListener('click', submitComment);
         });
     </script>
 </body>
