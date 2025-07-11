@@ -973,16 +973,15 @@
     <script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.13.2/dist/av-min.js"></script>
     
     <script>
-        // 初始化LeanCloud - 替换为你的应用ID和Key
-        const APP_ID = 'ftZjxqlRzkkUIOFgaxoJHsql-MdYXbMMI';
-        const APP_KEY = 'F3YKH7SxITdq5r2TmKRTmDGX';
-        
-        // 初始化LeanCloud
-        AV.init({
-            appId: APP_ID,
-            appKey: APP_KEY,
-            serverURLs: '' // 如果你使用自定义域名，请替换
-        });
+     // 初始化LeanCloud国际版 - 替换为你的应用ID和Key
+    const APP_ID = 'ftZjxqlRzkkUIOFgaxoJHsql-MdYXbMMI';
+    const APP_KEY = 'F3YKH7SxITdq5r2TmKRTmDGX';
+    
+    // 初始化LeanCloud国际版（不需要serverURLs）
+    AV.init({
+        appId: APP_ID,
+        appKey: APP_KEY
+    });
         
         // 获取URL参数
         function getUrlParam(name) {
