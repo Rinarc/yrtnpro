@@ -740,10 +740,48 @@
                 width: calc(100% - 20px);
                 padding: 10px;
             }
+/* 页面切换动画 */
+.page-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    pointer-events: none;
+    opacity: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition: opacity 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.page-transition.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.page-transition-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
         }
     </style>
+<link rel="manifest" href="/manifest.json">
+<!-- iOS额外支持 -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icons/icon-192x192.png">
 </head>
 <body>
+<!-- 页面切换动画层 -->
+
     <!-- 动态背景元素 -->
     <div class="wave-bg"></div>
     <div class="particles" id="particles"></div>
@@ -758,10 +796,9 @@
             <a href="download.html" class="nav-icon">
                 <i class="fas fa-download"></i>
             </a>
-               <a href="update.html" class="nav-icon">
+         <a href="update.html" class="nav-icon">
                 <i class="fas fa-sync-alt"></i>
             </a>
-         
         </div>
     </header>
 
@@ -819,7 +856,9 @@
         </a>
     
     </nav>
-
+<div id="offline-alert" style="display:none; position:fixed; bottom:20px; background:#FF3E4D; color:white; padding:10px;">
+  当前处于离线模式
+</div>
     <script>
         // 创建动态粒子背景
         function createParticles() {
@@ -1055,6 +1094,12 @@
                 }
             });
         });
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js');
+  }
+window.addEventListener('offline', () => {
+    document.getElementById('offline-alert').style.display = 'block';
+  });
     </script>
 </body>
 </html>
