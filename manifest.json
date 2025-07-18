@@ -3,7 +3,7 @@
   "short_name": "YRTN+",
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#1A1A2E",
+  "background_color": "#fffff",
   "theme_color": "#FF3E4D",
   "icons": [
     {
