@@ -1,22 +1,31 @@
-// 缓存名称
-const CACHE = 'yrtn-cache-v1';
+// 定义当前版本号
+const CACHE_NAME = 'yrtn-v2'; // 每次更新时修改版本号
 
-// 缓存核心文件
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE)
-      .then(cache => cache.addAll([
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => cache.addAll([
         '/',
         '/index.html',
-        '/news.json',    // 您的主CSS文件
-        '/news-detail.html'       // 您的主JS文件
+        '/news.json',
+        '/news-detail.html'
+        // 其他需要缓存的文件
       ]))
+      .then(() => self.skipWaiting())
   );
 });
 
-// 拦截请求
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    fetch(e.request).catch(() => caches.match(e.request))
+// 激活时清理旧缓存
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cache) => {
+          if (cache !== CACHE_NAME) {
+            return caches.delete(cache);
+          }
+        })
+      );
+    }).then(() => self.clients.claim())
   );
 });
