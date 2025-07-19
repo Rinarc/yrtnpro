@@ -1145,22 +1145,9 @@ function checkForUpdates() {
       });
     });
     
-  // 首次加载立即检查
-checkForUpdates();
-
-// 每小时定时检查
-const hourlyCheck = setInterval(() => {
-  navigator.serviceWorker.getRegistration()
-    .then(reg => reg && reg.update());
-}, 60 * 60 * 1000);
-
-// 页面重新获得焦点时检查
-window.addEventListener('visibilitychange', () => {
-  if (!document.hidden) { // 页面变为可见时
-    navigator.serviceWorker.getRegistration()
-      .then(reg => reg && reg.update());
+// 定期检查更新（每24小时）
+    setInterval(() => reg.update(), 24 * 60 * 60 * 1000);
   }
-});
   
 
 
