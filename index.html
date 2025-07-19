@@ -1101,6 +1101,51 @@ if ('serviceWorker' in navigator) {
 window.addEventListener('offline', () => {
     document.getElementById('offline-alert').style.display = 'block';
   });
+        // 检查是否有新版本
+function checkForUpdates() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').then((reg) => {
+      reg.addEventListener('updatefound', () => {
+        const newWorker = reg.installing;
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed') {
+            if (navigator.serviceWorker.controller) {
+              // 新版本已下载，显示更新提示
+              showUpdateNotification();
+            }
+          }
+        });
+      });
+    });
+    
+    // 定期检查更新（每24小时）
+    setInterval(() => reg.update(), 24 * 60 * 60 * 1000);
+  }
+}
+
+// 显示更新提示
+function showUpdateNotification() {
+  if (confirm('发现新版本，是否立即更新？')) {
+    window.location.reload();
+  } else {
+    // 可以设置稍后提醒逻辑
+    localStorage.setItem('updateDismissed', new Date().toISOString());
+  }
+}
+
+// 页面加载时检查更新
+window.addEventListener('load', () => {
+  checkForUpdates();
+  
+  // 检查是否之前忽略了更新提示
+  const lastDismissed = localStorage.getItem('updateDismissed');
+  if (lastDismissed) {
+    const hoursPassed = (new Date() - new Date(lastDismissed)) / (1000 * 60 * 60);
+    if (hoursPassed > 24) {
+      checkForUpdates();
+    }
+  }
+});
     </script>
 </body>
 </html>
