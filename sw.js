@@ -1,5 +1,5 @@
 // 定义当前版本号
-const CACHE_NAME = 'yrtn-v2'; // 每次更新时修改版本号
+const CACHE_NAME = 'yrtn-20250719a'; // 每次更新时修改版本号
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
