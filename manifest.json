@@ -7,19 +7,19 @@
   "theme_color": "#fffff",
   "icons": [
     {
-      "src": "icon.jepg",
+      "src": "icon.jpeg",
       "sizes": "72x72",
-      "type": "image/jepg"
+      "type": "image/jpeg"
     },
     {
-      "src": "icon.jepg",
+      "src": "icon.jpeg",
       "sizes": "192x192",
-      "type": "image/jepg"
+      "type": "image/jpeg"
     },
     {
       "src": "icon.jepg",
       "sizes": "512x512",
-      "type": "image/jepg"
+      "type": "image/jpeg"
     }
   ]
 }
