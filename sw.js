@@ -8,8 +8,8 @@ self.addEventListener('install', e => {
       .then(cache => cache.addAll([
         '/',
         '/index.html',
-        '/styles.css',    // 您的主CSS文件
-        '/main.js'       // 您的主JS文件
+        '/news.json',    // 您的主CSS文件
+        '/news-detail.html'       // 您的主JS文件
       ]))
   );
 });
