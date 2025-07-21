@@ -797,7 +797,114 @@
             }
         }
 
-/* 响应式设计 */
+        /* 新增AI总结区域样式 */
+        .ai-summary {
+            background: var(--gradient-accent);
+            border-radius: var(--radius-md);
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+            border-left: 4px solid rgba(255, 166, 48, 0.8);
+            transition: var(--transition);
+        }
+        
+        .ai-summary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .ai-summary::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23FFA630' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .ai-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1A1A2E;
+            font-size: 1.2rem;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .ai-title {
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--dark);
+        }
+        
+        .ai-content {
+            position: relative;
+            z-index: 1;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--dark);
+            padding-left: 52px;
+        }
+        
+        .ai-content p {
+            margin-bottom: 15px;
+        }
+        
+        .ai-content ul {
+            padding-left: 20px;
+            margin: 15px 0;
+        }
+        
+        .ai-content li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .ai-content li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--dark);
+            font-weight: bold;
+        }
+        
+        .ai-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.3);
+            color: var(--dark);
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 2;
+        }
+        
+        /* 响应式调整 */
         @media (max-width: 768px) {
             .news-detail {
                 padding: 0 15px;
@@ -824,6 +931,29 @@
             
             .content {
                 font-size: 1rem;
+            }
+            
+            .ai-summary {
+                padding: 20px;
+            }
+            
+            .ai-header {
+                gap: 8px;
+            }
+            
+            .ai-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+            
+            .ai-title {
+                font-size: 1.2rem;
+            }
+            
+            .ai-content {
+                padding-left: 0;
+                padding-top: 10px;
             }
             
             .content h2 {
@@ -903,6 +1033,20 @@
                         </span>
                     </div>
                     
+                    <!-- AI总结区域 -->
+                    <section id="ai-summary" class="ai-summary">
+                        <span class="ai-tag">AI总结</span>
+                        <div class="ai-header">
+                            <div class="ai-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <h2 class="ai-title">核心要点</h2>
+                        </div>
+                        <div id="ai-content" class="ai-content">
+                            <p>正在生成AI总结...</p>
+                        </div>
+                    </section>
+                    
                     <img id="news-image" class="featured-image" alt="新闻配图">
                     
                     <div id="news-content" class="content"></div>
@@ -944,7 +1088,7 @@
     
     <!-- 底部导航栏 -->
     <nav class="bottom-nav">
-        <a href="index.html" class="nav-item">
+        <a href="index_app.html" class="nav-item">
             <i class="fas fa-home"></i>
             <span>首页</span>
         </a>
@@ -956,7 +1100,7 @@
             <i class="fas fa-bolt"></i>
             <span>叩击</span>
         </a>
-        <a href="archive.html" class="nav-item">
+        <a href="archive_app.html" class="nav-item">
             <i class="fas fa-history"></i>
             <span>历史</span>
         </a>
@@ -973,15 +1117,15 @@
     <script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.13.2/dist/av-min.js"></script>
     
     <script>
-     // 初始化LeanCloud国际版 - 替换为你的应用ID和Key
-    const APP_ID = 'ftZjxqlRzkkUIOFgaxoJHsql-MdYXbMMI';
-    const APP_KEY = 'F3YKH7SxITdq5r2TmKRTmDGX';
-    
-    // 初始化LeanCloud国际版（不需要serverURLs）
-    AV.init({
-        appId: APP_ID,
-        appKey: APP_KEY
-    });
+        // 初始化LeanCloud
+        const APP_ID = 'ftZjxqlRzkkUIOFgaxoJHsql-MdYXbMMI';
+        const APP_KEY = 'F3YKH7SxITdq5r2TmKRTmDGX';
+        
+        AV.init({
+            appId: APP_ID,
+            appKey: APP_KEY,
+            serverURLs: 'https://ftzjxqlr.api.lncldglobal.com'
+        });
         
         // 获取URL参数
         function getUrlParam(name) {
@@ -1104,6 +1248,17 @@
                 newsImage.alt = article.title;
                 
                 document.getElementById('news-content').innerHTML = article.content;
+                
+                // 显示AI总结（从JSON中获取）
+                if (article.ai_summary) {
+                    document.getElementById('ai-content').innerHTML = article.ai_summary;
+                } else {
+                    // 如果没有AI总结，显示提示信息
+                    document.getElementById('ai-content').innerHTML = `
+                        <p>暂无AI总结内容</p>
+                        <p>您可以阅读完整报道获取详细信息</p>
+                    `;
+                }
                 
                 // 隐藏加载状态，显示内容
                 document.querySelector('.loading-container').style.display = 'none';
