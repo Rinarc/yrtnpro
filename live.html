@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>渊迂电视台直播 | YRTN+</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        :root {
+            --primary: #FF3E4D; /* 活力红 */
+            --secondary: #4A90E2; /* 科技蓝 */
+            --accent: #FFD166; /* 活力黄 */
+            --dark: #1A1A2E; /* 深蓝黑 */
+            --light: #F8F9FA; /* 浅灰白 */
+            --success: #06D6A0; /* 清新绿 */
+            
+            --gradient-primary: linear-gradient(135deg, #FF3E4D 0%, #FF6B6B 100%);
+            --gradient-secondary: linear-gradient(135deg, #4A90E2 0%, #5F72BE 100%);
+            --gradient-accent: linear-gradient(135deg, #FFD166 0%, #FFA630 100%);
+            
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.12);
+            --shadow-lg: 0 16px 48px rgba(0,0,0,0.16);
+            
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            
+            --transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --transition-fast: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-bottom: 90px;
+        }
+        
+        /* 动态波浪背景 */
+        .wave-bg {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23FF3E4D' fill-opacity='0.1' d='M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E") repeat-x;
+            background-size: 1440px 100px;
+            z-index: -1;
+            animation: wave 12s linear infinite;
+        }
+        
+        @keyframes wave {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 1440px; }
+        }
+        
+        /* 顶部导航栏 - 灵动设计 */
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+            transform: translateY(0);
+            transition: var(--transition-fast);
+        }
+        
+        .app-header.hidden {
+            transform: translateY(-100%);
+        }
+        
+        .branding {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(255, 62, 77, 0.3);
+            transition: var(--transition);
+        }
+        
+        .logo:hover {
+            transform: rotate(15deg) scale(1.1);
+        }
+        
+        .brand-name {
+            font-weight: 700;
+            font-size: 1.3rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-actions {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-icon {
+            font-size: 1.3rem;
+            color: var(--dark);
+            position: relative;
+            transition: var(--transition-fast);
+            opacity: 0.8;
+        }
+        
+        .nav-icon:hover {
+            color: var(--primary);
+            opacity: 1;
+            transform: translateY(-3px);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background: var(--primary);
+            color: white;
+            font-size: 0.7rem;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* 底部导航栏 - 灵动浮动设计 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            padding: 12px;
+            border-radius: 50px;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            width: calc(100% - 40px);
+            max-width: 500px;
+            justify-content: space-around;
+            transition: var(--transition);
+        }
+        
+        .bottom-nav.hidden {
+            transform: translateX(-50%) translateY(100px);
+            opacity: 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--dark);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: var(--transition-fast);
+            opacity: 0.6;
+            position: relative;
+        }
+        
+        .nav-item.active {
+            opacity: 1;
+            color: var(--primary);
+            transform: translateY(-10px);
+        }
+        
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary);
+        }
+        
+        .nav-item i {
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+            transition: var(--transition-fast);
+        }
+        
+        .nav-item.active i {
+            transform: scale(1.2);
+        }
+        
+        .nav-item:hover {
+            opacity: 1;
+            color: var(--primary);
+        }
+        
+        /* 内容容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+        }
+        
+        /* 直播页面主区域 */
+        .live-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .live-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        
+        .live-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .live-header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .live-header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 10px;
+            line-height: 1.3;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .live-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+        
+        .live-header p {
+            color: rgba(26, 26, 46, 0.7);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* 播放器区域 */
+        .player-container {
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-md);
+            background: #000;
+        }
+        
+        #live-player {
+            width: 100%;
+            display: block;
+            aspect-ratio: 16/9;
+        }
+        
+        .player-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+            opacity: 0;
+        }
+        
+        .player-container:hover .player-overlay {
+            opacity: 1;
+        }
+        
+        .channel-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .channel-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+        
+        .channel-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        
+        .player-controls {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+        
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+        
+        /* 频道切换区域 */
+        .channels-section {
+            margin-top: 30px;
+        }
+        
+        .channels-section h2 {
+            font-size: 1.6rem;
+            color: var(--dark);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .channels-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+        
+        .channels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 25px;
+            justify-items: center;
+        }
+        
+        .channel-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            width: 100%;
+        }
+        
+        .channel-card:hover {
+            transform: translateY(-8px);
+        }
+        
+        .channel-card.active {
+            transform: translateY(-8px);
+        }
+        
+        .channel-card.active .channel-icon {
+            background: var(--gradient-accent);
+            box-shadow: 0 8px 20px rgba(255, 166, 48, 0.4);
+            transform: scale(1.05);
+        }
+        
+        .channel-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--dark);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .channel-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23FFA630' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+        
+        .channel-label {
+            font-weight: 600;
+            color: var(--dark);
+            text-align: center;
+            font-size: 0.95rem;
+        }
+        
+        .channel-live-tag {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--primary);
+            color: white;
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+            animation: pulse 2s infinite;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .live-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .live-card {
+                padding: 20px;
+            }
+            
+            .channel-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 1.3rem;
+            }
+            
+            .channels-grid {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+                gap: 20px;
+            }
+            
+            .player-overlay {
+                padding: 15px;
+                opacity: 1;
+            }
+            
+            .channel-name {
+                font-size: 1.2rem;
+            }
+            
+            .channel-logo {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 动态背景元素 -->
+    <div class="wave-bg"></div>
+    
+    <!-- 顶部导航栏 -->
+    <header class="app-header">
+        <div class="branding">
+            <div class="logo">Y</div>
+            <div class="brand-name">渊迂电视新闻网+</div>
+        </div>
+        <div class="nav-actions">
+            <a href="#" class="nav-icon">
+                <i class="fas fa-search"></i>
+            </a>
+            <a href="#" class="nav-icon">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </a>
+            <a href="#" class="nav-icon">
+                <i class="fas fa-user"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- 直播主区域 -->
+    <div class="container">
+        <div class="live-container">
+            <div class="live-card">
+                <div class="live-header">
+                    <h1>渊迂电视台直播</h1>
+                    <p>实时观看渊迂电视台节目，畅享高清直播体验</p>
+                </div>
+                
+                <!-- 播放器区域 -->
+                <div class="player-container">
+                    <video id="live-player" controls></video>
+                    <div class="player-overlay">
+                        <div class="channel-info">
+                            <div class="channel-logo">渊</div>
+                            <div class="channel-name">渊迂电视台综合频道</div>
+                        </div>
+                        <div class="player-controls">
+                            <div class="control-btn">
+                                <i class="fas fa-volume-up"></i>
+                            </div>
+                            <div class="control-btn">
+                                <i class="fas fa-expand"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 频道切换区域 -->
+                <div class="channels-section">
+                    <h2>选择频道</h2>
+                    <div class="channels-grid">
+                        <!-- 渊迂电视台频道 -->
+                        <div class="channel-card active" data-source="http://112.46.105.20:8009/hls/3/index.m3u8" data-name="渊迂综合频道" data-logo="渊">
+                            <div class="channel-icon">
+                                渊
+                                <span class="channel-live-tag">LIVE</span>
+                            </div>
+                            <div class="channel-label">渊迂综合</div>
+                        </div>
+                        
+                        <!-- 其他电视频道 -->
+                        <div class="channel-card" data-source="https://cgtn-live.video.cdn.myqcloud.com/cctv-french.m3u8" data-name="CCTV法语频道" data-logo="C">
+                            <div class="channel-icon">C</div>
+                            <div class="channel-label">CCTV法语</div>
+                        </div>
+                        
+                        <div class="channel-card" data-source="https://cctvcnchwh5ca.v.wscdns.com/live/cctv1_2/index.m3u8" data-name="CCTV-1综合" data-logo="C1">
+                            <div class="channel-icon">C1</div>
+                            <div class="channel-label">CCTV-1</div>
+                        </div>
+                        
+                        <div class="channel-card" data-source="https://cctvcnchwh5ca.v.wscdns.com/live/cctv2_2/index.m3u8" data-name="CCTV-2财经" data-logo="C2">
+                            <div class="channel-icon">C2</div>
+                            <div class="channel-label">CCTV-2</div>
+                        </div>
+                        
+                        <div class="channel-card" data-source="https://cctvcnchwh5ca.v.wscdns.com/live/cctv5_2/index.m3u8" data-name="CCTV-5体育" data-logo="C5">
+                            <div class="channel-icon">C5</div>
+                            <div class="channel-label">CCTV-5</div>
+                        </div>
+                        
+                        <div class="channel-card" data-source="https://cctvcnchwh5ca.v.wscdns.com/live/cctv13_2/index.m3u8" data-name="CCTV-13新闻" data-logo="C13">
+                            <div class="channel-icon">C13</div>
+                            <div class="channel-label">CCTV-13</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部导航栏 -->
+    <nav class="bottom-nav">
+        <a href="index_app.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </a>
+        <a href="knock.html" class="nav-item">
+            <i class="fas fa-play-circle"></i>
+            <span>视频</span>
+        </a>
+        <a href="live.html" class="nav-item active">
+            <i class="fas fa-tv"></i>
+            <span>直播</span>
+        </a>
+        <a href="short.html" class="nav-item">
+            <i class="fas fa-bolt"></i>
+            <span>叩击</span>
+        </a>
+        <a href="archive_app.html" class="nav-item">
+            <i class="fas fa-history"></i>
+            <span>历史</span>
+        </a>
+    </nav>
+
+    <script>
+        // 滚动时隐藏/显示导航栏
+        let lastScroll = 0;
+        function handleScroll() {
+            const currentScroll = window.pageYOffset;
+            const header = document.querySelector('.app-header');
+            const bottomNav = document.querySelector('.bottom-nav');
+            
+            if (currentScroll <= 0) {
+                header.classList.remove('hidden');
+                bottomNav.classList.remove('hidden');
+                return;
+            }
+            
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                // 向下滚动
+                header.classList.add('hidden');
+                bottomNav.classList.add('hidden');
+            } else if (currentScroll < lastScroll) {
+                // 向上滚动
+                header.classList.remove('hidden');
+                bottomNav.classList.remove('hidden');
+            }
+            
+            lastScroll = currentScroll;
+        }
+        
+        // 直播播放器功能
+        function initPlayer() {
+            const video = document.getElementById('live-player');
+            const channelCards = document.querySelectorAll('.channel-card');
+            const channelName = document.querySelector('.channel-name');
+            const channelLogo = document.querySelector('.channel-logo');
+            
+            // 默认播放源
+            const defaultSource = 'http://112.46.105.20:8009/hls/3/index.m3u8';
+            
+            // 播放视频函数
+            function playVideo(source) {
+                if (Hls.isSupported()) {
+                    const hls = new Hls();
+                    hls.loadSource(source);
+                    hls.attachMedia(video);
+                    hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                        video.play().catch(e => {
+                            console.log('自动播放失败:', e);
+                        });
+                    });
+                } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = source;
+                    video.addEventListener('loadedmetadata', function() {
+                        video.play().catch(e => {
+                            console.log('自动播放失败:', e);
+                        });
+                    });
+                }
+            }
+            
+            // 设置默认播放
+            playVideo(defaultSource);
+            
+            // 频道切换功能
+            channelCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const source = this.getAttribute('data-source');
+                    const name = this.getAttribute('data-name');
+                    const logo = this.getAttribute('data-logo');
+                    
+                    // 更新UI
+                    channelCards.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    channelName.textContent = name;
+                    channelLogo.textContent = logo;
+                    
+                    // 播放新频道
+                    playVideo(source);
+                });
+            });
+            
+            // 控制按钮功能
+            const volumeBtn = document.querySelector('.fa-volume-up').closest('.control-btn');
+            const expandBtn = document.querySelector('.fa-expand').closest('.control-btn');
+            
+            volumeBtn.addEventListener('click', function() {
+                if (video.muted) {
+                    video.muted = false;
+                    this.querySelector('i').classList.replace('fa-volume-mute', 'fa-volume-up');
+                } else {
+                    video.muted = true;
+                    this.querySelector('i').classList.replace('fa-volume-up', 'fa-volume-mute');
+                }
+            });
+            
+            expandBtn.addEventListener('click', function() {
+                if (!document.fullscreenElement) {
+                    video.requestFullscreen().catch(err => {
+                        console.log(`全屏请求错误: ${err.message}`);
+                    });
+                    this.querySelector('i').classList.replace('fa-expand', 'fa-compress');
+                } else {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                        this.querySelector('i').classList.replace('fa-compress', 'fa-expand');
+                    }
+                }
+            });
+            
+            // 全屏状态变化监听
+            document.addEventListener('fullscreenchange', function() {
+                if (!document.fullscreenElement) {
+                    expandBtn.querySelector('i').classList.replace('fa-compress', 'fa-expand');
+                }
+            });
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 添加滚动事件监听
+            window.addEventListener('scroll', handleScroll);
+            
+            // 初始化播放器
+            initPlayer();
+            
+            // 设置底部导航栏活动状态
+            const currentPage = window.location.pathname.split('/').pop();
+            const navItems = document.querySelectorAll('.bottom-nav .nav-item');
+            
+            navItems.forEach(item => {
+                const link = item.getAttribute('href');
+                if (link === currentPage) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
