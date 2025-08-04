@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>节目预约 | 渊迂电视新闻网</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* 复用原有样式 */
+        :root {
+            --primary: #FF3E4D;
+            --secondary: #4A90E2;
+            --accent: #FFD166;
+            --dark: #1A1A2E;
+            --light: #F8F9FA;
+            --success: #06D6A0;
+            
+            --gradient-primary: linear-gradient(135deg, #FF3E4D 0%, #FF6B6B 100%);
+            --gradient-secondary: linear-gradient(135deg, #4A90E2 0%, #5F72BE 100%);
+            --gradient-accent: linear-gradient(135deg, #FFD166 0%, #FFA630 100%);
+            
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.12);
+            --shadow-lg: 0 16px 48px rgba(0,0,0,0.16);
+            
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            
+            --transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --transition-fast: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-bottom: 90px;
+        }
+        
+        .wave-bg {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23FF3E4D' fill-opacity='0.1' d='M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E") repeat-x;
+            background-size: 1440px 100px;
+            z-index: -1;
+            animation: wave 12s linear infinite;
+        }
+        
+        @keyframes wave {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 1440px; }
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255, 62, 77, 0.2);
+            border-radius: 50%;
+            animation: float linear infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+        
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+            transform: translateY(0);
+            transition: var(--transition-fast);
+        }
+        
+        .app-header.hidden {
+            transform: translateY(-100%);
+        }
+        
+        .branding {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(255, 62, 77, 0.3);
+            transition: var(--transition);
+        }
+        
+        .logo:hover {
+            transform: rotate(15deg) scale(1.1);
+        }
+        
+        .brand-name {
+            font-weight: 700;
+            font-size: 1.3rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-actions {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-icon {
+            font-size: 1.3rem;
+            color: var(--dark);
+            position: relative;
+            transition: var(--transition-fast);
+            opacity: 0.8;
+        }
+        
+        .nav-icon:hover {
+            color: var(--primary);
+            opacity: 1;
+            transform: translateY(-3px);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background: var(--primary);
+            color: white;
+            font-size: 0.7rem;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            padding: 12px;
+            border-radius: 50px;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            width: calc(100% - 40px);
+            max-width: 500px;
+            justify-content: space-around;
+            transition: var(--transition);
+        }
+        
+        .bottom-nav.hidden {
+            transform: translateX(-50%) translateY(100px);
+            opacity: 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--dark);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: var(--transition-fast);
+            opacity: 0.6;
+            position: relative;
+        }
+        
+        .nav-item.active {
+            opacity: 1;
+            color: var(--primary);
+            transform: translateY(-10px);
+        }
+        
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary);
+        }
+        
+        .nav-item i {
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+            transition: var(--transition-fast);
+        }
+        
+        .nav-item.active i {
+            transform: scale(1.2);
+        }
+        
+        .nav-item:hover {
+            opacity: 1;
+            color: var(--primary);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+        }
+        
+        .section-title {
+            position: relative;
+            margin: 30px 0 25px;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--dark);
+            display: inline-block;
+            padding-left: 15px;
+        }
+        
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--gradient-primary);
+            border-radius: 4px;
+            animation: titleUnderline 3s infinite alternate;
+        }
+        
+        @keyframes titleUnderline {
+            0% { height: 100%; background: var(--gradient-primary); }
+            50% { height: 70%; background: var(--gradient-secondary); }
+            100% { height: 100%; background: var(--gradient-primary); }
+        }
+        
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            grid-column: 1 / -1;
+        }
+        
+        .loading {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        
+        .loading div {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: loading 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            transform-origin: 40px 40px;
+        }
+        
+        .loading div:nth-child(1) {
+            animation-delay: -0.036s;
+            background: var(--primary);
+        }
+        
+        .loading div:nth-child(2) {
+            animation-delay: -0.072s;
+            background: var(--secondary);
+        }
+        
+        .loading div:nth-child(3) {
+            animation-delay: -0.108s;
+            background: var(--accent);
+        }
+        
+        .loading div:nth-child(4) {
+            animation-delay: -0.144s;
+            background: var(--success);
+        }
+        
+        @keyframes loading {
+            0% { transform: rotate(0deg) scale(0.8); opacity: 1; }
+            100% { transform: rotate(360deg) scale(1.2); opacity: 0.5; }
+        }
+        
+        .error-message {
+            text-align: center;
+            padding: 40px;
+            color: var(--primary);
+            font-size: 1.1rem;
+            grid-column: 1 / -1;
+            background: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            animation: bounce 0.5s;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+        
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+            transition: var(--transition-fast);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
+        }
+        
+        /* 新增预约页面样式 */
+        .preview-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+        
+        .preview-poster {
+            width: 100%;
+            max-width: 800px;
+            height: 450px;
+            object-fit: cover;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            margin-bottom: 25px;
+        }
+        
+        .preview-poster:hover {
+            transform: scale(1.01);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .preview-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-align: center;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .preview-subtitle {
+            font-size: 1.1rem;
+            color: var(--dark);
+            opacity: 0.8;
+            margin-bottom: 20px;
+            text-align: center;
+            max-width: 800px;
+        }
+        
+        .preview-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .preview-meta-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .meta-label {
+            font-size: 0.9rem;
+            color: var(--dark);
+            opacity: 0.7;
+            margin-bottom: 5px;
+        }
+        
+        .meta-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .preview-status {
+            display: inline-block;
+            padding: 8px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-sm);
+            animation: pulse 2s infinite;
+        }
+        
+        .status-upcoming {
+            background: var(--gradient-accent);
+            color: var(--dark);
+        }
+        
+        .status-released {
+            background: var(--gradient-secondary);
+            color: white;
+        }
+        
+        .preview-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--dark);
+            max-width: 800px;
+            margin-bottom: 30px;
+            text-align: center;
+            opacity: 0.9;
+        }
+        
+        .preview-actions {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .preview-btn {
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .preview-btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+        
+        .preview-btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .preview-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .preview-countdown {
+            background: rgba(26, 26, 46, 0.05);
+            border-radius: var(--radius-md);
+            padding: 20px 30px;
+            margin-top: 20px;
+            text-align: center;
+            max-width: 500px;
+        }
+        
+        .countdown-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 70px;
+        }
+        
+        .countdown-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+        
+        .countdown-label {
+            font-size: 0.9rem;
+            color: var(--dark);
+            opacity: 0.7;
+        }
+        
+        .preview-notification {
+            margin-top: 20px;
+            background: rgba(6, 214, 160, 0.1);
+            padding: 15px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 500px;
+        }
+        
+        .notification-text {
+            font-size: 0.95rem;
+            color: var(--dark);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .preview-poster {
+                height: 300px;
+            }
+            
+            .preview-title {
+                font-size: 1.8rem;
+            }
+            
+            .preview-meta {
+                gap: 20px;
+            }
+            
+            .preview-btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+            
+            .countdown-item {
+                min-width: 55px;
+            }
+            
+            .countdown-number {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .preview-poster {
+                height: 220px;
+            }
+            
+            .preview-title {
+                font-size: 1.5rem;
+            }
+            
+            .preview-description {
+                font-size: 1rem;
+            }
+            
+            .preview-actions {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .preview-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .countdown-timer {
+                gap: 8px;
+            }
+            
+            .countdown-item {
+                min-width: 45px;
+            }
+            
+            .countdown-number {
+                font-size: 1.3rem;
+            }
+/* 节目切换导航样式 */
+.program-navigation {
+    margin-top: 50px;
+    width: 100%;
+}
+
+.program-carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 10px 0 30px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) rgba(0,0,0,0.1);
+}
+
+.program-carousel::-webkit-scrollbar {
+    height: 6px;
+}
+
+.program-carousel::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 3px;
+}
+
+.program-card {
+    flex: 0 0 auto;
+    width: 250px;
+    background: white;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-fast);
+    cursor: pointer;
+}
+
+.program-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.program-card img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+}
+
+.program-info {
+    padding: 15px;
+}
+
+.program-info h4 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: var(--dark);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.program-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--dark);
+    opacity: 0.8;
+}
+
+.program-status {
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.program-status.released {
+    background: rgba(74, 144, 226, 0.15);
+    color: var(--secondary);
+}
+
+.program-status.upcoming {
+    background: rgba(255, 209, 102, 0.15);
+    color: #e6a400;
+}
+
+@media (max-width: 768px) {
+    .program-card {
+        width: 200px;
+    }
+}
+        }
+    </style>
+</head>
+<body>
+    <!-- 动态背景元素 -->
+    <div class="wave-bg"></div>
+    <div class="particles" id="particles"></div>
+    
+    <!-- 顶部导航栏 -->
+    <header class="app-header">
+        <div class="branding">
+            <a href="index.html" class="logo">Y</a>
+            <div class="brand-name">渊迂电视新闻网</div>
+        </div>
+        <div class="nav-actions">
+            <a href="#" class="nav-icon" id="share-btn">
+                <i class="fas fa-share-alt"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- 内容区域 -->
+    <div class="container">
+        <div class="preview-container" id="preview-container">
+            <div class="loading-container">
+                <div class="loading">
+                    <div></div><div></div><div></div><div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部导航栏 -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </a>
+        <a href="knock.html" class="nav-item">
+            <i class="fas fa-play-circle"></i>
+            <span>视频</span>
+        </a>
+        <a href="short.html" class="nav-item">
+            <i class="fas fa-bolt"></i>
+            <span>叩击</span>
+        </a>
+        <a href="archive.html" class="nav-item">
+            <i class="fas fa-history"></i>
+            <span>历史</span>
+        </a>
+        <a href="#" class="nav-item active">
+            <i class="fas fa-calendar-check"></i>
+            <span>预约</span>
+        </a>
+    </nav>
+
+  <script>
+    // 创建动态粒子背景
+    function createParticles() {
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = window.innerWidth < 768 ? 20 : 50;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // 随机大小
+            const size = Math.random() * 10 + 5;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            // 随机位置
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.bottom = `-${size}px`;
+            
+            // 随机动画
+            const duration = Math.random() * 20 + 10;
+            const delay = Math.random() * 10;
+            particle.style.animation = `float ${duration}s linear ${delay}s infinite`;
+            
+            // 随机透明度
+            particle.style.opacity = Math.random() * 0.4 + 0.1;
+            
+            particlesContainer.appendChild(particle);
+        }
+    }
+    
+    // 日期格式化函数
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const options = { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        };
+        return date.toLocaleDateString('zh-CN', options);
+    }
+    
+    // 加载所有节目数据
+    let allPrograms = []; // 全局存储所有节目数据
+    
+    async function loadAllPrograms() {
+        try {
+            const response = await fetch('preview.json');
+            if (!response.ok) throw new Error('加载节目数据失败');
+            return await response.json();
+        } catch (error) {
+            console.error('加载节目数据时出错:', error);
+            return [];
+        }
+    }
+    
+    // 获取当前节目ID
+    function getProgramId() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('id');
+    }
+    
+    // 获取当前节目数据
+    function getCurrentProgram() {
+        const programId = getProgramId();
+        return allPrograms.find(p => p.id === programId);
+    }
+    
+    // 计算倒计时
+    function calculateCountdown(targetDate) {
+        const now = new Date();
+        const target = new Date(targetDate);
+        const diff = target - now;
+        
+        if (diff <= 0) {
+            return null; // 已过时
+        }
+        
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        
+        return { days, hours, minutes, seconds };
+    }
+    
+    // 更新倒计时显示
+    function updateCountdown(container, targetDate) {
+        const countdown = calculateCountdown(targetDate);
+        
+        if (!countdown) {
+            container.innerHTML = '<div class="notification-text">节目即将开始，请做好准备！</div>';
+            return;
+        }
+        
+        container.innerHTML = `
+            <div class="countdown-timer">
+                <div class="countdown-item">
+                    <div class="countdown-number">${countdown.days}</div>
+                    <div class="countdown-label">天</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number">${countdown.hours}</div>
+                    <div class="countdown-label">时</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number">${countdown.minutes}</div>
+                    <div class="countdown-label">分</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number">${countdown.seconds}</div>
+                    <div class="countdown-label">秒</div>
+                </div>
+            </div>
+        `;
+    }
+    
+    // 渲染节目详情
+    function renderProgramDetail(program) {
+        const container = document.getElementById('preview-container');
+        
+        // 设置页面标题
+        document.title = `${program.title} | YRTN+ 节目预约`;
+        
+        // 根据上线状态设置分享标题
+        const shareTitle = program.released ? 
+            `${program.title}已上线，点我观看` : 
+            `${program.title}即将上线，点我查看详情`;
+        
+        // 渲染节目详情
+        container.innerHTML = `
+            <img src="${program.image}" alt="${program.title}" class="preview-poster">
+            <h1 class="preview-title">${program.title}</h1>
+            <div class="preview-subtitle">一部引人入胜的${program.category}</div>
+            
+            <div class="preview-meta">
+                <div class="preview-meta-item">
+                    <div class="meta-label">播出时间</div>
+                    <div class="meta-value">${formatDate(program.date)}</div>
+                </div>
+                <div class="preview-meta-item">
+                    <div class="meta-label">单集时长</div>
+                    <div class="meta-value">${program.duration}</div>
+                </div>
+                <div class="preview-meta-item">
+                    <div class="meta-label">总集数</div>
+                    <div class="meta-value">${program.episodes}集</div>
+                </div>
+            </div>
+            
+            <div class="preview-status ${program.released ? 'status-released' : 'status-upcoming'}">
+                ${program.released ? '已上线' : '即将上线'}
+            </div>
+            
+            <div class="preview-description">
+                ${program.description}
+            </div>
+            
+            <div class="preview-actions">
+                ${program.released ? 
+                    `<button class="preview-btn preview-btn-primary" onclick="location.href='watch.html?id=${program.id}'">
+                        <i class="fas fa-play"></i>立即观看
+                    </button>` : 
+                    `<button class="preview-btn preview-btn-primary" id="remind-btn">
+                        <i class="fas fa-bell"></i>预约提醒
+                    </button>`
+                }
+                <button class="preview-btn preview-btn-secondary" id="trailer-btn">
+                    <i class="fas fa-film"></i>观看预告片
+                </button>
+            </div>
+            
+            ${!program.released ? `
+                <div class="preview-countdown">
+                    <div class="countdown-title">距离播出还有</div>
+                    <div id="countdown-timer"></div>
+                </div>
+            ` : ''}
+            
+            <div class="preview-notification">
+                <i class="fas fa-info-circle"></i>
+                <div class="notification-text">
+                    ${program.released ? 
+                        '节目已上线，您可以随时观看完整内容' : 
+                        '预约后，我们将在节目上线前通知您'
+                    }
+                </div>
+            </div>
+            
+            <!-- 节目切换导航 -->
+            <div class="program-navigation">
+                <h3 class="section-title">更多精彩节目</h3>
+                <div class="program-carousel" id="program-carousel"></div>
+            </div>
+        `;
+        
+        // 设置分享按钮
+        document.getElementById('share-btn').addEventListener('click', function() {
+            shareProgram(program, shareTitle);
+        });
+        
+        // 设置提醒按钮
+        if (!program.released) {
+            const remindBtn = document.getElementById('remind-btn');
+            if (remindBtn) {
+                remindBtn.addEventListener('click', setReminder);
+                
+                // 初始化倒计时
+                const countdownContainer = document.getElementById('countdown-timer');
+                if (countdownContainer) {
+                    updateCountdown(countdownContainer, program.date);
+                    
+                    // 每秒更新一次倒计时
+                    setInterval(() => {
+                        updateCountdown(countdownContainer, program.date);
+                    }, 1000);
+                }
+            }
+        }
+        
+        // 预告片按钮
+        const trailerBtn = document.getElementById('trailer-btn');
+        if (trailerBtn) {
+            trailerBtn.addEventListener('click', function() {
+                // 实际应用中这里应该播放预告片
+                alert('即将播放《' + program.title + '》的预告片...');
+            });
+        }
+        
+        // 渲染节目切换导航
+        renderProgramCarousel(program.id);
+    }
+    
+    // 渲染节目切换轮播
+    function renderProgramCarousel(currentId) {
+        const carousel = document.getElementById('program-carousel');
+        if (!carousel) return;
+        
+        // 过滤掉当前节目
+        const otherPrograms = allPrograms.filter(p => p.id !== currentId);
+        
+        carousel.innerHTML = otherPrograms.map(program => `
+            <div class="program-card" data-id="${program.id}">
+                <img src="${program.image}" alt="${program.title}">
+                <div class="program-info">
+                    <h4>${program.title}</h4>
+                    <div class="program-meta">
+                        <span>${formatDate(program.date)}</span>
+                        <span class="program-status ${program.released ? 'released' : 'upcoming'}">
+                            ${program.released ? '已上线' : '即将上线'}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        
+        // 添加点击事件
+        document.querySelectorAll('.program-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const programId = this.getAttribute('data-id');
+                // 更新URL但不刷新页面
+                const newUrl = `${window.location.pathname}?id=${programId}`;
+                window.history.pushState({}, '', newUrl);
+                
+                // 重新加载节目数据
+                const program = allPrograms.find(p => p.id === programId);
+                if (program) {
+                    renderProgramDetail(program);
+                    
+                    // 检查是否已预约
+                    if (!program.released && checkReminderStatus(program.id)) {
+                        const btn = document.getElementById('remind-btn');
+                        if (btn) {
+                            btn.innerHTML = '<i class="fas fa-check"></i>已预约';
+                            btn.disabled = true;
+                            btn.classList.remove('preview-btn-primary');
+                            btn.classList.add('preview-btn-secondary');
+                        }
+                    }
+                    
+                    // 滚动到顶部
+                    window.scrollTo(0, 0);
+                }
+            });
+        });
+    }
+    
+    // 分享节目
+    function shareProgram(program, shareTitle) {
+        const shareData = {
+            title: shareTitle,
+            text: program.description.substring(0, 100) + '...',
+            url: window.location.href
+        };
+        
+        if (navigator.share) {
+            navigator.share(shareData)
+                .then(() => console.log('分享成功'))
+                .catch(error => console.log('分享失败', error));
+        } else {
+            // 如果不支持Web Share API，则使用复制链接的方式
+            navigator.clipboard.writeText(window.location.href);
+            alert('链接已复制到剪贴板，您可以粘贴分享');
+        }
+    }
+    
+    // 设置提醒
+    function setReminder() {
+        // 这里实际应用中应调用浏览器的通知API
+        alert('预约成功！节目上线前您将收到通知。');
+        
+        // 改变按钮状态
+        const btn = document.getElementById('remind-btn');
+        if (btn) {
+            btn.innerHTML = '<i class="fas fa-check"></i>已预约';
+            btn.disabled = true;
+            btn.classList.remove('preview-btn-primary');
+            btn.classList.add('preview-btn-secondary');
+            
+            // 添加到本地存储
+            const programId = getProgramId();
+            if (programId) {
+                const reminders = JSON.parse(localStorage.getItem('reminders') || '[]');
+                if (!reminders.includes(programId)) {
+                    reminders.push(programId);
+                    localStorage.setItem('reminders', JSON.stringify(reminders));
+                }
+            }
+        }
+    }
+    
+    // 检查是否已预约
+    function checkReminderStatus(programId) {
+        const reminders = JSON.parse(localStorage.getItem('reminders') || '[]');
+        return reminders.includes(programId);
+    }
+    
+    // 初始化页面
+    document.addEventListener('DOMContentLoaded', async () => {
+        // 创建动态背景
+        createParticles();
+        
+        // 加载所有节目数据
+        allPrograms = await loadAllPrograms();
+        
+        if (allPrograms.length === 0) {
+            showError('无法加载节目信息，请稍后再试。');
+            return;
+        }
+        
+        // 获取当前节目ID
+        const programId = getProgramId();
+        
+        // 如果没有ID，默认显示第一个节目
+        let currentProgram = programId ? 
+            allPrograms.find(p => p.id === programId) : 
+            allPrograms[0];
+            
+        if (!currentProgram) {
+            currentProgram = allPrograms[0];
+        }
+        
+        // 渲染节目详情
+        renderProgramDetail(currentProgram);
+        
+        // 检查是否已预约
+        if (!currentProgram.released && checkReminderStatus(currentProgram.id)) {
+            const btn = document.getElementById('remind-btn');
+            if (btn) {
+                btn.innerHTML = '<i class="fas fa-check"></i>已预约';
+                btn.disabled = true;
+                btn.classList.remove('preview-btn-primary');
+                btn.classList.add('preview-btn-secondary');
+            }
+        }
+    });
+    
+    // 显示错误信息
+    function showError(message) {
+        const container = document.getElementById('preview-container');
+        container.innerHTML = `
+            <div class="error-message">
+                <p>${message}</p>
+                <button class="preview-btn preview-btn-primary" style="margin-top:20px;" onclick="location.href='index.html'">
+                    返回首页
+                </button>
+            </div>
+        `;
+    }
+    
+    // 监听浏览器返回/前进按钮
+    window.addEventListener('popstate', () => {
+        const program = getCurrentProgram();
+        if (program) {
+            renderProgramDetail(program);
+        }
+    });
+</script>
+</body>
+</html>
