@@ -21,6 +21,23 @@
               "views": "120万"
             }
           ]
+        },
+        {
+          "id": "news-2",
+          "title": "午夜新闻 NIGHT",
+          "image": "https://origin.picgo.net/2025/08/04/quality_restoration_20250729102232397db7ad11a2dc0b5bd.jpeg",
+          "description": "渊迂午夜档新闻节目",
+          "episodes": [
+            {
+              "id": "nt-1",
+              "title": "20250804",
+              "date": "2025-08-04",
+              "thumbnail": "https://origin.picgo.net/2025/08/04/quality_restoration_20250729102232397db7ad11a2dc0b5bd.jpeg",
+              "videoUrl": "https://dlink.host/1drv/aHR0cHM6Ly8xZHJ2Lm1zL3YvYy83ZjkzYmM0ZDA3N2U1NjA3L0Vhc1JKempudlVwR253ZzdSN1VtbWRZQjlDb0JscnNmQlVIVE55OGdQTmsxY2c.mp4",
+              "duration": "13:13",
+              "views": "0"
+            }
+          ]
         }
       ]
     },
