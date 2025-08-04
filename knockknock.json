@@ -193,7 +193,7 @@
     },
 {
       "id": "life",
-      "name": "生活方式",
+      "name": "都市生活",
       "image": "https://img.picgo.net/2025/07/07/IMG_4883499fba68b224f51e.jpeg",
       "shows": [
         {
@@ -227,6 +227,30 @@
               "thumbnail": "https://img.picgo.net/2025/04/16/6bc8113d8e9bdb176c518ddfd62e09cfd6be06c921875e6f.jpeg",
               "videoUrl": "https://dlink.host/1drv/aHR0cHM6Ly8xZHJ2Lm1zL3YvYy82OGY4YTM2NjY5MzhiNDMwL0VTRE9qMkVORzY5TmlFdmVjWlRoTWRVQklWWVRnNk5PQkVGZVdpY0tFcElVM3c_ZT05QmVzRVY.mp4",
               "duration": "5:22",
+              "views": "1古戈尔"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "metro",
+      "name": "云乘车",
+      "image": "https://origin.picgo.net/2025/08/04/IMG_5456ec071a9f658748d8.jpeg",
+      "shows": [
+        {
+          "id": "metro-1",
+          "title": "现实城市",
+          "image": "https://origin.picgo.net/2025/08/04/IMG_5456ec071a9f658748d8.jpeg",
+          "description": "由现实世界引申的作品",
+          "episodes": [
+            {
+              "id": "metroreal-1",
+              "title": "【上海地铁】19号线全程AI报站及自制左侧LCD模拟",
+              "date": "2025-08-02",
+              "thumbnail": "https://origin.picgo.net/2025/08/04/IMG_5456ec071a9f658748d8.jpeg",
+              "videoUrl": "https://player.bilibili.com/player.html?bvid=BV1BVhtzKEHW",
+              "duration": "作者：LWUert",
               "views": "1古戈尔"
             }
           ]
