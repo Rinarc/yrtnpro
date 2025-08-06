@@ -38,7 +38,7 @@
               "views": "NULL"
             }
           ]
-        }
+        },
         {
           "id": "news-3",
           "title": "朝闻 MORNING YUANYU",
@@ -57,7 +57,7 @@
           ]
         }
       ]
-    },
+    }
     {
       "id": "sport",
       "name": "体育视界",
