@@ -964,7 +964,7 @@
                     <a href="news-detail.html?id=${latestBreaking.id}">${latestBreaking.title}</a>
                 `;
             } else {
-                breakingContainer.textContent = '当前没有突发新闻';
+                breakingContainer.textContent = '当前没有热点新闻';
             }
         }
         
@@ -989,7 +989,7 @@
                 newsCard.innerHTML = `
                     <div class="card-image" style="background-image: url('${article.image}')">
                         ${article.isBreaking ? 
-                            '<span class="card-badge breaking-badge">突发</span>' : 
+                            '<span class="card-badge breaking-badge">热点</span>' : 
                             `<span class="card-badge">${article.category}</span>`
                         }
                     </div>
