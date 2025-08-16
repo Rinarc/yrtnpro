@@ -273,6 +273,30 @@
           ]
         }
       ]
+    },
+        {
+      "id": "yrtnchannel",
+      "name": "频道宣传片",
+      "image": "https://origin.picgo.net/2025/08/16/IMG_5646f2ee353ee6e8ead4.jpeg",
+      "shows": [
+        {
+          "id": "channel-1",
+          "title": "渊迂电视台",
+          "image": "https://origin.picgo.net/2025/08/16/IMG_5646f2ee353ee6e8ead4.jpeg",
+          "description": "渊迂电视台频道宣传片",
+          "episodes": [
+            {
+              "id": "channelyuanyu-1",
+              "title": "互联视界",
+              "date": "2025-08-16",
+              "thumbnail": "https://origin.picgo.net/2025/08/16/IMG_5646f2ee353ee6e8ead4.jpeg",
+              "videoUrl": "https://pan.urldwz.com/f/EzLOH3/YRTN_Channel.mov",
+              "duration": "渊迂电视新闻网|渊迂电视台",
+              "views": "1古戈尔"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
