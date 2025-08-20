@@ -157,67 +157,6 @@
         "stopDuration": ""
       }
     ]
-  },
-  {
-    "id": "T004",
-    "trainNumber": "G505",
-    "departureStation": "渊华德中央站",
-    "terminalStation": "新渊站",
-    "departureTime": "10:30",
-    "arrivalTime": "11:20",
-    "duration": "50分钟",
-    "operator": "渊华德铁路局",
-    "trainType": "高铁",
-    "stops": [
-      {
-        "station": "渊华德中央站",
-        "arrivalTime": "",
-        "departureTime": "10:30",
-        "stopDuration": ""
-      },
-      {
-        "station": "新渊站",
-        "arrivalTime": "11:20",
-        "departureTime": "",
-        "stopDuration": ""
-      }
-    ]
-  },
-  {
-    "id": "T005",
-    "trainNumber": "C102",
-    "departureStation": "南渊站",
-    "terminalStation": "北渊站",
-    "departureTime": "13:15",
-    "arrivalTime": "14:40",
-    "duration": "1小时25分",
-    "operator": "渊华德铁路局",
-    "trainType": "城际",
-    "stops": [
-      {
-        "station": "南渊站",
-        "arrivalTime": "",
-        "departureTime": "13:15",
-        "stopDuration": ""
-      },
-      {
-        "station": "东渊站",
-        "arrivalTime": "13:45",
-        "departureTime": "13:50",
-        "stopDuration": "5分钟"
-      },
-      {
-        "station": "中渊站",
-        "arrivalTime": "14:10",
-        "departureTime": "14:15",
-        "stopDuration": "5分钟"
-      },
-      {
-        "station": "北渊站",
-        "arrivalTime": "14:40",
-        "departureTime": "",
-        "stopDuration": ""
-      }
-    ]
+  
   }
 ]
