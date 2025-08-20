@@ -989,15 +989,8 @@
             <div class="logo">Y</div>
             <div class="brand-name">渊迂电视新闻网+</div>
         </div>
-        <div class="nav-actions">
-            <a href="#" class="nav-icon">
-                <i class="fas fa-search"></i>
-            </a>
-            <a href="#" class="nav-icon">
-                <i class="fas fa-bell"></i>
-                <span class="notification-badge">3</span>
-            </a>
-            <a href="#" class="nav-icon">
+        
+            <a href="login.html" class="nav-icon">
                 <i class="fas fa-user"></i>
             </a>
         </div>
@@ -1007,7 +1000,7 @@
     <div class="container">
         <div class="news-detail">
             <a href="index.html" class="back-btn">
-                <i class="fas fa-arrow-left"></i> 返回新闻列表
+                <i class="fas fa-arrow-left"></i> 返回主页
             </a>
             
             <div class="article-container">
@@ -1029,7 +1022,7 @@
                         </span>
                         <span class="meta-item">
                             <i class="fas fa-source"></i>
-                            <span>来源：<span id="news-source"></span></span>
+                            <span>信源：<span id="news-source"></span></span>
                         </span>
                     </div>
                     
@@ -1088,7 +1081,7 @@
     
     <!-- 底部导航栏 -->
     <nav class="bottom-nav">
-        <a href="index_app.html" class="nav-item">
+        <a href="index.html" class="nav-item">
             <i class="fas fa-home"></i>
             <span>首页</span>
         </a>
@@ -1096,14 +1089,15 @@
             <i class="fas fa-play-circle"></i>
             <span>视频</span>
         </a>
-        <a href="short.html" class="nav-item">
+        <a href="archive.html" class="nav-item">
             <i class="fas fa-bolt"></i>
-            <span>叩击</span>
-        </a>
-        <a href="archive_app.html" class="nav-item">
-            <i class="fas fa-history"></i>
             <span>历史</span>
         </a>
+        <a href="tool.html" class="nav-item">
+            <i class="fas fa-sync-alt"></i>
+            <span>服务</span>
+        </a>
+    
     </nav>
 
     <!-- 图片模态框 -->
@@ -1255,7 +1249,7 @@
                 } else {
                     // 如果没有AI总结，显示提示信息
                     document.getElementById('ai-content').innerHTML = `
-                        <p>暂无AI总结内容</p>
+                        <p>暂无总结内容</p>
                         <p>您可以阅读完整报道获取详细信息</p>
                     `;
                 }
@@ -1291,7 +1285,7 @@
                 console.error('加载评论失败:', error);
                 document.getElementById('comments-container').innerHTML = `
                     <div class="no-comments">
-                        <p>评论加载失败，请稍后再试</p>
+                        <p>您所在的地区暂时无法使用该功能</p>
                     </div>
                 `;
             }
