@@ -563,13 +563,13 @@
     <div class="container">
         <div class="page-header">
             <h1 class="page-title">历史新闻档案</h1>
-            <p class="page-subtitle">ARCHIVE</p>
+            <p class="page-subtitle">YUANYU REALITY TELEVISION NETWORK +</p>
         </div>
         
         <!-- 控制面板 -->
         <div class="control-panel">
             <div class="search-box">
-                <input type="text" id="archive-search" placeholder="搜索历史新闻...">
+                <input type="text" id="archive-search" placeholder="搜索新闻...">
                 <button id="archive-search-btn">
                     <i class="fas fa-search"></i> 搜索
                 </button>
@@ -602,15 +602,15 @@
             <i class="fas fa-play-circle"></i>
             <span>视频</span>
         </a>
-        <a href="short.html" class="nav-item">
-            <i class="fas fa-bolt"></i>
-            <span>叩击</span>
-        </a>
         <a href="archive.html" class="nav-item active">
-            <i class="fas fa-history"></i>
+            <i class="fas fa-bolt"></i>
             <span>历史</span>
         </a>
-      
+        <a href="tool.html" class="nav-item">
+            <i class="fas fa-sync-alt"></i>
+            <span>服务</span>
+        </a>
+    
     </nav>
 
     <script>
@@ -772,7 +772,7 @@
                 const container = document.getElementById('archive-container');
                 container.innerHTML = `
                     <div class="error-message">
-                        <p>未找到历史新闻，请稍后再试。</p>
+                        <p>未找到新闻，请稍后再试。</p>
                     </div>
                 `;
             }
