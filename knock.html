@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>直击渊华德 | 渊迂电视新闻网+</title>
+    <title>直击渊华德 | 渊迂新闻+</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -727,11 +727,8 @@
             <div class="logo">Y</div>
             <div class="brand-name">渊迂电视新闻网+</div>
         </div>
-        <div class="nav-actions">
-            <a href="#" class="nav-icon">
-                <i class="fas fa-search"></i>
-            </a>
-            <a href="#" class="nav-icon">
+       
+            <a href="login.html" class="nav-icon">
                 <i class="fas fa-user"></i>
             </a>
         </div>
@@ -750,18 +747,19 @@
             <i class="fas fa-home"></i>
             <span>首页</span>
         </a>
-        <a href="#" class="nav-item active">
+        <a href="knock.html" class="nav-item active">
             <i class="fas fa-play-circle"></i>
             <span>视频</span>
         </a>
-        <a href="short.html" class="nav-item">
-            <i class="fas fa-bolt"></i>
-            <span>叩击</span>
-        </a>
         <a href="archive.html" class="nav-item">
-            <i class="fas fa-history"></i>
+            <i class="fas fa-bolt"></i>
             <span>历史</span>
         </a>
+        <a href="tool.html" class="nav-item">
+            <i class="fas fa-sync-alt"></i>
+            <span>服务</span>
+        </a>
+    
     </nav>
 
 <script>
@@ -1176,8 +1174,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
         contentArea.innerHTML = `
             <div class="error-message" style="text-align: center; padding: 50px;">
-                <h2>无法加载数据</h2>
-                <p>请检查您的网络连接或确保knockknock.json文件存在</p>
+                <h2>数据加载异常</h2>
+                <p>请检查您的网络连接或联系网站管理员</p>
                 <button id="retryBtn" style="margin-top: 20px; padding: 10px 20px; background: var(--secondary); color: white; border: none; border-radius: 8px; cursor: pointer;">
                     重试
                 </button>
