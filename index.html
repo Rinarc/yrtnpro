@@ -1127,7 +1127,7 @@ function checkForUpdates() {
 
 // 显示更新提示
 function showUpdateNotification() {
-  if (confirm('发现新版本，是否立即更新？')) {
+  if (confirm('新版本已推送至您的设备，是否更新？（部分缓存数据将被重置）')) {
     window.location.reload();
   } else {
     // 可以设置稍后提醒逻辑
