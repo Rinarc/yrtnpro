@@ -1,0 +1,223 @@
+[
+  {
+    "id": "G1",
+    "trainNumber": "G1",
+    "departureStation": "华兴南",
+    "terminalStation": "渊迂南",
+    "departureTime": "13:45",
+    "arrivalTime": "15:11",
+    "duration": "1小时26分",
+    "operator": "华兴骁龙局",
+    "trainType": "高速动车组",
+    "stops": [
+      {
+        "station": "华兴南",
+        "arrivalTime": "",
+        "departureTime": "13:45",
+        "stopDuration": ""
+      },
+      {
+        "station": "江家林",
+        "arrivalTime": "14:15",
+        "departureTime": "14:17",
+        "stopDuration": "2分钟"
+      },
+      {
+        "station": "渊迂迂龙",
+        "arrivalTime": "14:49",
+        "departureTime": "14:51",
+        "stopDuration": "2分钟"
+      },
+      {
+        "station": "渊迂南",
+        "arrivalTime": "15:11",
+        "departureTime": "",
+        "stopDuration": ""
+      }
+    ]
+  },
+  {
+    "id": "Z1",
+    "trainNumber": "Z1",
+    "departureStation": "华兴",
+    "terminalStation": "渊港西",
+    "departureTime": "14:34",
+    "arrivalTime": "19:00",
+    "duration": "4小时26分",
+    "operator": "华兴新东方局",
+    "trainType": "直快",
+    "stops": [
+      {
+        "station": "华兴",
+        "arrivalTime": "",
+        "departureTime": "14:34",
+        "stopDuration": ""
+      },
+      {
+        "station": "江家林",
+        "arrivalTime": "15:34",
+        "departureTime": "15:37",
+        "stopDuration": "3分钟"
+      },
+      {
+        "station": "海东",
+        "arrivalTime": "15:52",
+        "departureTime": "15:54",
+        "stopDuration": "2分钟"
+      },
+      {
+        "station": "渊迂迂龙",
+        "arrivalTime": "16:42",
+        "departureTime": "16:47",
+        "stopDuration": "5分钟"
+      },
+      {
+        "station": "渊迂北",
+        "arrivalTime": "18:37",
+        "departureTime": "18:39",
+        "stopDuration": "2分钟"
+      },
+      {
+        "station": "渊港西",
+        "arrivalTime": "19:00",
+        "departureTime": "",
+        "stopDuration": ""
+      }
+    ]
+  },
+  {
+    "id": "K80",
+    "trainNumber": "K80",
+    "departureStation": "江家林",
+    "terminalStation": "德水",
+    "departureTime": "10:59",
+    "arrivalTime": "22:07",
+    "duration": "11小时8分",
+    "operator": "华兴骁龙局",
+    "trainType": "普快",
+    "stops": [
+      {
+        "station": "江家林",
+        "arrivalTime": "",
+        "departureTime": "10:59",
+        "stopDuration": ""
+      },
+      {
+        "station": "华兴",
+        "arrivalTime": "11:38",
+        "departureTime": "12:00",
+        "stopDuration": "22分钟"
+      },
+      {
+        "station": "华兴骁龙",
+        "arrivalTime": "13:32",
+        "departureTime": "13:39",
+        "stopDuration": "7分钟"
+      },
+      {
+        "station": "",
+        "arrivalTime": "本次列车自当前车站起车次号变更为K81",
+        "departureTime": "",
+        "stopDuration": ""
+      },
+      {
+        "station": "林安",
+        "arrivalTime": "14:44",
+        "departureTime": "14:49",
+        "stopDuration": "5分钟"
+      },
+      {
+        "station": "华兴新科",
+        "arrivalTime": "17:30",
+        "departureTime": "17:35",
+        "stopDuration": "5分钟"
+      },
+      {
+        "station": "",
+        "arrivalTime": "本次列车自当前车站起车次号变更为K80",
+        "departureTime": "",
+        "stopDuration": ""
+      },
+      {
+        "station": "德水盈水",
+        "arrivalTime": "19:54",
+        "departureTime": "20:05",
+        "stopDuration": "11分钟"
+      },
+      {
+        "station": "德水东",
+        "arrivalTime": "21:08",
+        "departureTime": "21:28",
+        "stopDuration": "20分钟"
+      },
+      {
+        "station": "德水",
+        "arrivalTime": "22:07",
+        "departureTime": "",
+        "stopDuration": ""
+      }
+    ]
+  },
+  {
+    "id": "T004",
+    "trainNumber": "G505",
+    "departureStation": "渊华德中央站",
+    "terminalStation": "新渊站",
+    "departureTime": "10:30",
+    "arrivalTime": "11:20",
+    "duration": "50分钟",
+    "operator": "渊华德铁路局",
+    "trainType": "高铁",
+    "stops": [
+      {
+        "station": "渊华德中央站",
+        "arrivalTime": "",
+        "departureTime": "10:30",
+        "stopDuration": ""
+      },
+      {
+        "station": "新渊站",
+        "arrivalTime": "11:20",
+        "departureTime": "",
+        "stopDuration": ""
+      }
+    ]
+  },
+  {
+    "id": "T005",
+    "trainNumber": "C102",
+    "departureStation": "南渊站",
+    "terminalStation": "北渊站",
+    "departureTime": "13:15",
+    "arrivalTime": "14:40",
+    "duration": "1小时25分",
+    "operator": "渊华德铁路局",
+    "trainType": "城际",
+    "stops": [
+      {
+        "station": "南渊站",
+        "arrivalTime": "",
+        "departureTime": "13:15",
+        "stopDuration": ""
+      },
+      {
+        "station": "东渊站",
+        "arrivalTime": "13:45",
+        "departureTime": "13:50",
+        "stopDuration": "5分钟"
+      },
+      {
+        "station": "中渊站",
+        "arrivalTime": "14:10",
+        "departureTime": "14:15",
+        "stopDuration": "5分钟"
+      },
+      {
+        "station": "北渊站",
+        "arrivalTime": "14:40",
+        "departureTime": "",
+        "stopDuration": ""
+      }
+    ]
+  }
+]
