@@ -206,7 +206,7 @@
             "category": "渊华德互联",
             "category_en": "City Link",
             "date": "2025-08-10T17:45:00+08:00",
-            "isBreaking": true
+            "isBreaking": false
         },
        {
         "id": 2025071201,
@@ -234,6 +234,20 @@
             "category": "民生",
             "category_en": "City Link",
             "date": "2025-08-31T16:30:00+08:00",
+            "isBreaking": false
+        },
+       {
+        "id": 2025090601,
+            "title": "渊迂地铁总部大楼、渊迂电视台施工新进展来了…",
+            "title_en": "Deshui Metro Line 1 Local Section Officially Opens, Redefining 'Fast' Commuting!",      
+            "summary": "发布者：渊迂溯穹建设集团",
+            "content": "<p>最新通报，位于市中汇区复兴南路的重点工程——渊迂地铁总部大楼与渊迂电视台项目建设取得突破性进展。</p><p>渊迂地铁总部大楼于8月25日正式破土动工，仅用时两天便完成主体结构建设，创下我市基建新速度。目前工程已转入内部装修与设备安装阶段，预计将于2025年底全面竣工并投入使用。</p><p>同期建设的渊迂电视台项目自6月开工以来稳步推进，现正进行主体结构施工。项目规划A、B两大功能区，其中演播室部分正在进行施工优化。渊迂融媒体集团表示，在演播室建设期间，所有节目制作将采用先进的虚拟演播技术保障播出。</p><p>配套工程方面，港洛路复兴西路改造工程已启动建设，将沿万滘河岸线打造景观步行道，并实现与地铁万滘丘站的无缝衔接，大幅提升周边居民出行便利性。</p><p>两大标志性建筑的快速推进，标志着我市基础设施建设迈入新阶段，将为城市发展注入新动能。</p><p>渊迂溯穹建设集团</p><p>2025年9月5日</p>",
+            "ai_summary": "",   
+            "content_en": "<p>**YRTN, June 7**</p><p>This morning, as the first train departed slowly from Deshui Development Zone, it marked the official opening of the local section of Deshui Metro Line 1. This vital urban artery has redefined commuting in Deshui with its signature feature - speed.</p><p>Line 1 features 8 stations connecting key areas including downtown Deshui, the Development Zone, Lakeside Peninsula, and Huaxing City. As the backbone of Deshui's rail transit network, the line utilizes new-generation trains and advanced power supply rails, cutting travel time by nearly half compared to surface transportation.</p><p>'Line 1 isn't just fast in speed, but superior in efficiency,' said the Mayor of Deshui. The line features a fully automated operation system, with all stations equipped with intelligent navigation and express security check channels, delivering a seamless 'fast entry, fast boarding, fast transfer' experience.</p><p>The newly opened section connects downtown Deshui to Liugang Road (6 stations). The Huaxing segment, passing through Lin'an and Yuanhuade Road, will open subsequently, enabling convenient transfers to Huaxing Metro. Notably, Lin'an Station will serve as the largest transit hub in the Yuanhuade metropolitan area, representing a significant step toward regional connectivity. We will continue tracking construction progress of the Huaxing segment for the latest updates.</p>",
+            "image": "https://origin.picgo.net/2025/09/06/IMG_59950c57f4878ded0843.jpeg",
+            "category": "民生",
+            "category_en": "City Link",
+            "date": "2025-09-06T09:55:00+08:00",
             "isBreaking": true
         }
     ]
