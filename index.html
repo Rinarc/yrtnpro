@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>YRTN+ - 即将上线</title>
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', 'Microsoft YaHei', sans-serif; /* 使用清晰的无衬线字体 */
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%); /* 柔和的渐变背景 */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+            color: #333; /* 主文本颜色 */
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 800px;
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.95); /* 轻量半透明背景 */
+            border-radius: 16px; /* 圆角边框 */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* 柔和阴影 */
+            animation: fadeIn 1s ease-out; /* 淡入动画 */
+        }
+        
+        /* 大字样式 */
+        .main-text {
+            font-size: 4.5rem; /* 主要文字大小 */
+            font-weight: 700; /* 加粗显示 */
+            color: #2c3e50; /* 深蓝色调 */
+            margin-bottom: 20px;
+            letter-spacing: 1px; /* 字间距调整 */
+            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* 轻微文字阴影 */
+        }
+        
+        /* 小字样式 */
+        .sub-text {
+            font-size: 1.8rem; /* 辅助文字大小 */
+            color: #7f8c8d; /* 灰色调 */
+            font-weight: 400;
+            margin-top: 15px;
+        }
+        
+        /* 装饰元素 */
+        .decoration {
+            margin: 30px auto;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, #3498db, #2ecc71); /* 渐变装饰线 */
+            border-radius: 2px;
+        }
+        
+        /* 状态提示 */
+        .status {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 8px 20px;
+            background-color: #ffeaa7; /* 浅黄色背景 */
+            border-radius: 50px; /* 胶囊形状 */
+            font-size: 1.1rem;
+            color: #e17055;
+            animation: pulse 2s infinite; /* 脉冲动画效果 */
+        }
+        
+        /* 动画定义 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        /* 响应式设计 - 移动设备适配 */
+        @media (max-width: 768px) {
+            .main-text {
+                font-size: 3.2rem; /* 移动设备上调整字号 */
+            }
+            
+            .sub-text {
+                font-size: 1.4rem;
+            }
+            
+            .container {
+                padding: 30px 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-text {
+                font-size: 2.5rem;
+            }
+            
+            .sub-text {
+                font-size: 1.2rem;
+            }
+            
+            .status {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="main-text">YRTN+现在不可用</h1>
+        <div class="decoration"></div>
+        <p class="sub-text">调试测试中，即将上线</p>
+        <div class="status">敬请期待</div>
+    </div>
+</body>
+</html>
