@@ -248,7 +248,7 @@
             "category": "民生",
             "category_en": "City Link",
             "date": "2025-09-06T09:55:00+08:00",
-            "isBreaking": true
+            "isBreaking": false
         },
         {
         "id": 2025090602,
@@ -262,6 +262,20 @@
             "category": "交通",
             "category_en": "City Link",
             "date": "2025-09-06T11:00:00+08:00",
+            "isBreaking": false
+        },
+        {
+        "id": 2025092701,
+            "title": "铁路华兴站再升级：全新售票处及服务中心正式启用",
+            "title_en": "Deshui Metro Line 1 Local Section Officially Opens, Redefining 'Fast' Commuting!",      
+            "summary": "信源：华兴铁路骁龙局集团有限公司Huaxing Railway Snapdragon Bureau Group Co., Ltd.",
+            "content": "<p>华兴社9月13日电</p><p>为进一步提升旅客出行体验，完善现代化铁路客运服务体系，华兴市铁路枢纽建设迎来重要进展。今日上午，精心打造的全新铁路华兴站售票处及综合服务中心正式揭牌，面向广大旅客开放服务。这标志着华兴站的服务功能与硬件设施迈上了一个新台阶。</p> <p>全新启用的售票处及综合服务中心位于华兴站站房一楼西北侧，地理位置醒目，方便旅客寻找。其总建筑面积较旧有厅室大幅增加，内部空间宽敞明亮，现代感十足的设计旨在为旅客提供更加舒适、便捷的“一站式”服务体验。</p><p>新设施的核心亮点在于其功能的高度集成与智能化水平的显著提升：</p><p> 1.功能分区科学合理 </p><p> 2.智能设备全面覆盖 </p><p> 3.“一站式”服务中心 </p><p> 4.人性化细节凸显</p> <p>华兴站站长在启用仪式上表示：“新售票处及服务中心的建成启用，是我站建设其新型布局体系，践行‘以人为本’服务理念的具体行动。我们不仅希望满足旅客基本的购票需求，更致力于打造一个集业务办理、信息咨询、便民服务于一体的综合性平台，让每一位旅客从进入车站开始，就能感受到高效、舒适与尊重。”</p><p>据悉，随着新售票处的启用，原临时售票点的功能将整合至此。铁路部门提醒广大旅客，请注意车站内的指引标识，前往新址办理相关业务。</p><p>全新售票处及服务中心的投入使用，将极大缓解客运高峰期的服务压力，优化客运组织流线，为华兴站作为区域性重要铁路枢纽的运营能力提供坚实保障，也为提升华兴市的城市窗口形象增添了浓墨重彩的一笔。</p>",
+            "ai_summary": "<p>华兴站全新售票处及综合服务中心于今日正式启用，该中心位于站房一楼西北侧，通过显著扩大空间、集成购票、咨询与便民服务等功能并引入智能设备，旨在为旅客提供高效舒适的“一站式”体验，以提升车站服务能力与城市形象。</p>",   
+            "content_en": "<p>**YRTN, June 7**</p><p>This morning, as the first train departed slowly from Deshui Development Zone, it marked the official opening of the local section of Deshui Metro Line 1. This vital urban artery has redefined commuting in Deshui with its signature feature - speed.</p><p>Line 1 features 8 stations connecting key areas including downtown Deshui, the Development Zone, Lakeside Peninsula, and Huaxing City. As the backbone of Deshui's rail transit network, the line utilizes new-generation trains and advanced power supply rails, cutting travel time by nearly half compared to surface transportation.</p><p>'Line 1 isn't just fast in speed, but superior in efficiency,' said the Mayor of Deshui. The line features a fully automated operation system, with all stations equipped with intelligent navigation and express security check channels, delivering a seamless 'fast entry, fast boarding, fast transfer' experience.</p><p>The newly opened section connects downtown Deshui to Liugang Road (6 stations). The Huaxing segment, passing through Lin'an and Yuanhuade Road, will open subsequently, enabling convenient transfers to Huaxing Metro. Notably, Lin'an Station will serve as the largest transit hub in the Yuanhuade metropolitan area, representing a significant step toward regional connectivity. We will continue tracking construction progress of the Huaxing segment for the latest updates.</p>",
+            "image": "https://origin.picgo.net/2025/09/26/IMG_614390d86ee0bb27f490.png",
+            "category": "交通",
+            "category_en": "City Link",
+            "date": "2025-09-27T8:00:00+08:00",
             "isBreaking": true
         }
     ]
