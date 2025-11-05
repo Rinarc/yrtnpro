@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YRTN+ | 渊迂新闻（架空）</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="icon.jpeg" type="image/jpeg">
+    <style>
+        :root {
+            --primary: #FF3E4D; /* 活力红 */
+            --secondary: #4A90E2; /* 科技蓝 */
+            --accent: #FFD166; /* 活力黄 */
+            --dark: #1A1A2E; /* 深蓝黑 */
+            --light: #F8F9FA; /* 浅灰白 */
+            --success: #06D6A0; /* 清新绿 */
+            
+            --gradient-primary: linear-gradient(135deg, #FF3E4D 0%, #FF6B6B 100%);
+            --gradient-secondary: linear-gradient(135deg, #4A90E2 0%, #5F72BE 100%);
+            --gradient-accent: linear-gradient(135deg, #FFD166 0%, #FFA630 100%);
+            
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.12);
+            --shadow-lg: 0 16px 48px rgba(0,0,0,0.16);
+            
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            
+            --transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --transition-fast: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-bottom: 90px;
+        }
+        
+        /* 顶部导航栏 - 中间图标版 */
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .login-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition-fast);
+        }
+        
+        .login-btn:hover {
+            color: var(--primary);
+        }
+        
+        .login-btn i {
+            font-size: 1.2rem;
+        }
+        
+        /* 中间图标 */
+        .header-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .center-logo {
+            height: 40px;
+            width: auto;
+        }
+        
+        /* 右侧图标 */
+        .header-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-icon {
+            font-size: 1.3rem;
+            color: var(--dark);
+            position: relative;
+            transition: var(--transition-fast);
+        }
+        
+        .nav-icon:hover {
+            color: var(--primary);
+        }
+        
+        /* 内容容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+        }
+        
+        /* 新闻轮播区 - 改造后 */
+        .news-carousel {
+            position: relative;
+            margin: 25px 0;
+            overflow: hidden;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .carousel-container {
+            display: flex;
+            transition: transform 0.5s ease;
+            height: 300px;
+        }
+        
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .carousel-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+        }
+        
+        .carousel-badge {
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+        
+        .carousel-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        
+        .carousel-summary {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 12px;
+        }
+        
+        .carousel-meta {
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        .carousel-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        
+        .carousel-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+        
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: var(--transition-fast);
+        }
+        
+        .carousel-arrow:hover {
+            background: rgba(0,0,0,0.7);
+        }
+        
+        .carousel-arrow.prev {
+            left: 15px;
+        }
+        
+        .carousel-arrow.next {
+            right: 15px;
+        }
+        
+        /* 主新闻区 - CGTN风格 */
+        .main-news {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            margin: 25px 0;
+        }
+        
+        .featured-news {
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            height: 300px;
+        }
+        
+        .featured-image {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .featured-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+        }
+        
+        .featured-badge {
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+        
+        .featured-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        
+        .featured-summary {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 12px;
+        }
+        
+        .featured-meta {
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        /* 次要新闻区 */
+        .secondary-news {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .secondary-item {
+            display: flex;
+            gap: 12px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .secondary-item:last-child {
+            border-bottom: none;
+        }
+        
+        .secondary-image {
+            width: 90px;
+            height: 70px;
+            border-radius: var(--radius-sm);
+            background-size: cover;
+            background-position: center;
+            flex-shrink: 0;
+        }
+        
+        .secondary-content {
+            flex: 1;
+        }
+        
+        .secondary-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+        
+        .secondary-meta {
+            display: flex;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        /* 新闻分类区 */
+        .news-categories {
+            margin: 40px 0;
+        }
+        
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+        }
+        
+        .category-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .view-all {
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .category-news {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .category-item {
+            background: white;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+        
+        .category-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .category-item-image {
+            width: 100%;
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .category-item-content {
+            padding: 15px;
+        }
+        
+        .category-item-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .category-item-meta {
+            display: flex;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        /* 底部导航栏 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            padding: 12px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            justify-content: space-around;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--dark);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: var(--transition-fast);
+            opacity: 0.6;
+        }
+        
+        .nav-item.active {
+            opacity: 1;
+            color: var(--primary);
+        }
+        
+        .nav-item i {
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+        }
+        
+        /* 响应式设计 - 全平台适配 */
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .main-news {
+                grid-template-columns: 1.5fr 1fr;
+                gap: 20px;
+            }
+            
+            .category-news {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .carousel-container {
+                height: 250px;
+            }
+            
+            .carousel-title {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-news {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .featured-news {
+                height: 250px;
+            }
+            
+            .featured-title {
+                font-size: 1.2rem;
+            }
+            
+            .category-news {
+                grid-template-columns: 1fr;
+            }
+            
+            .secondary-item {
+                flex-direction: column;
+            }
+            
+            .secondary-image {
+                width: 100%;
+                height: 120px;
+            }
+            
+            .center-logo {
+                height: 32px;
+            }
+            
+            .carousel-container {
+                height: 200px;
+            }
+            
+            .carousel-title {
+                font-size: 1.1rem;
+            }
+            
+            .carousel-summary {
+                font-size: 0.85rem;
+            }
+            
+            .carousel-arrow {
+                width: 35px;
+                height: 35px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .app-header {
+                padding: 12px 15px;
+            }
+            
+            .login-btn span {
+                display: none;
+            }
+            
+            .header-right {
+                gap: 15px;
+            }
+            
+            .carousel-container {
+                height: 180px;
+            }
+            
+            .carousel-content {
+                padding: 15px;
+            }
+            
+            .carousel-title {
+                font-size: 1rem;
+            }
+            
+            .carousel-summary {
+                display: none;
+            }
+            
+            .featured-title {
+                font-size: 1.1rem;
+            }
+            
+            .featured-summary {
+                font-size: 0.85rem;
+            }
+            
+            .category-title {
+                font-size: 1.2rem;
+            }
+            
+            .category-item-image {
+                height: 140px;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .carousel-container {
+                height: 160px;
+            }
+            
+            .carousel-title {
+                font-size: 0.95rem;
+            }
+            
+            .featured-news {
+                height: 220px;
+            }
+            
+            .featured-title {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 - 中间图标版 -->
+    <header class="app-header">
+        <div class="header-left">
+            <a href="login.html" class="login-btn">
+                <i class="fas fa-user-circle"></i>
+                <span>登录</span>
+            </a>
+        </div>
+        
+        <div class="header-center">
+            <img src="https://origin.picgo.net/2025/09/14/knockout99813ff7f3122047.png" alt="YRTN+" class="center-logo">
+        </div>
+        
+        <div class="header-right">
+            <a href="live.html" class="nav-icon">
+                <i class="fas fa-tv"></i>
+            </a>
+            <a href="radio.html" class="nav-icon">
+                <i class="fas fa-headphones"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- 内容区域 -->
+    <div class="container">
+        <!-- 新闻轮播区 -->
+        <section class="news-carousel">
+            <div class="carousel-container" id="carousel-container">
+                <!-- 轮播幻灯片将通过JS动态加载 -->
+            </div>
+            
+            <div class="carousel-arrow prev" id="carousel-prev">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <div class="carousel-arrow next" id="carousel-next">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+            
+            <div class="carousel-controls" id="carousel-controls">
+                <!-- 轮播控制点将通过JS动态加载 -->
+            </div>
+        </section>
+        
+        <!-- 主新闻区 -->
+        <section class="main-news">
+            <div class="featured-news">
+                <div class="featured-image" id="featured-image">
+                    <!-- 图片将通过JS动态加载 -->
+                </div>
+                <div class="featured-content">
+                    <span class="featured-badge" id="featured-category">热点</span>
+                    <h2 class="featured-title" id="featured-title">正在加载头条新闻...</h2>
+                    <p class="featured-summary" id="featured-summary">新闻摘要加载中</p>
+                    <div class="featured-meta">
+                        <span id="featured-date">今天</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="secondary-news" id="secondary-news">
+                <!-- 次要新闻将通过JS动态加载 -->
+            </div>
+        </section>
+        
+        <!-- 新闻分类区 -->
+        <section class="news-categories">
+            <div class="category-header">
+                <h2 class="category-title">最新新闻</h2>
+                <a href="archive.html" class="view-all">查看全部</a>
+            </div>
+            <div class="category-news" id="latest-news">
+                <!-- 最新新闻将通过JS动态加载 -->
+            </div>
+        </section>
+        
+        <!-- 视频区 -->
+        <section class="news-categories">
+            <div class="category-header">
+                <h2 class="category-title">视频新闻</h2>
+                <a href="knock.html" class="view-all">查看全部</a>
+            </div>
+            <div class="category-news" id="video-news">
+                <!-- 视频新闻将通过JS动态加载 -->
+            </div>
+        </section>
+    </div>
+    
+    <!-- 底部导航栏 -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </a>
+        <a href="knock.html" class="nav-item">
+            <i class="fas fa-play-circle"></i>
+            <span>视频</span>
+        </a>
+        <a href="archive.html" class="nav-item">
+            <i class="fas fa-bolt"></i>
+            <span>历史</span>
+        </a>
+        <a href="tool.html" class="nav-item">
+            <i class="fas fa-sync-alt"></i>
+            <span>服务</span>
+        </a>
+    </nav>
+
+    <script>
+        // 日期格式化函数
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            return date.toLocaleDateString('zh-CN', options);
+        }
+        
+        // 加载新闻数据
+        async function loadNewsData() {
+            try {
+                const response = await fetch('news.json');
+                if (!response.ok) throw new Error('加载新闻数据失败');
+                
+                const data = await response.json();
+                return data.articles;
+            } catch (error) {
+                console.error('加载新闻数据时出错:', error);
+                return [];
+            }
+        }
+        
+        // 渲染新闻轮播
+        function renderNewsCarousel(articles) {
+            const carouselContainer = document.getElementById('carousel-container');
+            const carouselControls = document.getElementById('carousel-controls');
+            
+            // 清空现有内容
+            carouselContainer.innerHTML = '';
+            carouselControls.innerHTML = '';
+            
+            // 按日期排序（最新优先）
+            articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // 取最新5条新闻作为轮播内容
+            const carouselArticles = articles.slice(0, 5);
+            
+            // 创建轮播幻灯片
+            carouselArticles.forEach((article, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'carousel-slide';
+                slide.style.backgroundImage = `url('${article.image}')`;
+                slide.innerHTML = `
+                    <div class="carousel-content">
+                        <span class="carousel-badge">${article.category}</span>
+                        <h3 class="carousel-title">${article.title}</h3>
+                        <p class="carousel-summary">${article.summary}</p>
+                        <div class="carousel-meta">
+                            <span>${formatDate(article.date)}</span>
+                        </div>
+                    </div>
+                `;
+                
+                // 添加点击事件跳转到详情页
+                slide.addEventListener('click', () => {
+                    window.location.href = `news-detail.html?id=${article.id}`;
+                });
+                
+                carouselContainer.appendChild(slide);
+                
+                // 创建控制点
+                const dot = document.createElement('div');
+                dot.className = 'carousel-dot';
+                dot.dataset.index = index;
+                carouselControls.appendChild(dot);
+            });
+            
+            // 初始化轮播
+            initCarousel();
+        }
+        
+        // 初始化轮播
+        function initCarousel() {
+            const container = document.getElementById('carousel-container');
+            const slides = document.querySelectorAll('.carousel-slide');
+            const dots = document.querySelectorAll('.carousel-dot');
+            const prevBtn = document.getElementById('carousel-prev');
+            const nextBtn = document.getElementById('carousel-next');
+            
+            let currentSlide = 0;
+            let autoSlideInterval;
+            
+            // 显示第一张幻灯片
+            if (slides.length > 0) {
+                updateCarousel();
+            }
+            
+            // 自动轮播
+            function startAutoSlide() {
+                autoSlideInterval = setInterval(() => {
+                    nextSlide();
+                }, 5000);
+            }
+            
+            // 停止自动轮播
+            function stopAutoSlide() {
+                clearInterval(autoSlideInterval);
+            }
+            
+            // 切换到下一张幻灯片
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                updateCarousel();
+            }
+            
+            // 切换到上一张幻灯片
+            function prevSlide() {
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                updateCarousel();
+            }
+            
+            // 更新轮播显示
+            function updateCarousel() {
+                container.style.transform = `translateX(-${currentSlide * 100}%)`;
+                
+                // 更新控制点状态
+                dots.forEach((dot, index) => {
+                    if (index === currentSlide) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+            
+            // 切换到指定幻灯片
+            function goToSlide(index) {
+                currentSlide = index;
+                updateCarousel();
+            }
+            
+            // 事件监听
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                stopAutoSlide();
+                startAutoSlide();
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                stopAutoSlide();
+                startAutoSlide();
+            });
+            
+            dots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const index = parseInt(dot.dataset.index);
+                    goToSlide(index);
+                    stopAutoSlide();
+                    startAutoSlide();
+                });
+            });
+            
+            // 触摸滑动支持
+            let startX = 0;
+            let endX = 0;
+            
+            container.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                stopAutoSlide();
+            });
+            
+            container.addEventListener('touchmove', (e) => {
+                endX = e.touches[0].clientX;
+            });
+            
+            container.addEventListener('touchend', () => {
+                const diff = startX - endX;
+                if (Math.abs(diff) > 50) { // 最小滑动距离
+                    if (diff > 0) {
+                        nextSlide();
+                    } else {
+                        prevSlide();
+                    }
+                }
+                startAutoSlide();
+            });
+            
+            // 开始自动轮播
+            startAutoSlide();
+            
+            // 鼠标悬停时暂停自动轮播
+            container.addEventListener('mouseenter', stopAutoSlide);
+            container.addEventListener('mouseleave', startAutoSlide);
+        }
+        
+        // 渲染主新闻区
+        function renderMainNews(articles) {
+            if (articles.length === 0) return;
+            
+            // 按日期排序（最新优先）
+            articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // 设置头条新闻（跳过轮播中已显示的5条）
+            const featured = articles[5] || articles[0];
+            document.getElementById('featured-image').style.backgroundImage = `url('${featured.image}')`;
+            document.getElementById('featured-category').textContent = featured.category;
+            document.getElementById('featured-title').textContent = featured.title;
+            document.getElementById('featured-summary').textContent = featured.summary;
+            document.getElementById('featured-date').textContent = formatDate(featured.date);
+            
+            // 添加点击事件
+            document.querySelector('.featured-news').addEventListener('click', () => {
+                window.location.href = `news-detail.html?id=${featured.id}`;
+            });
+            
+            // 渲染次要新闻
+            const secondaryContainer = document.getElementById('secondary-news');
+            secondaryContainer.innerHTML = '';
+            
+            // 取接下来的4条新闻作为次要新闻
+            const secondaryNews = articles.slice(6, 10);
+            
+            secondaryNews.forEach(article => {
+                const item = document.createElement('div');
+                item.className = 'secondary-item';
+                item.innerHTML = `
+                    <div class="secondary-image" style="background-image: url('${article.image}')"></div>
+                    <div class="secondary-content">
+                        <h3 class="secondary-title">${article.title}</h3>
+                        <div class="secondary-meta">
+                            <span>${formatDate(article.date)}</span>
+                        </div>
+                    </div>
+                `;
+                
+                // 添加点击事件
+                item.addEventListener('click', () => {
+                    window.location.href = `news-detail.html?id=${article.id}`;
+                });
+                
+                secondaryContainer.appendChild(item);
+            });
+        }
+        
+        // 渲染最新新闻
+        function renderLatestNews(articles) {
+            const container = document.getElementById('latest-news');
+            container.innerHTML = '';
+            
+            if (articles.length === 0) {
+                container.innerHTML = '<p>暂无新闻</p>';
+                return;
+            }
+            
+            // 按日期排序（最新优先）
+            articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // 取10条之后的新闻作为最新新闻
+            const latestNews = articles.slice(10, 16);
+            
+            latestNews.forEach(article => {
+                const item = document.createElement('div');
+                item.className = 'category-item';
+                item.innerHTML = `
+                    <div class="category-item-image" style="background-image: url('${article.image}')"></div>
+                    <div class="category-item-content">
+                        <h3 class="category-item-title">${article.title}</h3>
+                        <div class="category-item-meta">
+                            <span>${formatDate(article.date)}</span>
+                        </div>
+                    </div>
+                `;
+                
+                // 添加点击事件
+                item.addEventListener('click', () => {
+                    window.location.href = `news-detail.html?id=${article.id}`;
+                });
+                
+                container.appendChild(item);
+            });
+        }
+        
+        // 渲染视频新闻
+        function renderVideoNews(articles) {
+            const container = document.getElementById('video-news');
+            container.innerHTML = '';
+            
+            // 筛选出视频内容
+            const videoArticles = articles.filter(article => 
+                article.category === '科技' || article.category === '渊华德互联' || article.hasVideo
+            );
+            
+            if (videoArticles.length === 0) {
+                container.innerHTML = '<p>暂无视频新闻</p>';
+                return;
+            }
+            
+            // 限制显示3个视频
+            const videosToShow = videoArticles.slice(0, 3);
+            
+            videosToShow.forEach(video => {
+                const item = document.createElement('div');
+                item.className = 'category-item';
+                item.innerHTML = `
+                    <div class="category-item-image" style="background-image: url('${video.image}')">
+                        <div style="position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.7); color:white; padding:3px 8px; border-radius:4px; font-size:0.8rem;">
+                            <i class="fas fa-play"></i> 视频
+                        </div>
+                    </div>
+                    <div class="category-item-content">
+                        <h3 class="category-item-title">${video.title}</h3>
+                        <div class="category-item-meta">
+                            <span>${formatDate(video.date)}</span>
+                        </div>
+                    </div>
+                `;
+                
+                // 添加点击事件
+                item.addEventListener('click', () => {
+                    window.location.href = `news-detail.html?id=${video.id}`;
+                });
+                
+                container.appendChild(item);
+            });
+        }
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 加载新闻数据
+            const articles = await loadNewsData();
+            
+            if (articles.length > 0) {
+                // 渲染新闻轮播
+                renderNewsCarousel(articles);
+                
+                // 渲染主新闻区
+                renderMainNews(articles);
+                
+                // 渲染最新新闻
+                renderLatestNews(articles);
+                
+                // 渲染视频新闻
+                renderVideoNews(articles);
+            } else {
+                // 如果没有加载到文章，显示错误信息
+                const container = document.getElementById('latest-news');
+                container.innerHTML = `
+                    <div style="grid-column:1/-1; text-align:center; padding:40px;">
+                        <p>未找到新闻文章，请稍后再试。</p>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
