@@ -4,9 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YRTN+ | 渊迂新闻（架空）</title>
+    
+    <!-- PWA配置 -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#FF3E4D">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="YRTN+">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="shortcut icon" href="icon.JPG" type="image/JPG">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" href="icon.JPG" type="image/JPG">
     <style>
         :root {
             --primary: #FF3E4D; /* 活力红 */
@@ -683,6 +692,48 @@
             transform: scale(1.1);
         }
         
+        /* PWA离线提示 */
+        .offline-alert {
+            display: none;
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            z-index: 1002;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            max-width: 90%;
+        }
+        
+        .update-notification {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--secondary);
+            color: white;
+            padding: 15px 20px;
+            border-radius: var(--radius-sm);
+            z-index: 1002;
+            box-shadow: var(--shadow-lg);
+            max-width: 300px;
+        }
+        
+        .update-notification button {
+            background: white;
+            color: var(--secondary);
+            border: none;
+            padding: 5px 10px;
+            border-radius: var(--radius-sm);
+            margin-top: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
         /* 响应式设计 */
         @media (max-width: 1200px) {
             .container {
@@ -942,6 +993,18 @@
             <span>服务</span>
         </a>
     </nav>
+    
+    <!-- PWA离线提示 -->
+    <div class="offline-alert" id="offline-alert">
+        <i class="fas fa-wifi-slash"></i> 当前处于离线模式
+    </div>
+    
+    <!-- 更新提示 -->
+    <div class="update-notification" id="update-notification">
+        <p>新版本已推送至您的设备，是否更新？</p>
+        <button id="update-now">立即更新</button>
+        <button id="update-later">稍后提醒</button>
+    </div>
     
     <!-- 配置面板 -->
     <div class="config-panel" id="config-panel">
@@ -1548,6 +1611,75 @@
             document.getElementById('config-panel').classList.remove('active');
         }
         
+        // ==================== PWA功能 ====================
+        
+        // 注册Service Worker
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then(registration => {
+                            console.log('Service Worker 注册成功:', registration.scope);
+                            
+                            // 检查更新
+                            registration.addEventListener('updatefound', () => {
+                                const newWorker = registration.installing;
+                                newWorker.addEventListener('statechange', () => {
+                                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                        showUpdateNotification();
+                                    }
+                                });
+                            });
+                        })
+                        .catch(error => {
+                            console.log('Service Worker 注册失败:', error);
+                        });
+                });
+            }
+        }
+        
+        // 显示更新通知
+        function showUpdateNotification() {
+            const notification = document.getElementById('update-notification');
+            notification.style.display = 'block';
+            
+            document.getElementById('update-now').addEventListener('click', () => {
+                window.location.reload();
+            });
+            
+            document.getElementById('update-later').addEventListener('click', () => {
+                notification.style.display = 'none';
+                localStorage.setItem('updateDismissed', new Date().toISOString());
+            });
+        }
+        
+        // 检查是否有更新
+        function checkForUpdates() {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.ready.then(registration => {
+                    registration.update();
+                });
+            }
+        }
+        
+        // 离线状态检测
+        function setupOfflineDetection() {
+            window.addEventListener('online', () => {
+                document.getElementById('offline-alert').style.display = 'none';
+            });
+            
+            window.addEventListener('offline', () => {
+                document.getElementById('offline-alert').style.display = 'block';
+            });
+            
+            // 初始检查
+            if (!navigator.onLine) {
+                document.getElementById('offline-alert').style.display = 'block';
+            }
+        }
+        
+        // ==================== 页面初始化 ====================
+        
         // 初始化页面
         async function initPage() {
             // 加载配置
@@ -1617,10 +1749,45 @@
             document.getElementById('apply-config').addEventListener('click', applyConfig);
         }
         
-        // 初始化页面
+        // 滚动时隐藏/显示导航栏
+        function setupScrollBehavior() {
+            let lastScroll = 0;
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                const bottomNav = document.querySelector('.bottom-nav');
+                
+                if (currentScroll <= 0) {
+                    bottomNav.classList.remove('hidden');
+                    return;
+                }
+                
+                if (currentScroll > lastScroll && currentScroll > 100) {
+                    bottomNav.classList.add('hidden');
+                } else if (currentScroll < lastScroll) {
+                    bottomNav.classList.remove('hidden');
+                }
+                
+                lastScroll = currentScroll;
+            });
+        }
+        
+        // 初始化所有功能
         document.addEventListener('DOMContentLoaded', () => {
+            // 初始化页面
             initPage();
+            
+            // 初始化配置面板
             initConfigPanel();
+            
+            // 初始化滚动行为
+            setupScrollBehavior();
+            
+            // PWA功能
+            registerServiceWorker();
+            setupOfflineDetection();
+            
+            // 检查更新（每24小时）
+            setInterval(checkForUpdates, 24 * 60 * 60 * 1000);
         });
     </script>
 </body>
