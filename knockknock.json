@@ -2,7 +2,7 @@
   "categories": [
     {
       "id": "news",
-      "name": "新闻叩击",
+      "name": "新闻访谈",
       "image": "https://img.picgo.net/2025/07/07/IMG_4878dfe7cb9d06ca96fa.jpeg",
       "shows": [
         {
@@ -61,6 +61,23 @@
               "thumbnail": "https://origin.picgo.net/2025/08/06/quality_restoration_2025080693740358059b4d4d9e8c2c6e.jpeg",
               "videoUrl": "https://dlink.host/1drv/aHR0cHM6Ly8xZHJ2Lm1zL3YvYy83ZjkzYmM0ZDA3N2U1NjA3L0Vhc1JKempudlVwR253ZzdSN1VtbWRZQjlDb0JscnNmQlVIVE55OGdQTmsxY2c.mp4",
               "duration": "00:00",
+              "views": "NULL"
+            }
+          ]
+        },
+         {
+          "id": "news-4",
+          "title": "对话 Dialogue",
+          "image": "https://origin.picgo.net/2026/01/21/IMG_7751f3accc662e11218c.jpeg",
+          "description": "聚焦城市大小事，对话行业专家学者",
+          "episodes": [
+            {
+              "id": "Dialogue-1",
+              "title": "锁定首期，敬请期待",
+              "date": "2026-01-21",
+              "thumbnail": "https://origin.picgo.net/2026/01/21/IMG_7751f3accc662e11218c.jpeg",
+              "videoUrl": "https://yun.urldwz.com/f/mX23uo/copy_C7DD9069-82AE-468D-8B88-0491B8F531D8.mov",
+              "duration": "00:16",
               "views": "NULL"
             }
           ]
