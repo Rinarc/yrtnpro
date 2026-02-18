@@ -240,6 +240,24 @@
               "views": "75万"
             }
           ]
+        },
+        
+{
+          "id": "sports-vog-pov",
+          "title": "VOG POV-SHOT!",
+          "image": "https://origin.picgo.net/2026/02/18/IMG_8296b70d0210d329daa4.jpeg",
+          "description": "第一视角沉浸式体育节目",
+          "episodes": [
+            {
+              "id": "vogpov-1",
+              "title": "20260213",
+              "date": "2026-02-18",
+              "thumbnail": "https://origin.picgo.net/2026/02/18/IMG_8296b70d0210d329daa4.jpeg",
+              "videoUrl": "https://yun.urldwz.com/f/dnjQHZ/POVSHOT_1.mov",
+              "duration": "VOG POV-SHOT!",
+              "views": "NULL"
+            }
+          ]
         }
       ]
     },
