@@ -92,14 +92,14 @@
         {
           "id": "sports-1",
           "title": "渊华德篮球赛",
-          "image": "https://img.picgo.net/2025/07/06/IMG_4842c779b040ea667fcc.jpeg",
+          "image": "https://origin.picgo.net/2026/02/24/knockout2fb5d99f3abe5241.jpeg",
           "description": "开启这场篮球之旅",
           "episodes": [
             {
               "id": "ep-4",
               "title": "「NBA2K23」梦十六队 vs 梦十二队",
               "date": "2025-07-05",
-              "thumbnail": "https://img.picgo.net/2025/07/06/IMG_4842c779b040ea667fcc.jpeg",
+              "thumbnail": "https://origin.picgo.net/2026/02/24/knockout2fb5d99f3abe5241.jpeg",
               "videoUrl": "https://player.bilibili.com/player.html?bvid=BV1TW3Rz1EfN",
               "duration": "32:45",
               "views": "75万"
@@ -108,7 +108,7 @@
               "id": "ep-5",
               "title": "「游戏」洛杉矶湖人vs达拉斯独行侠[1]",
               "date": "2025-07-05",
-              "thumbnail": "https://img.picgo.net/2025/07/06/IMG_4842c779b040ea667fcc.jpeg",
+              "thumbnail": "https://origin.picgo.net/2026/02/24/knockout2fb5d99f3abe5241.jpeg",
               "videoUrl": "https://player.bilibili.com/player.html?bvid=BV1sg3dzVETk",
               "duration": "16:55",
               "views": "75万"
@@ -117,7 +117,7 @@
               "id": "ep-6",
               "title": "「游戏」洛杉矶湖人vs达拉斯独行侠[2]",
               "date": "2025-07-05",
-              "thumbnail": "https://img.picgo.net/2025/07/06/IMG_4842c779b040ea667fcc.jpeg",
+              "thumbnail": "https://origin.picgo.net/2026/02/24/knockout2fb5d99f3abe5241.jpeg",
               "videoUrl": "https://player.bilibili.com/player.html?bvid=BV1D53RzDEiU",
               "duration": "18:44",
               "views": "75万"
@@ -126,7 +126,7 @@
               "id": "ep-7",
               "title": "「游戏」洛杉矶湖人vs达拉斯独行侠[3]",
               "date": "2025-07-05",
-              "thumbnail": "https://img.picgo.net/2025/07/06/IMG_4842c779b040ea667fcc.jpeg",
+              "thumbnail": "https://origin.picgo.net/2026/02/24/knockout2fb5d99f3abe5241.jpeg",
               "videoUrl": "https://player.bilibili.com/player.html?bvid=BV1UJ3Rz7EsR",
               "duration": "16:20",
               "views": "75万"
@@ -135,7 +135,7 @@
               "id": "ep-7-1",
               "title": "「游戏」洛杉矶湖人vs达拉斯独行侠[4]",
               "date": "2025-07-05",
-              "thumbnail": "https://img.picgo.net/2025/07/06/IMG_4842c779b040ea667fcc.jpeg",
+              "thumbnail": "https://origin.picgo.net/2026/02/24/knockout2fb5d99f3abe5241.jpeg",
               "videoUrl": "https://player.bilibili.com/player.html?bvid=BV1uB39zjEK8",
               "duration": "16:20",
               "views": "75万"
@@ -144,7 +144,7 @@
               "id": "ep-8",
               "title": "「NBA 2K23」俄克拉荷马城雷霆队VS印第安纳步行者队",
               "date": "2025-07-12",
-              "thumbnail": "https://img.picgo.net/2025/07/06/IMG_4842c779b040ea667fcc.jpeg",
+              "thumbnail": "https://origin.picgo.net/2026/02/24/knockout2fb5d99f3abe5241.jpeg",
               "videoUrl": "https://player.bilibili.com/player.html?bvid=BV1tqM9zKE4N",
               "duration": "33:39",
               "views": "75万"
@@ -153,7 +153,7 @@
               "id": "ep-9",
               "title": "「游戏」洛杉矶湖人vs萨克拉门托国王[1]",
               "date": "2025-07-06",
-              "thumbnail": "https://img.picgo.net/2025/07/06/IMG_4842c779b040ea667fcc.jpeg",
+              "thumbnail": "https://origin.picgo.net/2026/02/24/knockout2fb5d99f3abe5241.jpeg",
               "videoUrl": "https://player.bilibili.com/player.html?bvid=BV1bN3ZzsEp2",
               "duration": "16:20",
               "views": "75万"
@@ -162,9 +162,18 @@
               "id": "ep-10",
               "title": "「游戏」洛杉矶湖人vs萨克拉门托国王[2]",
               "date": "2025-07-06",
-              "thumbnail": "https://img.picgo.net/2025/07/06/IMG_4842c779b040ea667fcc.jpeg",
+              "thumbnail": "https://origin.picgo.net/2026/02/24/knockout2fb5d99f3abe5241.jpeg",
               "videoUrl": "https://player.bilibili.com/player.html?bvid=BV1ivGFzkETE",
               "duration": "16:20",
+              "views": "75万"
+            },
+            {
+              "id": "ep-11",
+              "title": "「游戏」LWerTvs小卡的居住地",
+              "date": "2026-02-24",
+              "thumbnail": "https://origin.picgo.net/2026/02/24/knockout2fb5d99f3abe5241.jpeg",
+              "videoUrl": "https://yun.urldwz.com/f/4DGLCE/YHDSPORT.mp4",
+              "duration": "YHD",
               "views": "75万"
             }
             
