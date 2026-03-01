@@ -314,7 +314,7 @@
     },
     {
       "id": "metro",
-      "name": "云乘车",
+      "name": "都市之声",
       "image": "https://origin.picgo.net/2025/08/04/IMG_5456ec071a9f658748d8.jpeg",
       "shows": [
         {
@@ -338,6 +338,23 @@
               "date": "2025-10-03",
               "thumbnail": "https://origin.picgo.net/2025/08/04/IMG_5456ec071a9f658748d8.jpeg",
               "videoUrl": "https://player.bilibili.com/player.html?bvid=BV1MaHVzsEG5",
+              "duration": "作者：LWUert",
+              "views": "1古戈尔"
+            }
+          ]
+        },
+        {
+          "id": "metro-2",
+          "title": "虚拟城市",
+          "image": "https://origin.picgo.net/2025/08/04/IMG_5456ec071a9f658748d8.jpeg",
+          "description": "由虚拟世界引申的作品",
+          "episodes": [
+            {
+              "id": "metrovirtual-1",
+              "title": "【德水地铁】1号线全程（德水开发区→渊华德路）上行前方展望POV",
+              "date": "2026-03-01",
+              "thumbnail": "https://origin.picgo.net/2026/03/01/IMG_8410aa5dab15256f4d66.jpeg",
+              "videoUrl": "https://yun.urldwz.com/f/n747CD/DeshuiMetroLine1POV.mov",
               "duration": "作者：LWUert",
               "views": "1古戈尔"
             }
