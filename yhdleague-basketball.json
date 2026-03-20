@@ -1,0 +1,80 @@
+[
+           {
+             "id": "Yuanyuyulong",
+             "name": "渊迂迂龙队",
+             "logo": "https://origin.picgo.net/2026/03/18/CA3CDB6C-C658-4E51-B0BB-CCD2D6B90D700611fc3c62253821.jpeg",
+             "coach": "Lin Yuanfan（主教)、Marcus Reed（助理教练）",
+             "description": "渊迂迂龙队（Yuanyu Yulong）",
+             "players": [
+    { "id": "yy7", "name": "Li Yifei", "number": 7, "position": "PG", "starter": true, "overall": 97, "tags": ["组织传球", "中投"] },
+    { "id": "yy12", "name": "Ouyang Jing", "number": 12, "position": "SG", "starter": true, "overall": 100, "tags": ["三分", "中投"] },
+    { "id": "yy3", "name": "Chen Hao", "number": 3, "position": "SF", "starter": true, "overall": 83, "tags": ["外线防守", "中投"] },
+    { "id": "yy2", "name": "Zhang Zhenyue", "number": 2, "position": "PF", "starter": true, "overall": 81, "tags": ["篮板", "内线防守"] },
+    { "id": "yy16", "name": "Andre Ivanov", "number": 16, "position": "C", "starter": true, "overall": 83, "tags": ["护框", "挡拆发动"] },
+    { "id": "yy22", "name": "Zhou Rui", "number": 22, "position": "SG", "starter": false, "overall": 75, "tags": ["急停跳投", "突破分球"] },
+    { "id": "yy14", "name": "Lu Zixuan", "number": 14, "position": "SF", "starter": false, "overall": 72, "tags": ["三分", "外线防守"] },
+    { "id": "yy10", "name": "Raymond Carter", "number": 10, "position": "PF", "starter": false, "overall": 76, "tags": ["空切", "快攻"] },
+    { "id": "yy21", "name": "Wang Lei", "number": 21, "position": "PF", "starter": false, "overall": 74, "tags": ["三分", "篮板"] },
+    { "id": "yy20", "name": "Liu Dawei", "number": 20, "position": "C", "starter": false, "overall": 70, "tags": ["篮板", "内线防守"] },
+    { "id": "yy11", "name": "Wu Xiaoyu", "number": 11, "position": "PG", "starter": false, "overall": 66, "tags": ["组织传球", "快攻"] },
+    { "id": "yy8", "name": "Kim Minjun", "number": 8, "position": "SG", "starter": false, "overall": 63, "tags": ["三分", "空切"] }
+
+             ]
+           },
+{
+             "id": "Huanzhi",
+             "name": "幻织回响队",
+             "logo": "https://origin.picgo.net/2026/03/18/knockout47ab90bdfc4ac347.jpeg",
+             "coach": "Marcus Sterling（主教)、Luca Moretti（助理教练）",
+             "description": "幻织回响队（Huanzhi Resound）",
+             "players": [
+    { "id": "ia5", "name": "Kaelen Vance", "number": 5, "position": "PG", "starter": true, "overall": 84, "tags": ["组织传球", "节奏掌控"] },
+    { "id": "ia7", "name": "Liam O'Connor", "number": 7, "position": "SG", "starter": true, "overall": 95, "tags": ["三分", "关键球"] },
+    { "id": "ia22", "name": "Rafael Silva", "number": 22, "position": "SF", "starter": true, "overall": 96, "tags": ["攻防一体", "突破"] },
+    { "id": "ia33", "name": "Nikolai Petrov", "number": 33, "position": "PF", "starter": true, "overall": 85, "tags": ["三分", "护框"] },
+    { "id": "ia41", "name": "Jonas Schmidt", "number": 41, "position": "C", "starter": true, "overall": 82, "tags": ["挡拆发动", "中投"] },
+    { "id": "ia99", "name": "Kenji Tanaka", "number": 99, "position": "SG", "starter": false, "overall": 80, "tags": ["突破", "急停跳投"] },
+    { "id": "ia10", "name": "Mateo Garcia", "number": 10, "position": "SF", "starter": false, "overall": 78, "tags": ["外线防守", "空切"] },
+    { "id": "ia13", "name": "Dante Rossi", "number": 13, "position": "PF", "starter": false, "overall": 76, "tags": ["篮板", "内线防守"] },
+    { "id": "ia17", "name": "Pierre Dubois", "number": 17, "position": "SG", "starter": false, "overall": 75, "tags": ["外线防守", "三分"] },
+    { "id": "ia8", "name": "Chidi Okoro", "number": 8, "position": "SF", "starter": false, "overall": 74, "tags": ["快攻", "空切"] },
+    { "id": "ia9", "name": "Elias Lindgren", "number": 9, "position": "PG", "starter": false, "overall": 70, "tags": ["组织传球"] },
+    { "id": "ia28", "name": "Zhang Wei", "number": 28, "position": "C", "starter": false, "overall": 66, "tags": ["快攻"] }
+]
+           },
+{
+             "id": "Xiaolong",
+             "name": "华兴骁龙队",
+             "logo": "https://origin.picgo.net/2026/03/19/knockout4626451e564fcd31.md.jpeg",
+             "coach": "Dexterous Roswell（主教)、Lambert Robot（助理教练）、Lee Jia Chong（经纪人）",
+             "description": "幻织回响队（Huanzhi Resound）",
+             "players": [
+               { "id": "yy1", "name": "Kaelen Vance", "number": 1, "position": "PG", "starter": true },
+               { "id": "yy2", "name": "Liam O'Connor", "number": 3, "position": "SG", "starter": true },
+               { "id": "yy3", "name": "Rafael Silva", "number": 11, "position": "SF", "starter": true },
+               { "id": "yy4", "name": "Nikolai Petrov", "number": 14, "position": "PF", "starter": true },
+               { "id": "yy5", "name": "Jonas Schmidt", "number": 9, "position": "C", "starter": true }
+             ]
+           },
+{
+             "id": "Arcs",
+             "name": "幻影之城电弧队",
+             "logo": "https://origin.picgo.net/2026/03/19/knockoutb3e5e8b0b2969ce7.md.jpeg",
+             "coach": "Elias Richter（主教)、Santiago Cruz（助理教练）",
+             "description": "幻影之城电弧队（Phantom City Arcs）是幻织市的所属球队",
+             "players": [
+    { "id": "Arcs5", "name": "Kaelen Vance", "number": 5, "position": "PG", "starter": true, "overall": 84, "tags": ["组织传球", "节奏掌控"] },
+    { "id": "Arcs7", "name": "Liam O'Connor", "number": 7, "position": "SG", "starter": true, "overall": 95, "tags": ["三分", "关键球"] },
+    { "id": "Arcs22", "name": "Rafael Silva", "number": 22, "position": "SF", "starter": true, "overall": 96, "tags": ["攻防一体", "突破"] },
+    { "id": "Arcs33", "name": "Nikolai Petrov", "number": 33, "position": "PF", "starter": true, "overall": 85, "tags": ["三分", "护框"] },
+    { "id": "Arcs41", "name": "Jonas Schmidt", "number": 41, "position": "C", "starter": true, "overall": 82, "tags": ["挡拆发动", "中投"] },
+    { "id": "Arcs0", "name": "Kenji Tanaka", "number": 0, "position": "SG", "starter": false, "overall": 80, "tags": ["突破", "急停跳投"] },
+    { "id": "Arcs10", "name": "Mateo Garcia", "number": 10, "position": "SF", "starter": false, "overall": 78, "tags": ["外线防守", "空切"] },
+    { "id": "Arcs13", "name": "Dante Rossi", "number": 13, "position": "PF", "starter": false, "overall": 76, "tags": ["篮板", "内线防守"] },
+    { "id": "Arcs17", "name": "Pierre Dubois", "number": 17, "position": "SG", "starter": false, "overall": 75, "tags": ["外线防守", "三分"] },
+    { "id": "Arcs8", "name": "Chidi Okoro", "number": 8, "position": "SF", "starter": false, "overall": 74, "tags": ["快攻", "空切"] },
+    { "id": "Arcs9", "name": "Elias Lindgren", "number": 9, "position": "PG", "starter": false, "overall": 70, "tags": ["组织传球"] },
+    { "id": "Arcs28", "name": "Zhang Wei", "number": 28, "position": "C", "starter": false, "overall": 66, "tags": ["快攻"] }
+]
+           }
+         ]

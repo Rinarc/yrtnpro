@@ -1,0 +1,73 @@
+[
+  {
+    "id": "g0",
+    "date": "2026-03-20",
+    "homeTeamId": "Yuanyuyulong",
+    "awayTeamId": "Huanzhi",
+    "homeScore": 105,
+    "awayScore": 98,
+    "status": "已结束",
+    "referees": {
+      "main": "Liguohua",
+      "linesman": ["Liuwei", "Zhaodongsheng"]
+    },
+    "liveText": {
+      "Q1": [
+        { "time": "11:15", "content": "伊万诺夫接李逸飞挡拆妙传，上篮得手，为主队首开纪录，2-0。" },
+        { "time": "10:30", "content": "幻织队O'Connor命中底角三分，还以颜色，2-3。" },
+        { "time": "07:45", "content": "欧阳靖借双掩护兜出，接球干拔三分命中！7-6。" },
+        { "time": "06:20", "content": "Rafael Silva抢断后一条龙暴扣，引爆客场替补席，9-10。" },
+        { "time": "00:00", "content": "欧阳靖接边线球，压哨中投命中！首节结束，渊迂迂龙28-26领先。" }
+      ],
+      "Q2": [
+        { "time": "09:50", "content": "龙队周锐替补登场，突破急停跳投得手，展现‘微波炉’属性，32-33。" },
+        { "time": "06:40", "content": "王磊命中底角关键三分，稳定军心，37-37。" },
+        { "time": "03:30", "content": "欧阳靖与O'Connor展开对飙，相继命中三分，46-46。" },
+        { "time": "00:30", "content": "Silva补篮压哨命中！半场结束，渊迂迂龙51-50仅领先1分。" }
+      ],
+      "Q3": [
+        { "time": "08:50", "content": "李逸飞长传，欧阳靖反击追身三分命中！打停幻织回响，58-52。" },
+        { "time": "07:10", "content": "暂停无效！欧阳靖手感滚烫，再中两记三分，个人连得8分！66-54，分差首次来到两位数。" },
+        { "time": "05:40", "content": "O'Connor命中关键三分止血，幻织回响暂停，68-59。" },
+        { "time": "00:05", "content": "李逸飞压哨抛投不中。三节战罢，渊迂迂龙81-72领先9分。" }
+      ],
+      "Q4": [
+        { "time": "11:00", "content": "末节幻织回响发力！O'Connor和Petrov连中两记三分，一波6-0！81-78，龙队暂停。" },
+        { "time": "08:10", "content": "Silva强打2+1得手，分差只剩2分，87-85。" },
+        { "time": "06:50", "content": "关键时刻，李逸飞送出第10次助攻，陈昊底角三分命中！92-87。" },
+        { "time": "02:40", "content": "Silva抢断李逸飞，快攻暴扣！98-95，比赛进入白热化。" },
+        { "time": "01:15", "content": "李逸飞将功补过，命中关键中距离，100-95。" },
+        { "time": "00:15", "content": "犯规战术，李逸飞两罚一中，103-97。" },
+        { "time": "00:08", "content": "欧阳靖收下关键篮板并两罚全中，杀死比赛！105-97。" },
+        { "time": "00:00", "content": "全场比赛结束！渊迂迂龙队105-98力克幻织回响队。" }
+      ]
+    },
+    "highlights": "渊迂迂龙队超级得分手欧阳靖统治比赛，28投13中，三分12中6，狂砍全场最高的38分，并在第三节独得13分率队拉开分差。指挥官李逸飞送出12次助攻盘活全队，伊万诺夫贡献15分13篮板3盖帽的两双。幻织回响队Rafael Silva空砍30分8篮板5助攻3抢断的全面数据，未能率队逆转。",
+    "playerStats": [
+      { "teamId": "Yuanyuyulong", "playerId": "yy12", "points": 38, "rebounds": 5, "assists": 3, "steals": 2, "blocks": 0, "plusMinus": 11, "turnovers": 2, "fouls": 1, "minutesPlayed": "38:15" },
+      { "teamId": "Yuanyuyulong", "playerId": "yy7", "points": 19, "rebounds": 4, "assists": 12, "steals": 1, "blocks": 0, "plusMinus": 9, "turnovers": 3, "fouls": 2, "minutesPlayed": "36:45" },
+      { "teamId": "Yuanyuyulong", "playerId": "yy16", "points": 15, "rebounds": 13, "assists": 4, "steals": 0, "blocks": 3, "plusMinus": 13, "turnovers": 1, "fouls": 3, "minutesPlayed": "32:20" },
+      { "teamId": "Yuanyuyulong", "playerId": "yy3", "points": 12, "rebounds": 6, "assists": 2, "steals": 2, "blocks": 1, "plusMinus": 5, "turnovers": 1, "fouls": 2, "minutesPlayed": "30:10" },
+      { "teamId": "Yuanyuyulong", "playerId": "yy2", "points": 8, "rebounds": 9, "assists": 1, "steals": 0, "blocks": 2, "plusMinus": 4, "turnovers": 2, "fouls": 4, "minutesPlayed": "28:30" },
+      { "teamId": "Yuanyuyulong", "playerId": "yy22", "points": 9, "rebounds": 2, "assists": 2, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 1, "fouls": 1, "minutesPlayed": "18:05" },
+      { "teamId": "Yuanyuyulong", "playerId": "yy21", "points": 4, "rebounds": 5, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 2, "minutesPlayed": "12:20" },
+      { "teamId": "Yuanyuyulong", "playerId": "yy20", "points": 0, "rebounds": 4, "assists": 0, "steals": 0, "blocks": 1, "plusMinus": -1, "turnovers": 0, "fouls": 1, "minutesPlayed": "8:15" },
+      { "teamId": "Yuanyuyulong", "playerId": "yy10", "points": 0, "rebounds": 2, "assists": 1, "steals": 1, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 0, "minutesPlayed": "6:40" },
+      { "teamId": "Yuanyuyulong", "playerId": "yy14", "points": 0, "rebounds": 2, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -4, "turnovers": 0, "fouls": 0, "minutesPlayed": "5:50" },
+      { "teamId": "Yuanyuyulong", "playerId": "yy8", "points": 0, "rebounds": 0, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 0, "minutesPlayed": "2:30" },
+      { "teamId": "Yuanyuyulong", "playerId": "yy11", "points": 0, "rebounds": 0, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 0, "fouls": 0, "minutesPlayed": "2:20" },
+      { "teamId": "Huanzhi", "playerId": "ia22", "points": 30, "rebounds": 8, "assists": 5, "steals": 3, "blocks": 1, "plusMinus": -8, "turnovers": 4, "fouls": 3, "minutesPlayed": "39:10" },
+      { "teamId": "Huanzhi", "playerId": "ia7", "points": 22, "rebounds": 3, "assists": 4, "steals": 1, "blocks": 0, "plusMinus": -5, "turnovers": 1, "fouls": 2, "minutesPlayed": "37:25" },
+      { "teamId": "Huanzhi", "playerId": "ia33", "points": 16, "rebounds": 10, "assists": 3, "steals": 0, "blocks": 2, "plusMinus": -2, "turnovers": 2, "fouls": 4, "minutesPlayed": "34:50" },
+      { "teamId": "Huanzhi", "playerId": "ia5", "points": 11, "rebounds": 2, "assists": 8, "steals": 2, "blocks": 0, "plusMinus": -7, "turnovers": 2, "fouls": 3, "minutesPlayed": "32:15" },
+      { "teamId": "Huanzhi", "playerId": "ia41", "points": 6, "rebounds": 7, "assists": 5, "steals": 0, "blocks": 1, "plusMinus": -3, "turnovers": 1, "fouls": 3, "minutesPlayed": "28:40" },
+      { "teamId": "Huanzhi", "playerId": "ia99", "points": 8, "rebounds": 1, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 3, "turnovers": 1, "fouls": 2, "minutesPlayed": "18:30" },
+      { "teamId": "Huanzhi", "playerId": "ia13", "points": 2, "rebounds": 5, "assists": 0, "steals": 1, "blocks": 1, "plusMinus": 4, "turnovers": 0, "fouls": 2, "minutesPlayed": "15:20" },
+      { "teamId": "Huanzhi", "playerId": "ia10", "points": 3, "rebounds": 3, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 0, "fouls": 1, "minutesPlayed": "12:05" },
+      { "teamId": "Huanzhi", "playerId": "ia17", "points": 0, "rebounds": 1, "assists": 1, "steals": 1, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 0, "minutesPlayed": "8:15" },
+      { "teamId": "Huanzhi", "playerId": "ia8", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -4, "turnovers": 1, "fouls": 1, "minutesPlayed": "6:50" },
+      { "teamId": "Huanzhi", "playerId": "ia9", "points": 0, "rebounds": 1, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 0, "minutesPlayed": "4:40" },
+      { "teamId": "Huanzhi", "playerId": "ia28", "points": 0, "rebounds": 0, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 0, "minutesPlayed": "2:20" }
+    ]
+  }
+]
