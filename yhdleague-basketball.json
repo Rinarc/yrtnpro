@@ -137,7 +137,7 @@
     { "id": "dc9", "name": "Stephen Jams", "number": 30, "position": "PG", "starter": false, "overall": 78, "tags": ["三分", "组织传球"] },
     { "id": "dc10", "name": "Shaquille Jersey", "number": 34, "position": "C", "starter": false, "overall": 76, "tags": ["内线防守", "篮下终结"] },
     { "id": "dc11", "name": "Nash Russell", "number": 13, "position": "C", "starter": false, "overall": 72, "tags": ["高位策应", "护框"] },
-    { "id": "dc12", "name": "Bill Shapped", "number": 00, "position": "C", "starter": false, "overall": 68, "tags": ["篮板", "内线防守"] }
+    { "id": "dc12", "name": "Bill Shapped", "number": 0, "position": "C", "starter": false, "overall": 68, "tags": ["篮板", "内线防守"] }
   ]
 }
 
