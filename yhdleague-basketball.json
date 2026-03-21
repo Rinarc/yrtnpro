@@ -97,5 +97,27 @@
     { "id": "yne11", "name": "Kendrick Pryce", "number": 15, "position": "SF", "starter": false, "overall": 68, "tags": ["空接", "补篮"] },
     { "id": "yne12", "name": "Zane Croft", "number": 28, "position": "C", "starter": false, "overall": 64, "tags": ["护框"] }
   ]
+},
+{
+  "id": "DeshuiXihuan",
+  "name": "德水西环队",
+  "logo": "https://origin.picgo.net/2026/03/21/knockout94205c7c81dca8fd.md.jpeg",
+  "coach": "Sam Adebauo（主教)、Wilt Thompson（助理教练）",
+  "description": "德水西环队 (Deshui Xihuan Team) - 一支战术素养极高、快灵结合、内外联动的团队型球队。",
+  "players": [
+    { "id": "dx1", "name": "Tyson De", "number": 1, "position": "PG", "starter": true, "overall": 94, "tags": ["组织传球", "快攻"] },
+    { "id": "dx2", "name": "Jordan Huan", "number": 8, "position": "SG", "starter": true, "overall": 90, "tags": ["外线防守", "中投"] },
+    { "id": "dx3", "name": "Evan Wang", "number": 23, "position": "SF", "starter": true, "overall": 92, "tags": ["攻防一体", "中投"] },
+    { "id": "dx4", "name": "Zane Dong", "number": 33, "position": "PF", "starter": true, "overall": 86, "tags": ["篮板", "挡拆发动"] },
+    { "id": "dx5", "name": "Axel Zhang", "number": 55, "position": "C", "starter": true, "overall": 88, "tags": ["篮下终结", "内线防守"] },
+    { "id": "dx6", "name": "Dylan Shui", "number": 7, "position": "SG", "starter": false, "overall": 84, "tags": ["关键球", "三分"] },
+    { "id": "dx7", "name": "Ray Xi", "number": 0, "position": "PG", "starter": false, "overall": 80, "tags": ["突破", "三分"] },
+    { "id": "dx8", "name": "Kai Feng", "number": 15, "position": "SF", "starter": false, "overall": 78, "tags": ["空切", "快攻"] },
+    { "id": "dx9", "name": "Malik Meng", "number": 21, "position": "PF", "starter": false, "overall": 76, "tags": ["内线防守", "护框"] },
+    { "id": "dx10", "name": "Theo Zhou", "number": 13, "position": "C", "starter": false, "overall": 74, "tags": ["高位策应", "中投"] },
+    { "id": "dx11", "name": "Jace Liu", "number": 5, "position": "SF", "starter": false, "overall": 70, "tags": ["快攻", "外线防守"] },
+    { "id": "dx12", "name": "Cole Hu", "number": 3, "position": "SG", "starter": false, "overall": 68, "tags": ["三分", "外线防守"] }
+  ]
 }
+
          ]
