@@ -57,24 +57,45 @@
              ]
            },
 {
-             "id": "Arcs",
+             "id": "PhantomCityArcs",
              "name": "幻影之城电弧队",
              "logo": "https://origin.picgo.net/2026/03/19/knockoutb3e5e8b0b2969ce7.md.jpeg",
              "coach": "Elias Richter（主教)、Santiago Cruz（助理教练）",
              "description": "幻影之城电弧队（Phantom City Arcs）是幻织市的所属球队",
              "players": [
-    { "id": "Arcs5", "name": "Kaelen Vance", "number": 5, "position": "PG", "starter": true, "overall": 84, "tags": ["组织传球", "节奏掌控"] },
-    { "id": "Arcs7", "name": "Liam O'Connor", "number": 7, "position": "SG", "starter": true, "overall": 95, "tags": ["三分", "关键球"] },
-    { "id": "Arcs22", "name": "Rafael Silva", "number": 22, "position": "SF", "starter": true, "overall": 96, "tags": ["攻防一体", "突破"] },
-    { "id": "Arcs33", "name": "Nikolai Petrov", "number": 33, "position": "PF", "starter": true, "overall": 85, "tags": ["三分", "护框"] },
-    { "id": "Arcs41", "name": "Jonas Schmidt", "number": 41, "position": "C", "starter": true, "overall": 82, "tags": ["挡拆发动", "中投"] },
-    { "id": "Arcs0", "name": "Kenji Tanaka", "number": 0, "position": "SG", "starter": false, "overall": 80, "tags": ["突破", "急停跳投"] },
-    { "id": "Arcs10", "name": "Mateo Garcia", "number": 10, "position": "SF", "starter": false, "overall": 78, "tags": ["外线防守", "空切"] },
-    { "id": "Arcs13", "name": "Dante Rossi", "number": 13, "position": "PF", "starter": false, "overall": 76, "tags": ["篮板", "内线防守"] },
-    { "id": "Arcs17", "name": "Pierre Dubois", "number": 17, "position": "SG", "starter": false, "overall": 75, "tags": ["外线防守", "三分"] },
-    { "id": "Arcs8", "name": "Chidi Okoro", "number": 8, "position": "SF", "starter": false, "overall": 74, "tags": ["快攻", "空切"] },
-    { "id": "Arcs9", "name": "Elias Lindgren", "number": 9, "position": "PG", "starter": false, "overall": 70, "tags": ["组织传球"] },
-    { "id": "Arcs28", "name": "Zhang Wei", "number": 28, "position": "C", "starter": false, "overall": 66, "tags": ["快攻"] }
-]
-           }
+    { "id": "pca1", "name": "Lars Johansson", "number": 10, "position": "PG", "starter": true, "overall": 92, "tags": ["组织传球", "节奏掌控"] },
+    { "id": "pca2", "name": "Nicolas Dubois", "number": 23, "position": "SG", "starter": true, "overall": 98, "tags": ["三分", "无球跑动"] },
+    { "id": "pca3", "name": "Matsuo Tanaka", "number": 8, "position": "SF", "starter": true, "overall": 88, "tags": ["外线防守", "三分"] },
+    { "id": "pca4", "name": "Luka Petrović", "number": 33, "position": "PF", "starter": true, "overall": 90, "tags": ["三分", "高位策应"] },
+    { "id": "pca5", "name": "Michele Bianchi", "number": 14, "position": "C", "starter": true, "overall": 84, "tags": ["挡拆顺下", "护框"] },
+    { "id": "pca6", "name": "Sergio Silva", "number": 0, "position": "SG", "starter": false, "overall": 80, "tags": ["突破", "急停跳投"] },
+    { "id": "pca7", "name": "Ivan Volkov", "number": 44, "position": "PF", "starter": false, "overall": 78, "tags": ["篮板", "内线防守"] },
+    { "id": "pca8", "name": "Omar Al-Mansoori", "number": 21, "position": "C", "starter": false, "overall": 76, "tags": ["空接", "护框"] },
+    { "id": "pca9", "name": "Kofi Mensah", "number": 5, "position": "SG", "starter": false, "overall": 70, "tags": ["外线防守", "快攻"] },
+    { "id": "pca10", "name": "Johan Berg", "number": 12, "position": "SF", "starter": false, "overall": 68, "tags": ["空切", "中投"] },
+    { "id": "pca11", "name": "Rafael Costa", "number": 7, "position": "PG", "starter": false, "overall": 66, "tags": ["组织传球"] },
+    { "id": "pca12", "name": "Yusuf Demir", "number": 28, "position": "C", "starter": false, "overall": 64, "tags": ["快攻"] }
+  ]
+           },
+{
+  "id": "YuanyuNextEra",
+  "name": "渊迂次世代队",
+  "logo": "https://origin.picgo.net/2026/03/21/knockout2e5f6b5a8737c15a.md.jpeg", 
+  "coach": "Kael Vance（主教)、Remi Cortez（助理教练）",
+  "description": "渊迂次世代队 (Yuanyu Next Era) - 一支充满天赋与潜力的青年军，球风富有激情但不够稳定。",
+  "players": [
+    { "id": "yne1", "name": "Jax Torrin", "number": 1, "position": "PG", "starter": true, "overall": 90, "tags": ["组织传球", "突破"] },
+    { "id": "yne2", "name": "Zeke Morrow", "number": 5, "position": "SG", "starter": true, "overall": 96, "tags": ["突破", "中投"] },
+    { "id": "yne3", "name": "Caius Vale", "number": 7, "position": "SF", "starter": true, "overall": 88, "tags": ["中投", "空切"] },
+    { "id": "yne4", "name": "Rook Garmon", "number": 33, "position": "PF", "starter": true, "overall": 84, "tags": ["三分", "中投"] },
+    { "id": "yne5", "name": "Bodin Stroud", "number": 55, "position": "C", "starter": true, "overall": 80, "tags": ["篮板", "篮下终结"] },
+    { "id": "yne6", "name": "Kyrin Sloane", "number": 0, "position": "SG", "starter": false, "overall": 78, "tags": ["突破", "快攻"] },
+    { "id": "yne7", "name": "Trevon Pike", "number": 11, "position": "SF", "starter": false, "overall": 76, "tags": ["快攻", "篮板"] },
+    { "id": "yne8", "name": "Marlon Hess", "number": 22, "position": "PF", "starter": false, "overall": 74, "tags": ["内线防守", "补篮"] },
+    { "id": "yne9", "name": "Jett Hale", "number": 8, "position": "SG", "starter": false, "overall": 72, "tags": ["急停跳投", "神经刀"] },
+    { "id": "yne10", "name": "Silas Voss", "number": 3, "position": "SG", "starter": false, "overall": 70, "tags": ["外线防守", "三分"] },
+    { "id": "yne11", "name": "Kendrick Pryce", "number": 15, "position": "SF", "starter": false, "overall": 68, "tags": ["空接", "补篮"] },
+    { "id": "yne12", "name": "Zane Croft", "number": 28, "position": "C", "starter": false, "overall": 64, "tags": ["护框"] }
+  ]
+}
          ]
