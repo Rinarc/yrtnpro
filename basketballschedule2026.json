@@ -69,5 +69,183 @@
       { "teamId": "Huanzhi", "playerId": "ia9", "points": 0, "rebounds": 1, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 0, "minutesPlayed": "4:40" },
       { "teamId": "Huanzhi", "playerId": "ia28", "points": 0, "rebounds": 0, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 0, "minutesPlayed": "2:20" }
     ]
-  }
+  },
+  {
+    "id": "g1",
+    "date": "2026-03-21",
+    "homeTeamId": "Huanzhi",
+    "awayTeamId": "PhantomCityArcs",
+    "homeScore": 109,
+    "awayScore": 115,
+    "status": "已结束",
+    "referees": {
+      "main": "Zhangweiming",
+      "linesman": ["Zhouhai", "Zhengtao"]
+    },
+    "liveText": {
+      "Q1": [
+        { "time": "11:40", "content": "幻影之城首次进攻，Dubois借Petrović掩护，手递手接球三分命中，拿下首分！0-3。" },
+        { "time": "10:15", "content": "幻织回响Silva突破分球，Petrov底角三分回应。3-3。" },
+        { "time": "08:30", "content": "Johansson展现视野，不看人背传助攻空切的Bianchi暴扣得手。8-12。" },
+        { "time": "06:10", "content": "O'Connor与Dubois展开对飙，相继命中高难度三分。16-18。" },
+        { "time": "02:45", "content": "电弧队替补Silva登场，连续两次突破得手。22-28。" },
+        { "time": "00:05", "content": "幻织回响最后一攻，O'Connor压哨超远三分不中。首节结束，幻织回响30-32落后。" }
+      ],
+      "Q2": [
+        { "time": "10:50", "content": "第二节开始，幻织回响Kenji Tanaka连得5分，反超比分！35-34。" },
+        { "time": "08:20", "content": "电弧队暂停。暂停回来，Dubois立即命中两记三分稳住局势。41-44。" },
+        { "time": "06:30", "content": "Silva与Petrović内线强强对话，各自得分。48-52。" },
+        { "time": "04:10", "content": "Johansson妙传Petrović，后者命中弧顶三分，分差来到9分。52-61。" },
+        { "time": "01:55", "content": "幻织回响加强防守，连续抢断反击，Silva暴扣打停电弧队。58-61。" },
+        { "time": "00:00", "content": "半场最后一攻，Johansson压哨中投不中。半场结束，幻织回响58-61落后3分。" }
+      ],
+      "Q3": [
+        { "time": "11:20", "content": "下半场开始，电弧队下起三分雨！Tanaka、Dubois、Petrović连中三记三分！一波9-2！60-70。" },
+        { "time": "09:40", "content": "幻织回响请求暂停。暂停后，O'Connor命中关键三分止血。65-72。" },
+        { "time": "07:15", "content": "电弧队进攻行云流水，Johansson本节已送出5次助攻，全队开花。70-82。" },
+        { "time": "04:50", "content": "Silva强打2+1，并造成Petrović第三次犯规。75-84。" },
+        { "time": "02:30", "content": "电弧队替补中锋Al-Mansoori连续送出两记大帽，守护禁区。" },
+        { "time": "00:20", "content": "Dubois命中本节个人第三记三分！82-89。" },
+        { "time": "00:00", "content": "三节战罢，幻织回响82-89落后7分。" }
+      ],
+      "Q4": [
+        { "time": "10:10", "content": "末节决战，幻织回响全力追分。Silva连得4分，86-89。" },
+        { "time": "08:30", "content": "电弧队Dubois再次挺身而出，高难度后仰跳投命中。88-93。" },
+        { "time": "06:45", "content": "Petrov命中关键三分，分差只剩2分！93-95，电弧队暂停。" },
+        { "time": "05:20", "content": "暂停回来，Johansson助攻Petrović命中弧顶三分，answer ball！95-100。" },
+        { "time": "03:40", "content": "O'Connor抢断快攻上篮，99-102。" },
+        { "time": "02:10", "content": "比赛进入白热化。Dubois绕掩护接球，三分线外两步直接出手——命中！个人第36分！101-107。" },
+        { "time": "01:15", "content": "Silva突破造犯规，两罚全中。103-107。" },
+        { "time": "00:45", "content": "电弧队压时间，Johansson控制节奏，突破分球给底角Tanaka，三分命中！锁定胜局！103-110。" },
+        { "time": "00:20", "content": "幻织回响快速两分。105-110。" },
+        { "time": "00:15", "content": "犯规战术，Johansson两罚全中。105-112。" },
+        { "time": "00:08", "content": "O'Connor抢投三分命中！108-112。" },
+        { "time": "00:06", "content": "犯规战术，Dubois两罚全中。108-114。" },
+        { "time": "00:02", "content": "Silva造成犯规，两罚一中。109-114。" },
+        { "time": "00:01", "content": "电弧队Petrović两罚一中。109-115。" },
+        { "time": "00:00", "content": "全场比赛结束！幻影之城电弧队客场115-109力克幻织回响队。" }
+      ]
+    },
+    "highlights": "本场是一场精彩的对攻大战！幻影之城电弧队将团队篮球和三分哲学发挥到极致，全队命中21记三分。头号射手尼古拉斯·杜波瓦(Nicolas Dubois)三分球14中8，狂轰36分，成为取胜之匙。卢卡·彼得罗维奇(Luka Petrović)贡献22分10篮板7助攻的准三双，拉尔斯·约翰逊(Lars Johansson)送出15次助攻完美梳理进攻。幻织回响队虽败犹荣，拉斐尔·席尔瓦(Rafael Silva)空砍33分9篮板6助攻，利亚姆·奥康纳(Liam O'Connor)得到28分，尼古拉·彼得罗夫(Nikolai Petrov)贡献20分12篮板的两双。",
+    "playerStats": [
+      { "teamId": "Huanzhi", "playerId": "ia22", "points": 33, "rebounds": 9, "assists": 6, "steals": 2, "blocks": 1, "plusMinus": -4, "turnovers": 4, "fouls": 3, "minutesPlayed": "39:05" },
+      { "teamId": "Huanzhi", "playerId": "ia7", "points": 28, "rebounds": 4, "assists": 3, "steals": 1, "blocks": 0, "plusMinus": -6, "turnovers": 2, "fouls": 2, "minutesPlayed": "37:30" },
+      { "teamId": "Huanzhi", "playerId": "ia33", "points": 20, "rebounds": 12, "assists": 2, "steals": 0, "blocks": 1, "plusMinus": -2, "turnovers": 1, "fouls": 4, "minutesPlayed": "35:20" },
+      { "teamId": "Huanzhi", "playerId": "ia5", "points": 8, "rebounds": 3, "assists": 9, "steals": 2, "blocks": 0, "plusMinus": -8, "turnovers": 3, "fouls": 3, "minutesPlayed": "32:15" },
+      { "teamId": "Huanzhi", "playerId": "ia41", "points": 6, "rebounds": 8, "assists": 4, "steals": 0, "blocks": 1, "plusMinus": -5, "turnovers": 1, "fouls": 4, "minutesPlayed": "28:10" },
+      { "teamId": "Huanzhi", "playerId": "ia99", "points": 8, "rebounds": 2, "assists": 1, "steals": 1, "blocks": 0, "plusMinus": 5, "turnovers": 1, "fouls": 1, "minutesPlayed": "18:25" },
+      { "teamId": "Huanzhi", "playerId": "ia13", "points": 2, "rebounds": 6, "assists": 0, "steals": 0, "blocks": 1, "plusMinus": 3, "turnovers": 0, "fouls": 2, "minutesPlayed": "16:40" },
+      { "teamId": "Huanzhi", "playerId": "ia10", "points": 2, "rebounds": 3, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 0, "fouls": 0, "minutesPlayed": "12:15" },
+      { "teamId": "Huanzhi", "playerId": "ia17", "points": 0, "rebounds": 1, "assists": 0, "steals": 1, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 1, "minutesPlayed": "7:50" },
+      { "teamId": "Huanzhi", "playerId": "ia8", "points": 2, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 1, "fouls": 1, "minutesPlayed": "6:20" },
+      { "teamId": "Huanzhi", "playerId": "ia9", "points": 0, "rebounds": 0, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 0, "minutesPlayed": "3:40" },
+      { "teamId": "Huanzhi", "playerId": "ia28", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 0, "minutesPlayed": "2:30" },
+      { "teamId": "PhantomCityArcs", "playerId": "pca2", "points": 36, "rebounds": 3, "assists": 2, "steals": 1, "blocks": 0, "plusMinus": 12, "turnovers": 1, "fouls": 1, "minutesPlayed": "38:50" },
+      { "teamId": "PhantomCityArcs", "playerId": "pca4", "points": 22, "rebounds": 10, "assists": 7, "steals": 0, "blocks": 1, "plusMinus": 10, "turnovers": 2, "fouls": 4, "minutesPlayed": "36:20" },
+      { "teamId": "PhantomCityArcs", "playerId": "pca1", "points": 9, "rebounds": 5, "assists": 15, "steals": 2, "blocks": 0, "plusMinus": 14, "turnovers": 3, "fouls": 2, "minutesPlayed": "35:45" },
+      { "teamId": "PhantomCityArcs", "playerId": "pca3", "points": 15, "rebounds": 6, "assists": 2, "steals": 2, "blocks": 0, "plusMinus": 6, "turnovers": 1, "fouls": 3, "minutesPlayed": "32:10" },
+      { "teamId": "PhantomCityArcs", "playerId": "pca5", "points": 12, "rebounds": 8, "assists": 2, "steals": 0, "blocks": 2, "plusMinus": 4, "turnovers": 1, "fouls": 4, "minutesPlayed": "28:30" },
+      { "teamId": "PhantomCityArcs", "playerId": "pca6", "points": 10, "rebounds": 2, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 2, "turnovers": 1, "fouls": 1, "minutesPlayed": "20:15" },
+      { "teamId": "PhantomCityArcs", "playerId": "pca7", "points": 4, "rebounds": 7, "assists": 0, "steals": 1, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 2, "minutesPlayed": "16:20" },
+      { "teamId": "PhantomCityArcs", "playerId": "pca8", "points": 4, "rebounds": 4, "assists": 0, "steals": 0, "blocks": 3, "plusMinus": 0, "turnovers": 0, "fouls": 2, "minutesPlayed": "12:05" },
+      { "teamId": "PhantomCityArcs", "playerId": "pca9", "points": 2, "rebounds": 2, "assists": 1, "steals": 1, "blocks": 0, "plusMinus": -2, "turnovers": 1, "fouls": 1, "minutesPlayed": "9:40" },
+      { "teamId": "PhantomCityArcs", "playerId": "pca10", "points": 1, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 0, "minutesPlayed": "5:50" },
+      { "teamId": "PhantomCityArcs", "playerId": "pca11", "points": 0, "rebounds": 0, "assists": 2, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 0, "minutesPlayed": "4:15" },
+      { "teamId": "PhantomCityArcs", "playerId": "pca12", "points": 0, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 0, "minutesPlayed": "2:20" }
+    ]
+  },
+{
+  "id": "g2",
+  "date": "2026-03-21",
+  "homeTeamId": "Yuanyuyulong",
+  "awayTeamId": "YuanyuNextEra",
+  "homeScore": 114,
+  "awayScore": 103,
+  "status": "已结束",
+  "referees": {
+    "main": "Wangjianye",
+    "linesman": ["Sunhao", "Chenbin"]
+  },
+  "liveText": {
+    "Q1": [
+      { "time": "11:20", "content": "跳球后，次世代队Jax Torrin快速推进，助攻Zeke Morrow跳投命中，拿下首分。0-2。" },
+      { "time": "10:05", "content": "龙队核心Ouyang Jing借掩护命中三分，给出回应。3-2。" },
+      { "time": "08:40", "content": "Zeke Morrow展现惊人运动能力，抢断后一条龙战斧劈扣！5-6。" },
+      { "time": "07:10", "content": "李逸飞与伊万诺夫打出精妙挡拆，助攻后者轻松上篮。9-8。" },
+      { "time": "05:25", "content": "次世代队Rook Garmon命中底角三分，展现空间属性。13-15。" },
+      { "time": "03:50", "content": "欧阳靖开启得分模式，连中两记中距离。19-19。" },
+      { "time": "01:15", "content": "次世代替补Jett Hale登场即命中高难度漂移投篮。24-26。" },
+      { "time": "00:00", "content": "首节最后一攻，李逸飞压哨抛投不中。首节结束，龙队31-28领先3分。" }
+    ],
+    "Q2": [
+      { "time": "10:30", "content": "次世代队Kyrin Sloane利用速度突破得手。33-32。" },
+      { "time": "08:55", "content": "龙队周锐替补登场，连续变向后急停跳投命中。37-34。" },
+      { "time": "07:20", "content": "Zeke Morrow面对严密防守，后仰跳投命中并造成犯规，打成2+1。40-39。" },
+      { "time": "05:40", "content": "李逸飞送出本场第8次助攻，找到空切的张振岳扣篮得分。46-41。" },
+      { "time": "04:00", "content": "次世代队请求暂停。暂停后，Caius Vale命中稳定中投。50-45。" },
+      { "time": "02:30", "content": "欧阳靖与Zeke Morrow展开对攻，互有得分。55-50。" },
+      { "time": "01:00", "content": "李逸飞抢断Jax Torrin，快攻上篮得手。59-51。" },
+      { "time": "00:00", "content": "半场哨响前，Zeke Morrow超远三分不中。半场结束，龙队61-53领先8分。" }
+    ],
+    "Q3": [
+      { "time": "11:05", "content": "下半场开始，欧阳靖手感不减，再中三分。64-53。" },
+      { "time": "09:30", "content": "Jax Torrin强突内线得分，为次世代止血。66-57。" },
+      { "time": "08:10", "content": "龙队打出团队配合，陈昊底角三分命中。71-59，分差首次来到12分。" },
+      { "time": "06:45", "content": "次世代队Caius Vale连续在内线取分，稳定输出。75-65。" },
+      { "time": "05:20", "content": "李逸飞本场助攻数上双，再次妙传伊万诺夫得分。79-67。" },
+      { "time": "03:50", "content": "Zeke Morrow开启个人模式，连得5分。79-72。" },
+      { "time": "02:10", "content": "龙队暂停。暂停回来，欧阳靖命中关键中投。83-74。" },
+      { "time": "00:40", "content": "次世代队Bodin Stroud抢下前场篮板补篮得分。85-77。" },
+      { "time": "00:05", "content": "第三节最后一攻，李逸飞压哨长两分命中！三节战罢，龙队89-77领先12分。" }
+    ],
+    "Q4": [
+      { "time": "10:50", "content": "末节决战，次世代队并未放弃，Jax Torrin连送两次助攻。91-81。" },
+      { "time": "09:20", "content": "龙队欧阳靖再次命中三分，个人得分来到30分。96-83。" },
+      { "time": "08:00", "content": "Zeke Morrow高难度拉杆上篮命中，并造成加罚。96-86。" },
+      { "time": "06:30", "content": "次世代队防守加强，造成龙队24秒违例。" },
+      { "time": "05:15", "content": "Jax Torrin抢断快攻，分球跟进的Kyrin Sloane暴扣得手！98-90，分差迫近到8分！" },
+      { "time": "04:00", "content": "关键时刻，李逸飞站了出来，命中稳定军心的中距离。100-90。" },
+      { "time": "02:45", "content": "Zeke Morrow命中高难度三分！103-95。" },
+      { "time": "01:30", "content": "比赛进入白热化。欧阳靖无球跑位接球，三分命中！106-97。" },
+      { "time": "01:00", "content": "次世代队快速两分。108-99。" },
+      { "time": "00:40", "content": "犯规战术开始。李逸飞两罚全中。110-99。" },
+      { "time": "00:25", "content": "Jax Torrin快速上篮得手。110-101。" },
+      { "time": "00:18", "content": "犯规战术，欧阳靖两罚全中。112-101。" },
+      { "time": "00:10", "content": "Zeke Morrow抢投三分命中！112-104。" },
+      { "time": "00:08", "content": "犯规战术，李逸飞两罚全中。114-104。" },
+      { "time": "00:02", "content": "Jax Torrin造成犯规，两罚一中。114-105。" },
+      { "time": "00:00", "content": "全场比赛结束！经验更丰富的渊迂迂龙队以114-103战胜年轻的渊迂次世代队。" }
+    ]
+  },
+  "highlights": "本场是‘同城德比’。渊迂迂龙队凭借更成熟的体系和关键时刻的稳定发挥取胜。超级得分手欧阳靖22投13中，高效砍下35分。指挥官李逸飞送出惊人的17次助攻，并得到18分，完全掌控了比赛节奏。中锋伊万诺夫贡献16分11篮板。年轻的渊迂次世代队虽败犹荣，天赋核心泽克·莫罗(Zeke Morrow)狂砍33分，贾克斯·托林(Jax Torrin)得到22分9助攻，展现了极高的潜力，但球队在防守延续性和关键球处理上稍显稚嫩。",
+  "playerStats": [
+   
+    { "teamId": "Yuanyuyulong", "playerId": "yy12", "points": 35, "rebounds": 4, "assists": 2, "steals": 1, "blocks": 0, "plusMinus": 15, "turnovers": 1, "fouls": 2, "minutesPlayed": "36:20" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy7", "points": 18, "rebounds": 3, "assists": 17, "steals": 3, "blocks": 0, "plusMinus": 18, "turnovers": 4, "fouls": 1, "minutesPlayed": "37:50" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy16", "points": 16, "rebounds": 11, "assists": 3, "steals": 0, "blocks": 2, "plusMinus": 12, "turnovers": 2, "fouls": 3, "minutesPlayed": "32:40" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy3", "points": 13, "rebounds": 7, "assists": 1, "steals": 2, "blocks": 0, "plusMinus": 5, "turnovers": 1, "fouls": 3, "minutesPlayed": "30:15" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy2", "points": 10, "rebounds": 8, "assists": 1, "steals": 0, "blocks": 1, "plusMinus": 3, "turnovers": 2, "fouls": 4, "minutesPlayed": "28:10" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy22", "points": 9, "rebounds": 2, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 1, "fouls": 1, "minutesPlayed": "18:30" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy21", "points": 6, "rebounds": 5, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 0, "fouls": 2, "minutesPlayed": "12:05" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy20", "points": 2, "rebounds": 4, "assists": 0, "steals": 0, "blocks": 1, "plusMinus": -1, "turnovers": 0, "fouls": 1, "minutesPlayed": "8:20" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy10", "points": 2, "rebounds": 3, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 0, "minutesPlayed": "6:45" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy14", "points": 3, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -4, "turnovers": 0, "fouls": 0, "minutesPlayed": "5:10" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy8", "points": 0, "rebounds": 0, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 0, "minutesPlayed": "2:30" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy11", "points": 0, "rebounds": 0, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 0, "fouls": 0, "minutesPlayed": "2:20" },
+    
+    { "teamId": "YuanyuNextEra", "playerId": "yne2", "points": 33, "rebounds": 5, "assists": 3, "steals": 2, "blocks": 0, "plusMinus": -10, "turnovers": 5, "fouls": 3, "minutesPlayed": "38:55" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne1", "points": 22, "rebounds": 4, "assists": 9, "steals": 1, "blocks": 0, "plusMinus": -12, "turnovers": 4, "fouls": 2, "minutesPlayed": "37:30" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne3", "points": 17, "rebounds": 8, "assists": 2, "steals": 0, "blocks": 0, "plusMinus": -8, "turnovers": 2, "fouls": 2, "minutesPlayed": "34:20" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne4", "points": 9, "rebounds": 6, "assists": 2, "steals": 0, "blocks": 0, "plusMinus": -5, "turnovers": 1, "fouls": 4, "minutesPlayed": "29:45" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne5", "points": 8, "rebounds": 10, "assists": 1, "steals": 0, "blocks": 2, "plusMinus": -4, "turnovers": 1, "fouls": 3, "minutesPlayed": "26:50" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne6", "points": 7, "rebounds": 2, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 3, "turnovers": 2, "fouls": 1, "minutesPlayed": "20:15" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne9", "points": 5, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 1, "fouls": 0, "minutesPlayed": "18:05" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne7", "points": 2, "rebounds": 5, "assists": 0, "steals": 1, "blocks": 0, "plusMinus": 2, "turnovers": 0, "fouls": 2, "minutesPlayed": "15:30" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne8", "points": 0, "rebounds": 4, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 3, "minutesPlayed": "10:20" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne10", "points": 0, "rebounds": 2, "assists": 1, "steals": 1, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 1, "minutesPlayed": "8:10" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne11", "points": 0, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -5, "turnovers": 0, "fouls": 0, "minutesPlayed": "5:40" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne12", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 1, "plusMinus": -1, "turnovers": 0, "fouls": 1, "minutesPlayed": "4:25" }
+  ]
+}
+
 ]
