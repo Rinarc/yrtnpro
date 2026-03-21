@@ -101,7 +101,7 @@
 {
   "id": "DeshuiXihuan",
   "name": "德水西环队",
-  "logo": "https://origin.picgo.net/2026/03/21/knockout94205c7c81dca8fd.md.jpeg",
+  "logo": "https://origin.picgo.net/2026/03/21/knockout47448ad1c00f5d1a.md.jpeg",
   "coach": "Sam Adebauo（主教)、Wilt Thompson（助理教练）",
   "description": "德水西环队 (Deshui Xihuan Team) - 一支战术素养极高、快灵结合、内外联动的团队型球队。",
   "players": [
@@ -118,6 +118,28 @@
     { "id": "dx11", "name": "Jace Liu", "number": 5, "position": "SF", "starter": false, "overall": 70, "tags": ["快攻", "外线防守"] },
     { "id": "dx12", "name": "Cole Hu", "number": 3, "position": "SG", "starter": false, "overall": 68, "tags": ["三分", "外线防守"] }
   ]
+},
+{
+  "id": "DeshuiCity",
+  "name": "德水市队",
+  "logo": "https://origin.picgo.net/2026/03/21/knockout94205c7c81dca8fd.md.jpeg",
+  "coach": "Phil Zenmaster（主教)、Tex Winter（助理教练）",
+  "description": "德水市队 (Deshui City) - 一支由风格迥异的‘复古全明星’组成的队伍，个人能力出众，经验丰富，球风华丽而复古。",
+  "players": [
+    { "id": "dc1", "name": "Magic Waggins", "number": 32, "position": "PG", "starter": true, "overall": 96, "tags": ["组织传球", "节奏掌控"] },
+    { "id": "dc2", "name": "Michael Mash", "number": 23, "position": "SG", "starter": true, "overall": 98, "tags": ["中投", "关键球"] },
+    { "id": "dc3", "name": "LeBron Curry", "number": 6, "position": "SF", "starter": true, "overall": 97, "tags": ["攻防一体", "突破"] },
+    { "id": "dc4", "name": "Tim Pittsburgh", "number": 21, "position": "PF", "starter": true, "overall": 88, "tags": ["中投", "内线防守"] },
+    { "id": "dc5", "name": "Kareem Abdul-David", "number": 33, "position": "C", "starter": true, "overall": 90, "tags": ["篮下终结", "护框"] },
+    { "id": "dc6", "name": "Kobe Ewok", "number": 24, "position": "SG", "starter": false, "overall": 86, "tags": ["突破", "急停跳投"] },
+    { "id": "dc7", "name": "Larry Kawasaki", "number": 33, "position": "SF", "starter": false, "overall": 82, "tags": ["三分", "篮板"] },
+    { "id": "dc8", "name": "Edgy Durant", "number": 7, "position": "PF", "starter": false, "overall": 80, "tags": ["三分", "中投"] },
+    { "id": "dc9", "name": "Stephen Jams", "number": 30, "position": "PG", "starter": false, "overall": 78, "tags": ["三分", "组织传球"] },
+    { "id": "dc10", "name": "Shaquille Jersey", "number": 34, "position": "C", "starter": false, "overall": 76, "tags": ["内线防守", "篮下终结"] },
+    { "id": "dc11", "name": "Nash Russell", "number": 13, "position": "C", "starter": false, "overall": 72, "tags": ["高位策应", "护框"] },
+    { "id": "dc12", "name": "Bill Shapped", "number": 00, "position": "C", "starter": false, "overall": 68, "tags": ["篮板", "内线防守"] }
+  ]
 }
+
 
          ]
