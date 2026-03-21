@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
+<style>
+        /* 红蓝闪电/喷漆风格 — 方角、硬朗、紧凑 */
         * {
             margin: 0;
             padding: 0;
@@ -137,6 +138,7 @@
         .featured-row {
             display: flex; gap: 15px; overflow-x: auto; padding: 10px 0 20px;
             scrollbar-width: thin; scrollbar-color: var(--red) #AAA;
+            -webkit-overflow-scrolling: touch;
         }
         .featured-row::-webkit-scrollbar { height: 6px; }
         .featured-row::-webkit-scrollbar-thumb { background: var(--primary-gradient); border-radius: 0; }
@@ -158,6 +160,7 @@
         /* 球队横向滚动 */
         .teams-row {
             display: flex; gap: 15px; overflow-x: auto; padding: 8px 0 20px;
+            -webkit-overflow-scrolling: touch;
         }
         .team-card {
             flex: 0 0 120px; background: var(--card-bg); border: 2px solid #000;
@@ -200,7 +203,7 @@
             font-weight: 600; color: var(--red); min-width: 70px;
             font-size: 0.8rem; text-transform: uppercase;
         }
-        .timeline-teams { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+        .timeline-teams { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
         .team-badge { display: flex; align-items: center; gap: 6px; width: 120px; }
         .team-badge.right { justify-content: flex-end; }
         .badge-logo {
@@ -232,6 +235,7 @@
             border: 2px solid #000;
             background: rgba(255,255,255,0.3);
             box-shadow: var(--shadow-hard);
+            -webkit-overflow-scrolling: touch;
         }
         .news-item {
             background: var(--card-bg); border-left: 6px solid var(--blue);
@@ -286,6 +290,7 @@
         .modal-header {
             display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 20px; padding-bottom: 10px; border-bottom: 4px solid var(--red);
+            flex-wrap: wrap;
         }
         .modal-header h2 {
             font-size: 2rem; font-weight: 800; color: white;
@@ -343,7 +348,7 @@
             border: 1px solid #000;
         }
 
-        /* 比赛数据全屏 (新增文字直播和精彩表现) */
+        /* 比赛数据全屏 */
         .referee-info {
             background: rgba(255,255,255,0.1); border-left: 6px solid var(--blue);
             padding: 12px 20px; margin-bottom: 25px; color: #ddd;
@@ -386,9 +391,6 @@
         .quarters-grid {
             display: grid; grid-template-columns: repeat(4, 1fr);
             gap: 16px; margin-bottom: 20px;
-        }
-        @media (max-width: 700px) {
-            .quarters-grid { grid-template-columns: 1fr; }
         }
         .quarter-box {
             background: #F9F9F9; border: 2px solid #000; padding: 12px;
@@ -438,6 +440,97 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .hidden { transform: translateY(-100%); }
+
+        /* ========== 响应式适配 ========== */
+        @media (max-width: 1024px) {
+            .container { padding: 0 16px; }
+            .section-title { font-size: 1.2rem; }
+        }
+
+        @media (max-width: 768px) {
+            body { font-size: 13px; }
+            .app-header { padding: 8px 16px; }
+            .brand-name { font-size: 1.2rem; }
+            .logo { width: 32px; height: 32px; font-size: 18px; }
+            .league-header { margin: 15px 0 20px; gap: 10px; }
+            .league-header i { font-size: 2.2rem; }
+            .league-header h1 { font-size: 2rem; }
+            .section-title { font-size: 1.1rem; margin: 30px 0 12px; }
+            
+            .featured-card { flex: 0 0 180px; }
+            .team-card { flex: 0 0 100px; }
+            .team-logo { width: 48px; height: 48px; font-size: 1.5rem; }
+            .team-name { font-size: 0.75rem; }
+            .team-coach { font-size: 0.6rem; }
+            
+            .timeline-item { padding: 10px 12px; gap: 8px; flex-wrap: wrap; }
+            .timeline-date { min-width: 60px; font-size: 0.7rem; }
+            .timeline-teams { width: 100%; order: 2; margin-top: 8px; }
+            .timeline-score { font-size: 1rem; }
+            .team-badge { width: 100px; }
+            .team-badge span { font-size: 0.75rem; }
+            .timeline-status { order: 3; margin-left: auto; }
+            
+            .news-item { padding: 8px 12px; gap: 10px; }
+            .news-date { min-width: 55px; font-size: 0.7rem; }
+            .news-headline { font-size: 0.8rem; }
+            
+            .videos-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+            .video-title { font-size: 0.8rem; }
+            
+            .fullscreen-modal { padding: 20px; }
+            .modal-header h2 { font-size: 1.5rem; }
+            .close-modal { width: 40px; height: 40px; font-size: 1.5rem; line-height: 40px; }
+            
+            .players-grid-full { grid-template-columns: 1fr; }
+            .player-card-full { padding: 10px; }
+            .player-number-full { font-size: 1.1rem; min-width: 35px; }
+            .player-name-full { font-size: 0.9rem; }
+            
+            .quarters-grid { grid-template-columns: 1fr; gap: 12px; }
+            .quarter-box { padding: 10px; }
+            .quarter-header { font-size: 1rem; }
+            .event-item { font-size: 0.75rem; }
+            
+            .bottom-nav { padding: 8px 20px; gap: 20px; }
+            .nav-item span { display: none; }
+            .nav-item i { font-size: 1.4rem; margin-bottom: 0; }
+            .basketball-icon { font-size: 1.6rem; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 0 12px; }
+            .featured-card { flex: 0 0 160px; }
+            .team-card { flex: 0 0 90px; padding: 8px 4px; }
+            .team-logo { width: 42px; height: 42px; font-size: 1.3rem; }
+            .team-name { font-size: 0.7rem; }
+            
+            .timeline-item { padding: 8px 10px; }
+            .timeline-date { min-width: 50px; font-size: 0.65rem; }
+            .timeline-score { font-size: 0.9rem; min-width: 50px; }
+            .team-badge { width: 80px; gap: 4px; }
+            .badge-logo { width: 22px; height: 22px; font-size: 0.7rem; }
+            .team-badge span { font-size: 0.7rem; }
+            
+            .news-date { min-width: 48px; font-size: 0.65rem; }
+            .news-headline { font-size: 0.75rem; }
+            
+            .videos-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .video-title { font-size: 0.75rem; }
+            .video-sub { font-size: 0.65rem; }
+            
+            .live-text-title, .highlights-title { font-size: 1.2rem; }
+            .referee-info { font-size: 0.8rem; padding: 8px 12px; }
+            .team-stats h3 { font-size: 1.2rem; }
+            .stats-table th, .stats-table td { font-size: 0.7rem; padding: 4px; }
+        }
+
+        /* 确保表格在小屏可横向滚动 */
+        .stats-container, .team-stats { overflow-x: auto; }
+        .stats-table { min-width: 600px; }
+        @media (max-width: 768px) {
+            .stats-table { min-width: 500px; }
+        }
     </style>
 </head>
 <body>
