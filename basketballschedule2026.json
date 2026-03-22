@@ -246,6 +246,105 @@
     { "teamId": "YuanyuNextEra", "playerId": "yne11", "points": 0, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -5, "turnovers": 0, "fouls": 0, "minutesPlayed": "5:40" },
     { "teamId": "YuanyuNextEra", "playerId": "yne12", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 1, "plusMinus": -1, "turnovers": 0, "fouls": 1, "minutesPlayed": "4:25" }
   ]
+},
+{
+  "id": "g3",
+  "date": "2026-03-22",
+  "homeTeamId": "YuanyuNextEra",
+  "awayTeamId": "DeshuiXihuan",
+  "homeScore": 99,
+  "awayScore": 106,
+  "status": "已结束",
+  "referees": {
+    "main": "Liguodong",
+    "linesman": ["Chenxiaofeng", "Zhoubowen"]
+  },
+  "liveText": {
+    "Q1": [
+      { "time": "11:35", "content": "跳球后，德水西环队Tyson De快速推进，助攻跟进的Evan Wang上篮得手，拿下首分。0-2。" },
+      { "time": "10:20", "content": "次世代队Zeke Morrow突破造成犯规，两罚全中，为主队开张。2-2。" },
+      { "time": "09:05", "content": "德水西环打出团队配合，Axel Zhang内线强打得分。4-6。" },
+      { "time": "07:40", "content": "Jax Torrin妙传空切的Caius Vale，后者轻松得分。8-10。" },
+      { "time": "06:15", "content": "德水西环队Jordan Huan命中底角三分，展现3D价值。10-15。" },
+      { "time": "04:50", "content": "Zeke Morrow高难度后仰跳投命中，回应三分。14-17。" },
+      { "time": "03:20", "content": "Tyson De展现指挥官风采，连续两次助攻Zane Dong和Axel Zhang内线取分。18-23。" },
+      { "time": "01:45", "content": "次世代替补Kyrin Sloane突破得手。22-25。" },
+      { "time": "00:30", "content": "德水西环队Dylan Shui命中压哨中距离。24-28。" },
+      { "time": "00:00", "content": "首节结束，德水西环反客为主，以30-24领先。" }
+    ],
+    "Q2": [
+      { "time": "10:10", "content": "次节开始，次世代队加强防守，造成对手失误，Jax Torrin快攻上篮。28-30。" },
+      { "time": "08:40", "content": "德水西环队暂停。暂停回来，Evan Wang命中稳定中投止血。30-34。" },
+      { "time": "07:25", "content": "双方展开拉锯战，Zeke Morrow与Evan Wang互有得分。36-40。" },
+      { "time": "05:50", "content": "德水西环队Axel Zhang连续抢下前场篮板，补篮得手。38-44。" },
+      { "time": "04:30", "content": "Jax Torrin命中本场个人第一记三分。41-44。" },
+      { "time": "03:15", "content": "Tyson De再次助攻Jordan Huan命中三分。43-49。" },
+      { "time": "02:00", "content": "次世代队Rook Garmon终于命中三分，回应answer ball。48-51。" },
+      { "time": "01:10", "content": "Zeke Morrow抢断，一条龙暴扣得手！50-51。" },
+      { "time": "00:45", "content": "德水西环队Dylan Shui执行关键一攻，急停跳投命中。50-53。" },
+      { "time": "00:00", "content": "半场最后一攻，Jax Torrin压哨上篮命中。半场结束，次世代52-56落后4分。" }
+    ],
+    "Q3": [
+      { "time": "11:15", "content": "下半场，德水西环队坚决攻击内线，Axel Zhang连得4分。52-60。" },
+      { "time": "09:50", "content": "Zeke Morrow强行突破打成2+1。57-62。" },
+      { "time": "08:20", "content": "Evan Wang展现全能性，抢断后助攻Tyson De上篮得分。59-66。" },
+      { "time": "07:00", "content": "次世代队请求暂停。暂停后，Caius Vale连续命中两记中投。63-68。" },
+      { "time": "05:30", "content": "德水西环队换上替补阵容，Ray Xi登场即命中三分。65-73。" },
+      { "time": "04:10", "content": "次世代队Bodin Stroud内线强打得分，并造成犯规。68-73。" },
+      { "time": "02:50", "content": "德水西环队Kai Feng空切暴扣，引爆客场替补席。70-77。" },
+      { "time": "01:30", "content": "双方陷入得分荒，多次投篮不中。" },
+      { "time": "00:10", "content": "第三节最后一攻，Tyson De压哨中投不中。三节战罢，德水西环81-74领先7分。" }
+    ],
+    "Q4": [
+      { "time": "10:40", "content": "末节决战，Zeke Morrow连得5分，将分差迫近至2分！79-81。" },
+      { "time": "09:20", "content": "德水西环队立刻暂停。暂停回来，Evan Wang命中关键三分稳定军心。79-84。" },
+      { "time": "08:00", "content": "Jax Torrin助攻Rook Garmon再中三分！82-84。" },
+      { "time": "06:45", "content": "比赛进入白热化。Axel Zhang内线强打2+1得手。84-89。" },
+      { "time": "05:30", "content": "Zeke Morrow高难度后仰跳投命中，个人得分来到30分。86-89。" },
+      { "time": "04:15", "content": "Tyson De助攻底角Cole Hu命中空位三分！86-92。" },
+      { "time": "03:00", "content": "次世代队Jett Hale替补登场命中神奇三分！89-92。" },
+      { "time": "02:20", "content": "Evan Wang突破分球，Zane Dong扣篮得手。89-94。" },
+      { "time": "01:40", "content": "Jax Torrin快速两分。91-94。" },
+      { "time": "01:10", "content": "德水西环队消耗时间，Dylan Shui命中致命中投！91-96。" },
+      { "time": "00:50", "content": "Zeke Morrow抢投三分不中，Axel Zhang保护下关键篮板。" },
+      { "time": "00:35", "content": "犯规战术，Tyson De两罚全中。91-98。" },
+      { "time": "00:25", "content": "Jax Torrin快速三分命中！94-98。" },
+      { "time": "00:20", "content": "犯规战术，Evan Wang两罚全中。94-100。" },
+      { "time": "00:12", "content": "Zeke Morrow命中高难度三分！97-100。" },
+      { "time": "00:10", "content": "犯规战术，Dylan Shui两罚全中。97-102。" },
+      { "time": "00:05", "content": "Jax Torrin超远三分不中，Axel Zhang两罚全中锁定胜局。99-104。" },
+      { "time": "00:02", "content": "Zeke Morrow最后时刻上篮得手。99-106。" },
+      { "time": "00:00", "content": "全场比赛结束！战术执行更成熟、内外线更均衡的德水西环队以106-99客场战胜天赋出众的渊迂次世代队。" }
+    ]
+  },
+  "highlights": "本场比赛，德水西环队展现了更高的战术素养和团队性。核心前锋埃文·王(Evan Wang)贡献28分9篮板5助攻的全面数据，在攻防两端影响巨大。指挥官泰森·德(Tyson De)送出15次助攻，完美盘活全队。内线巨兽阿克塞尔·张(Axel Zhang)19分11篮板统治禁区。渊迂次世代队天赋尽显，泽克·莫罗(Zeke Morrow)空砍31分，贾克斯·托林(Jax Torrin)得到20分11助攻，但球队在防守连贯性和关键球的团队处理上稍逊一筹，最终吞下季前赛两连败。",
+  "playerStats": [
+    { "teamId": "YuanyuNextEra", "playerId": "yne2", "points": 31, "rebounds": 6, "assists": 4, "steals": 2, "blocks": 0, "plusMinus": -8, "turnovers": 4, "fouls": 3, "minutesPlayed": "39:20" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne1", "points": 20, "rebounds": 3, "assists": 11, "steals": 1, "blocks": 0, "plusMinus": -7, "turnovers": 3, "fouls": 2, "minutesPlayed": "38:10" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne3", "points": 16, "rebounds": 7, "assists": 2, "steals": 1, "blocks": 1, "plusMinus": -5, "turnovers": 2, "fouls": 3, "minutesPlayed": "35:05" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne4", "points": 9, "rebounds": 5, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -4, "turnovers": 1, "fouls": 4, "minutesPlayed": "28:40" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne5", "points": 8, "rebounds": 9, "assists": 0, "steals": 0, "blocks": 1, "plusMinus": -2, "turnovers": 1, "fouls": 4, "minutesPlayed": "26:15" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne6", "points": 6, "rebounds": 2, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 3, "turnovers": 2, "fouls": 1, "minutesPlayed": "18:30" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne9", "points": 5, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 1, "fouls": 0, "minutesPlayed": "16:20" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne7", "points": 2, "rebounds": 4, "assists": 0, "steals": 1, "blocks": 0, "plusMinus": 2, "turnovers": 0, "fouls": 2, "minutesPlayed": "14:05" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne8", "points": 2, "rebounds": 3, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 3, "minutesPlayed": "10:50" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne10", "points": 0, "rebounds": 2, "assists": 0, "steals": 1, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 1, "minutesPlayed": "7:15" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne11", "points": 0, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -4, "turnovers": 0, "fouls": 0, "minutesPlayed": "4:30" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne12", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 1, "minutesPlayed": "3:20" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx3", "points": 28, "rebounds": 9, "assists": 5, "steals": 2, "blocks": 1, "plusMinus": 12, "turnovers": 2, "fouls": 2, "minutesPlayed": "37:45" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx1", "points": 12, "rebounds": 4, "assists": 15, "steals": 1, "blocks": 0, "plusMinus": 10, "turnovers": 3, "fouls": 1, "minutesPlayed": "36:20" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx5", "points": 19, "rebounds": 11, "assists": 2, "steals": 0, "blocks": 3, "plusMinus": 8, "turnovers": 2, "fouls": 3, "minutesPlayed": "34:10" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx2", "points": 11, "rebounds": 3, "assists": 2, "steals": 2, "blocks": 0, "plusMinus": 5, "turnovers": 1, "fouls": 3, "minutesPlayed": "32:05" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx4", "points": 8, "rebounds": 8, "assists": 1, "steals": 0, "blocks": 1, "plusMinus": 3, "turnovers": 1, "fouls": 4, "minutesPlayed": "28:50" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx6", "points": 9, "rebounds": 2, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 4, "turnovers": 0, "fouls": 1, "minutesPlayed": "20:15" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx7", "points": 5, "rebounds": 1, "assists": 2, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 1, "fouls": 0, "minutesPlayed": "18:30" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx8", "points": 4, "rebounds": 3, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 2, "minutesPlayed": "12:40" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx9", "points": 4, "rebounds": 5, "assists": 0, "steals": 0, "blocks": 2, "plusMinus": 1, "turnovers": 0, "fouls": 2, "minutesPlayed": "10:20" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx12", "points": 3, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 0, "minutesPlayed": "8:05" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx10", "points": 3, "rebounds": 2, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 1, "minutesPlayed": "6:15" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx11", "points": 0, "rebounds": 0, "assists": 0, "steals": 1, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 0, "minutesPlayed": "4:25" }
+  ]
 }
+
 
 ]
