@@ -440,7 +440,6 @@
 
         .hidden { transform: translateY(-100%); }
 
-        /* 响应式 */
         @media (max-width: 768px) {
             .container { padding: 0 16px; }
             .section-title { font-size: 1.2rem; }
@@ -721,17 +720,22 @@
                 });
             }
 
-            // 检测并生成加时赛直播内容
+            // 智能识别并构建文字直播（自动处理加时赛）
             function buildLiveTextWithOT(liveTextObj) {
+                // 定义标准节顺序：常规四节 + 所有加时赛（按自然顺序）
                 const standardQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
-                const quarters = [...standardQuarters];
-                // 查找所有加时赛字段（OT, OT1, OT2...）
-                const otKeys = Object.keys(liveTextObj).filter(k => k.startsWith('OT'));
-                otKeys.sort(); // 按字母顺序，OT, OT1, OT2...
-                quarters.push(...otKeys);
+                const otKeys = Object.keys(liveTextObj).filter(k => k.startsWith('OT')).sort((a, b) => {
+                    // 排序：OT, OT1, OT2...
+                    if (a === 'OT') return -1;
+                    if (b === 'OT') return 1;
+                    const numA = parseInt(a.substring(2)) || 0;
+                    const numB = parseInt(b.substring(2)) || 0;
+                    return numA - numB;
+                });
+                const allQuarters = [...standardQuarters, ...otKeys];
                 
                 let html = `<div class="quarters-grid">`;
-                quarters.forEach(q => {
+                allQuarters.forEach(q => {
                     const events = liveTextObj[q] || [];
                     let quarterDisplay = q;
                     if (q === 'OT') quarterDisplay = '加时赛';
@@ -778,34 +782,52 @@
                 // 球员数据表
                 let statsHtml = '';
                 if (homeTeam) {
-                    statsHtml += `<div class="team-stats"><h3><img src="${homeTeam.logo || ''}"> ${homeName}</h3><table class="stats-table"><tr><th>球员</th><th>号码</th><th>得分</th><th>篮板</th><th>助攻</th><th>正负值</th><th>失误</th><th>犯规</th><th>时间</th></tr>`;
+                    statsHtml += `<div class="team-stats"><h3><img src="${homeTeam.logo || ''}"> ${homeName}</h3><table class="stats-table">`);
+                    statsHtml += `<tr><th>球员</th><th>号码</th><th>得分</th><th>篮板</th><th>助攻</th><th>正负值</th><th>失误</th><th>犯规</th><th>时间</th></tr>`;
                     const homeStats = game.playerStats?.filter(s => s.teamId == game.homeTeamId) || [];
                     homeStats.forEach(stat => {
                         const player = homeTeam.players?.find(p => p.id == stat.playerId);
                         const playerName = player ? player.name : '球员';
                         const number = player?.number || '—';
-                        statsHtml += `<tr><td>${playerName}</td><td>${number}</td><td>${stat.points ?? '-'}</td><td>${stat.rebounds ?? '-'}</td><td>${stat.assists ?? '-'}</td><td>${stat.plusMinus ?? '-'}</td><td>${stat.turnovers ?? '-'}</td><td>${stat.fouls ?? '-'}</td><td>${stat.minutesPlayed ?? '-'}</td></tr>`;
+                        statsHtml += `<tr>
+                            <td>${playerName}</td><td>${number}</td><td>${stat.points ?? '-'}</td>
+                            <td>${stat.rebounds ?? '-'}</td><td>${stat.assists ?? '-'}</td>
+                            <td>${stat.plusMinus ?? '-'}</td><td>${stat.turnovers ?? '-'}</td>
+                            <td>${stat.fouls ?? '-'}</td><td>${stat.minutesPlayed ?? '-'}</td>
+                        </tr>`;
                     });
                     statsHtml += `</table></div>`;
                 }
                 if (awayTeam) {
-                    statsHtml += `<div class="team-stats"><h3><img src="${awayTeam.logo || ''}"> ${awayName}</h3><table class="stats-table"><tr><th>球员</th><th>号码</th><th>得分</th><th>篮板</th><th>助攻</th><th>正负值</th><th>失误</th><th>犯规</th><th>时间</th></tr>`;
+                    statsHtml += `<div class="team-stats"><h3><img src="${awayTeam.logo || ''}"> ${awayName}</h3><table class="stats-table">`;
+                    statsHtml += `<tr><th>球员</th><th>号码</th><th>得分</th><th>篮板</th><th>助攻</th><th>正负值</th><th>失误</th><th>犯规</th><th>时间</th></tr>`;
                     const awayStats = game.playerStats?.filter(s => s.teamId == game.awayTeamId) || [];
                     awayStats.forEach(stat => {
                         const player = awayTeam.players?.find(p => p.id == stat.playerId);
                         const playerName = player ? player.name : '球员';
                         const number = player?.number || '—';
-                        statsHtml += `<tr><td>${playerName}</td><td>${number}</td><td>${stat.points ?? '-'}</td><td>${stat.rebounds ?? '-'}</td><td>${stat.assists ?? '-'}</td><td>${stat.plusMinus ?? '-'}</td><td>${stat.turnovers ?? '-'}</td><td>${stat.fouls ?? '-'}</td><td>${stat.minutesPlayed ?? '-'}</td></tr>`;
+                        statsHtml += `<tr>
+                            <td>${playerName}</td><td>${number}</td><td>${stat.points ?? '-'}</td>
+                            <td>${stat.rebounds ?? '-'}</td><td>${stat.assists ?? '-'}</td>
+                            <td>${stat.plusMinus ?? '-'}</td><td>${stat.turnovers ?? '-'}</td>
+                            <td>${stat.fouls ?? '-'}</td><td>${stat.minutesPlayed ?? '-'}</td>
+                        </tr>`;
                     });
                     statsHtml += `</table></div>`;
                 }
                 modalGameStats.innerHTML = statsHtml || '<p style="color:white;">暂无详细数据</p>';
 
                 // 文字直播（支持加时赛）
-                if (game.liveText) {
-                    const liveHtml = `<div class="live-text-title"><i class="fas fa-comment-dots"></i> 文字直播</div>${buildLiveTextWithOT(game.liveText)}`;
-                    liveTextSection.innerHTML = liveHtml;
-                    liveTextSection.style.display = 'block';
+                if (game.liveText && typeof game.liveText === 'object') {
+                    // 确保至少有一个节的数据才显示
+                    const hasAnyEvent = Object.values(game.liveText).some(arr => arr && arr.length > 0);
+                    if (hasAnyEvent) {
+                        const liveHtml = `<div class="live-text-title"><i class="fas fa-comment-dots"></i> 文字直播</div>${buildLiveTextWithOT(game.liveText)}`;
+                        liveTextSection.innerHTML = liveHtml;
+                        liveTextSection.style.display = 'block';
+                    } else {
+                        liveTextSection.style.display = 'none';
+                    }
                 } else {
                     liveTextSection.style.display = 'none';
                 }
@@ -914,9 +936,11 @@
           "Q3": [...],
           "Q4": [...],
           "OT": [...],        // 第一个加时赛
-          "OT1": [...],       // 第二个加时赛（如有）
+          "OT1": [...],       // 第二个加时赛
           "OT2": [...]        // 第三个加时赛
         }
+        
+        即使没有常规四节，只有加时赛也会正常显示。
     -->
 </body>
 </html>
