@@ -347,15 +347,15 @@
 },
   {
   "id": "g4",
-  "date": "2026-03-24",
+  "date": "2026-03-2",
   "homeTeamId": "DeshuiCity",
   "awayTeamId": "Huanzhi",
   "homeScore": 108,
   "awayScore": 112,
   "status": "已结束",
   "referees": {
-    "main": "刘振东",
-    "linesman": ["王海洋", "赵天成"]
+    "main": "Liuzhendong",
+    "linesman": ["Wanghaiyang", "Zhaotiancheng"]
   },
   "liveText": {
     "Q1": [
