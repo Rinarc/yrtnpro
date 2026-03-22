@@ -2,13 +2,13 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>渊迂体育 · 渊华德篮球联赛</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>渊迂体育 · 渊华德篮球联赛 · 文字直播 & 精彩表现</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
+<style>
         /* 红蓝闪电/喷漆风格 — 方角、硬朗、紧凑 */
         * {
             margin: 0;
@@ -592,7 +592,7 @@
         <div class="players-grid-full" id="modalPlayersGrid"></div>
     </div>
 
-    <!-- 全屏模态: 比赛数据 -->
+    <!-- 全屏模态: 比赛数据 (含裁判、详细数据、文字直播、精彩表现) -->
     <div class="fullscreen-modal" id="gameModal">
         <div class="modal-header">
             <h2 id="modalGameTitle">比赛数据</h2>
@@ -600,19 +600,21 @@
         </div>
         <div id="refereeInfo" class="referee-info" style="display: none;"></div>
         <div class="stats-container" id="modalGameStats"></div>
+        <!-- 文字直播区块 (动态插入) -->
         <div id="liveTextSection" class="live-text-section" style="display: none;"></div>
+        <!-- 精彩表现区块 -->
         <div id="highlightsSection" class="highlights-section" style="display: none;"></div>
     </div>
 
     <script>
         (function() {
-            // ---------- 数据存储 ----------
+            // 数据存储
             let knockData = null;
             let teamsData = [];
             let scheduleData = [];
             let newsData = [];
 
-            // DOM 元素
+            // DOM
             const featuredRow = document.getElementById('featuredRow');
             const teamsRow = document.getElementById('teamsRow');
             const timelineContainer = document.getElementById('timelineContainer');
@@ -641,7 +643,7 @@
                 if (e.target === gameModal) gameModal.classList.remove('active');
             });
 
-            // ---------- 加载数据 ----------
+            // 加载数据
             async function loadKnock() {
                 try {
                     const res = await fetch('knockknock.json');
@@ -671,27 +673,17 @@
                 } catch (e) { console.warn('yhdsports-news.json 加载失败'); }
             }
 
-            // ---------- 精彩视频推荐 ----------
+            // 渲染精彩视频
             function renderFeatured() {
-                if (!knockData) {
-                    featuredRow.innerHTML = '<div style="padding:20px;">⚡ 暂无体育视频数据</div>';
-                    return;
-                }
+                if (!knockData) { featuredRow.innerHTML = '<div style="padding:20px;">⚡ 暂无体育视频数据</div>'; return; }
                 const sportCategory = knockData.categories.find(c => c.id === 'sport');
-                if (!sportCategory) {
-                    featuredRow.innerHTML = '<div style="padding:20px;">未找到体育分类</div>';
-                    return;
-                }
+                if (!sportCategory) { featuredRow.innerHTML = '<div style="padding:20px;">未找到体育分类</div>'; return; }
                 const allEpisodes = [];
                 sportCategory.shows.forEach(show => {
                     show.episodes.forEach(ep => {
                         allEpisodes.push({
-                            showId: show.id,
-                            episodeId: ep.id,
-                            title: ep.title,
-                            thumbnail: ep.thumbnail || show.image,
-                            showTitle: show.title,
-                            duration: ep.duration
+                            showId: show.id, episodeId: ep.id, title: ep.title,
+                            thumbnail: ep.thumbnail || show.image, showTitle: show.title, duration: ep.duration
                         });
                     });
                 });
@@ -699,43 +691,33 @@
                 const selected = shuffled.slice(0, 6);
                 let html = '';
                 selected.forEach(item => {
-                    html += `
-                        <div class="featured-card" data-show="${item.showId}" data-episode="${item.episodeId}">
-                            <div class="featured-thumb" style="background-image: url('${item.thumbnail}')"></div>
-                            <div class="featured-info">
-                                <div class="featured-title">${item.title}</div>
-                                <div class="featured-meta"><i class="far fa-clock"></i> ${item.duration || '--'} · ${item.showTitle}</div>
-                            </div>
+                    html += `<div class="featured-card" data-show="${item.showId}" data-episode="${item.episodeId}">
+                        <div class="featured-thumb" style="background-image: url('${item.thumbnail}')"></div>
+                        <div class="featured-info">
+                            <div class="featured-title">${item.title}</div>
+                            <div class="featured-meta"><i class="far fa-clock"></i> ${item.duration || '--'} · ${item.showTitle}</div>
                         </div>
-                    `;
+                    </div>`;
                 });
                 featuredRow.innerHTML = html;
                 document.querySelectorAll('.featured-card').forEach(card => {
                     card.addEventListener('click', () => {
-                        const showId = card.dataset.show;
-                        const epId = card.dataset.episode;
+                        const showId = card.dataset.show, epId = card.dataset.episode;
                         window.location.href = `knock.html#/sport/${showId}/${epId}`;
                     });
                 });
             }
 
-            // ---------- 球队阵容渲染 ----------
+            // 球队阵容渲染
             function renderTeams() {
-                if (!teamsData.length) {
-                    teamsRow.innerHTML = '<div style="padding:20px;">⚡ 暂无球队数据</div>';
-                    return;
-                }
+                if (!teamsData.length) { teamsRow.innerHTML = '<div style="padding:20px;">⚡ 暂无球队数据</div>'; return; }
                 let html = '';
                 teamsData.forEach(team => {
-                    html += `
-                        <div class="team-card" data-team-id="${team.id}">
-                            <div class="team-logo">
-                                ${team.logo ? `<img src="${team.logo}" alt="${team.name}">` : '<i class="fas fa-basketball-ball"></i>'}
-                            </div>
-                            <div class="team-name">${team.name}</div>
-                            <div class="team-coach">${team.coach || '—'}</div>
-                        </div>
-                    `;
+                    html += `<div class="team-card" data-team-id="${team.id}">
+                        <div class="team-logo">${team.logo ? `<img src="${team.logo}" alt="${team.name}">` : '<i class="fas fa-basketball-ball"></i>'}</div>
+                        <div class="team-name">${team.name}</div>
+                        <div class="team-coach">${team.coach || '—'}</div>
+                    </div>`;
                 });
                 teamsRow.innerHTML = html;
                 document.querySelectorAll('.team-card').forEach(card => {
@@ -753,75 +735,46 @@
                     teamSummaryContainer.style.display = 'block';
                     teamCoachSpan.innerText = team.coach || '未知';
                     teamDescriptionP.innerText = team.description || '暂无球队简介';
-                } else {
-                    teamSummaryContainer.style.display = 'none';
-                }
-
+                } else teamSummaryContainer.style.display = 'none';
                 let playersHtml = '';
                 if (team.players && team.players.length) {
                     team.players.forEach(p => {
                         const overall = p.overall ? `<span class="player-rating">${p.overall}</span>` : '';
                         const tags = (p.tags && p.tags.length) ? p.tags.slice(0,2).map(t => `<span class="player-tag">${t}</span>`).join('') : '';
-                        playersHtml += `
-                            <div class="player-card-full ${p.starter ? 'starter' : ''}">
-                                <div class="player-number-full">#${p.number || '—'}</div>
-                                <div class="player-info-full">
-                                    <div class="player-name-full">
-                                        ${p.name} ${overall}
-                                    </div>
-                                    <div class="player-meta-full">
-                                        <span>${p.position || '锋卫'}</span>
-                                        ${p.starter ? '<span class="starter-badge">首发</span>' : ''}
-                                    </div>
-                                    ${tags ? `<div class="player-tags">${tags}</div>` : ''}
-                                </div>
+                        playersHtml += `<div class="player-card-full ${p.starter ? 'starter' : ''}">
+                            <div class="player-number-full">#${p.number || '—'}</div>
+                            <div class="player-info-full">
+                                <div class="player-name-full">${p.name} ${overall}</div>
+                                <div class="player-meta-full"><span>${p.position || '锋卫'}</span>${p.starter ? '<span class="starter-badge">首发</span>' : ''}</div>
+                                ${tags ? `<div class="player-tags">${tags}</div>` : ''}
                             </div>
-                        `;
+                        </div>`;
                     });
-                } else {
-                    playersHtml = '<p style="color:white;">暂无球员数据</p>';
-                }
+                } else playersHtml = '<p style="color:white;">暂无球员数据</p>';
                 modalPlayersGrid.innerHTML = playersHtml;
                 teamModal.classList.add('active');
             }
 
-            // ---------- 赛程时间轴渲染 (按日期从新到旧排序) ----------
+            // 赛程渲染
             function renderTimeline() {
-                if (!scheduleData.length) {
-                    timelineContainer.innerHTML = '<div style="padding:20px;">⚡ 暂无赛程数据</div>';
-                    return;
-                }
-
-                // 按日期从新到旧排序 (最新日期在前)
-                const sortedSchedule = [...scheduleData].sort((a, b) => {
-                    return new Date(b.date) - new Date(a.date);
-                });
-
+                if (!scheduleData.length) { timelineContainer.innerHTML = '<div style="padding:20px;">⚡ 暂无赛程数据</div>'; return; }
                 let html = '';
-                sortedSchedule.forEach(game => {
+                scheduleData.forEach(game => {
                     const homeTeam = teamsData.find(t => t.id == game.homeTeamId);
                     const awayTeam = teamsData.find(t => t.id == game.awayTeamId);
                     const homeName = homeTeam ? homeTeam.name : '主队';
                     const awayName = awayTeam ? awayTeam.name : '客队';
-                    const homeLogo = homeTeam?.logo ? `<img src="${homeTeam.logo}" alt="${homeTeam.name}">` : '<i class="fas fa-basketball-ball"></i>';
-                    const awayLogo = awayTeam?.logo ? `<img src="${awayTeam.logo}" alt="${awayTeam.name}">` : '<i class="fas fa-basketball-ball"></i>';
-                    html += `
-                        <div class="timeline-item" data-game-id="${game.id}">
-                            <div class="timeline-date">${game.date || '2026-??'}</div>
-                            <div class="timeline-teams">
-                                <div class="team-badge">
-                                    <div class="badge-logo">${homeLogo}</div>
-                                    <span>${homeName}</span>
-                                </div>
-                                <div class="timeline-score">${game.homeScore ?? '?'} - ${game.awayScore ?? '?'}</div>
-                                <div class="team-badge right">
-                                    <span>${awayName}</span>
-                                    <div class="badge-logo">${awayLogo}</div>
-                                </div>
-                            </div>
-                            <div class="timeline-status">${game.status || '已结束'}</div>
+                    const homeLogo = homeTeam?.logo ? `<img src="${homeTeam.logo}">` : '<i class="fas fa-basketball-ball"></i>';
+                    const awayLogo = awayTeam?.logo ? `<img src="${awayTeam.logo}">` : '<i class="fas fa-basketball-ball"></i>';
+                    html += `<div class="timeline-item" data-game-id="${game.id}">
+                        <div class="timeline-date">${game.date || '2026-??'}</div>
+                        <div class="timeline-teams">
+                            <div class="team-badge"><div class="badge-logo">${homeLogo}</div><span>${homeName}</span></div>
+                            <div class="timeline-score">${game.homeScore ?? '?'} - ${game.awayScore ?? '?'}</div>
+                            <div class="team-badge right"><span>${awayName}</span><div class="badge-logo">${awayLogo}</div></div>
                         </div>
-                    `;
+                        <div class="timeline-status">${game.status || '已结束'}</div>
+                    </div>`;
                 });
                 timelineContainer.innerHTML = html;
                 document.querySelectorAll('.timeline-item').forEach(item => {
@@ -833,7 +786,7 @@
                 });
             }
 
-            // ---------- 比赛数据全屏 ----------
+            // 比赛全屏 (新增文字直播和精彩表现)
             function showGameFullscreen(game) {
                 const homeTeam = teamsData.find(t => t.id == game.homeTeamId);
                 const awayTeam = teamsData.find(t => t.id == game.awayTeamId);
@@ -848,63 +801,35 @@
                         const main = game.referees.main || '';
                         const lines = game.referees.linesman ? game.referees.linesman.join('、') : '';
                         refHtml = `<strong>主裁</strong> ${main}  <strong>边裁</strong> ${lines}`;
-                    } else {
-                        refHtml = `<strong>裁判</strong> ${game.referees}`;
-                    }
+                    } else refHtml = `<strong>裁判</strong> ${game.referees}`;
                     refereeInfoDiv.innerHTML = refHtml;
                     refereeInfoDiv.style.display = 'block';
-                } else {
-                    refereeInfoDiv.style.display = 'none';
-                }
+                } else refereeInfoDiv.style.display = 'none';
 
                 // 球员数据表
                 let statsHtml = '';
                 if (homeTeam) {
-                    statsHtml += `<div class="team-stats"><h3><img src="${homeTeam.logo || ''}" alt="${homeTeam.name}"> ${homeName}</h3>`;
-                    statsHtml += `<table class="stats-table"><thead><tr><th>球员</th><th>号码</th><th>得分</th><th>篮板</th><th>助攻</th><th>正负值</th><th>失误</th><th>犯规</th><th>时间</th></tr></thead><tbody>`;
+                    statsHtml += `<div class="team-stats"><h3><img src="${homeTeam.logo || ''}"> ${homeName}</h3><table class="stats-table"><tr><th>球员</th><th>号码</th><th>得分</th><th>篮板</th><th>助攻</th><th>正负值</th><th>失误</th><th>犯规</th><th>时间</th></tr>`;
                     const homeStats = game.playerStats?.filter(s => s.teamId == game.homeTeamId) || [];
                     homeStats.forEach(stat => {
                         const player = homeTeam.players?.find(p => p.id == stat.playerId);
                         const playerName = player ? player.name : '球员';
                         const number = player?.number || '—';
-                        statsHtml += `<tr>
-                            <td>${playerName}</td>
-                            <td>${number}</td>
-                            <td>${stat.points ?? '-'}</td>
-                            <td>${stat.rebounds ?? '-'}</td>
-                            <td>${stat.assists ?? '-'}</td>
-                            <td>${stat.plusMinus ?? '-'}</td>
-                            <td>${stat.turnovers ?? '-'}</td>
-                            <td>${stat.fouls ?? '-'}</td>
-                            <td>${stat.minutesPlayed ?? '-'}</td>
-                        </tr>`;
+                        statsHtml += `<tr><td>${playerName}</td><td>${number}</td><td>${stat.points ?? '-'}</td><td>${stat.rebounds ?? '-'}</td><td>${stat.assists ?? '-'}</td><td>${stat.plusMinus ?? '-'}</td><td>${stat.turnovers ?? '-'}</td><td>${stat.fouls ?? '-'}</td><td>${stat.minutesPlayed ?? '-'}</td></tr>`;
                     });
-                    statsHtml += `</tbody></table></div>`;
+                    statsHtml += `</table></div>`;
                 }
-
                 if (awayTeam) {
-                    statsHtml += `<div class="team-stats"><h3><img src="${awayTeam.logo || ''}" alt="${awayTeam.name}"> ${awayName}</h3>`;
-                    statsHtml += `<table class="stats-table"><thead><tr><th>球员</th><th>号码</th><th>得分</th><th>篮板</th><th>助攻</th><th>正负值</th><th>失误</th><th>犯规</th><th>时间</th></tr></thead><tbody>`;
+                    statsHtml += `<div class="team-stats"><h3><img src="${awayTeam.logo || ''}"> ${awayName}</h3><table class="stats-table"><tr><th>球员</th><th>号码</th><th>得分</th><th>篮板</th><th>助攻</th><th>正负值</th><th>失误</th><th>犯规</th><th>时间</th></tr>`;
                     const awayStats = game.playerStats?.filter(s => s.teamId == game.awayTeamId) || [];
                     awayStats.forEach(stat => {
                         const player = awayTeam.players?.find(p => p.id == stat.playerId);
                         const playerName = player ? player.name : '球员';
                         const number = player?.number || '—';
-                        statsHtml += `<tr>
-                            <td>${playerName}</td>
-                            <td>${number}</td>
-                            <td>${stat.points ?? '-'}</td>
-                            <td>${stat.rebounds ?? '-'}</td>
-                            <td>${stat.assists ?? '-'}</td>
-                            <td>${stat.plusMinus ?? '-'}</td>
-                            <td>${stat.turnovers ?? '-'}</td>
-                            <td>${stat.fouls ?? '-'}</td>
-                            <td>${stat.minutesPlayed ?? '-'}</td>
-                        </tr>`;
+                        statsHtml += `<tr><td>${playerName}</td><td>${number}</td><td>${stat.points ?? '-'}</td><td>${stat.rebounds ?? '-'}</td><td>${stat.assists ?? '-'}</td><td>${stat.plusMinus ?? '-'}</td><td>${stat.turnovers ?? '-'}</td><td>${stat.fouls ?? '-'}</td><td>${stat.minutesPlayed ?? '-'}</td></tr>`;
                     });
-                    statsHtml += `</tbody></table></div>`;
+                    statsHtml += `</table></div>`;
                 }
-
                 modalGameStats.innerHTML = statsHtml || '<p style="color:white;">暂无详细数据</p>';
 
                 // 文字直播 (四节)
@@ -941,7 +866,7 @@
                 gameModal.classList.add('active');
             }
 
-            // ---------- 体育新闻渲染 ----------
+            // 体育新闻渲染
             function renderNews() {
                 if (!newsData || !newsData.news || !newsData.news.length) {
                     newsTimeline.innerHTML = '<div style="padding:20px;">⚡ 暂无体育新闻</div>';
@@ -949,70 +874,46 @@
                 }
                 let html = '';
                 newsData.news.forEach(item => {
-                    html += `
-                        <div class="news-item">
-                            <div class="news-date">${item.date || ''}</div>
-                            <div class="news-headline">${item.headline || item.content || '简讯'}</div>
-                        </div>
-                    `;
+                    html += `<div class="news-item"><div class="news-date">${item.date || ''}</div><div class="news-headline">${item.headline || item.content || '简讯'}</div></div>`;
                 });
                 newsTimeline.innerHTML = html;
             }
 
-            // ---------- 体育视频网格 ----------
+            // 体育视频网格
             function renderSportsVideos() {
-                if (!knockData) {
-                    sportsVideosGrid.innerHTML = '<div style="padding:20px;">⚡ 请确保knockknock.json存在</div>';
-                    return;
-                }
+                if (!knockData) { sportsVideosGrid.innerHTML = '<div style="padding:20px;">⚡ 请确保knockknock.json存在</div>'; return; }
                 const sportCat = knockData.categories.find(c => c.id === 'sport');
-                if (!sportCat) {
-                    sportsVideosGrid.innerHTML = '<div style="padding:20px;">未找到体育分类</div>';
-                    return;
-                }
+                if (!sportCat) { sportsVideosGrid.innerHTML = '<div style="padding:20px;">未找到体育分类</div>'; return; }
                 const allEpisodes = [];
                 sportCat.shows.forEach(show => {
                     show.episodes.forEach(ep => {
                         allEpisodes.push({
-                            showId: show.id,
-                            episodeId: ep.id,
-                            title: ep.title,
-                            thumbnail: ep.thumbnail || show.image,
-                            views: ep.views,
-                            date: ep.date
+                            showId: show.id, episodeId: ep.id, title: ep.title,
+                            thumbnail: ep.thumbnail || show.image, views: ep.views, date: ep.date
                         });
                     });
                 });
-                if (allEpisodes.length === 0) {
-                    sportsVideosGrid.innerHTML = '<div style="padding:20px;">暂无体育视频</div>';
-                    return;
-                }
+                if (allEpisodes.length === 0) { sportsVideosGrid.innerHTML = '<div style="padding:20px;">暂无体育视频</div>'; return; }
                 let html = '';
                 allEpisodes.forEach(ep => {
-                    html += `
-                        <div class="video-card" data-show="${ep.showId}" data-episode="${ep.episodeId}">
-                            <div class="video-thumb" style="background-image: url('${ep.thumbnail}')"></div>
-                            <div class="video-info">
-                                <div class="video-title">${ep.title}</div>
-                                <div class="video-sub">
-                                    <span><i class="far fa-eye"></i> ${ep.views}</span>
-                                    <span><i class="far fa-calendar"></i> ${ep.date}</span>
-                                </div>
-                            </div>
+                    html += `<div class="video-card" data-show="${ep.showId}" data-episode="${ep.episodeId}">
+                        <div class="video-thumb" style="background-image: url('${ep.thumbnail}')"></div>
+                        <div class="video-info">
+                            <div class="video-title">${ep.title}</div>
+                            <div class="video-sub"><span><i class="far fa-eye"></i> ${ep.views}</span><span><i class="far fa-calendar"></i> ${ep.date}</span></div>
                         </div>
-                    `;
+                    </div>`;
                 });
                 sportsVideosGrid.innerHTML = html;
                 document.querySelectorAll('.video-card').forEach(card => {
                     card.addEventListener('click', () => {
-                        const showId = card.dataset.show;
-                        const epId = card.dataset.episode;
+                        const showId = card.dataset.show, epId = card.dataset.episode;
                         window.location.href = `knock.html#/sport/${showId}/${epId}`;
                     });
                 });
             }
 
-            // ---------- 初始化 ----------
+            // 初始化
             async function init() {
                 featuredRow.innerHTML = '<div class="loading-container"><div class="spinner"></div></div>';
                 teamsRow.innerHTML = '<div class="loading-container"><div class="spinner"></div></div>';
@@ -1041,16 +942,35 @@
             window.addEventListener('scroll', () => {
                 const header = document.querySelector('.app-header');
                 const current = window.pageYOffset;
-                if (current <= 0) {
-                    header?.classList.remove('hidden');
-                } else if (current > lastScroll && current > 80) {
-                    header?.classList.add('hidden');
-                } else if (current < lastScroll) {
-                    header?.classList.remove('hidden');
-                }
+                if (current <= 0) header?.classList.remove('hidden');
+                else if (current > lastScroll && current > 80) header?.classList.add('hidden');
+                else if (current < lastScroll) header?.classList.remove('hidden');
                 lastScroll = current;
             });
         })();
     </script>
+
+    <!-- 数据文件模板说明 -->
+    <!-- 
+        basketballschedule2026.json 新增字段示例：
+        {
+          "id": "g1",
+          "date": "2026-03-20",
+          "homeTeamId": "yy",
+          "awayTeamId": "hx",
+          "homeScore": 98,
+          "awayScore": 87,
+          "status": "已结束",
+          "referees": { "main": "李明", "linesman": ["赵刚","孙强"] },
+          "liveText": {
+            "Q1": [{"time": "10:23", "content": "王明三分命中"}, {"time": "5:12", "content": "李华抢断反击暴扣"}],
+            "Q2": [{"time": "08:45", "content": "客队连续追分"}],
+            "Q3": [],
+            "Q4": [{"time": "00:03", "content": "王明绝杀三分命中"}]
+          },
+          "highlights": "王明全场砍下40分，并在最后时刻命中关键三分，率队逆转。",
+          "playerStats": [ ... ]
+        }
+    -->
 </body>
 </html>
