@@ -444,7 +444,114 @@
     { "teamId": "Huanzhi", "playerId": "ia9", "points": 0, "rebounds": 0, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 0, "minutesPlayed": "3:50" },
     { "teamId": "Huanzhi", "playerId": "ia28", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 0, "minutesPlayed": "2:20" }
   ]
+},
+  {
+  "id": "g5",
+  "date": "2026-03-22",
+  "homeTeamId": "PhantomCityArcs",
+  "awayTeamId": "Yuanyuyulong",
+  "homeScore": 118,
+  "awayScore": 121,
+  "status": "已结束",
+  "referees": {
+    "main": "Zhangjingsong",
+    "linesman": ["Wangzhe", "Liuyang"]
+  },
+  "liveText": {
+    "Q1": [
+      { "time": "11:50", "content": "电弧队开场第一攻，Dubois借Petrović掩护，接Johansson传球命中三分！3-0。" },
+      { "time": "10:35", "content": "龙队李逸飞助攻欧阳靖中投回应，3-2。" },
+      { "time": "09:20", "content": "电弧队下起三分雨，Tanaka和Petrović再中两记三分！9-4。" },
+      { "time": "08:05", "content": "龙队暂停。暂停回来，伊万诺夫内线强打2+1得手，7-9。" },
+      { "time": "06:50", "content": "Dubois手感火热，再中两记三分，个人独得11分！7-15。" },
+      { "time": "05:30", "content": "欧阳靖开始回应，连得5分，12-15。" },
+      { "time": "04:10", "content": "Johansson展现大师级控场，连续送出助攻，20-18。" },
+      { "time": "02:50", "content": "龙队陈昊命中底角三分，23-22反超！" },
+      { "time": "01:30", "content": "电弧队替补Silva突破得手，25-24。" },
+      { "time": "00:10", "content": "首节结束前，Dubois压哨超远三分不中。首节结束，电弧32-30领先。" }
+    ],
+    "Q2": [
+      { "time": "10:25", "content": "次节，龙队周锐连得4分，34-34平。" },
+      { "time": "09:00", "content": "电弧队Bianchi内线连续得分，38-36。" },
+      { "time": "07:45", "content": "李逸飞开启助攻模式，连续三次助攻队友得分，42-40反超。" },
+      { "time": "06:20", "content": "Petrović命中高难度三分，43-42。" },
+      { "time": "05:00", "content": "双方展开拉锯战，比分交替上升，51-50。" },
+      { "time": "03:40", "content": "欧阳靖命中个人第三记三分，55-54。" },
+      { "time": "02:20", "content": "Dubois立刻回应answer ball三分，58-57。" },
+      { "time": "01:00", "content": "李逸飞压哨抛投命中，59-58。" },
+      { "time": "00:00", "content": "半场结束前，Johansson助攻Al-Mansoori空接暴扣！半场结束，电弧60-59领先1分。" }
+    ],
+    "Q3": [
+      { "time": "11:15", "content": "下半场，龙队加强防守，造成电弧队24秒违例。" },
+      { "time": "09:50", "content": "欧阳靖连得5分，64-60。" },
+      { "time": "08:30", "content": "Petrović命中三分止血，64-63。" },
+      { "time": "07:10", "content": "李逸飞与伊万诺夫打出精妙挡拆配合，后者扣篮得手，70-65。" },
+      { "time": "05:50", "content": "电弧队暂停。暂停回来，Dubois再中三分，70-68。" },
+      { "time": "04:30", "content": "龙队张振岳连续拼下前场篮板，补篮得分，74-70。" },
+      { "time": "03:10", "content": "Johansson助攻Tanaka命中三分，74-73。" },
+      { "time": "01:50", "content": "欧阳靖高难度后仰跳投命中，个人得分来到25分，78-75。" },
+      { "time": "00:30", "content": "三节结束前，Petrović压哨勾手命中。三节战罢，龙队87-85领先2分。" }
+    ],
+    "Q4": [
+      { "time": "10:50", "content": "末节决战，电弧队Volkov和Bianchi内线连得4分，87-89反超。" },
+      { "time": "09:30", "content": "欧阳靖命中关键三分，90-89。" },
+      { "time": "08:10", "content": "Dubois与欧阳靖展开对飙，相继命中三分，93-92。" },
+      { "time": "06:50", "content": "李逸飞助攻陈昊再中三分，96-94。" },
+      { "time": "05:30", "content": "Petrović强打内线得手，96-96平。" },
+      { "time": "04:10", "content": "比赛进入白热化，双方连续打平，100-100，102-102。" },
+      { "time": "02:50", "content": "Dubois命中个人第8记三分！105-102。" },
+      { "time": "01:30", "content": "欧阳靖快速两分，104-105。" },
+      { "time": "01:00", "content": "Johansson两罚全中，107-104。" },
+      { "time": "00:40", "content": "李逸飞突破上篮得手，106-107。" },
+      { "time": "00:20", "content": "电弧队消耗时间，Petrović压哨中投命中！109-106。" },
+      { "time": "00:08", "content": "龙队暂停。暂停后，欧阳靖接边线球，命中绝平三分！109-109！" },
+      { "time": "00:00", "content": "Johansson超远三分不中，比赛进入加时！" }
+    ],
+    "OT": [
+      { "time": "04:50", "content": "加时赛开始，欧阳靖率先中投命中，109-111。" },
+      { "time": "04:00", "content": "Petrović内线强打回应，111-111。" },
+      { "time": "03:10", "content": "李逸飞助攻伊万诺夫空接得分，111-113。" },
+      { "time": "02:20", "content": "Dubois三分不中，欧阳靖收下长篮板，快攻上篮得手！111-115。" },
+      { "time": "01:30", "content": "Johansson突破造犯规，两罚全中，113-115。" },
+      { "time": "01:00", "content": "欧阳靖被犯规，两罚全中，113-117。" },
+      { "time": "00:40", "content": "Petrović快速两分，115-117。" },
+      { "time": "00:20", "content": "犯规战术，李逸飞两罚全中，115-119。" },
+      { "time": "00:10", "content": "Dubois抢投三分命中！118-119。" },
+      { "time": "00:08", "content": "犯规战术，欧阳靖两罚全中，118-121。" },
+      { "time": "00:02", "content": "电弧队最后一攻，Johansson超远三分不中。比赛结束！" }
+    ]
+  },
+  "highlights": "一场史诗级的对攻大战，鏖战至加时才分出胜负！渊迂迂龙队凭借超级球星欧阳靖(Ouyang Jing)41分的神级表现（包括常规时间绝平三分）和指挥官李逸飞(Li Yifei)24分20助攻的史诗级数据，在客场险胜。幻影之城电弧队将三分哲学贯彻到底，尼古拉斯·杜波瓦(Nicolas Dubois)射入8记三分狂砍38分，卢卡·彼得罗维奇(Luka Petrović)贡献25分11篮板8助攻的准三双，但加时赛在防守端未能限制住欧阳靖的发挥，遗憾告负。",
+  "playerStats": [
+    
+    { "teamId": "PhantomCityArcs", "playerId": "pca2", "points": 38, "rebounds": 4, "assists": 2, "steals": 1, "blocks": 0, "plusMinus": 3, "turnovers": 2, "fouls": 2, "minutesPlayed": "43:20" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca4", "points": 25, "rebounds": 11, "assists": 8, "steals": 0, "blocks": 1, "plusMinus": 1, "turnovers": 3, "fouls": 4, "minutesPlayed": "41:10" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca1", "points": 12, "rebounds": 5, "assists": 18, "steals": 2, "blocks": 0, "plusMinus": 2, "turnovers": 4, "fouls": 3, "minutesPlayed": "42:05" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca3", "points": 15, "rebounds": 6, "assists": 3, "steals": 2, "blocks": 0, "plusMinus": -4, "turnovers": 1, "fouls": 4, "minutesPlayed": "36:15" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca5", "points": 10, "rebounds": 8, "assists": 2, "steals": 0, "blocks": 1, "plusMinus": -5, "turnovers": 2, "fouls": 5, "minutesPlayed": "30:40" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca6", "points": 8, "rebounds": 2, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 4, "turnovers": 1, "fouls": 1, "minutesPlayed": "22:30" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca7", "points": 4, "rebounds": 5, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 2, "minutesPlayed": "15:20" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca8", "points": 4, "rebounds": 4, "assists": 0, "steals": 0, "blocks": 2, "plusMinus": 0, "turnovers": 0, "fouls": 2, "minutesPlayed": "12:05" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca9", "points": 2, "rebounds": 2, "assists": 1, "steals": 1, "blocks": 0, "plusMinus": -2, "turnovers": 1, "fouls": 1, "minutesPlayed": "9:40" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca10", "points": 0, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 0, "minutesPlayed": "6:15" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca11", "points": 0, "rebounds": 0, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 0, "minutesPlayed": "4:10" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca12", "points": 0, "rebounds": 0, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 0, "minutesPlayed": "3:20" },
+    
+    { "teamId": "Yuanyuyulong", "playerId": "yy12", "points": 41, "rebounds": 6, "assists": 3, "steals": 2, "blocks": 0, "plusMinus": 5, "turnovers": 2, "fouls": 3, "minutesPlayed": "44:30" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy7", "points": 24, "rebounds": 7, "assists": 20, "steals": 3, "blocks": 0, "plusMinus": 8, "turnovers": 5, "fouls": 2, "minutesPlayed": "43:15" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy16", "points": 18, "rebounds": 14, "assists": 4, "steals": 0, "blocks": 4, "plusMinus": 6, "turnovers": 1, "fouls": 4, "minutesPlayed": "38:20" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy3", "points": 15, "rebounds": 8, "assists": 2, "steals": 1, "blocks": 0, "plusMinus": 2, "turnovers": 1, "fouls": 4, "minutesPlayed": "35:10" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy2", "points": 8, "rebounds": 11, "assists": 1, "steals": 0, "blocks": 2, "plusMinus": -1, "turnovers": 2, "fouls": 5, "minutesPlayed": "32:40" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy22", "points": 9, "rebounds": 2, "assists": 2, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 1, "fouls": 1, "minutesPlayed": "22:05" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy21", "points": 4, "rebounds": 5, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 2, "minutesPlayed": "13:20" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy20", "points": 2, "rebounds": 4, "assists": 0, "steals": 0, "blocks": 1, "plusMinus": -1, "turnovers": 0, "fouls": 1, "minutesPlayed": "9:15" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy10", "points": 0, "rebounds": 2, "assists": 0, "steals": 1, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 0, "minutesPlayed": "6:40" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy14", "points": 0, "rebounds": 1, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -4, "turnovers": 0, "fouls": 0, "minutesPlayed": "5:50" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy8", "points": 0, "rebounds": 0, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 0, "minutesPlayed": "2:30" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy11", "points": 0, "rebounds": 0, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 0, "fouls": 0, "minutesPlayed": "2:20" }
+  ]
 }
+
 
 
 
