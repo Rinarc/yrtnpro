@@ -43,19 +43,26 @@
 ]
            },
 {
-             "id": "Xiaolong",
-             "name": "华兴骁龙队",
-             "logo": "https://origin.picgo.net/2026/03/19/knockout4626451e564fcd31.md.jpeg",
-             "coach": "Dexterous Roswell（主教)、Lambert Robot（助理教练）、Lee Jia Chong（经纪人）",
-             "description": "幻织回响队（Huanzhi Resound）",
-             "players": [
-               { "id": "yy1", "name": "Kaelen Vance", "number": 1, "position": "PG", "starter": true },
-               { "id": "yy2", "name": "Liam O'Connor", "number": 3, "position": "SG", "starter": true },
-               { "id": "yy3", "name": "Rafael Silva", "number": 11, "position": "SF", "starter": true },
-               { "id": "yy4", "name": "Nikolai Petrov", "number": 14, "position": "PF", "starter": true },
-               { "id": "yy5", "name": "Jonas Schmidt", "number": 9, "position": "C", "starter": true }
-             ]
-           },
+    "id": "HuaxingXiaolong",
+    "name": "华兴骁龙队",
+    "logo": "https://origin.picgo.net/2026/03/19/knockout4626451e564fcd31.md.jpeg",
+    "coach": "Dexterous Roswell（主教)、Lambert Robot（助理教练）、Lee Jia Chong（经纪人）",
+    "description": "华兴骁龙队（Huaxing Xiaolong）",
+    "players": [
+      { "id": "hx09", "name": "Richard Braxton", "number": 9, "position": "PF", "starter": true, "overall": 92, "tags": ["篮板", "攻框"] },
+      { "id": "hx32", "name": "Arvin Konstantinos", "number": 32, "position": "SF", "starter": true, "overall": 90, "tags": ["三分", "外线防守"] },
+      { "id": "hx20", "name": "Danniell Desmond", "number": 20, "position": "C", "starter": true, "overall": 90, "tags": ["内线防守", "背身"] },
+      { "id": "hx00", "name": "Supplanter Toby", "number": 0, "position": "PG", "starter": true, "overall": 87, "tags": ["外线防守", "攻框"] },
+      { "id": "hx06", "name": "Jimmy Awe'Inspiring", "number": 6, "position": "SG", "starter": true, "overall": 88, "tags": ["中距离", "三分"] },
+      { "id": "hx12", "name": "Joseph Ramirez", "number": 12, "position": "SG", "starter": false, "overall": 76, "tags": ["三分", "外线防守"] },
+      { "id": "hx321", "name": "Mark Rivera", "number": 32, "position": "PF", "starter": false, "overall": 75, "tags": ["篮板", "篮下终结"] },
+      { "id": "hx21", "name": "Raymond Ramirez", "number": 21, "position": "C", "starter": false, "overall": 74, "tags": ["护框", "背身单打"] },
+      { "id": "hx02", "name": "Jerry Thompson", "number": 2, "position": "PG", "starter": false, "overall": 77, "tags": ["组织传球", "挡拆发动"] },
+      { "id": "hx58", "name": "Xu Yi Zhou", "number": 58, "position": "SF", "starter": false, "overall": 72, "tags": ["空切", "快攻"] },
+      { "id": "hx71", "name": "John-paul Laramie", "number": 71, "position": "SG", "starter": false, "overall": 70, "tags": ["中投", "急停跳投"] },
+      { "id": "hx62", "name": "Donald Davis", "number": 62, "position": "PF", "starter": false, "overall": 69, "tags": ["内线防守", "补篮"] }
+    ]
+  },
 {
              "id": "PhantomCityArcs",
              "name": "幻影之城电弧队",
@@ -139,6 +146,27 @@
     { "id": "dc11", "name": "Nash Russell", "number": 13, "position": "C", "starter": false, "overall": 72, "tags": ["高位策应", "护框"] },
     { "id": "dc12", "name": "Bill Shapped", "number": 0, "position": "C", "starter": false, "overall": 68, "tags": ["篮板", "内线防守"] }
   ]
+},
+{
+    "id": "GuangfuQidong",
+    "name": "光复启东队",
+    "logo": "https://origin.picgo.net/2026/03/23/60ECC555-B5E3-4EEE-BDEA-FCC29DF1417Bb8863da6338405d7.md.jpeg",
+    "coach": "Charles Rivera（主教)、Kevin Young（助理教练）、Ryan Rodriguez（经纪人）",
+    "description": "光复启东队（Guangfu Qidong）",
+    "players": [
+      { "id": "gf07", "name": "Marcus Sterling", "number": 7, "position": "PG", "starter": true, "overall": 89, "tags": ["组织传球", "外线防守"] },
+      { "id": "gf15", "name": "Caleb Foster", "number": 15, "position": "SG", "starter": true, "overall": 88, "tags": ["三分", "急停跳投"] },
+      { "id": "gf11", "name": "Julian Vance", "number": 11, "position": "SF", "starter": true, "overall": 87, "tags": ["快攻", "空切"] },
+      { "id": "gf23", "name": "Donovan Hayes", "number": 23, "position": "PF", "starter": true, "overall": 90, "tags": ["篮板", "篮下终结"] },
+      { "id": "gf34", "name": "Isaiah Crowe", "number": 34, "position": "C", "starter": true, "overall": 90, "tags": ["护框", "背身单打"] },
+      { "id": "gf13", "name": "Liam O'Connor", "number": 13, "position": "SG", "starter": false, "overall": 76, "tags": ["三分", "中距离"] },
+      { "id": "gf44", "name": "Damon Pierce", "number": 44, "position": "SF", "starter": false, "overall": 74, "tags": ["外线防守", "空切"] },
+      { "id": "gf33", "name": "Caden Knox", "number": 33, "position": "PF", "starter": false, "overall": 73, "tags": ["内线防守", "补篮"] },
+      { "id": "gf00", "name": "Zander Reese", "number": 0, "position": "PG", "starter": false, "overall": 75, "tags": ["组织传球", "快攻"] },
+      { "id": "gf24", "name": "Derek Sutton", "number": 24, "position": "C", "starter": false, "overall": 72, "tags": ["护框", "篮板"] },
+      { "id": "gf05", "name": "Jace Liu", "number": 5, "position": "SG", "starter": false, "overall": 70, "tags": ["快攻", "外线防守"] },
+      { "id": "gf08", "name": "Kian Hu", "number": 8, "position": "SF", "starter": false, "overall": 68, "tags": ["三分", "空切"] }
+    ]
 }
 
 
