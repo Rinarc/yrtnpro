@@ -649,7 +649,110 @@
     { "teamId": "DeshuiCity", "playerId": "dc11", "points": 0, "rebounds": 1, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 0, "minutesPlayed": "4:25" },
     { "teamId": "DeshuiCity", "playerId": "dc12", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 1, "plusMinus": 0, "turnovers": 0, "fouls": 0, "minutesPlayed": "3:20" }
   ]
+},
+  {
+  "id": "rs2",
+  "date": "2026-03-24",
+  "homeTeamId": "YuanyuNextEra",
+  "awayTeamId": "PhantomCityArcs",
+  "homeScore": 92,
+  "awayScore": 105,
+  "status": "已结束",
+  "referees": {
+    "main": "Zhoujianguo",
+    "linesman": ["Sundawei", "LiBin"]
+  },
+  "liveText": {
+    "Q1": [
+      { "time": "11:35", "content": "比赛开始，电弧队Dubois借掩护命中三分，拿下首分。0-3。" },
+      { "time": "10:20", "content": "次世代队Zeke Morrow突破上篮回应，2-3。" },
+      { "time": "09:05", "content": "Johansson妙传Petrović，后者命中弧顶三分，2-6。" },
+      { "time": "07:50", "content": "Jax Torrin助攻Rook Garmon中投命中，4-6。" },
+      { "time": "06:35", "content": "电弧队下起三分雨，Dubois和Tanaka再中两记三分，4-12。" },
+      { "time": "05:20", "content": "次世代队请求暂停。暂停回来，Zeke Morrow连得4分，8-12。" },
+      { "time": "04:05", "content": "Petrović展现策应能力，助攻Bianchi内线得分，8-14。" },
+      { "time": "02:50", "content": "Caius Vale命中稳定中投，10-14。" },
+      { "time": "01:35", "content": "Dubois手感火热，再中一记三分，10-17。" },
+      { "time": "00:20", "content": "首节结束前，Jax Torrin压哨上篮得手。20-28，电弧队客场领先。" }
+    ],
+    "Q2": [
+      { "time": "10:10", "content": "次节，次世代队Kyrin Sloane突破得手，22-28。" },
+      { "time": "08:55", "content": "电弧队替补Silva命中中距离，22-30。" },
+      { "time": "07:40", "content": "Zeke Morrow高难度后仰跳投命中，24-30。" },
+      { "time": "06:25", "content": "Johansson连续送出两次助攻，帮助球队保持领先，26-36。" },
+      { "time": "05:10", "content": "Bodin Stroud内线强打得分，28-36。" },
+      { "time": "03:55", "content": "Dubois命中个人第4记三分，28-39。" },
+      { "time": "02:40", "content": "次世代队打出一波7-0，Jax Torrin和Caius Vale连续得分，35-39。" },
+      { "time": "01:25", "content": "Petrović命中关键三分止血，35-42。" },
+      { "time": "00:10", "content": "半场结束前，Zeke Morrow压哨中投命中。45-52，电弧队领先7分进入下半场。" }
+    ],
+    "Q3": [
+      { "time": "11:20", "content": "下半场开始，Dubois再中三分，45-55。" },
+      { "time": "10:05", "content": "Jax Torrin突破回应，47-55。" },
+      { "time": "08:50", "content": "电弧队进攻行云流水，Johansson本节已送出5次助攻，全队开花，47-63。" },
+      { "time": "07:35", "content": "次世代队暂停。暂停后，Zeke Morrow连得5分，52-63。" },
+      { "time": "06:20", "content": "Petrović与Matsuo Tanaka连续命中三分，52-69，分差来到17分。" },
+      { "time": "05:05", "content": "Caius Vale和Rook Garmon为球队止血，命中两记三分，58-69。" },
+      { "time": "03:50", "content": "Bianchi内线连续得分，稳住局势，58-73。" },
+      { "time": "02:35", "content": "双方展开对攻，Jax Torrin与Johansson互有助攻，65-78。" },
+      { "time": "01:20", "content": "三节结束前，Dubois命中压哨三分！65-80。" },
+      { "time": "00:00", "content": "三节战罢，电弧队80-67领先13分。" }
+    ],
+    "Q4": [
+      { "time": "10:15", "content": "末节，次世代队并未放弃，Zeke Morrow连得4分，71-80。" },
+      { "time": "09:00", "content": "Dubois立刻回应一记三分，71-83。" },
+      { "time": "07:45", "content": "Jax Torrin助攻Kyrin Sloane快攻得手，73-83。" },
+      { "time": "06:30", "content": "Petrović命中关键中投，73-85。" },
+      { "time": "05:15", "content": "比赛进入最后5分钟，次世代队防守加强，造成对手失误，将分差追至10分，77-87。" },
+      { "time": "04:00", "content": "Johansson控制节奏，助攻Dubois命中个人第7记三分！77-90。" },
+      { "time": "02:45", "content": "Zeke Morrow强行突破打成2+1，80-90。" },
+      { "time": "01:30", "content": "电弧队暂停。暂停回来，Petrović命中决定性的抛投，80-92。" },
+      { "time": "01:10", "content": "犯规战术开始，Jax Torrin快速两分，82-92。" },
+      { "time": "00:55", "content": "Johansson两罚全中，82-94。" },
+      { "time": "00:40", "content": "Zeke Morrow抢投三分命中，85-94。" },
+      { "time": "00:30", "content": "犯规战术，Dubois两罚全中，85-96。" },
+      { "time": "00:20", "content": "Jax Torrin命中三分，88-96。" },
+      { "time": "00:15", "content": "犯规战术，Johansson两罚全中，88-98。" },
+      { "time": "00:10", "content": "Zeke Morrow快速两分，90-98。" },
+      { "time": "00:08", "content": "犯规战术，Petrović两罚全中，90-100。" },
+      { "time": "00:05", "content": "Jax Torrin超远三分不中，Bianchi保护下篮板。" },
+      { "time": "00:04", "content": "犯规战术，Bianchi两罚一中，90-101。" },
+      { "time": "00:02", "content": "Caius Vale补篮得手，92-101。" },
+      { "time": "00:01", "content": "犯规战术，Matsuo Tanaka两罚全中，92-103。" },
+      { "time": "00:00", "content": "比赛结束，幻影之城电弧队客场105-92战胜渊迂次世代队，取得常规赛开门红。" }
+    ]
+  },
+  "highlights": "幻影之城电弧队用一场典型的三分雨客场取胜。尼古拉斯·杜波瓦(Nicolas Dubois)三分球11中7，狂砍33分，彻底射穿了对手的防线。卢卡·彼得罗维奇(Luka Petrović)贡献20分12篮板8助攻的准三双，拉尔斯·约翰逊(Lars Johansson)送出16次助攻完美梳理进攻。年轻的渊迂次世代队再次暴露了防守端的稚嫩，泽克·莫罗(Zeke Morrow)空砍28分，贾克斯·托林(Jax Torrin)19分10助攻，但无法限制对手的多点开花，吞下常规赛首败。",
+  "playerStats": [
+    
+    { "teamId": "YuanyuNextEra", "playerId": "yne2", "points": 28, "rebounds": 5, "assists": 4, "steals": 1, "blocks": 0, "plusMinus": -15, "turnovers": 5, "fouls": 3, "minutesPlayed": "38:40" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne1", "points": 19, "rebounds": 3, "assists": 10, "steals": 2, "blocks": 0, "plusMinus": -13, "turnovers": 4, "fouls": 2, "minutesPlayed": "37:20" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne3", "points": 16, "rebounds": 8, "assists": 2, "steals": 0, "blocks": 1, "plusMinus": -8, "turnovers": 2, "fouls": 3, "minutesPlayed": "34:50" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne4", "points": 8, "rebounds": 6, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -5, "turnovers": 1, "fouls": 4, "minutesPlayed": "29:10" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne5", "points": 6, "rebounds": 10, "assists": 0, "steals": 0, "blocks": 2, "plusMinus": -4, "turnovers": 1, "fouls": 4, "minutesPlayed": "26:30" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne6", "points": 7, "rebounds": 2, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 3, "turnovers": 2, "fouls": 1, "minutesPlayed": "20:15" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne9", "points": 4, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 1, "fouls": 0, "minutesPlayed": "18:05" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne7", "points": 2, "rebounds": 4, "assists": 0, "steals": 1, "blocks": 0, "plusMinus": 2, "turnovers": 0, "fouls": 2, "minutesPlayed": "15:20" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne8", "points": 2, "rebounds": 3, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 3, "minutesPlayed": "10:40" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne10", "points": 0, "rebounds": 2, "assists": 0, "steals": 1, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 1, "minutesPlayed": "8:10" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne11", "points": 0, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -4, "turnovers": 0, "fouls": 0, "minutesPlayed": "5:30" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne12", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 1, "plusMinus": -1, "turnovers": 0, "fouls": 1, "minutesPlayed": "4:20" },
+    
+    { "teamId": "PhantomCityArcs", "playerId": "pca2", "points": 33, "rebounds": 4, "assists": 2, "steals": 1, "blocks": 0, "plusMinus": 18, "turnovers": 2, "fouls": 1, "minutesPlayed": "36:15" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca4", "points": 20, "rebounds": 12, "assists": 8, "steals": 0, "blocks": 1, "plusMinus": 15, "turnovers": 3, "fouls": 3, "minutesPlayed": "35:40" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca1", "points": 8, "rebounds": 5, "assists": 16, "steals": 3, "blocks": 0, "plusMinus": 20, "turnovers": 4, "fouls": 2, "minutesPlayed": "34:20" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca3", "points": 15, "rebounds": 6, "assists": 2, "steals": 2, "blocks": 0, "plusMinus": 8, "turnovers": 1, "fouls": 3, "minutesPlayed": "32:05" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca5", "points": 10, "rebounds": 8, "assists": 1, "steals": 0, "blocks": 2, "plusMinus": 4, "turnovers": 2, "fouls": 4, "minutesPlayed": "28:50" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca6", "points": 8, "rebounds": 2, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 4, "turnovers": 1, "fouls": 1, "minutesPlayed": "20:10" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca7", "points": 4, "rebounds": 5, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 2, "minutesPlayed": "15:30" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca8", "points": 4, "rebounds": 4, "assists": 0, "steals": 0, "blocks": 2, "plusMinus": 0, "turnovers": 0, "fouls": 2, "minutesPlayed": "12:05" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca9", "points": 2, "rebounds": 2, "assists": 1, "steals": 1, "blocks": 0, "plusMinus": -2, "turnovers": 1, "fouls": 1, "minutesPlayed": "9:40" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca10", "points": 1, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 0, "minutesPlayed": "6:15" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca11", "points": 0, "rebounds": 0, "assists": 2, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 0, "minutesPlayed": "4:10" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca12", "points": 0, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 0, "minutesPlayed": "3:20" }
+  ]
 }
+
 
 
 
