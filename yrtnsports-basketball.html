@@ -2,13 +2,13 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>渊迂体育 · 渊华德篮球联赛 · 文字直播 & 精彩表现</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>渊迂体育 · 渊华德篮球联赛</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
+    <style>
         /* 红蓝闪电/喷漆风格 — 方角、硬朗、紧凑 */
         * {
             margin: 0;
@@ -28,6 +28,8 @@
             --shadow-hard: 8px 8px 0 rgba(0,0,0,0.15);
             --shadow-hard-hover: 4px 4px 0 rgba(225,29,29,0.5);
             --primary-gradient: linear-gradient(145deg, var(--red), var(--blue));
+            /* 火焰蓝渐变 */
+            --fire-blue-gradient: linear-gradient(135deg, #0a3e8c, #1e6ac5, #3b82f6);
         }
 
         body {
@@ -185,20 +187,85 @@
         .team-name { font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; }
         .team-coach { font-size: 0.65rem; color: #444; }
 
-        /* 时间轴赛程 */
+        /* 时间轴赛程 — 可上下滚动 */
         .timeline {
-            display: flex; flex-direction: column; gap: 10px;
+            max-height: 500px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-right: 5px;
+            border: 2px solid #000;
+            background: rgba(255,255,255,0.3);
+            box-shadow: var(--shadow-hard);
+            -webkit-overflow-scrolling: touch;
         }
+        .timeline::-webkit-scrollbar {
+            width: 8px;
+        }
+        .timeline::-webkit-scrollbar-track {
+            background: #ccc;
+        }
+        .timeline::-webkit-scrollbar-thumb {
+            background: var(--primary-gradient);
+            border-radius: 0;
+        }
+
         .timeline-item {
-            background: var(--card-bg); border: 2px solid #000; border-radius: 0;
-            padding: 12px 16px; display: flex; align-items: center; gap: 12px;
-            cursor: pointer; transition: 0.2s; box-shadow: var(--shadow-hard);
+            background: var(--card-bg);
+            border: 2px solid #000;
+            border-radius: 0;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin: 0 5px 0 0;
+            position: relative;
         }
+        /* 季前赛样式：蓝色火焰渐变背景 + 边框发光 */
+        .timeline-item.pre-season {
+            background: linear-gradient(135deg, #0a3e8c, #1e6ac5, #3b82f6);
+            border: 2px solid #fff;
+            box-shadow: 0 0 12px rgba(59,130,246,0.6);
+            color: white;
+        }
+        .timeline-item.pre-season .timeline-date,
+        .timeline-item.pre-season .team-badge span,
+        .timeline-item.pre-season .timeline-score,
+        .timeline-item.pre-season .timeline-status {
+            color: white;
+            text-shadow: 0 0 4px rgba(0,0,0,0.5);
+        }
+        .timeline-item.pre-season .badge-logo {
+            border-color: white;
+            background: rgba(0,0,0,0.3);
+        }
+        /* 季中赛样式：橙色火焰渐变 */
+        .timeline-item.mid-season {
+            background: linear-gradient(135deg, #e65c1e, #f59e0b);
+            border: 2px solid #ffd966;
+            box-shadow: 0 0 12px rgba(245,158,11,0.6);
+            color: white;
+        }
+        .timeline-item.mid-season .timeline-date,
+        .timeline-item.mid-season .team-badge span,
+        .timeline-item.mid-season .timeline-score,
+        .timeline-item.mid-season .timeline-status {
+            color: white;
+            text-shadow: 0 0 4px rgba(0,0,0,0.5);
+        }
+        .timeline-item.mid-season .badge-logo {
+            border-color: white;
+            background: rgba(0,0,0,0.3);
+        }
+
         .timeline-item:hover {
             transform: translate(-3px, -3px);
-            box-shadow: 8px 8px 0 var(--blue);
-            border-color: var(--blue);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.2);
         }
+
         .timeline-date {
             font-weight: 600; color: var(--red); min-width: 70px;
             font-size: 0.8rem; text-transform: uppercase;
@@ -220,6 +287,10 @@
             font-weight: 800; font-size: 1.1rem; background: var(--primary-gradient);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             min-width: 60px; text-align: center;
+        }
+        .pre-season .timeline-score, .mid-season .timeline-score {
+            background: none;
+            -webkit-text-fill-color: white;
         }
         .timeline-status { font-size: 0.65rem; color: #555; min-width: 45px; text-align: right; }
 
@@ -441,95 +512,20 @@
 
         .hidden { transform: translateY(-100%); }
 
-        /* ========== 响应式适配 ========== */
-        @media (max-width: 1024px) {
-            .container { padding: 0 16px; }
-            .section-title { font-size: 1.2rem; }
-        }
-
+        /* 响应式 */
         @media (max-width: 768px) {
-            body { font-size: 13px; }
-            .app-header { padding: 8px 16px; }
-            .brand-name { font-size: 1.2rem; }
-            .logo { width: 32px; height: 32px; font-size: 18px; }
-            .league-header { margin: 15px 0 20px; gap: 10px; }
-            .league-header i { font-size: 2.2rem; }
-            .league-header h1 { font-size: 2rem; }
-            .section-title { font-size: 1.1rem; margin: 30px 0 12px; }
-            
-            .featured-card { flex: 0 0 180px; }
-            .team-card { flex: 0 0 100px; }
-            .team-logo { width: 48px; height: 48px; font-size: 1.5rem; }
-            .team-name { font-size: 0.75rem; }
-            .team-coach { font-size: 0.6rem; }
-            
+            .timeline { max-height: 400px; }
             .timeline-item { padding: 10px 12px; gap: 8px; flex-wrap: wrap; }
             .timeline-date { min-width: 60px; font-size: 0.7rem; }
             .timeline-teams { width: 100%; order: 2; margin-top: 8px; }
             .timeline-score { font-size: 1rem; }
             .team-badge { width: 100px; }
-            .team-badge span { font-size: 0.75rem; }
             .timeline-status { order: 3; margin-left: auto; }
-            
-            .news-item { padding: 8px 12px; gap: 10px; }
-            .news-date { min-width: 55px; font-size: 0.7rem; }
-            .news-headline { font-size: 0.8rem; }
-            
-            .videos-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-            .video-title { font-size: 0.8rem; }
-            
-            .fullscreen-modal { padding: 20px; }
-            .modal-header h2 { font-size: 1.5rem; }
-            .close-modal { width: 40px; height: 40px; font-size: 1.5rem; line-height: 40px; }
-            
-            .players-grid-full { grid-template-columns: 1fr; }
-            .player-card-full { padding: 10px; }
-            .player-number-full { font-size: 1.1rem; min-width: 35px; }
-            .player-name-full { font-size: 0.9rem; }
-            
-            .quarters-grid { grid-template-columns: 1fr; gap: 12px; }
-            .quarter-box { padding: 10px; }
-            .quarter-header { font-size: 1rem; }
-            .event-item { font-size: 0.75rem; }
-            
-            .bottom-nav { padding: 8px 20px; gap: 20px; }
-            .nav-item span { display: none; }
-            .nav-item i { font-size: 1.4rem; margin-bottom: 0; }
-            .basketball-icon { font-size: 1.6rem; }
+            .quarters-grid { grid-template-columns: 1fr; }
         }
-
         @media (max-width: 480px) {
-            .container { padding: 0 12px; }
-            .featured-card { flex: 0 0 160px; }
-            .team-card { flex: 0 0 90px; padding: 8px 4px; }
-            .team-logo { width: 42px; height: 42px; font-size: 1.3rem; }
-            .team-name { font-size: 0.7rem; }
-            
             .timeline-item { padding: 8px 10px; }
             .timeline-date { min-width: 50px; font-size: 0.65rem; }
-            .timeline-score { font-size: 0.9rem; min-width: 50px; }
-            .team-badge { width: 80px; gap: 4px; }
-            .badge-logo { width: 22px; height: 22px; font-size: 0.7rem; }
-            .team-badge span { font-size: 0.7rem; }
-            
-            .news-date { min-width: 48px; font-size: 0.65rem; }
-            .news-headline { font-size: 0.75rem; }
-            
-            .videos-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .video-title { font-size: 0.75rem; }
-            .video-sub { font-size: 0.65rem; }
-            
-            .live-text-title, .highlights-title { font-size: 1.2rem; }
-            .referee-info { font-size: 0.8rem; padding: 8px 12px; }
-            .team-stats h3 { font-size: 1.2rem; }
-            .stats-table th, .stats-table td { font-size: 0.7rem; padding: 4px; }
-        }
-
-        /* 确保表格在小屏可横向滚动 */
-        .stats-container, .team-stats { overflow-x: auto; }
-        .stats-table { min-width: 600px; }
-        @media (max-width: 768px) {
-            .stats-table { min-width: 500px; }
         }
     </style>
 </head>
@@ -558,7 +554,7 @@
         <div class="section-title"><i class="fas fa-users" style="color:var(--blue);"></i> 球队阵容</div>
         <div class="teams-row" id="teamsRow"></div>
 
-        <!-- 赛程时间轴 -->
+        <!-- 赛程时间轴（可滚动，排序新到旧，分类标注） -->
         <div class="section-title"><i class="fas fa-calendar-alt" style="color:var(--red);"></i> 赛程时间轴</div>
         <div class="timeline" id="timelineContainer"></div>
 
@@ -592,7 +588,7 @@
         <div class="players-grid-full" id="modalPlayersGrid"></div>
     </div>
 
-    <!-- 全屏模态: 比赛数据 (含裁判、详细数据、文字直播、精彩表现) -->
+    <!-- 全屏模态: 比赛数据 -->
     <div class="fullscreen-modal" id="gameModal">
         <div class="modal-header">
             <h2 id="modalGameTitle">比赛数据</h2>
@@ -600,9 +596,7 @@
         </div>
         <div id="refereeInfo" class="referee-info" style="display: none;"></div>
         <div class="stats-container" id="modalGameStats"></div>
-        <!-- 文字直播区块 (动态插入) -->
         <div id="liveTextSection" class="live-text-section" style="display: none;"></div>
-        <!-- 精彩表现区块 -->
         <div id="highlightsSection" class="highlights-section" style="display: none;"></div>
     </div>
 
@@ -673,7 +667,7 @@
                 } catch (e) { console.warn('yhdsports-news.json 加载失败'); }
             }
 
-            // 渲染精彩视频
+            // 精彩视频推荐
             function renderFeatured() {
                 if (!knockData) { featuredRow.innerHTML = '<div style="padding:20px;">⚡ 暂无体育视频数据</div>'; return; }
                 const sportCategory = knockData.categories.find(c => c.id === 'sport');
@@ -755,28 +749,49 @@
                 teamModal.classList.add('active');
             }
 
-            // 赛程渲染
+            // 赛程渲染（新到旧排序 + 分类标注）
             function renderTimeline() {
-                if (!scheduleData.length) { timelineContainer.innerHTML = '<div style="padding:20px;">⚡ 暂无赛程数据</div>'; return; }
+                if (!scheduleData.length) {
+                    timelineContainer.innerHTML = '<div style="padding:20px;">⚡ 暂无赛程数据</div>';
+                    return;
+                }
+                // 按日期从新到旧排序（降序）
+                const sortedSchedule = [...scheduleData].sort((a, b) => {
+                    return new Date(b.date) - new Date(a.date);
+                });
+
                 let html = '';
-                scheduleData.forEach(game => {
+                sortedSchedule.forEach(game => {
                     const homeTeam = teamsData.find(t => t.id == game.homeTeamId);
                     const awayTeam = teamsData.find(t => t.id == game.awayTeamId);
                     const homeName = homeTeam ? homeTeam.name : '主队';
                     const awayName = awayTeam ? awayTeam.name : '客队';
                     const homeLogo = homeTeam?.logo ? `<img src="${homeTeam.logo}">` : '<i class="fas fa-basketball-ball"></i>';
                     const awayLogo = awayTeam?.logo ? `<img src="${awayTeam.logo}">` : '<i class="fas fa-basketball-ball"></i>';
-                    html += `<div class="timeline-item" data-game-id="${game.id}">
-                        <div class="timeline-date">${game.date || '2026-??'}</div>
-                        <div class="timeline-teams">
-                            <div class="team-badge"><div class="badge-logo">${homeLogo}</div><span>${homeName}</span></div>
-                            <div class="timeline-score">${game.homeScore ?? '?'} - ${game.awayScore ?? '?'}</div>
-                            <div class="team-badge right"><span>${awayName}</span><div class="badge-logo">${awayLogo}</div></div>
+                    
+                    // 判断比赛类型 (不区分大小写)
+                    let gameTypeClass = '';
+                    const idLower = (game.id || '').toLowerCase();
+                    if (idLower.startsWith('g')) {
+                        gameTypeClass = 'pre-season';   // 季前赛
+                    } else if (idLower.startsWith('rs')) {
+                        gameTypeClass = 'mid-season';    // 季中赛
+                    }
+                    
+                    html += `
+                        <div class="timeline-item ${gameTypeClass}" data-game-id="${game.id}">
+                            <div class="timeline-date">${game.date || '2026-??'}</div>
+                            <div class="timeline-teams">
+                                <div class="team-badge"><div class="badge-logo">${homeLogo}</div><span>${homeName}</span></div>
+                                <div class="timeline-score">${game.homeScore ?? '?'} - ${game.awayScore ?? '?'}</div>
+                                <div class="team-badge right"><span>${awayName}</span><div class="badge-logo">${awayLogo}</div></div>
+                            </div>
+                            <div class="timeline-status">${game.status || '已结束'}</div>
                         </div>
-                        <div class="timeline-status">${game.status || '已结束'}</div>
-                    </div>`;
+                    `;
                 });
                 timelineContainer.innerHTML = html;
+                // 绑定点击事件
                 document.querySelectorAll('.timeline-item').forEach(item => {
                     item.addEventListener('click', () => {
                         const gid = item.dataset.gameId;
@@ -786,7 +801,7 @@
                 });
             }
 
-            // 比赛全屏 (新增文字直播和精彩表现)
+            // 比赛全屏（完整数据）
             function showGameFullscreen(game) {
                 const homeTeam = teamsData.find(t => t.id == game.homeTeamId);
                 const awayTeam = teamsData.find(t => t.id == game.awayTeamId);
@@ -809,39 +824,42 @@
                 // 球员数据表
                 let statsHtml = '';
                 if (homeTeam) {
-                    statsHtml += `<div class="team-stats"><h3><img src="${homeTeam.logo || ''}"> ${homeName}</h3><table class="stats-table"><tr><th>球员</th><th>号码</th><th>得分</th><th>篮板</th><th>助攻</th><th>正负值</th><th>失误</th><th>犯规</th><th>时间</th></tr>`;
+                    statsHtml += `<div class="team-stats"><h3><img src="${homeTeam.logo || ''}"> ${homeName}</h3><table class="stats-table">...
+                        <th>球员</th><th>号码</th><th>得分</th><th>篮板</th><th>助攻</th><th>正负值</th><th>失误</th><th>犯规</th><th>时间</th>
+                    `;
                     const homeStats = game.playerStats?.filter(s => s.teamId == game.homeTeamId) || [];
                     homeStats.forEach(stat => {
                         const player = homeTeam.players?.find(p => p.id == stat.playerId);
                         const playerName = player ? player.name : '球员';
                         const number = player?.number || '—';
-                        statsHtml += `<tr><td>${playerName}</td><td>${number}</td><td>${stat.points ?? '-'}</td><td>${stat.rebounds ?? '-'}</td><td>${stat.assists ?? '-'}</td><td>${stat.plusMinus ?? '-'}</td><td>${stat.turnovers ?? '-'}</td><td>${stat.fouls ?? '-'}</td><td>${stat.minutesPlayed ?? '-'}</td></tr>`;
+                        statsHtml += `<tr><td>${playerName}</td><td>${number}</td><td>${stat.points ?? '-'}</td><td>${stat.rebounds ?? '-'}</td><td>${stat.assists ?? '-'}</td><td>${stat.plusMinus ?? '-'}</td><td>${stat.turnovers ?? '-'}</td><td>${stat.fouls ?? '-'}</td><td>${stat.minutesPlayed ?? '-'}</td>`;
                     });
                     statsHtml += `</table></div>`;
                 }
                 if (awayTeam) {
-                    statsHtml += `<div class="team-stats"><h3><img src="${awayTeam.logo || ''}"> ${awayName}</h3><table class="stats-table"><tr><th>球员</th><th>号码</th><th>得分</th><th>篮板</th><th>助攻</th><th>正负值</th><th>失误</th><th>犯规</th><th>时间</th></tr>`;
+                    statsHtml += `<div class="team-stats"><h3><img src="${awayTeam.logo || ''}"> ${awayName}</h3><table class="stats-table">...
+                        <th>球员</th><th>号码</th><th>得分</th><th>篮板</th><th>助攻</th><th>正负值</th><th>失误</th><th>犯规</th><th>时间</th>
+                    `;
                     const awayStats = game.playerStats?.filter(s => s.teamId == game.awayTeamId) || [];
                     awayStats.forEach(stat => {
                         const player = awayTeam.players?.find(p => p.id == stat.playerId);
                         const playerName = player ? player.name : '球员';
                         const number = player?.number || '—';
-                        statsHtml += `<tr><td>${playerName}</td><td>${number}</td><td>${stat.points ?? '-'}</td><td>${stat.rebounds ?? '-'}</td><td>${stat.assists ?? '-'}</td><td>${stat.plusMinus ?? '-'}</td><td>${stat.turnovers ?? '-'}</td><td>${stat.fouls ?? '-'}</td><td>${stat.minutesPlayed ?? '-'}</td></tr>`;
+                        statsHtml += `<tr><td>${playerName}</td><td>${number}</td><td>${stat.points ?? '-'}</td><td>${stat.rebounds ?? '-'}</td><td>${stat.assists ?? '-'}</td><td>${stat.plusMinus ?? '-'}</td><td>${stat.turnovers ?? '-'}</td><td>${stat.fouls ?? '-'}</td><td>${stat.minutesPlayed ?? '-'}</td>`;
                     });
                     statsHtml += `</table></div>`;
                 }
                 modalGameStats.innerHTML = statsHtml || '<p style="color:white;">暂无详细数据</p>';
 
-                // 文字直播 (四节)
+                // 文字直播
                 if (game.liveText) {
                     const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
                     let liveHtml = `<div class="live-text-title"><i class="fas fa-comment-dots"></i> 文字直播</div><div class="quarters-grid">`;
                     quarters.forEach(q => {
                         const events = game.liveText[q] || [];
                         liveHtml += `<div class="quarter-box"><div class="quarter-header">${q}</div><ul class="event-list">`;
-                        if (events.length === 0) {
-                            liveHtml += `<li class="no-event">暂无事件</li>`;
-                        } else {
+                        if (events.length === 0) liveHtml += `<li class="no-event">暂无事件</li>`;
+                        else {
                             events.forEach(ev => {
                                 liveHtml += `<li class="event-item"><span class="event-time">${ev.time}</span> <span class="event-content">${ev.content}</span></li>`;
                             });
@@ -851,17 +869,13 @@
                     liveHtml += `</div>`;
                     liveTextSection.innerHTML = liveHtml;
                     liveTextSection.style.display = 'block';
-                } else {
-                    liveTextSection.style.display = 'none';
-                }
+                } else liveTextSection.style.display = 'none';
 
                 // 精彩表现
                 if (game.highlights && game.highlights.trim()) {
                     highlightsSection.innerHTML = `<div class="highlights-title"><i class="fas fa-star"></i> 精彩表现</div><div class="highlights-content">${game.highlights}</div>`;
                     highlightsSection.style.display = 'block';
-                } else {
-                    highlightsSection.style.display = 'none';
-                }
+                } else highlightsSection.style.display = 'none';
 
                 gameModal.classList.add('active');
             }
@@ -949,28 +963,5 @@
             });
         })();
     </script>
-
-    <!-- 数据文件模板说明 -->
-    <!-- 
-        basketballschedule2026.json 新增字段示例：
-        {
-          "id": "g1",
-          "date": "2026-03-20",
-          "homeTeamId": "yy",
-          "awayTeamId": "hx",
-          "homeScore": 98,
-          "awayScore": 87,
-          "status": "已结束",
-          "referees": { "main": "李明", "linesman": ["赵刚","孙强"] },
-          "liveText": {
-            "Q1": [{"time": "10:23", "content": "王明三分命中"}, {"time": "5:12", "content": "李华抢断反击暴扣"}],
-            "Q2": [{"time": "08:45", "content": "客队连续追分"}],
-            "Q3": [],
-            "Q4": [{"time": "00:03", "content": "王明绝杀三分命中"}]
-          },
-          "highlights": "王明全场砍下40分，并在最后时刻命中关键三分，率队逆转。",
-          "playerStats": [ ... ]
-        }
-    -->
 </body>
 </html>
