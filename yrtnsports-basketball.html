@@ -755,10 +755,23 @@
                     timelineContainer.innerHTML = '<div style="padding:20px;">⚡ 暂无赛程数据</div>';
                     return;
                 }
-                // 按日期从新到旧排序（降序）
-                const sortedSchedule = [...scheduleData].sort((a, b) => {
-                    return new Date(b.date) - new Date(a.date);
+                
+                // 修复：确保所有日期都能正确解析，并排序（从新到旧）
+                // 先过滤出有效日期的比赛，无效日期放在最后
+                const withValidDate = scheduleData.filter(game => {
+                    const date = new Date(game.date);
+                    return !isNaN(date.getTime()) && game.date;
                 });
+                const withInvalidDate = scheduleData.filter(game => {
+                    const date = new Date(game.date);
+                    return isNaN(date.getTime()) || !game.date;
+                });
+                
+                // 对有效日期按降序排序（最新日期在前）
+                withValidDate.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                // 合并：有效日期（已排序） + 无效日期（保持原顺序）
+                const sortedSchedule = [...withValidDate, ...withInvalidDate];
 
                 let html = '';
                 sortedSchedule.forEach(game => {
@@ -780,7 +793,7 @@
                     
                     html += `
                         <div class="timeline-item ${gameTypeClass}" data-game-id="${game.id}">
-                            <div class="timeline-date">${game.date || '2026-??'}</div>
+                            <div class="timeline-date">${game.date || '日期待定'}</div>
                             <div class="timeline-teams">
                                 <div class="team-badge"><div class="badge-logo">${homeLogo}</div><span>${homeName}</span></div>
                                 <div class="timeline-score">${game.homeScore ?? '?'} - ${game.awayScore ?? '?'}</div>
@@ -824,28 +837,26 @@
                 // 球员数据表
                 let statsHtml = '';
                 if (homeTeam) {
-                    statsHtml += `<div class="team-stats"><h3><img src="${homeTeam.logo || ''}"> ${homeName}</h3><table class="stats-table">...
-                        <th>球员</th><th>号码</th><th>得分</th><th>篮板</th><th>助攻</th><th>正负值</th><th>失误</th><th>犯规</th><th>时间</th>
-                    `;
+                    statsHtml += `<div class="team-stats"><h3><img src="${homeTeam.logo || ''}"> ${homeName}</h3><table class="stats-table">`;
+                    statsHtml += `<tr><th>球员</th><th>号码</th><th>得分</th><th>篮板</th><th>助攻</th><th>正负值</th><th>失误</th><th>犯规</th><th>时间</th></tr>`;
                     const homeStats = game.playerStats?.filter(s => s.teamId == game.homeTeamId) || [];
                     homeStats.forEach(stat => {
                         const player = homeTeam.players?.find(p => p.id == stat.playerId);
                         const playerName = player ? player.name : '球员';
                         const number = player?.number || '—';
-                        statsHtml += `<tr><td>${playerName}</td><td>${number}</td><td>${stat.points ?? '-'}</td><td>${stat.rebounds ?? '-'}</td><td>${stat.assists ?? '-'}</td><td>${stat.plusMinus ?? '-'}</td><td>${stat.turnovers ?? '-'}</td><td>${stat.fouls ?? '-'}</td><td>${stat.minutesPlayed ?? '-'}</td>`;
+                        statsHtml += `<tr><td>${playerName}</td><td>${number}</td><td>${stat.points ?? '-'}</td><td>${stat.rebounds ?? '-'}</td><td>${stat.assists ?? '-'}</td><td>${stat.plusMinus ?? '-'}</td><td>${stat.turnovers ?? '-'}</td><td>${stat.fouls ?? '-'}</td><td>${stat.minutesPlayed ?? '-'}</td></tr>`;
                     });
                     statsHtml += `</table></div>`;
                 }
                 if (awayTeam) {
-                    statsHtml += `<div class="team-stats"><h3><img src="${awayTeam.logo || ''}"> ${awayName}</h3><table class="stats-table">...
-                        <th>球员</th><th>号码</th><th>得分</th><th>篮板</th><th>助攻</th><th>正负值</th><th>失误</th><th>犯规</th><th>时间</th>
-                    `;
+                    statsHtml += `<div class="team-stats"><h3><img src="${awayTeam.logo || ''}"> ${awayName}</h3><table class="stats-table">`;
+                    statsHtml += `<tr><th>球员</th><th>号码</th><th>得分</th><th>篮板</th><th>助攻</th><th>正负值</th><th>失误</th><th>犯规</th><th>时间</th></tr>`;
                     const awayStats = game.playerStats?.filter(s => s.teamId == game.awayTeamId) || [];
                     awayStats.forEach(stat => {
                         const player = awayTeam.players?.find(p => p.id == stat.playerId);
                         const playerName = player ? player.name : '球员';
                         const number = player?.number || '—';
-                        statsHtml += `<tr><td>${playerName}</td><td>${number}</td><td>${stat.points ?? '-'}</td><td>${stat.rebounds ?? '-'}</td><td>${stat.assists ?? '-'}</td><td>${stat.plusMinus ?? '-'}</td><td>${stat.turnovers ?? '-'}</td><td>${stat.fouls ?? '-'}</td><td>${stat.minutesPlayed ?? '-'}</td>`;
+                        statsHtml += `<tr><td>${playerName}</td><td>${number}</td><td>${stat.points ?? '-'}</td><td>${stat.rebounds ?? '-'}</td><td>${stat.assists ?? '-'}</td><td>${stat.plusMinus ?? '-'}</td><td>${stat.turnovers ?? '-'}</td><td>${stat.fouls ?? '-'}</td><td>${stat.minutesPlayed ?? '-'}</td></tr>`;
                     });
                     statsHtml += `</table></div>`;
                 }
