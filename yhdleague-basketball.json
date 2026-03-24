@@ -148,25 +148,25 @@
   ]
 },
 {
-    "id": "GuangfuQidong",
-    "name": "光复启东队",
-    "logo": "https://origin.picgo.net/2026/03/23/60ECC555-B5E3-4EEE-BDEA-FCC29DF1417Bb8863da6338405d7.md.jpeg",
-    "coach": "Charles Rivera（主教)、Kevin Young（助理教练）、Ryan Rodriguez（经纪人）",
-    "description": "光复启东队（Guangfu Qidong）",
-    "players": [
-      { "id": "gf07", "name": "Marcus Sterling", "number": 7, "position": "PG", "starter": true, "overall": 89, "tags": ["组织传球", "外线防守"] },
-      { "id": "gf15", "name": "Caleb Foster", "number": 15, "position": "SG", "starter": true, "overall": 88, "tags": ["三分", "急停跳投"] },
-      { "id": "gf11", "name": "Julian Vance", "number": 11, "position": "SF", "starter": true, "overall": 87, "tags": ["快攻", "空切"] },
-      { "id": "gf23", "name": "Donovan Hayes", "number": 23, "position": "PF", "starter": true, "overall": 90, "tags": ["篮板", "篮下终结"] },
-      { "id": "gf34", "name": "Isaiah Crowe", "number": 34, "position": "C", "starter": true, "overall": 90, "tags": ["护框", "背身单打"] },
-      { "id": "gf13", "name": "Liam O'Connor", "number": 13, "position": "SG", "starter": false, "overall": 76, "tags": ["三分", "中距离"] },
-      { "id": "gf44", "name": "Damon Pierce", "number": 44, "position": "SF", "starter": false, "overall": 74, "tags": ["外线防守", "空切"] },
-      { "id": "gf33", "name": "Caden Knox", "number": 33, "position": "PF", "starter": false, "overall": 73, "tags": ["内线防守", "补篮"] },
-      { "id": "gf00", "name": "Zander Reese", "number": 0, "position": "PG", "starter": false, "overall": 75, "tags": ["组织传球", "快攻"] },
-      { "id": "gf24", "name": "Derek Sutton", "number": 24, "position": "C", "starter": false, "overall": 72, "tags": ["护框", "篮板"] },
-      { "id": "gf05", "name": "Jace Liu", "number": 5, "position": "SG", "starter": false, "overall": 70, "tags": ["快攻", "外线防守"] },
-      { "id": "gf08", "name": "Kian Hu", "number": 8, "position": "SF", "starter": false, "overall": 68, "tags": ["三分", "空切"] }
-    ]
+  "id": "GuangfuQidong",
+  "name": "光复启东队",
+  "logo": "https://origin.picgo.net/2026/03/23/60ECC555-B5E3-4EEE-BDEA-FCC29DF1417Bb8863da6338405d7.md.jpeg",
+  "coach": "Charles Rivera（主教)、Kevin Young（助理教练）、Ryan Rodriguez（经纪人）",
+  "description": "光复启东队（Guangfu Qidong）",
+  "players": [
+    { "id": "gf07", "name": "Frank Lopez", "number": 7, "position": "PG", "starter": true, "overall": 89, "tags": ["组织传球", "外线防守"] },
+    { "id": "gf15", "name": "Larry Martinez", "number": 15, "position": "SG", "starter": true, "overall": 88, "tags": ["三分", "急停跳投"] },
+    { "id": "gf11", "name": "Michael Allen", "number": 11, "position": "SF", "starter": true, "overall": 87, "tags": ["快攻", "空切"] },
+    { "id": "gf23", "name": "Jonathan Johnson", "number": 23, "position": "PF", "starter": true, "overall": 90, "tags": ["篮板", "篮下终结"] },
+    { "id": "gf34", "name": "Derrall Lhommedieu", "number": 34, "position": "C", "starter": true, "overall": 90, "tags": ["护框", "背身单打"] },
+    { "id": "gf01", "name": "Anthony Lee", "number": 1, "position": "PG", "starter": false, "overall": 76, "tags": ["挡拆发动", "突破分球"] },
+    { "id": "gf13", "name": "Kenneth Ramirez", "number": 13, "position": "SG", "starter": false, "overall": 74, "tags": ["中投", "三分"] },
+    { "id": "gf22", "name": "Ignace Ferron", "number": 22, "position": "SF", "starter": false, "overall": 73, "tags": ["外线防守", "转换进攻"] },
+    { "id": "gf33", "name": "Leverett Billy", "number": 33, "position": "PF", "starter": false, "overall": 71, "tags": ["内线防守", "补篮"] },
+    { "id": "gf41", "name": "Christopher Martinez", "number": 41, "position": "C", "starter": false, "overall": 72, "tags": ["勾手", "篮板"] },
+    { "id": "gf05", "name": "Alexander Sanchez", "number": 5, "position": "SG", "starter": false, "overall": 69, "tags": ["抛投", "外线防守"] },
+    { "id": "gf14", "name": "Ryan Clark", "number": 14, "position": "PF", "starter": false, "overall": 70, "tags": ["篮下终结", "挡拆发动"] }
+  ]
 }
 
 
