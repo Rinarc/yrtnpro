@@ -833,7 +833,7 @@
     { "teamId": "HuaxingXiaolong", "playerId": "hx00", "points": 8, "rebounds": 5, "assists": 7, "steals": 2, "blocks": 0, "plusMinus": 4, "turnovers": 3, "fouls": 3, "minutesPlayed": "28:30" },
     { "teamId": "HuaxingXiaolong", "playerId": "hx02", "points": 6, "rebounds": 2, "assists": 3, "steals": 0, "blocks": 0, "plusMinus": 3, "turnovers": 1, "fouls": 1, "minutesPlayed": "20:25" },
     { "teamId": "HuaxingXiaolong", "playerId": "hx12", "points": 4, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 0, "fouls": 0, "minutesPlayed": "18:05" },
-    { "teamId": "HuaxingXiaolong", "playerId": "hx32b", "points": 2, "rebounds": 5, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 2, "minutesPlayed": "15:20" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx32", "points": 2, "rebounds": 5, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 2, "minutesPlayed": "15:20" },
     { "teamId": "HuaxingXiaolong", "playerId": "hx21", "points": 0, "rebounds": 4, "assists": 0, "steals": 0, "blocks": 1, "plusMinus": -2, "turnovers": 0, "fouls": 1, "minutesPlayed": "10:40" },
     { "teamId": "HuaxingXiaolong", "playerId": "hx58", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 0, "minutesPlayed": "8:10" },
     { "teamId": "HuaxingXiaolong", "playerId": "hx71", "points": 0, "rebounds": 0, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -4, "turnovers": 0, "fouls": 0, "minutesPlayed": "4:25" },
