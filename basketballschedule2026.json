@@ -761,8 +761,8 @@
   "awayScore": 84,
   "status": "已结束",
   "referees": {
-    "main": "陈国华",
-    "linesman": ["刘伟", "赵东升"]
+    "main": "Chenguohua",
+    "linesman": ["Liuwei", "Zhaodongsheng"]
   },
   "liveText": {
     "Q1": [
@@ -862,8 +862,8 @@
   "awayScore": 110,
   "status": "已结束",
   "referees": {
-    "main": "王建业",
-    "linesman": ["孙浩", "陈斌"]
+    "main": "Wangjianye",
+    "linesman": ["Sunhao", "Chenbin"]
   },
   "liveText": {
     "Q1": [
