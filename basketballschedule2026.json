@@ -953,7 +953,212 @@
     { "teamId": "DeshuiXihuan", "playerId": "dx10", "points": 0, "rebounds": 2, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 1, "minutesPlayed": "6:15" },
     { "teamId": "DeshuiXihuan", "playerId": "dx11", "points": 0, "rebounds": 0, "assists": 0, "steals": 1, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 0, "minutesPlayed": "4:25" }
   ]
-}  
+},
+  {
+  "id": "rs5",
+  "date": "2026-03-26",
+  "homeTeamId": "PhantomCityArcs",
+  "awayTeamId": "Huanzhi",
+  "homeScore": 102,
+  "awayScore": 108,
+  "status": "已结束",
+  "referees": {
+    "main": "Liguodong",
+    "linesman": ["Chenxiaofeng", "Zhoubowen"]
+  },
+  "liveText": {
+    "Q1": [
+      { "time": "11:40", "content": "比赛开始，幻织回响队Rafael Silva中投命中，拿下首分。0-2。" },
+      { "time": "10:25", "content": "电弧队Nicolas Dubois借掩护命中三分回应，3-2。" },
+      { "time": "09:10", "content": "Liam O'Connor立刻answer ball三分，3-5。" },
+      { "time": "08:00", "content": "Luka Petrović展现全能，助攻Michele Bianchi扣篮，5-5。" },
+      { "time": "06:45", "content": "Nikolai Petrov命中底角三分，5-8。" },
+      { "time": "05:30", "content": "Dubois手感火热，再中两记三分，11-8。" },
+      { "time": "04:15", "content": "Silva开启个人模式，连得6分，11-14。" },
+      { "time": "03:00", "content": "Lars Johansson助攻Matsuo Tanaka命中三分，14-14。" },
+      { "time": "01:45", "content": "双方展开对攻，Kaelen Vance与Johansson互有助攻，22-20。" },
+      { "time": "00:30", "content": "首节结束前，Silva压哨上篮得手。28-30，幻织回响客场领先。" }
+    ],
+    "Q2": [
+      { "time": "10:20", "content": "次节，电弧队替补Sergio Silva连得4分，32-30反超。" },
+      { "time": "09:05", "content": "幻织回响队Kenji Tanaka命中三分，32-33。" },
+      { "time": "07:50", "content": "Dubois与O'Connor展开三分对飙，相继命中，37-36。" },
+      { "time": "06:35", "content": "Silva突破分球，助攻Petrov扣篮，37-38。" },
+      { "time": "05:20", "content": "Petrović命中关键三分，40-38。" },
+      { "time": "04:05", "content": "幻织回响打出一波8-0，Silva和O'Connor各得4分，40-46。" },
+      { "time": "02:50", "content": "电弧队暂停。暂停回来，Johansson助攻Bianchi内线得分，42-46。" },
+      { "time": "01:35", "content": "Silva再次站出来，连得4分，42-50。" },
+      { "time": "00:20", "content": "半场结束前，Dubois命中压哨三分。53-58，幻织回响领先5分。" }
+    ],
+    "Q3": [
+      { "time": "11:15", "content": "下半场，电弧队加强防守，造成对手失误，Johansson快攻上篮，55-58。" },
+      { "time": "10:00", "content": "O'Connor命中个人第4记三分，55-61。" },
+      { "time": "08:45", "content": "Petrović与Dubois打出精妙配合，后者再中三分，58-61。" },
+      { "time": "07:30", "content": "Silva强硬突破打成2+1，58-64。" },
+      { "time": "06:15", "content": "Johansson连续送出助攻，帮助球队紧咬比分，64-68。" },
+      { "time": "05:00", "content": "Petrov内线连续得分，64-72。" },
+      { "time": "03:45", "content": "电弧队请求暂停。暂停后，Dubois命中高难度三分，67-72。" },
+      { "time": "02:30", "content": "Silva展现全能性，抢断后助攻O'Connor快攻得分，67-74。" },
+      { "time": "01:15", "content": "Tanaka命中三分，70-77。" },
+      { "time": "00:00", "content": "三节结束前，Silva压哨抛投命中。77-84，幻织回响保持7分优势。" }
+    ],
+    "Q4": [
+      { "time": "10:15", "content": "末节决战，电弧队Volkov和Bianchi内线连得4分，81-84。" },
+      { "time": "09:00", "content": "Silva再次站出来，命中关键中投，81-86。" },
+      { "time": "07:45", "content": "Dubois命中个人第6记三分，84-86。" },
+      { "time": "06:30", "content": "O'Connor回应answer ball三分，84-89。" },
+      { "time": "05:15", "content": "Petrović强打内线得手，86-89。" },
+      { "time": "04:00", "content": "比赛进入最后4分钟，Silva突破分球，助攻Petrov命中三分，86-92。" },
+      { "time": "02:45", "content": "Johansson助攻Dubois命中三分，89-92。" },
+      { "time": "01:30", "content": "Silva造成犯规，两罚全中，89-94。" },
+      { "time": "01:10", "content": "电弧队暂停。暂停回来，Petrović快速两分，91-94。" },
+      { "time": "00:50", "content": "O'Connor被犯规，两罚全中，91-96。" },
+      { "time": "00:40", "content": "Dubois抢投三分不中，Silva保护下关键篮板。" },
+      { "time": "00:35", "content": "犯规战术，Silva两罚全中，91-98。" },
+      { "time": "00:25", "content": "Johannis快速三分命中，94-98。" },
+      { "time": "00:20", "content": "犯规战术，O'Connor两罚全中，94-100。" },
+      { "time": "00:15", "content": "Petrović快速两分，96-100。" },
+      { "time": "00:12", "content": "犯规战术，Silva两罚全中，96-102。" },
+      { "time": "00:08", "content": "Dubois命中高难度三分！99-102。" },
+      { "time": "00:06", "content": "犯规战术，Petrov两罚全中，99-104。" },
+      { "time": "00:04", "content": "Johansson超远三分不中，Petrov收下篮板。" },
+      { "time": "00:03", "content": "犯规战术，Petrov两罚全中，99-106。" },
+      { "time": "00:02", "content": "Petrović压哨三分命中。全场比赛结束，幻织回响队客场108-102力克幻影之城电弧队，取得赛季首胜。" }
+    ]
+  },
+  "highlights": "一场顶级的攻防大战！幻织回响队凭借拉斐尔·席尔瓦(Rafael Silva)35分11篮板8助攻的准三双统治级表现，在客场报了一箭之仇。利亚姆·奥康纳(Liam O'Connor)贡献25分，尼古拉·彼得罗夫(Nikolai Petrov)18分9篮板。幻影之城电弧队尼古拉斯·杜波瓦(Nicolas Dubois)空砍31分，卢卡·彼得罗维奇(Luka Petrović)22分10篮板7助攻，拉尔斯·约翰逊(Lars Johansson)送出15次助攻，但球队在防守端无法限制Silva的全面发挥，最终在主场吞下首败。",
+  "playerStats": [
+    
+    { "teamId": "PhantomCityArcs", "playerId": "pca2", "points": 31, "rebounds": 4, "assists": 2, "steals": 1, "blocks": 0, "plusMinus": -8, "turnovers": 2, "fouls": 2, "minutesPlayed": "38:50" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca4", "points": 22, "rebounds": 10, "assists": 7, "steals": 0, "blocks": 1, "plusMinus": -6, "turnovers": 3, "fouls": 4, "minutesPlayed": "37:20" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca1", "points": 12, "rebounds": 5, "assists": 15, "steals": 2, "blocks": 0, "plusMinus": -4, "turnovers": 4, "fouls": 2, "minutesPlayed": "39:10" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca3", "points": 11, "rebounds": 6, "assists": 2, "steals": 2, "blocks": 0, "plusMinus": -5, "turnovers": 1, "fouls": 3, "minutesPlayed": "34:05" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca5", "points": 8, "rebounds": 8, "assists": 1, "steals": 0, "blocks": 2, "plusMinus": -2, "turnovers": 2, "fouls": 4, "minutesPlayed": "30:40" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca6", "points": 8, "rebounds": 2, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 4, "turnovers": 1, "fouls": 1, "minutesPlayed": "20:15" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca7", "points": 4, "rebounds": 5, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 2, "minutesPlayed": "15:20" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca8", "points": 4, "rebounds": 4, "assists": 0, "steals": 0, "blocks": 2, "plusMinus": 0, "turnovers": 0, "fouls": 2, "minutesPlayed": "12:05" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca9", "points": 2, "rebounds": 2, "assists": 1, "steals": 1, "blocks": 0, "plusMinus": -2, "turnovers": 1, "fouls": 1, "minutesPlayed": "9:40" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca10", "points": 0, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 0, "minutesPlayed": "6:15" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca11", "points": 0, "rebounds": 0, "assists": 2, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 0, "minutesPlayed": "4:10" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca12", "points": 0, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 0, "minutesPlayed": "3:20" },
+    
+    { "teamId": "Huanzhi", "playerId": "ia22", "points": 35, "rebounds": 11, "assists": 8, "steals": 3, "blocks": 1, "plusMinus": 10, "turnovers": 4, "fouls": 3, "minutesPlayed": "40:00" },
+    { "teamId": "Huanzhi", "playerId": "ia7", "points": 25, "rebounds": 3, "assists": 4, "steals": 1, "blocks": 0, "plusMinus": 8, "turnovers": 1, "fouls": 2, "minutesPlayed": "37:30" },
+    { "teamId": "Huanzhi", "playerId": "ia33", "points": 18, "rebounds": 9, "assists": 2, "steals": 0, "blocks": 1, "plusMinus": 5, "turnovers": 2, "fouls": 4, "minutesPlayed": "35:20" },
+    { "teamId": "Huanzhi", "playerId": "ia5", "points": 8, "rebounds": 4, "assists": 9, "steals": 1, "blocks": 0, "plusMinus": 6, "turnovers": 3, "fouls": 3, "minutesPlayed": "32:15" },
+    { "teamId": "Huanzhi", "playerId": "ia41", "points": 6, "rebounds": 8, "assists": 4, "steals": 0, "blocks": 1, "plusMinus": 3, "turnovers": 1, "fouls": 4, "minutesPlayed": "28:40" },
+    { "teamId": "Huanzhi", "playerId": "ia99", "points": 8, "rebounds": 2, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 4, "turnovers": 1, "fouls": 1, "minutesPlayed": "20:10" },
+    { "teamId": "Huanzhi", "playerId": "ia10", "points": 4, "rebounds": 3, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 0, "fouls": 0, "minutesPlayed": "15:25" },
+    { "teamId": "Huanzhi", "playerId": "ia13", "points": 2, "rebounds": 5, "assists": 0, "steals": 0, "blocks": 1, "plusMinus": 1, "turnovers": 0, "fouls": 2, "minutesPlayed": "12:05" },
+    { "teamId": "Huanzhi", "playerId": "ia17", "points": 2, "rebounds": 1, "assists": 1, "steals": 1, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 0, "minutesPlayed": "8:15" },
+    { "teamId": "Huanzhi", "playerId": "ia8", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 1, "minutesPlayed": "6:40" },
+    { "teamId": "Huanzhi", "playerId": "ia9", "points": 0, "rebounds": 0, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 0, "minutesPlayed": "3:50" },
+    { "teamId": "Huanzhi", "playerId": "ia28", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 0, "minutesPlayed": "2:20" }
+  ]
+},
+  {
+  "id": "rs6",
+  "date": "2026-03-26",
+  "homeTeamId": "DeshuiCity",
+  "awayTeamId": "YuanyuNextEra",
+  "homeScore": 99,
+  "awayScore": 91,
+  "status": "已结束",
+  "referees": {
+    "main": "Liuzhendong",
+    "linesman": ["Wanghaiyang", "Zhaotiancheng"]
+  },
+  "liveText": {
+    "Q1": [
+      { "time": "11:35", "content": "比赛开始，渊迂次世代队Zeke Morrow突破上篮得手，拿下首分。0-2。" },
+      { "time": "10:20", "content": "德水市队Michael Mash中投回应，2-2。" },
+      { "time": "09:05", "content": "Jax Torrin助攻Caius Vale命中中投，2-4。" },
+      { "time": "07:50", "content": "Magic Waggins妙传LeBron Curry空接扣篮，4-4。" },
+      { "time": "06:35", "content": "Zeke Morrow手感火热，连得5分，4-9。" },
+      { "time": "05:20", "content": "Michael Mash站出来连得4分，8-9。" },
+      { "time": "04:05", "content": "Rook Garmon命中三分，8-12。" },
+      { "time": "02:50", "content": "Kareem Abdul-David内线勾手命中，10-12。" },
+      { "time": "01:35", "content": "双方展开对攻，Jax Torrin与Magic Waggins互有助攻，18-20。" },
+      { "time": "00:20", "content": "首节结束前，Kyrin Sloane压哨上篮得手。24-26，渊迂次世代客场领先。" }
+    ],
+    "Q2": [
+      { "time": "10:10", "content": "次节，德水市队加强防守，造成对手连续失误，打出一波8-0，32-26反超！" },
+      { "time": "08:55", "content": "渊迂次世代暂停。暂停回来，Zeke Morrow命中中投止血，32-28。" },
+      { "time": "07:40", "content": "LeBron Curry连得4分，36-28。" },
+      { "time": "06:25", "content": "Caius Vale内线强打得分，36-30。" },
+      { "time": "05:10", "content": "Michael Mash展现关键球能力，连得5分，41-30。" },
+      { "time": "03:55", "content": "Jax Torrin命中三分，41-33。" },
+      { "time": "02:40", "content": "Kobe Ewok替补登场命中三分，44-33。" },
+      { "time": "01:25", "content": "Zeke Morrow强行突破打成2+1，44-36。" },
+      { "time": "00:10", "content": "半场结束前，Magic Waggins压哨中投命中。52-46，德水市领先6分。" }
+    ],
+    "Q3": [
+      { "time": "11:20", "content": "下半场，渊迂次世代队打出气势，Zeke Morrow和Jax Torrin联手打出一波7-2，52-53，分差只剩1分！" },
+      { "time": "10:05", "content": "德水市队暂停。暂停回来，Michael Mash命中关键中投，54-53。" },
+      { "time": "08:50", "content": "Bodin Stroud内线得分，54-55，客队再次反超。" },
+      { "time": "07:35", "content": "LeBron Curry强硬突破打成2+1，57-55。" },
+      { "time": "06:20", "content": "Rook Garmon命中三分，57-58。" },
+      { "time": "05:05", "content": "双方陷入拉锯战，比分交替上升，63-63。" },
+      { "time": "03:50", "content": "Kareem Abdul-David内线连续得分，67-63。" },
+      { "time": "02:35", "content": "Zeke Morrow高难度后仰跳投命中，67-65。" },
+      { "time": "01:20", "content": "Tim Pittsburgh命中稳定中投，69-65。" },
+      { "time": "00:00", "content": "三节结束前，Jax Torrin压哨抛投命中。74-71，德水市领先3分。" }
+    ],
+    "Q4": [
+      { "time": "10:15", "content": "末节决战，LeBron Curry命中三分，77-71。" },
+      { "time": "09:00", "content": "Zeke Morrow快速两分，77-73。" },
+      { "time": "07:45", "content": "Michael Mash与Zeke Morrow展开对攻，相继得分，81-77。" },
+      { "time": "06:30", "content": "比赛进入最后5分钟，Jax Torrin助攻Caius Vale扣篮得手，81-79。" },
+      { "time": "05:15", "content": "Magic Waggins控制节奏，助攻Kareem Abdul-David内线得分，83-79。" },
+      { "time": "04:00", "content": "Zeke Morrow强行突破造成犯规，两罚全中，83-81。" },
+      { "time": "02:45", "content": "LeBron Curry命中关键中投，85-81。" },
+      { "time": "01:30", "content": "Jax Torrin快速两分，85-83。" },
+      { "time": "01:10", "content": "德水市队消耗时间，Michael Mash压哨中投命中！87-83。" },
+      { "time": "00:50", "content": "渊迂次世代暂停。暂停后，Zeke Morrow高难度后仰命中，87-85。" },
+      { "time": "00:40", "content": "犯规战术，Magic Waggins两罚全中，89-85。" },
+      { "time": "00:30", "content": "Jax Torrin快速三分不中，Kareem Abdul-David保护下关键篮板。" },
+      { "time": "00:25", "content": "犯规战术，LeBron Curry两罚全中，91-85。" },
+      { "time": "00:20", "content": "Zeke Morrow抢投三分命中！91-88。" },
+      { "time": "00:18", "content": "犯规战术，Michael Mash两罚全中，93-88。" },
+      { "time": "00:12", "content": "Jax Torrin快速三分不中，Tim Pittsburgh收下篮板。" },
+      { "time": "00:10", "content": "犯规战术，Tim Pittsburgh两罚全中，95-88。" },
+      { "time": "00:05", "content": "Zeke Morrow快速三分命中！95-91。" },
+      { "time": "00:04", "content": "犯规战术，Magic Waggins两罚全中，97-91。" },
+      { "time": "00:02", "content": "Jax Torrin超远三分不中，LeBron Curry收下篮板并补篮得手。全场比赛结束，德水市队主场99-91战胜渊迂次世代队，取得两连胜。" }
+    ]
+  },
+  "highlights": "德水市队凭借更均衡的火力和关键时刻的稳定发挥，在主场有惊无险地拿下胜利。迈克尔·马什(Michael Mash)贡献28分，勒布朗·库里(LeBron Curry)22分8篮板5助攻，魔术师·瓦金斯(Magic Waggins)13分12助攻。年轻的渊迂次世代队再次暴露了关键球处理和经验上的不足，泽克·莫罗(Zeke Morrow)空砍30分，贾克斯·托林(Jax Torrin)20分8助攻，凯厄斯·维尔(Caius Vale)16分9篮板，但球队在最后两分钟的防守和篮板保护上出现致命失误，吞下三连败。",
+  "playerStats": [
+    
+    { "teamId": "DeshuiCity", "playerId": "dc2", "points": 28, "rebounds": 5, "assists": 3, "steals": 1, "blocks": 0, "plusMinus": 9, "turnovers": 3, "fouls": 2, "minutesPlayed": "38:20" },
+    { "teamId": "DeshuiCity", "playerId": "dc3", "points": 22, "rebounds": 8, "assists": 5, "steals": 2, "blocks": 1, "plusMinus": 8, "turnovers": 4, "fouls": 3, "minutesPlayed": "36:40" },
+    { "teamId": "DeshuiCity", "playerId": "dc1", "points": 13, "rebounds": 4, "assists": 12, "steals": 2, "blocks": 0, "plusMinus": 10, "turnovers": 4, "fouls": 1, "minutesPlayed": "37:30" },
+    { "teamId": "DeshuiCity", "playerId": "dc5", "points": 12, "rebounds": 9, "assists": 1, "steals": 0, "blocks": 2, "plusMinus": 5, "turnovers": 1, "fouls": 4, "minutesPlayed": "33:20" },
+    { "teamId": "DeshuiCity", "playerId": "dc4", "points": 8, "rebounds": 7, "assists": 2, "steals": 0, "blocks": 1, "plusMinus": 3, "turnovers": 1, "fouls": 4, "minutesPlayed": "28:10" },
+    { "teamId": "DeshuiCity", "playerId": "dc6", "points": 8, "rebounds": 2, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 3, "turnovers": 1, "fouls": 1, "minutesPlayed": "20:15" },
+    { "teamId": "DeshuiCity", "playerId": "dc9", "points": 5, "rebounds": 1, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 0, "fouls": 0, "minutesPlayed": "18:05" },
+    { "teamId": "DeshuiCity", "playerId": "dc7", "points": 3, "rebounds": 3, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 2, "minutesPlayed": "12:20" },
+    { "teamId": "DeshuiCity", "playerId": "dc8", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 2, "minutesPlayed": "8:10" },
+    { "teamId": "DeshuiCity", "playerId": "dc10", "points": 0, "rebounds": 3, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 1, "minutesPlayed": "6:40" },
+    { "teamId": "DeshuiCity", "playerId": "dc11", "points": 0, "rebounds": 1, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 0, "minutesPlayed": "4:25" },
+    { "teamId": "DeshuiCity", "playerId": "dc12", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 1, "plusMinus": 0, "turnovers": 0, "fouls": 0, "minutesPlayed": "3:20" },
+    
+    { "teamId": "YuanyuNextEra", "playerId": "yne2", "points": 30, "rebounds": 6, "assists": 4, "steals": 1, "blocks": 0, "plusMinus": -9, "turnovers": 5, "fouls": 3, "minutesPlayed": "39:10" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne1", "points": 20, "rebounds": 3, "assists": 8, "steals": 2, "blocks": 0, "plusMinus": -8, "turnovers": 4, "fouls": 2, "minutesPlayed": "37:40" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne3", "points": 16, "rebounds": 9, "assists": 2, "steals": 0, "blocks": 1, "plusMinus": -5, "turnovers": 2, "fouls": 3, "minutesPlayed": "35:20" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne4", "points": 9, "rebounds": 5, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -4, "turnovers": 1, "fouls": 4, "minutesPlayed": "29:10" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne5", "points": 6, "rebounds": 10, "assists": 0, "steals": 0, "blocks": 2, "plusMinus": -2, "turnovers": 1, "fouls": 4, "minutesPlayed": "26:30" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne6", "points": 6, "rebounds": 2, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 3, "turnovers": 2, "fouls": 1, "minutesPlayed": "20:15" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne9", "points": 2, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 1, "fouls": 0, "minutesPlayed": "18:05" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne7", "points": 2, "rebounds": 4, "assists": 0, "steals": 1, "blocks": 0, "plusMinus": 2, "turnovers": 0, "fouls": 2, "minutesPlayed": "15:20" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne8", "points": 0, "rebounds": 3, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 3, "minutesPlayed": "10:40" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne10", "points": 0, "rebounds": 2, "assists": 0, "steals": 1, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 1, "minutesPlayed": "8:10" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne11", "points": 0, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -4, "turnovers": 0, "fouls": 0, "minutesPlayed": "5:30" },
+    { "teamId": "YuanyuNextEra", "playerId": "yne12", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 1, "plusMinus": -1, "turnovers": 0, "fouls": 1, "minutesPlayed": "4:20" }
+  ]
+}
+
+
 
 
 
