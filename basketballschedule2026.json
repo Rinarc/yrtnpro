@@ -1156,7 +1156,207 @@
     { "teamId": "YuanyuNextEra", "playerId": "yne11", "points": 0, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -4, "turnovers": 0, "fouls": 0, "minutesPlayed": "5:30" },
     { "teamId": "YuanyuNextEra", "playerId": "yne12", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 1, "plusMinus": -1, "turnovers": 0, "fouls": 1, "minutesPlayed": "4:20" }
   ]
+},
+  {
+  "id": "rs7",
+  "date": "2026-03-27",
+  "homeTeamId": "GuangfuQidong",
+  "awayTeamId": "Yuanyuyulong",
+  "homeScore": 85,
+  "awayScore": 101,
+  "status": "已结束",
+  "referees": {
+    "main": "Zhangjingsong",
+    "linesman": ["Wang zhe", "Liuyang"]
+  },
+  "liveText": {
+    "Q1": [
+      { "time": "11:40", "content": "比赛开始，光复启东队Derrall Lhommedieu内线勾手命中，拿下首分。2-0。" },
+      { "time": "10:25", "content": "渊迂迂龙队李逸飞助攻欧阳靖中投回应，2-2。" },
+      { "time": "09:10", "content": "Larry Martinez命中三分，5-2。" },
+      { "time": "08:00", "content": "欧阳靖连得5分，5-7反超。" },
+      { "time": "06:45", "content": "Frank Lopez助攻Jonathan Johnson扣篮，7-7。" },
+      { "time": "05:30", "content": "龙队打出流畅配合，李逸飞连续送出三次助攻，13-7。" },
+      { "time": "04:15", "content": "Michael Allen快攻上篮得手，9-13。" },
+      { "time": "03:00", "content": "安德烈·伊万诺夫内线强打2+1，9-16。" },
+      { "time": "01:45", "content": "Lhommedieu内线再次得分，11-16。" },
+      { "time": "00:30", "content": "首节结束前，欧阳靖命中压哨三分。20-28，龙队客场领先8分。" }
+    ],
+    "Q2": [
+      { "time": "10:20", "content": "次节，光复启东队Anthony Lee命中中投，22-28。" },
+      { "time": "09:05", "content": "周锐突破上篮得手，22-30。" },
+      { "time": "07:50", "content": "Jonathan Johnson补篮得分，24-30。" },
+      { "time": "06:35", "content": "欧阳靖展现无解中投，连得4分，24-34。" },
+      { "time": "05:20", "content": "Frank Lopez命中三分止血，27-34。" },
+      { "time": "04:05", "content": "李逸飞助攻陈昊命中三分，27-37。" },
+      { "time": "02:50", "content": "双方展开拉锯，Lhommedieu内线连续得分，33-41。" },
+      { "time": "01:35", "content": "伊万诺夫送出大帽，李逸飞快攻助攻张振岳扣篮，33-43。" },
+      { "time": "00:20", "content": "半场结束前，Larry Martinez压哨中投命中。42-53，龙队领先11分。" }
+    ],
+    "Q3": [
+      { "time": "11:15", "content": "下半场，光复启东队加强攻势，打出一波6-2，48-55。" },
+      { "time": "10:00", "content": "欧阳靖命中关键三分，48-58。" },
+      { "time": "08:45", "content": "Lhommedieu与Jonathan Johnson内线配合，连得4分，52-58。" },
+      { "time": "07:30", "content": "李逸飞再次展现传球功力，连续助攻队友得分，52-64。" },
+      { "time": "06:15", "content": "Frank Lopez突破分球，助攻Kenneth Ramirez命中三分，55-64。" },
+      { "time": "05:00", "content": "欧阳靖开启得分模式，连得7分，55-71，打停主队。" },
+      { "time": "03:45", "content": "暂停回来，Lhommedieu内线强打得分，57-71。" },
+      { "time": "02:30", "content": "陈昊命中底角三分，57-74。" },
+      { "time": "01:15", "content": "光复启东队打出一波7-0，Larry Martinez和Lopez连续得分，64-74。" },
+      { "time": "00:00", "content": "三节结束前，欧阳靖压哨上篮命中。66-79，龙队领先13分。" }
+    ],
+    "Q4": [
+      { "time": "10:15", "content": "末节，光复启东队仍未放弃，Ignace Ferron命中三分，69-79。" },
+      { "time": "09:00", "content": "伊万诺夫内线连续得分，69-83。" },
+      { "time": "07:45", "content": "Lhommedieu勾手命中，71-83。" },
+      { "time": "06:30", "content": "比赛进入最后6分钟，李逸飞控制节奏，助攻欧阳靖再中中投，71-85。" },
+      { "time": "05:15", "content": "Frank Lopez快速两分，73-85。" },
+      { "time": "04:00", "content": "龙队暂停。暂停回来，周锐命中三分，73-88。" },
+      { "time": "02:45", "content": "光复启东队奋力追分，Lhommedieu内线得分，77-90。" },
+      { "time": "01:30", "content": "欧阳靖命中几乎杀死比赛的三分，77-93。" },
+      { "time": "01:10", "content": "Larry Martinez抢投三分命中，80-93。" },
+      { "time": "00:50", "content": "犯规战术开始，李逸飞两罚全中，80-95。" },
+      { "time": "00:40", "content": "Frank Lopez快速三分不中，伊万诺夫收下篮板。" },
+      { "time": "00:35", "content": "犯规战术，欧阳靖两罚全中，80-97。" },
+      { "time": "00:25", "content": "Lhommedieu补篮得手，82-97。" },
+      { "time": "00:20", "content": "犯规战术，伊万诺夫两罚全中，82-99。" },
+      { "time": "00:15", "content": "Larry Martinez压哨三分命中。85-99。" },
+      { "time": "00:05", "content": "张振岳最后时刻扣篮得手。全场比赛结束，渊迂迂龙队客场101-85轻取光复启东队，取得两连胜。" }
+    ]
+  },
+  "highlights": "渊迂迂龙队展现了强大的整体实力，从开场就占据主动并始终保持领先。欧阳靖(Ouyang Jing)高效砍下36分，李逸飞(Li Yifei)送出16次助攻盘活全队，安德烈·伊万诺夫(Andre Ivanov)贡献18分12篮板4盖帽的全面数据。光复启东队内线双塔德里尔·洛梅迪厄(Derrall Lhommedieu)24分13篮板和乔纳森·约翰逊(Jonathan Johnson)18分10篮板表现出色，但外线火力无法匹配对手，最终在主场吞下两连败。",
+  "playerStats": [
+    
+    { "teamId": "GuangfuQidong", "playerId": "gf34", "points": 24, "rebounds": 13, "assists": 2, "steals": 0, "blocks": 2, "plusMinus": -18, "turnovers": 2, "fouls": 4, "minutesPlayed": "38:20" },
+    { "teamId": "GuangfuQidong", "playerId": "gf23", "points": 18, "rebounds": 10, "assists": 1, "steals": 0, "blocks": 1, "plusMinus": -16, "turnovers": 1, "fouls": 3, "minutesPlayed": "36:40" },
+    { "teamId": "GuangfuQidong", "playerId": "gf15", "points": 13, "rebounds": 2, "assists": 2, "steals": 1, "blocks": 0, "plusMinus": -12, "turnovers": 2, "fouls": 2, "minutesPlayed": "34:10" },
+    { "teamId": "GuangfuQidong", "playerId": "gf07", "points": 13, "rebounds": 4, "assists": 9, "steals": 2, "blocks": 0, "plusMinus": -14, "turnovers": 4, "fouls": 2, "minutesPlayed": "37:30" },
+    { "teamId": "GuangfuQidong", "playerId": "gf11", "points": 8, "rebounds": 5, "assists": 3, "steals": 1, "blocks": 0, "plusMinus": -8, "turnovers": 1, "fouls": 3, "minutesPlayed": "30:15" },
+    { "teamId": "GuangfuQidong", "playerId": "gf13", "points": 5, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 0, "fouls": 0, "minutesPlayed": "18:30" },
+    { "teamId": "GuangfuQidong", "playerId": "gf01", "points": 2, "rebounds": 1, "assists": 2, "steals": 0, "blocks": 0, "plusMinus": 2, "turnovers": 1, "fouls": 1, "minutesPlayed": "16:20" },
+    { "teamId": "GuangfuQidong", "playerId": "gf22", "points": 2, "rebounds": 3, "assists": 0, "steals": 1, "blocks": 0, "plusMinus": 1, "turnovers": 0, "fouls": 2, "minutesPlayed": "12:05" },
+    { "teamId": "GuangfuQidong", "playerId": "gf33", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 3, "minutesPlayed": "10:40" },
+    { "teamId": "GuangfuQidong", "playerId": "gf41", "points": 0, "rebounds": 3, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 1, "minutesPlayed": "8:10" },
+    { "teamId": "GuangfuQidong", "playerId": "gf05", "points": 0, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 0, "minutesPlayed": "5:20" },
+    { "teamId": "GuangfuQidong", "playerId": "gf14", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -4, "turnovers": 0, "fouls": 1, "minutesPlayed": "4:20" },
+    
+    { "teamId": "Yuanyuyulong", "playerId": "yy12", "points": 36, "rebounds": 4, "assists": 3, "steals": 1, "blocks": 0, "plusMinus": 20, "turnovers": 2, "fouls": 2, "minutesPlayed": "35:40" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy7", "points": 15, "rebounds": 5, "assists": 16, "steals": 3, "blocks": 0, "plusMinus": 22, "turnovers": 4, "fouls": 1, "minutesPlayed": "36:20" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy16", "points": 18, "rebounds": 12, "assists": 4, "steals": 0, "blocks": 4, "plusMinus": 18, "turnovers": 1, "fouls": 3, "minutesPlayed": "33:10" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy3", "points": 12, "rebounds": 7, "assists": 2, "steals": 1, "blocks": 0, "plusMinus": 8, "turnovers": 1, "fouls": 3, "minutesPlayed": "30:05" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy2", "points": 6, "rebounds": 9, "assists": 1, "steals": 0, "blocks": 1, "plusMinus": 5, "turnovers": 2, "fouls": 4, "minutesPlayed": "26:30" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy22", "points": 8, "rebounds": 2, "assists": 2, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 1, "fouls": 1, "minutesPlayed": "20:15" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy21", "points": 4, "rebounds": 5, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 2, "minutesPlayed": "12:20" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy20", "points": 2, "rebounds": 4, "assists": 0, "steals": 0, "blocks": 1, "plusMinus": -1, "turnovers": 0, "fouls": 1, "minutesPlayed": "9:15" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy10", "points": 0, "rebounds": 2, "assists": 0, "steals": 1, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 0, "minutesPlayed": "6:40" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy14", "points": 0, "rebounds": 1, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -4, "turnovers": 0, "fouls": 0, "minutesPlayed": "5:50" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy8", "points": 0, "rebounds": 0, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 0, "minutesPlayed": "2:30" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy11", "points": 0, "rebounds": 0, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 0, "fouls": 0, "minutesPlayed": "2:20" }
+  ]
+},
+  {
+  "id": "rs8",
+  "date": "2026-03-27",
+  "homeTeamId": "DeshuiXihuan",
+  "awayTeamId": "HuaxingXiaolong",
+  "homeScore": 89,
+  "awayScore": 95,
+  "status": "已结束",
+  "referees": {
+    "main": "Chenguohua",
+    "linesman": ["Liuwei", "Zhaodongsheng"]
+  },
+  "liveText": {
+    "Q1": [
+      { "time": "11:40", "content": "比赛开始，华兴骁龙队Richard Braxton内线强打得分，拿下首分。0-2。" },
+      { "time": "10:25", "content": "德水西环队Tyson De助攻Evan Wang中投回应，2-2。" },
+      { "time": "09:10", "content": "Arvin Konstantinos命中三分，2-5。" },
+      { "time": "08:00", "content": "Axel Zhang内线勾手命中，4-5。" },
+      { "time": "06:45", "content": "Jimmy Awe'Inspiring急停跳投命中，4-7。" },
+      { "time": "05:30", "content": "Evan Wang展现全面性，突破分球助攻Jordan Huan命中三分，7-7。" },
+      { "time": "04:15", "content": "Danniell Desmond送出大帽，Supplanter Toby抢断快攻上篮，7-9。" },
+      { "time": "03:00", "content": "Zane Dong补篮得分，9-9。" },
+      { "time": "01:45", "content": "双方展开对攻，Arvin Konstantinos再中三分，9-12。" },
+      { "time": "00:30", "content": "首节结束前，Dylan Shui压哨中投命中。22-24，华兴骁龙客场领先。" }
+    ],
+    "Q2": [
+      { "time": "10:20", "content": "次节，华兴骁龙替补Jerry Thompson命中三分，22-27。" },
+      { "time": "09:05", "content": "Ray Xi突破回应，24-27。" },
+      { "time": "07:50", "content": "Richard Braxton连续抢下前场篮板，补篮得手，24-29。" },
+      { "time": "06:35", "content": "Evan Wang连得4分，28-29。" },
+      { "time": "05:20", "content": "Arvin Konstantinos再中三分，28-32。" },
+      { "time": "04:05", "content": "Tyson De助攻Kai Feng空接暴扣，30-32。" },
+      { "time": "02:50", "content": "华兴骁龙打出一波7-0，Danniell Desmond内线连得4分，30-39。" },
+      { "time": "01:35", "content": "Evan Wang站出来命中关键三分，33-39。" },
+      { "time": "00:20", "content": "半场结束前，Supplanter Toby压哨上篮不中。42-49，华兴骁龙领先7分。" }
+    ],
+    "Q3": [
+      { "time": "11:15", "content": "下半场，德水西环队加强防守，造成对手失误，Tyson De快攻得分，44-49。" },
+      { "time": "10:00", "content": "Jimmy Awe'Inspiring命中中投止血，44-51。" },
+      { "time": "08:45", "content": "Evan Wang开启个人模式，连得6分，50-51。" },
+      { "time": "07:30", "content": "Richard Braxton内线强硬得分，50-53。" },
+      { "time": "06:15", "content": "Axel Zhang与Richard Braxton在内线展开肉搏，互有得分，54-55。" },
+      { "time": "05:00", "content": "华兴骁龙暂停。暂停回来，Arvin Konstantinos命中三分，54-58。" },
+      { "time": "03:45", "content": "Evan Wang助攻Cole Hu命中三分，57-58。" },
+      { "time": "02:30", "content": "Danniell Desmond内线连续得分，57-62。" },
+      { "time": "01:15", "content": "德水西环打出一波8-2，Kai Feng和Malik Meng连续得分，65-64反超！" },
+      { "time": "00:00", "content": "三节结束前，Jerry Thompson压哨三分命中。70-73，华兴骁龙重新领先3分。" }
+    ],
+    "Q4": [
+      { "time": "10:15", "content": "末节决战，Richard Braxton连得4分，70-77。" },
+      { "time": "09:00", "content": "Evan Wang快速两分，72-77。" },
+      { "time": "07:45", "content": "Arvin Konstantinos命中个人第4记三分，72-80。" },
+      { "time": "06:30", "content": "Axel Zhang内线强打2+1，75-80。" },
+      { "time": "05:15", "content": "比赛进入最后5分钟，Jimmy Awe'Inspiring命中关键中投，75-82。" },
+      { "time": "04:00", "content": "Tyson De助攻Evan Wang命中三分，78-82。" },
+      { "time": "02:45", "content": "Richard Braxton造成犯规，两罚全中，78-84。" },
+      { "time": "01:30", "content": "Evan Wang突破上篮得手，80-84。" },
+      { "time": "01:10", "content": "华兴骁龙消耗时间，Jerry Thompson控制节奏，助攻Danniell Desmond扣篮，80-86。" },
+      { "time": "00:50", "content": "Evan Wang快速两分，82-86。" },
+      { "time": "00:40", "content": "犯规战术开始，Arvin Konstantinos两罚全中，82-88。" },
+      { "time": "00:30", "content": "Tyson De快速三分不中，Richard Braxton保护下关键篮板。" },
+      { "time": "00:25", "content": "犯规战术，Richard Braxton两罚一中，82-89。" },
+      { "time": "00:20", "content": "Evan Wang抢投三分命中！85-89。" },
+      { "time": "00:18", "content": "犯规战术，Jerry Thompson两罚全中，85-91。" },
+      { "time": "00:12", "content": "Tyson De快速上篮得手，87-91。" },
+      { "time": "00:10", "content": "犯规战术，Supplanter Toby两罚全中，87-93。" },
+      { "time": "00:05", "content": "Evan Wang快速两分，89-93。" },
+      { "time": "00:04", "content": "犯规战术，Danniell Desmond两罚全中，89-95。" },
+      { "time": "00:00", "content": "全场比赛结束，华兴骁龙队客场95-89力克德水西环队，取得两连胜。" }
+    ]
+  },
+  "highlights": "一场激烈的内线肉搏战！华兴骁龙队凭借理查德·布拉克斯顿(Richard Braxton)25分16篮板的统治级表现和阿文·康斯坦丁诺斯(Arvin Konstantinos)20分的外线火力，在客场有惊无险地拿下胜利。丹尼尔·德斯蒙德(Danniell Desmond)贡献16分10篮板4盖帽。德水西环队埃文·王(Evan Wang)空砍28分7篮板5助攻，阿克塞尔·张(Axel Zhang)20分12篮板，泰森·德(Tyson De)13分12助攻，但球队在最后时刻的关键篮板争夺和罚球上略逊一筹，遗憾吞下两连败。",
+  "playerStats": [
+    
+    { "teamId": "DeshuiXihuan", "playerId": "dx3", "points": 28, "rebounds": 7, "assists": 5, "steals": 2, "blocks": 1, "plusMinus": -6, "turnovers": 4, "fouls": 3, "minutesPlayed": "39:20" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx5", "points": 20, "rebounds": 12, "assists": 2, "steals": 0, "blocks": 3, "plusMinus": -4, "turnovers": 2, "fouls": 4, "minutesPlayed": "37:10" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx1", "points": 13, "rebounds": 5, "assists": 12, "steals": 1, "blocks": 0, "plusMinus": -8, "turnovers": 3, "fouls": 2, "minutesPlayed": "38:30" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx2", "points": 9, "rebounds": 3, "assists": 2, "steals": 2, "blocks": 0, "plusMinus": -5, "turnovers": 1, "fouls": 3, "minutesPlayed": "34:05" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx4", "points": 6, "rebounds": 8, "assists": 1, "steals": 0, "blocks": 1, "plusMinus": -2, "turnovers": 1, "fouls": 4, "minutesPlayed": "28:40" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx6", "points": 5, "rebounds": 2, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 4, "turnovers": 0, "fouls": 1, "minutesPlayed": "20:15" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx7", "points": 3, "rebounds": 1, "assists": 2, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 1, "fouls": 0, "minutesPlayed": "18:30" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx8", "points": 3, "rebounds": 3, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 2, "minutesPlayed": "12:40" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx9", "points": 2, "rebounds": 5, "assists": 0, "steals": 0, "blocks": 2, "plusMinus": 1, "turnovers": 0, "fouls": 2, "minutesPlayed": "10:20" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx12", "points": 0, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 0, "minutesPlayed": "8:05" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx10", "points": 0, "rebounds": 2, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 1, "minutesPlayed": "6:15" },
+    { "teamId": "DeshuiXihuan", "playerId": "dx11", "points": 0, "rebounds": 0, "assists": 0, "steals": 1, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 0, "minutesPlayed": "4:25" },
+    
+    { "teamId": "HuaxingXiaolong", "playerId": "hx09", "points": 25, "rebounds": 16, "assists": 2, "steals": 0, "blocks": 1, "plusMinus": 10, "turnovers": 3, "fouls": 3, "minutesPlayed": "36:20" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx32", "points": 20, "rebounds": 4, "assists": 1, "steals": 1, "blocks": 0, "plusMinus": 8, "turnovers": 1, "fouls": 2, "minutesPlayed": "34:10" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx20", "points": 16, "rebounds": 10, "assists": 1, "steals": 0, "blocks": 4, "plusMinus": 8, "turnovers": 2, "fouls": 4, "minutesPlayed": "33:40" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx06", "points": 12, "rebounds": 3, "assists": 4, "steals": 0, "blocks": 0, "plusMinus": 2, "turnovers": 1, "fouls": 2, "minutesPlayed": "30:15" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx00", "points": 8, "rebounds": 5, "assists": 7, "steals": 2, "blocks": 0, "plusMinus": 6, "turnovers": 3, "fouls": 3, "minutesPlayed": "28:30" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx02", "points": 8, "rebounds": 2, "assists": 3, "steals": 0, "blocks": 0, "plusMinus": 3, "turnovers": 1, "fouls": 1, "minutesPlayed": "20:25" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx12", "points": 4, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 0, "fouls": 0, "minutesPlayed": "18:05" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx32b", "points": 2, "rebounds": 5, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 2, "minutesPlayed": "15:20" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx21", "points": 0, "rebounds": 4, "assists": 0, "steals": 0, "blocks": 1, "plusMinus": -2, "turnovers": 0, "fouls": 1, "minutesPlayed": "10:40" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx58", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 0, "minutesPlayed": "8:10" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx71", "points": 0, "rebounds": 0, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -4, "turnovers": 0, "fouls": 0, "minutesPlayed": "4:25" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx62", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 1, "minutesPlayed": "3:20" }
+  ]
 }
+
+
 
 
 
