@@ -2503,7 +2503,174 @@
     { "teamId": "DeshuiXihuan", "playerId": "dx10", "name": "Leo Park", "points": 0, "rebounds": 2, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 1, "minutesPlayed": "6:15" },
     { "teamId": "DeshuiXihuan", "playerId": "dx11", "name": "Elias Grant", "points": 0, "rebounds": 0, "assists": 0, "steals": 1, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 0, "minutesPlayed": "4:25" }
   ]
-}
+},
+  {
+  "id": "rs21",
+  "date": "2026-04-03",
+  "homeTeamId": "HuaxingXiaolong",
+  "awayTeamId": "PhantomCityArcs",
+  "homeScore": 96,
+  "awayScore": 89,
+  "status": "已结束",
+  "referees": {
+    "main": "王建业",
+    "linesman": ["孙浩", "陈斌"]
+  },
+  "liveText": {
+    "Q1": [
+      { "time": "11:40", "content": "比赛开始，Braxton内线强打为骁龙队拿下首分。2-0。" },
+      { "time": "10:25", "content": "Petrović中投回应。2-2。" },
+      { "time": "09:10", "content": "Konstantinos命中三分。5-2。" },
+      { "time": "08:00", "content": "Johansson助攻Bianchi扣篮。5-4。" },
+      { "time": "06:45", "content": "Desmond内线勾手命中。7-4。" },
+      { "time": "05:30", "content": "电弧队进攻效率不高，多次投篮打铁。Braxton补篮得手。9-4。" },
+      { "time": "04:15", "content": "Petrović强行突破打成2+1止血。9-7。" },
+      { "time": "03:00", "content": "Awe'Inspiring命中中投。11-7。" },
+      { "time": "01:45", "content": "首节末段，双方替补登场。Jerry Thompson命中压哨中投。24-20，主队领先。" }
+    ],
+    "Q2": [
+      { "time": "10:20", "content": "次节，【奇兵出现！】Xu Yi Zhou替补登场，连中两记三分！30-20，分差首次来到10分。" },
+      { "time": "09:05", "content": "电弧队暂停。暂停回来，Petrović连得4分。30-24。" },
+      { "time": "07:50", "content": "但Braxton在内线无人可挡，连续得分。36-28。" },
+      { "time": "06:35", "content": "Tanaka再次三分打铁，全场已4投0中。" },
+      { "time": "05:20", "content": "Johansson开始发力，连续助攻队友得分。40-35。" },
+      { "time": "04:05", "content": "半场结束前，Toby压哨上篮命中。52-45，主队领先7分。" }
+    ],
+    "Q3": [
+      { "time": "11:15", "content": "下半场，电弧队加强防守，造成对手失误，Petrović快攻扣篮。52-47。" },
+      { "time": "10:00", "content": "Braxton内线强打回应。54-47。" },
+      { "time": "08:45", "content": "【状态冰冷】Tanaka被彻底放空，三分再次不中，被换下。" },
+      { "time": "07:30", "content": "电弧队换上小个阵容，Johansson连续突破得分。58-55。" },
+      { "time": "06:20", "content": "Desmond送出大帽，Konstantinos快攻三分命中。61-55。" },
+      { "time": "05:10", "content": "比赛陷入僵持，Petrović与Braxton展开对飙。68-63。" },
+      { "time": "04:00", "content": "三节结束前，Sergio Silva命中压哨三分。74-69，主队领先5分。" }
+    ],
+    "Q4": [
+      { "time": "10:15", "content": "末节决战，Desmond内线连得4分。78-69。" },
+      { "time": "09:00", "content": "Petrović快速两分回应。78-71。" },
+      { "time": "07:45", "content": "比赛进入最后6分钟，电弧队始终无法将分差缩小到5分以内。Awe'Inspiring命中关键中投。84-76。" },
+      { "time": "06:30", "content": "Johansson助攻Volkov扣篮。84-78。" },
+      { "time": "05:15", "content": "关键时刻，Konstantinos命中三分！87-78。" },
+      { "time": "04:00", "content": "Petrović强行突破得分。87-80。" },
+      { "time": "02:45", "content": "犯规战术，Awe'Inspiring两罚全中。89-80。" },
+      { "time": "01:30", "content": "Bianchi快速两分。89-82。" },
+      { "time": "01:10", "content": "犯规战术，Toby两罚全中。91-82。" },
+      { "time": "00:50", "content": "Johansson快速三分命中。91-85。" },
+      { "time": "00:40", "content": "犯规战术，Braxton两罚一中。92-85。" },
+      { "time": "00:30", "content": "Petrović抢投三分命中！92-88。" },
+      { "time": "00:25", "content": "犯规战术，Konstantinos两罚全中。94-88。" },
+      { "time": "00:20", "content": "Bianchi造成犯规，两罚一中。94-89。" },
+      { "time": "00:18", "content": "犯规战术，Toby两罚全中。96-89。" },
+      { "time": "00:12", "content": "Johansson超远三分不中，Braxton收下篮板。全场比赛结束，华兴骁龙队主场96-89战胜幻影之城电弧，送给对手三连败！" }
+    ]
+  },
+  "highlights": "内线优势决定比赛！华兴骁龙队充分利用对方外线核心缺阵的弱点，由理查德·布拉克斯顿(Richard Braxton)26分18篮板和丹尼尔·德斯蒙德(Danniell Desmond)18分12篮板4盖帽完全统治了禁区，轻松拿下胜利。阿文·康斯坦丁诺斯(Arvin Konstantinos)贡献16分。幻影之城电弧队卢卡·彼得罗维奇(Luka Petrović)空砍28分9篮板7助攻，拉尔斯·约翰逊(Lars Johansson)15分12助攻，但缺少尼古拉斯·杜波瓦的他们进攻火力严重不足，松田武持续低迷，球队苦吞三连败，排名持续下滑。",
+  "playerStats": [
+    { "teamId": "HuaxingXiaolong", "playerId": "hx09", "name": "Richard Braxton", "points": 26, "rebounds": 18, "assists": 2, "steals": 0, "blocks": 1, "plusMinus": 12, "turnovers": 3, "fouls": 3, "minutesPlayed": "36:20" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx20", "name": "Danniell Desmond", "points": 18, "rebounds": 12, "assists": 1, "steals": 0, "blocks": 4, "plusMinus": 10, "turnovers": 2, "fouls": 4, "minutesPlayed": "34:40" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx32", "name": "Arvin Konstantinos", "points": 16, "rebounds": 4, "assists": 1, "steals": 1, "blocks": 0, "plusMinus": 8, "turnovers": 1, "fouls": 2, "minutesPlayed": "34:10" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx06", "name": "Jimmy Awe'Inspiring", "points": 12, "rebounds": 3, "assists": 4, "steals": 0, "blocks": 0, "plusMinus": 5, "turnovers": 1, "fouls": 2, "minutesPlayed": "30:15" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx00", "name": "Supplanter Toby", "points": 8, "rebounds": 5, "assists": 7, "steals": 2, "blocks": 0, "plusMinus": 6, "turnovers": 3, "fouls": 3, "minutesPlayed": "28:30" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx58", "name": "Xu Yi Zhou", "points": 6, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": 3, "turnovers": 0, "fouls": 0, "minutesPlayed": "18:05" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx02", "name": "Jerry Thompson", "points": 5, "rebounds": 2, "assists": 3, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 1, "fouls": 1, "minutesPlayed": "20:25" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx12", "name": "Joseph Ramirez", "points": 3, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 0, "fouls": 0, "minutesPlayed": "18:05" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx32b", "name": "Mark Rivera", "points": 2, "rebounds": 5, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 2, "minutesPlayed": "15:20" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx21", "name": "Raymond Ramirez", "points": 0, "rebounds": 4, "assists": 0, "steals": 0, "blocks": 1, "plusMinus": -2, "turnovers": 0, "fouls": 1, "minutesPlayed": "10:40" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx71", "name": "John-paul Laramie", "points": 0, "rebounds": 0, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -4, "turnovers": 0, "fouls": 0, "minutesPlayed": "4:25" },
+    { "teamId": "HuaxingXiaolong", "playerId": "hx62", "name": "Donald Davis", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 1, "minutesPlayed": "3:20" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca4", "name": "Luka Petrović", "points": 28, "rebounds": 9, "assists": 7, "steals": 0, "blocks": 1, "plusMinus": -10, "turnovers": 3, "fouls": 3, "minutesPlayed": "40:00" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca1", "name": "Lars Johansson", "points": 15, "rebounds": 5, "assists": 12, "steals": 2, "blocks": 0, "plusMinus": -8, "turnovers": 4, "fouls": 1, "minutesPlayed": "39:20" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca3", "name": "Michele Bianchi", "points": 14, "rebounds": 8, "assists": 2, "steals": 2, "blocks": 0, "plusMinus": -5, "turnovers": 1, "fouls": 3, "minutesPlayed": "36:15" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca5", "name": "Vladimir Volkov", "points": 10, "rebounds": 8, "assists": 1, "steals": 0, "blocks": 2, "plusMinus": 1, "turnovers": 2, "fouls": 4, "minutesPlayed": "30:40" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca6", "name": "Matsuo Tanaka", "points": 3, "rebounds": 2, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -15, "turnovers": 1, "fouls": 1, "minutesPlayed": "22:25" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca7", "name": "Sergio Silva", "points": 8, "rebounds": 5, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 2, "minutesPlayed": "18:20" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca8", "name": "Johannis Schmidt", "points": 6, "rebounds": 4, "assists": 0, "steals": 0, "blocks": 2, "plusMinus": 0, "turnovers": 0, "fouls": 2, "minutesPlayed": "15:05" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca9", "name": "Carlos Ruiz", "points": 3, "rebounds": 2, "assists": 1, "steals": 1, "blocks": 0, "plusMinus": -2, "turnovers": 1, "fouls": 1, "minutesPlayed": "12:40" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca10", "name": "Kenji Yamamoto", "points": 2, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 0, "minutesPlayed": "8:15" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca11", "name": "Thomas Weber", "points": 0, "rebounds": 0, "assists": 2, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 0, "minutesPlayed": "6:10" },
+    { "teamId": "PhantomCityArcs", "playerId": "pca12", "name": "David Kim", "points": 0, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 0, "minutesPlayed": "4:20" }
+  ]
+},
+  {
+  "id": "rs22",
+  "date": "2026-04-03",
+  "homeTeamId": "GuangfuQidong",
+  "awayTeamId": "Yuanyuyulong",
+  "homeScore": 91,
+  "awayScore": 109,
+  "status": "已结束",
+  "referees": {
+    "main": "陈国华",
+    "linesman": ["刘伟", "赵东升"]
+  },
+  "liveText": {
+    "Q1": [
+      { "time": "11:40", "content": "比赛开始，欧阳靖借掩护命中三分，为客队先声夺人。0-3。" },
+      { "time": "10:25", "content": "Lhommedieu内线强打回应。2-3。" },
+      { "time": "09:10", "content": "李逸飞妙传伊万诺夫空接扣篮。2-5。" },
+      { "time": "08:00", "content": "Lopez助攻Johnson扣篮。4-5。" },
+      { "time": "06:45", "content": "【状态火热！】欧阳靖再中两记三分！4-11。" },
+      { "time": "05:30", "content": "光复启东暂停。暂停回来，Martinez命中三分止血。7-11。" },
+      { "time": "04:15", "content": "但迂龙队进攻行云流水，周锐和张振岳接连得分。7-17。" },
+      { "time": "03:00", "content": "Lhommedieu内线艰难取分。9-17。" },
+      { "time": "01:45", "content": "首节末段，双方替补互有得分。Wang Lei命中压哨中投。20-30，客队领先10分。" }
+    ],
+    "Q2": [
+      { "time": "10:20", "content": "次节，Lopez连得4分。24-30。" },
+      { "time": "09:05", "content": "欧阳靖立刻answer ball三分。24-33。" },
+      { "time": "07:50", "content": "比赛进入相持阶段，分差维持在10分左右。Allen中投命中，30-38。" },
+      { "time": "06:35", "content": "【比赛转折点！】迂龙队突然提升防守强度，造成对手连续失误，打出一波15-2的进攻高潮！30-53！" },
+      { "time": "05:20", "content": "光复启东再次暂停，但士气已受重挫。" },
+      { "time": "04:05", "content": "半场结束前，Lhommedieu补篮得手，为主队稍稍挽回颜面。44-58，客队领先14分。" }
+    ],
+    "Q3": [
+      { "time": "11:15", "content": "下半场，光复启东重整旗鼓，Lhommedieu和Johnson内线连续得分。50-60。" },
+      { "time": "10:00", "content": "伊万诺夫内线强打回应。50-62。" },
+      { "time": "08:45", "content": "Martinez和Lopez连中两记三分！56-62，分差回到6分！" },
+      { "time": "07:30", "content": "迂龙队请求暂停。暂停回来，李逸飞连续两次助攻欧阳靖得分。56-66。" },
+      { "time": "06:20", "content": "比赛强度升级，双方身体对抗激烈。Ferron命中三分，65-72。" },
+      { "time": "05:10", "content": "欧阳靖再次命中关键三分。65-75。" },
+      { "time": "04:00", "content": "三节结束前，Lopez压哨上篮命中。72-82，客队领先10分。" }
+    ],
+    "Q4": [
+      { "time": "10:15", "content": "末节，伊万诺夫内线连得4分。72-86。" },
+      { "time": "09:00", "content": "Lhommedieu勾手命中。74-86。" },
+      { "time": "07:45", "content": "但迂龙队没有再给对手机会，李逸飞控制节奏，助攻队友稳稳得分。78-94。" },
+      { "time": "06:30", "content": "比赛进入最后5分钟，分差始终在15分左右徘徊。欧阳靖被换下休息。" },
+      { "time": "05:15", "content": "光复启东并未放弃，但时间所剩无几。Johnson补篮得手，85-102。" },
+      { "time": "04:00", "content": "双方换上替补球员。Raymond Carter命中三分。85-105。" },
+      { "time": "02:45", "content": "比赛进入垃圾时间。Ignace Ferron命中压哨三分。" },
+      { "time": "00:00", "content": "全场比赛结束，渊迂迂龙队客场109-91轻取光复启东，豪取三连胜！" }
+    ]
+  },
+  "highlights": "一场实力差距明显的比赛。渊迂迂龙队展现了强大的整体实力和稳定性，从开场就占据主动，并在第二节一举拉开比分。欧阳靖(Ouyang Jing)三分8中5砍下33分，李逸飞(Li Yifei)送出18次助攻盘活全队，安德烈·伊万诺夫(Andre Ivanov)20分15篮板3盖帽统治禁区。光复启东队德里尔·洛梅迪厄(Derrall Lhommedieu)22分11篮板，乔纳森·约翰逊(Jonathan Johnson)18分9篮板，但球队在第二节的突然断电成为比赛转折点，未能延续上一场的爆冷势头。",
+  "playerStats": [
+    { "teamId": "GuangfuQidong", "playerId": "gf34", "name": "Derrall Lhommedieu", "points": 22, "rebounds": 11, "assists": 2, "steals": 0, "blocks": 2, "plusMinus": -18, "turnovers": 2, "fouls": 3, "minutesPlayed": "36:20" },
+    { "teamId": "GuangfuQidong", "playerId": "gf23", "name": "Jonathan Johnson", "points": 18, "rebounds": 9, "assists": 1, "steals": 0, "blocks": 1, "plusMinus": -16, "turnovers": 1, "fouls": 4, "minutesPlayed": "34:40" },
+    { "teamId": "GuangfuQidong", "playerId": "gf15", "name": "Larry Martinez", "points": 15, "rebounds": 2, "assists": 2, "steals": 1, "blocks": 0, "plusMinus": -12, "turnovers": 2, "fouls": 2, "minutesPlayed": "34:10" },
+    { "teamId": "GuangfuQidong", "playerId": "gf07", "name": "Frank Lopez", "points": 15, "rebounds": 4, "assists": 8, "steals": 2, "blocks": 0, "plusMinus": -14, "turnovers": 4, "fouls": 2, "minutesPlayed": "37:30" },
+    { "teamId": "GuangfuQidong", "playerId": "gf11", "name": "Michael Allen", "points": 8, "rebounds": 5, "assists": 3, "steals": 1, "blocks": 0, "plusMinus": -8, "turnovers": 1, "fouls": 3, "minutesPlayed": "30:15" },
+    { "teamId": "GuangfuQidong", "playerId": "gf13", "name": "Kenneth Ramirez", "points": 6, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 0, "fouls": 0, "minutesPlayed": "18:30" },
+    { "teamId": "GuangfuQidong", "playerId": "gf01", "name": "Anthony Lee", "points": 3, "rebounds": 1, "assists": 2, "steals": 0, "blocks": 0, "plusMinus": 2, "turnovers": 1, "fouls": 1, "minutesPlayed": "16:20" },
+    { "teamId": "GuangfuQidong", "playerId": "gf22", "name": "Ignace Ferron", "points": 3, "rebounds": 3, "assists": 0, "steals": 1, "blocks": 0, "plusMinus": 1, "turnovers": 0, "fouls": 2, "minutesPlayed": "12:05" },
+    { "teamId": "GuangfuQidong", "playerId": "gf33", "name": "Leverett Billy", "points": 1, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -1, "turnovers": 0, "fouls": 3, "minutesPlayed": "10:40" },
+    { "teamId": "GuangfuQidong", "playerId": "gf41", "name": "Christopher Martinez", "points": 0, "rebounds": 3, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 1, "minutesPlayed": "8:10" },
+    { "teamId": "GuangfuQidong", "playerId": "gf05", "name": "Alexander Sanchez", "points": 0, "rebounds": 1, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 0, "minutesPlayed": "5:20" },
+    { "teamId": "GuangfuQidong", "playerId": "gf14", "name": "Ryan Clark", "points": 0, "rebounds": 2, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -4, "turnovers": 0, "fouls": 1, "minutesPlayed": "4:20" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy12", "name": "Ouyang Jing", "points": 33, "rebounds": 5, "assists": 3, "steals": 2, "blocks": 0, "plusMinus": 22, "turnovers": 2, "fouls": 2, "minutesPlayed": "32:20" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy7", "name": "Li Yifei", "points": 15, "rebounds": 4, "assists": 18, "steals": 3, "blocks": 0, "plusMinus": 24, "turnovers": 5, "fouls": 1, "minutesPlayed": "35:10" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy16", "name": "Andre Ivanov", "points": 20, "rebounds": 15, "assists": 4, "steals": 0, "blocks": 3, "plusMinus": 20, "turnovers": 2, "fouls": 3, "minutesPlayed": "34:40" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy22", "name": "Zhou Rui", "points": 12, "rebounds": 2, "assists": 2, "steals": 0, "blocks": 0, "plusMinus": 8, "turnovers": 1, "fouls": 1, "minutesPlayed": "30:05" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy2", "name": "Zhang Zhenyue", "points": 10, "rebounds": 8, "assists": 1, "steals": 0, "blocks": 1, "plusMinus": 5, "turnovers": 2, "fouls": 5, "minutesPlayed": "28:20" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy21", "name": "Wang Lei", "points": 8, "rebounds": 5, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 2, "minutesPlayed": "18:30" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy20", "name": "Liu Dawei", "points": 6, "rebounds": 4, "assists": 0, "steals": 0, "blocks": 1, "plusMinus": -1, "turnovers": 0, "fouls": 1, "minutesPlayed": "12:15" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy10", "name": "Raymond Carter", "points": 3, "rebounds": 3, "assists": 0, "steals": 1, "blocks": 0, "plusMinus": -3, "turnovers": 0, "fouls": 0, "minutesPlayed": "10:40" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy14", "name": "Lu Zixuan", "points": 2, "rebounds": 1, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": -4, "turnovers": 0, "fouls": 0, "minutesPlayed": "6:50" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy8", "name": "Kim Minjun", "points": 0, "rebounds": 0, "assists": 0, "steals": 0, "blocks": 0, "plusMinus": -2, "turnovers": 0, "fouls": 0, "minutesPlayed": "3:30" },
+    { "teamId": "Yuanyuyulong", "playerId": "yy11", "name": "Wu Xiaoyu", "points": 0, "rebounds": 0, "assists": 1, "steals": 0, "blocks": 0, "plusMinus": 0, "turnovers": 0, "fouls": 0, "minutesPlayed": "2:20" }
+  ]
+  }
+
 
 
 
