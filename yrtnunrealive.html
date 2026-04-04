@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>渊迂电视台 · 假直播系统 | 随机轮播+B站支持+标识插播</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #0a0f1e 0%, #0c1222 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Inter', sans-serif;
+            padding: 20px;
+        }
+
+        .live-container {
+            max-width: 1280px;
+            width: 100%;
+            background: #000000;
+            border-radius: 32px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .video-stage {
+            position: relative;
+            background: #000;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+        }
+
+        /* 原生视频层 (用于直链) */
+        .video-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+            transition: opacity 0.2s ease;
+        }
+        .video-layer.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .video-layer.visible {
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 2;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* iframe 层 (B站专用) */
+        .iframe-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #000;
+            transition: opacity 0.2s ease;
+        }
+        .iframe-layer.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .iframe-layer.visible {
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 2;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* 直播角标 - 右上角 */
+        .live-badge {
+            position: absolute;
+            top: 18px;
+            right: 20px;
+            z-index: 20;
+            background: rgba(255, 0, 0, 0.85);
+            backdrop-filter: blur(4px);
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .live-dot {
+            width: 12px;
+            height: 12px;
+            background-color: #ff3b3b;
+            border-radius: 50%;
+            animation: pulse 1.2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.4; transform: scale(0.8);}
+            100% { opacity: 1; transform: scale(1.2);}
+        }
+
+        /* 台标 - 左上角缩小版 */
+        .station-logo {
+            position: absolute;
+            top: 16px;
+            left: 20px;
+            z-index: 25;
+            width: 64px;
+            height: auto;
+            background: rgba(0,0,0,0.35);
+            backdrop-filter: blur(3px);
+            border-radius: 12px;
+            padding: 4px 6px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .station-logo img {
+            display: block;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+        }
+        @media (max-width: 640px) {
+            .station-logo { width: 50px; top: 12px; left: 12px; padding: 3px 5px; }
+            .live-badge { top: 12px; right: 12px; padding: 4px 10px; font-size: 0.7rem; }
+        }
+
+        /* 信息栏 */
+        .info-panel {
+            background: rgba(10, 15, 30, 0.9);
+            backdrop-filter: blur(12px);
+            padding: 16px 24px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+        .program-info {
+            flex: 2;
+        }
+        .current-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #aaa;
+            margin-bottom: 4px;
+        }
+        .program-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, #9aaef5);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+        .next-info {
+            flex: 1;
+            text-align: right;
+            border-left: 1px solid rgba(255,255,255,0.2);
+            padding-left: 20px;
+        }
+        .next-label {
+            font-size: 0.7rem;
+            color: #8e9aaf;
+        }
+        .next-title {
+            font-weight: 600;
+            color: #cbd5ff;
+            font-size: 0.9rem;
+        }
+        .control-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.85rem;
+            backdrop-filter: blur(5px);
+        }
+        .control-btn:hover:not(:disabled) {
+            background: #ff4d4d;
+            transform: scale(1.02);
+        }
+        .control-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .ident-note {
+            background: #ffa50030;
+            border-left: 3px solid #ffaa33;
+            padding-left: 10px;
+            margin-top: 4px;
+            font-size: 0.7rem;
+            color: #ffd966;
+        }
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: #ff4d4d;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @media (max-width: 640px) {
+            .program-title { font-size: 1rem; }
+            .info-panel { padding: 12px 16px; }
+            .next-title { font-size: 0.75rem; }
+        }
+        .sound-tip {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 0.7rem;
+            color: #ccc;
+            z-index: 20;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="live-container">
+    <div class="video-stage" id="videoStage">
+        <!-- 原生视频双缓冲层 (直链) -->
+        <div id="videoContainer1" class="video-layer hidden">
+            <video id="video1" preload="auto" playsinline></video>
+        </div>
+        <div id="videoContainer2" class="video-layer hidden">
+            <video id="video2" preload="auto" playsinline></video>
+        </div>
+        
+        <!-- B站 iframe 双缓冲层 -->
+        <div id="iframeContainer1" class="iframe-layer hidden">
+            <iframe id="iframe1" allow="autoplay; fullscreen" referrerpolicy="origin" allowfullscreen></iframe>
+        </div>
+        <div id="iframeContainer2" class="iframe-layer hidden">
+            <iframe id="iframe2" allow="autoplay; fullscreen" referrerpolicy="origin" allowfullscreen></iframe>
+        </div>
+        
+        <!-- 直播角标 (右上角) -->
+        <div class="live-badge">
+            <span class="live-dot"></span>
+            <span>渊迂轮播</span>
+        </div>
+        
+        <!-- 台标 (左上角) -->
+        <div class="station-logo">
+            <img src="https://origin.picgo.net/2026/04/04/knockout6c3d285437921eb2.png" alt="YRTN台标" loading="eager">
+        </div>
+        
+        <!-- 加载遮罩 -->
+        <div id="loadingOverlay" class="loading-overlay">
+            <div class="spinner"></div>
+            <div>加载节目数据 & 标识配置中...</div>
+            <div style="font-size:0.8rem; opacity:0.7;">正在获取节目单及台内标识</div>
+        </div>
+        <div class="sound-tip">🔊 已开启声音</div>
+    </div>
+
+    <div class="info-panel">
+        <div class="program-info">
+            <div class="current-label">📺 正在直播</div>
+            <div class="program-title" id="currentProgramName">-- 加载数据中 --</div>
+            <div class="ident-note" id="identNote" style="display: none;">✨ 标识片段播放中 ✨</div>
+        </div>
+        <div class="next-info">
+            <div class="next-label">⏩ 即将播出</div>
+            <div class="next-title" id="nextProgramName">-</div>
+        </div>
+        <button id="startBtn" class="control-btn" disabled>⏳ 加载中...</button>
+    </div>
+    <div style="padding: 8px 24px 16px 24px; font-size: 0.7rem; color: #6c7a8e; background: #03060c; border-top: 1px solid #1e2a3a; display: flex; justify-content: space-between;">
+        <span>📡 随机轮播 | 支持B站+直链 | 每集后插播标识</span>
+        <span>⚡ 混合双缓冲 · 尽量无缝</span>
+    </div>
+</div>
+
+<script>
+    // ======================= 配置 =======================
+    const PROGRAM_JSON_URL = './knockknock.json';
+    const IDENT_JSON_URL = './yrtnident.json';
+    
+    // 全局数据
+    let allPrograms = [];
+    let identList = [];
+    let playSequence = [];
+    let totalItems = 0;
+    
+    // 播放器核心变量
+    let currentPlayerType = null;
+    let activeVideoElem = null;
+    let standbyVideoElem = null;
+    let activeIframeElem = null;
+    let standbyIframeElem = null;
+    let activeContainer = null;
+    let standbyContainer = null;
+    let currentIndex = 0;
+    let isLiveStarted = false;
+    let isSwitching = false;
+    let switchTimeout = null;
+    
+    // DOM 元素
+    const video1 = document.getElementById('video1');
+    const video2 = document.getElementById('video2');
+    const iframe1 = document.getElementById('iframe1');
+    const iframe2 = document.getElementById('iframe2');
+    const videoContainer1 = document.getElementById('videoContainer1');
+    const videoContainer2 = document.getElementById('videoContainer2');
+    const iframeContainer1 = document.getElementById('iframeContainer1');
+    const iframeContainer2 = document.getElementById('iframeContainer2');
+    const startBtn = document.getElementById('startBtn');
+    const currentProgramNameSpan = document.getElementById('currentProgramName');
+    const nextProgramNameSpan = document.getElementById('nextProgramName');
+    const identNoteSpan = document.getElementById('identNote');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    
+    function showLoading(show) {
+        if(loadingOverlay) loadingOverlay.style.display = show ? 'flex' : 'none';
+    }
+    
+    // 判断是否为B站iframe链接
+    function isBilibiliUrl(url) {
+        if (!url || typeof url !== 'string') return false;
+        return url.includes('player.bilibili.com') || url.includes('bilibili.com/player.html');
+    }
+    
+    // 从B站URL提取bvid并构造最佳嵌入链接 (隐藏控制栏、自动播放、允许声音)
+    function getBilibiliEmbedUrl(url) {
+        let bvid = '';
+        // 匹配bvid参数
+        const bvidMatch = url.match(/bvid=([A-Za-z0-9]+)/i);
+        if (bvidMatch) {
+            bvid = bvidMatch[1];
+        } else {
+            // 匹配BV号
+            const bvMatch = url.match(/BV[1-9A-HJ-NP-Za-km-z]{10}/);
+            if (bvMatch) bvid = bvMatch[0];
+        }
+        if (bvid) {
+            // autoplay=1 自动播放, muted=0 不静音, controls=0 隐藏控制栏, playsinline=1 内嵌播放
+            return `https://player.bilibili.com/player.html?bvid=${bvid}&autoplay=1&muted=0&controls=0&playsinline=1&high_quality=1&danmaku=0`;
+        }
+        return url; // 降级
+    }
+    
+    // 解析时长字符串为秒数
+    function parseDuration(durationStr) {
+        if (!durationStr || typeof durationStr !== 'string') return 0;
+        const parts = durationStr.split(':');
+        if (parts.length === 2) return parseInt(parts[0])*60 + parseInt(parts[1]);
+        if (parts.length === 3) return parseInt(parts[0])*3600 + parseInt(parts[1])*60 + parseInt(parts[2]);
+        return 0;
+    }
+    
+    // 提取节目: 支持直链和B站链接
+    function extractProgramsFromJson(jsonData) {
+        const programs = [];
+        if (!jsonData || !jsonData.categories) return programs;
+        for (const category of jsonData.categories) {
+            if (!category.shows) continue;
+            for (const show of category.shows) {
+                const showTitle = show.title || "未命名栏目";
+                if (!show.episodes) continue;
+                for (const ep of show.episodes) {
+                    let videoUrl = ep.videoUrl;
+                    if (!videoUrl) continue;
+                    // 只接受http/https链接或B站iframe链接
+                    if (!videoUrl.match(/^https?:\/\//) && !isBilibiliUrl(videoUrl)) continue;
+                    const episodeTitle = ep.title || "未命名剧集";
+                    const durationSec = parseDuration(ep.duration);
+                    programs.push({
+                        displayName: `${showTitle} - ${episodeTitle}`,
+                        url: videoUrl,
+                        showTitle: showTitle,
+                        episodeTitle: episodeTitle,
+                        type: isBilibiliUrl(videoUrl) ? 'iframe' : 'video',
+                        durationSec: durationSec,
+                        rawUrl: videoUrl
+                    });
+                }
+            }
+        }
+        console.log(`[节目] 共提取 ${programs.length} 个节目 (B站:${programs.filter(p=>p.type==='iframe').length}, 直链:${programs.filter(p=>p.type==='video').length})`);
+        return programs;
+    }
+    
+    // 加载标识 (按照用户提供的 yrtnident.json 格式)
+    async function loadIdents() {
+        try {
+            const response = await fetch(IDENT_JSON_URL);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const json = await response.json();
+            let idents = [];
+            // 解析嵌套结构: categories[0].shows[0].episodes[].videoUrl
+            if (json.categories && Array.isArray(json.categories)) {
+                for (const cat of json.categories) {
+                    if (cat.shows) {
+                        for (const show of cat.shows) {
+                            if (show.episodes) {
+                                for (const ep of show.episodes) {
+                                    if (ep.videoUrl && !isBilibiliUrl(ep.videoUrl) && ep.videoUrl.match(/^https?:\/\//)) {
+                                        idents.push({
+                                            name: `台标 ${ep.id || 'IDENT'}`,
+                                            url: ep.videoUrl
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            // 兼容直接数组格式
+            if (idents.length === 0 && Array.isArray(json)) {
+                idents = json.filter(i => i.url && i.url.match(/^https?:\/\//)).map(i => ({ name: i.name || '标识', url: i.url }));
+            }
+            console.log(`[标识] 加载 ${idents.length} 个标识视频`);
+            return idents;
+        } catch (err) {
+            console.warn("标识文件加载失败", err);
+            return [];
+        }
+    }
+    
+    // 随机排序节目数组
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+    
+    // 构建轮播序列: 随机节目 + 每个节目后插一个标识 (标识循环)
+    function buildPlaylistWithIdents(programs, idents) {
+        const shuffledPrograms = shuffleArray([...programs]);
+        const seq = [];
+        if (shuffledPrograms.length === 0) return seq;
+        if (idents.length === 0) {
+            for (let p of shuffledPrograms) {
+                seq.push({ ...p });
+            }
+            return seq;
+        }
+        let identCursor = 0;
+        for (let p of shuffledPrograms) {
+            seq.push({ ...p });
+            const ident = idents[identCursor % idents.length];
+            seq.push({
+                type: 'ident',
+                displayName: `🏷️ ${ident.name}`,
+                url: ident.url,
+                playerType: 'video',
+                durationSec: 0
+            });
+            identCursor++;
+        }
+        return seq;
+    }
+    
+    function getPlaylistItem(index) {
+        if (totalItems === 0) return null;
+        const safeIdx = ((index % totalItems) + totalItems) % totalItems;
+        return playSequence[safeIdx];
+    }
+    
+    // 获取下一个「节目」(跳过标识)
+    function getNextProgramDisplay(currentIdx) {
+        let offset = 1;
+        while (offset <= totalItems) {
+            const item = getPlaylistItem(currentIdx + offset);
+            if (!item) return null;
+            if (item.type === 'program') return item.displayName;
+            offset++;
+        }
+        return null;
+    }
+    
+    function updateUIByIndex(idx) {
+        const current = getPlaylistItem(idx);
+        if (!current) return;
+        if (current.type === 'ident') {
+            identNoteSpan.style.display = 'inline-block';
+            currentProgramNameSpan.innerHTML = current.displayName;
+        } else {
+            identNoteSpan.style.display = 'none';
+            currentProgramNameSpan.innerHTML = current.displayName;
+        }
+        const nextProg = getNextProgramDisplay(idx);
+        nextProgramNameSpan.innerText = nextProg || "即将播出";
+    }
+    
+    // 预加载视频 (直链)
+    function preloadVideo(videoElem, url) {
+        if (!videoElem || !url) return;
+        if (videoElem.src === url && videoElem.readyState >= 2) return;
+        videoElem.pause();
+        videoElem.muted = false;
+        videoElem.preload = 'auto';
+        videoElem.src = url;
+        videoElem.load();
+    }
+    
+    // 预加载 iframe (B站) - 设置src
+    function preloadIframe(iframeElem, url) {
+        if (!iframeElem || !url) return;
+        const embedUrl = getBilibiliEmbedUrl(url);
+        if (iframeElem.src !== embedUrl) {
+            iframeElem.src = embedUrl;
+        }
+    }
+    
+    // 停止所有播放器和定时器
+    function stopAllPlayers() {
+        if (activeVideoElem) activeVideoElem.pause();
+        if (standbyVideoElem) standbyVideoElem.pause();
+        if (activeIframeElem) activeIframeElem.src = 'about:blank';
+        if (standbyIframeElem) standbyIframeElem.src = 'about:blank';
+        if (switchTimeout) clearTimeout(switchTimeout);
+    }
+    
+    // 视频结束事件
+    function onVideoEnded() {
+        if (!isLiveStarted || isSwitching) return;
+        performSwitch();
+    }
+    
+    // 核心切换函数 (支持 video / iframe 混合)
+    async function performSwitch() {
+        if (isSwitching || !isLiveStarted) return;
+        isSwitching = true;
+        
+        const nextItem = getPlaylistItem(currentIndex + 1);
+        if (!nextItem) {
+            isSwitching = false;
+            return;
+        }
+        
+        // 确定下一个内容的播放器类型
+        let nextPlayerType = 'video';
+        if (nextItem.type === 'program') {
+            nextPlayerType = nextItem.type === 'program' ? (nextItem.playerType || nextItem.type) : 'video';
+        } else if (nextItem.type === 'ident') {
+            nextPlayerType = 'video';
+        } else {
+            nextPlayerType = 'video';
+        }
+        
+        // 准备新活动层和备用层
+        let newActiveContainer, newStandbyContainer;
+        let newActiveVideo = null, newActiveIframe = null;
+        
+        if (nextPlayerType === 'video') {
+            // 使用视频层
+            newActiveContainer = (standbyContainer && standbyContainer.id.includes('video')) ? standbyContainer : videoContainer1;
+            newStandbyContainer = (newActiveContainer === videoContainer1) ? videoContainer2 : videoContainer1;
+            newActiveVideo = (newActiveContainer === videoContainer1) ? video1 : video2;
+            preloadVideo(newActiveVideo, nextItem.url);
+            // 切换可见性
+            videoContainer1.classList.add('hidden'); videoContainer2.classList.add('hidden');
+            iframeContainer1.classList.add('hidden'); iframeContainer2.classList.add('hidden');
+            newActiveContainer.classList.remove('hidden');
+            newActiveContainer.classList.add('visible');
+            try {
+                newActiveVideo.muted = false;
+                await newActiveVideo.play();
+            } catch(e) { console.warn("视频播放失败", e); }
+            // 更新全局引用
+            activeVideoElem = newActiveVideo;
+            standbyVideoElem = (newActiveVideo === video1) ? video2 : video1;
+            activeIframeElem = null;
+            standbyIframeElem = null;
+            activeContainer = newActiveContainer;
+            standbyContainer = newStandbyContainer;
+            // 清除之前的iframe定时器
+            if (switchTimeout) clearTimeout(switchTimeout);
+            // 绑定结束事件
+            activeVideoElem.removeEventListener('ended', onVideoEnded);
+            activeVideoElem.addEventListener('ended', onVideoEnded);
+        } else {
+            // 使用iframe层 (B站)
+            newActiveContainer = (standbyContainer && standbyContainer.id.includes('iframe')) ? standbyContainer : iframeContainer1;
+            newStandbyContainer = (newActiveContainer === iframeContainer1) ? iframeContainer2 : iframeContainer1;
+            newActiveIframe = (newActiveContainer === iframeContainer1) ? iframe1 : iframe2;
+            const embedUrl = getBilibiliEmbedUrl(nextItem.url);
+            newActiveIframe.src = embedUrl;
+            // 切换可见性
+            videoContainer1.classList.add('hidden'); videoContainer2.classList.add('hidden');
+            iframeContainer1.classList.add('hidden'); iframeContainer2.classList.add('hidden');
+            newActiveContainer.classList.remove('hidden');
+            newActiveContainer.classList.add('visible');
+            activeIframeElem = newActiveIframe;
+            standbyIframeElem = (newActiveIframe === iframe1) ? iframe2 : iframe1;
+            activeVideoElem = null;
+            standbyVideoElem = null;
+            activeContainer = newActiveContainer;
+            standbyContainer = newStandbyContainer;
+            // 清除之前的定时器
+            if (switchTimeout) clearTimeout(switchTimeout);
+            // 设置定时器切换 (B站无法监听结束)
+            let duration = nextItem.durationSec;
+            if (!duration || duration <= 0) duration = 120; // 默认2分钟
+            switchTimeout = setTimeout(() => {
+                if (isLiveStarted && !isSwitching) performSwitch();
+            }, duration * 1000);
+        }
+        
+        currentIndex = (currentIndex + 1) % totalItems;
+        updateUIByIndex(currentIndex);
+        
+        // 预加载下一个节目到待机层
+        const futureItem = getPlaylistItem(currentIndex + 1);
+        if (futureItem) {
+            const futureType = (futureItem.type === 'program') ? (futureItem.playerType || 'video') : 'video';
+            if (futureType === 'video') {
+                if (standbyVideoElem) preloadVideo(standbyVideoElem, futureItem.url);
+            } else {
+                if (standbyIframeElem) preloadIframe(standbyIframeElem, futureItem.url);
+            }
+        }
+        
+        isSwitching = false;
+    }
+    
+    // 开始直播
+    async function startLive() {
+        if (isLiveStarted) return;
+        if (playSequence.length === 0) {
+            alert("播放列表为空，请检查数据源");
+            return;
+        }
+        stopAllPlayers();
+        totalItems = playSequence.length;
+        currentIndex = 0;
+        
+        // 重置所有容器隐藏
+        videoContainer1.classList.add('hidden');
+        videoContainer2.classList.add('hidden');
+        iframeContainer1.classList.add('hidden');
+        iframeContainer2.classList.add('hidden');
+        
+        const firstItem = getPlaylistItem(0);
+        if (!firstItem) return;
+        
+        const firstType = (firstItem.type === 'program') ? (firstItem.playerType || 'video') : 'video';
+        
+        if (firstType === 'video') {
+            activeVideoElem = video1;
+            standbyVideoElem = video2;
+            activeContainer = videoContainer1;
+            standbyContainer = videoContainer2;
+            activeIframeElem = null;
+            standbyIframeElem = null;
+            preloadVideo(activeVideoElem, firstItem.url);
+            videoContainer1.classList.remove('hidden');
+            videoContainer1.classList.add('visible');
+            try {
+                activeVideoElem.muted = false;
+                await activeVideoElem.play();
+            } catch(e) { console.warn("视频自动播放失败", e); }
+            activeVideoElem.addEventListener('ended', onVideoEnded);
+            if (switchTimeout) clearTimeout(switchTimeout);
+        } else {
+            activeIframeElem = iframe1;
+            standbyIframeElem = iframe2;
+            activeContainer = iframeContainer1;
+            standbyContainer = iframeContainer2;
+            activeVideoElem = null;
+            standbyVideoElem = null;
+            const embedUrl = getBilibiliEmbedUrl(firstItem.url);
+            activeIframeElem.src = embedUrl;
+            iframeContainer1.classList.remove('hidden');
+            iframeContainer1.classList.add('visible');
+            let duration = firstItem.durationSec;
+            if (!duration || duration <= 0) duration = 120;
+            if (switchTimeout) clearTimeout(switchTimeout);
+            switchTimeout = setTimeout(() => {
+                if (isLiveStarted && !isSwitching) performSwitch();
+            }, duration * 1000);
+        }
+        
+        // 预加载第二个项目
+        const secondItem = getPlaylistItem(1);
+        if (secondItem) {
+            const secondType = (secondItem.type === 'program') ? (secondItem.playerType || 'video') : 'video';
+            if (secondType === 'video') {
+                if (standbyVideoElem) preloadVideo(standbyVideoElem, secondItem.url);
+            } else {
+                if (standbyIframeElem) preloadIframe(standbyIframeElem, secondItem.url);
+            }
+        }
+        
+        updateUIByIndex(0);
+        isLiveStarted = true;
+        startBtn.innerText = '⚡ 直播中';
+        startBtn.disabled = true;
+    }
+    
+    // 初始化加载数据并构建随机序列
+    async function initApp() {
+        showLoading(true);
+        startBtn.disabled = true;
+        try {
+            const [programsRes, idents] = await Promise.all([
+                fetch(PROGRAM_JSON_URL).then(r => r.json()),
+                loadIdents()
+            ]);
+            const programs = extractProgramsFromJson(programsRes);
+            if (programs.length === 0) throw new Error("没有有效的节目（需要直链或B站链接）");
+            allPrograms = programs;
+            identList = idents;
+            playSequence = buildPlaylistWithIdents(allPrograms, identList);
+            totalItems = playSequence.length;
+            console.log(`序列构建完成，总项目数=${totalItems}`);
+            showLoading(false);
+            startBtn.disabled = false;
+            startBtn.innerText = '▶ 开始直播';
+            currentProgramNameSpan.innerHTML = '随机节目单就绪';
+            const firstProg = getNextProgramDisplay(-1);
+            nextProgramNameSpan.innerText = firstProg || '节目';
+        } catch (err) {
+            console.error(err);
+            showLoading(false);
+            currentProgramNameSpan.innerHTML = '数据加载失败';
+            nextProgramNameSpan.innerHTML = '请检查JSON文件';
+            startBtn.disabled = true;
+        }
+    }
+    
+    startBtn.addEventListener('click', () => {
+        if (isLiveStarted) return;
+        startLive();
+    });
+    
+    initApp();
+</script>
+</body>
+</html>

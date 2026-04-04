@@ -1,0 +1,16 @@
+{
+  "categories": [
+    {
+      "id": "ident",
+      "shows": [
+        {
+          "id": "id-ident1",
+          "episodes": [
+            {
+              "id": "ident-1",
+              "videoUrl": "https://dlink.host/1drv/aHR0cHM6Ly8xZHJ2Lm1zL3YvYy83ZjkzYmM0ZDA3N2U1NjA3L0lRQmhxS0NsWGlTWlE0dFZZRDdsQk1zSkFYUzlibldTd0VfOGRCdFpVbmtrTTdr.MOV",
+             }
+          ]
+        }
+      ]
+    }
