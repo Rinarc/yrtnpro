@@ -809,11 +809,17 @@ body::after {
         <div class="section-title"><i class="fas fa-fire" style="color:var(--red);"></i> 精彩视频推荐</div>
         <div class="featured-row" id="featuredRow"></div>
 
+        <!-- 全明星周末赛事卡片 (新增) -->
+        <div class="section-title"><i class="fas fa-star" style="color:#0f9b8e;"></i> 全明星周末 · 渊华德2026</div>
+        <div class="allstar-grid" id="allstarGrid">
+            <!-- 动态生成六张卡片 -->
+        </div>
+
         <!-- 球队阵容 -->
         <div class="section-title"><i class="fas fa-users" style="color:var(--blue);"></i> 球队阵容</div>
         <div class="teams-row" id="teamsRow"></div>
 
-        <!-- 赛程时间轴（可滚动，排序新到旧，分类标注） -->
+        <!-- 赛程时间轴 -->
         <div class="section-title"><i class="fas fa-calendar-alt" style="color:var(--red);"></i> 赛程时间轴</div>
         <div class="timeline" id="timelineContainer"></div>
 
@@ -847,7 +853,7 @@ body::after {
         <div class="players-grid-full" id="modalPlayersGrid"></div>
     </div>
 
-    <!-- 全屏模态: 比赛数据 -->
+    <!-- 全屏模态: 比赛数据 (原有) -->
     <div class="fullscreen-modal" id="gameModal">
         <div class="modal-header">
             <h2 id="modalGameTitle">比赛数据</h2>
@@ -859,6 +865,17 @@ body::after {
         <div id="highlightsSection" class="highlights-section" style="display: none;"></div>
     </div>
 
+    <!-- 全明星周末模态框 (动态内容) -->
+    <div class="allstar-modal" id="allstarModal">
+        <div class="allstar-modal-content">
+            <div class="allstar-modal-header">
+                <h2 id="allstarModalTitle">全明星赛事</h2>
+                <button class="allstar-close" id="closeAllstarModal"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="allstarModalBody"></div>
+        </div>
+    </div>
+
     <script>
         (function() {
             // 数据存储
@@ -866,13 +883,15 @@ body::after {
             let teamsData = [];
             let scheduleData = [];
             let newsData = [];
+            let allstarData = null;      // 全明星数据
 
-            // DOM
+            // DOM 元素
             const featuredRow = document.getElementById('featuredRow');
             const teamsRow = document.getElementById('teamsRow');
             const timelineContainer = document.getElementById('timelineContainer');
             const newsTimeline = document.getElementById('newsTimeline');
             const sportsVideosGrid = document.getElementById('sportsVideosGrid');
+            const allstarGrid = document.getElementById('allstarGrid');
 
             const teamModal = document.getElementById('teamModal');
             const gameModal = document.getElementById('gameModal');
@@ -889,14 +908,22 @@ body::after {
             const liveTextSection = document.getElementById('liveTextSection');
             const highlightsSection = document.getElementById('highlightsSection');
 
+            // 全明星模态框
+            const allstarModal = document.getElementById('allstarModal');
+            const allstarModalTitle = document.getElementById('allstarModalTitle');
+            const allstarModalBody = document.getElementById('allstarModalBody');
+            const closeAllstarModal = document.getElementById('closeAllstarModal');
+
             closeTeamModal.addEventListener('click', () => teamModal.classList.remove('active'));
             closeGameModal.addEventListener('click', () => gameModal.classList.remove('active'));
+            closeAllstarModal.addEventListener('click', () => allstarModal.classList.remove('active'));
             window.addEventListener('click', e => {
                 if (e.target === teamModal) teamModal.classList.remove('active');
                 if (e.target === gameModal) gameModal.classList.remove('active');
+                if (e.target === allstarModal) allstarModal.classList.remove('active');
             });
 
-            // 加载数据
+            // ---------- 加载数据 ----------
             async function loadKnock() {
                 try {
                     const res = await fetch('knockknock.json');
@@ -925,8 +952,15 @@ body::after {
                     newsData = await res.json();
                 } catch (e) { console.warn('yhdsports-news.json 加载失败'); }
             }
+            async function loadAllstar() {
+                try {
+                    const res = await fetch('yhdallstar2026.json');
+                    if (!res.ok) throw new Error();
+                    allstarData = await res.json();
+                } catch (e) { console.warn('yhdallstar2026.json 加载失败'); }
+            }
 
-            // 精彩视频推荐
+            // ---------- 精彩视频推荐 (保持不变) ----------
             function renderFeatured() {
                 if (!knockData) { featuredRow.innerHTML = '<div style="padding:20px;">⚡ 暂无体育视频数据</div>'; return; }
                 const sportCategory = knockData.categories.find(c => c.id === 'sport');
@@ -961,7 +995,7 @@ body::after {
                 });
             }
 
-            // 球队阵容渲染
+            // ---------- 球队阵容渲染 (保持不变) ----------
             function renderTeams() {
                 if (!teamsData.length) { teamsRow.innerHTML = '<div style="padding:20px;">⚡ 暂无球队数据</div>'; return; }
                 let html = '';
@@ -1008,15 +1042,13 @@ body::after {
                 teamModal.classList.add('active');
             }
 
-            // 赛程渲染（新到旧排序 + 分类标注）
+            // ---------- 赛程渲染 (新到旧排序 + 分类标注，包含全明星识别) ----------
             function renderTimeline() {
                 if (!scheduleData.length) {
                     timelineContainer.innerHTML = '<div style="padding:20px;">⚡ 暂无赛程数据</div>';
                     return;
                 }
-                
-                // 修复：确保所有日期都能正确解析，并排序（从新到旧）
-                // 先过滤出有效日期的比赛，无效日期放在最后
+                // 排序：有效日期降序，无效日期放最后
                 const withValidDate = scheduleData.filter(game => {
                     const date = new Date(game.date);
                     return !isNaN(date.getTime()) && game.date;
@@ -1025,11 +1057,7 @@ body::after {
                     const date = new Date(game.date);
                     return isNaN(date.getTime()) || !game.date;
                 });
-                
-                // 对有效日期按降序排序（最新日期在前）
                 withValidDate.sort((a, b) => new Date(b.date) - new Date(a.date));
-                
-                // 合并：有效日期（已排序） + 无效日期（保持原顺序）
                 const sortedSchedule = [...withValidDate, ...withInvalidDate];
 
                 let html = '';
@@ -1041,13 +1069,14 @@ body::after {
                     const homeLogo = homeTeam?.logo ? `<img src="${homeTeam.logo}">` : '<i class="fas fa-basketball-ball"></i>';
                     const awayLogo = awayTeam?.logo ? `<img src="${awayTeam.logo}">` : '<i class="fas fa-basketball-ball"></i>';
                     
-                    // 判断比赛类型 (不区分大小写)
                     let gameTypeClass = '';
                     const idLower = (game.id || '').toLowerCase();
-                    if (idLower.startsWith('g')) {
-                        gameTypeClass = 'pre-season';   // 季前赛
+                    if (idLower.startsWith('allstar')) {
+                        gameTypeClass = 'all-star';
+                    } else if (idLower.startsWith('g')) {
+                        gameTypeClass = 'pre-season';
                     } else if (idLower.startsWith('rs')) {
-                        gameTypeClass = 'mid-season';    // 季中赛
+                        gameTypeClass = 'mid-season';
                     }
                     
                     html += `
@@ -1063,7 +1092,6 @@ body::after {
                     `;
                 });
                 timelineContainer.innerHTML = html;
-                // 绑定点击事件
                 document.querySelectorAll('.timeline-item').forEach(item => {
                     item.addEventListener('click', () => {
                         const gid = item.dataset.gameId;
@@ -1073,7 +1101,7 @@ body::after {
                 });
             }
 
-            // 比赛全屏（完整数据）
+            // 比赛数据全屏 (原有，省略细节，保持功能)
             function showGameFullscreen(game) {
                 const homeTeam = teamsData.find(t => t.id == game.homeTeamId);
                 const awayTeam = teamsData.find(t => t.id == game.awayTeamId);
@@ -1081,7 +1109,6 @@ body::after {
                 const awayName = awayTeam ? awayTeam.name : '客队';
                 modalGameTitle.innerText = `${homeName} vs ${awayName} · 球员数据`;
 
-                // 裁判信息
                 if (game.referees) {
                     let refHtml = '';
                     if (typeof game.referees === 'object') {
@@ -1093,7 +1120,6 @@ body::after {
                     refereeInfoDiv.style.display = 'block';
                 } else refereeInfoDiv.style.display = 'none';
 
-                // 球员数据表
                 let statsHtml = '';
                 if (homeTeam) {
                     statsHtml += `<div class="team-stats"><h3><img src="${homeTeam.logo || ''}"> ${homeName}</h3><table class="stats-table">`;
@@ -1115,7 +1141,7 @@ body::after {
                         const player = awayTeam.players?.find(p => p.id == stat.playerId);
                         const playerName = player ? player.name : '球员';
                         const number = player?.number || '—';
-                        statsHtml += `<tr><td>${playerName}</td><td>${number}</td><td>${stat.points ?? '-'}</td><td>${stat.rebounds ?? '-'}</td><td>${stat.assists ?? '-'}</td><td>${stat.plusMinus ?? '-'}</td><td>${stat.turnovers ?? '-'}</td><td>${stat.fouls ?? '-'}</td><td>${stat.minutesPlayed ?? '-'}</td></tr>`;
+                        statsHtml += `<td><td>${playerName}</td><td>${number}</td><td>${stat.points ?? '-'}</td><td>${stat.rebounds ?? '-'}</td><td>${stat.assists ?? '-'}</td><td>${stat.plusMinus ?? '-'}</td><td>${stat.turnovers ?? '-'}</td><td>${stat.fouls ?? '-'}</td><td>${stat.minutesPlayed ?? '-'}</td></tr>`;
                     });
                     statsHtml += `</table></div>`;
                 }
@@ -1141,7 +1167,6 @@ body::after {
                     liveTextSection.style.display = 'block';
                 } else liveTextSection.style.display = 'none';
 
-                // 精彩表现
                 if (game.highlights && game.highlights.trim()) {
                     highlightsSection.innerHTML = `<div class="highlights-title"><i class="fas fa-star"></i> 精彩表现</div><div class="highlights-content">${game.highlights}</div>`;
                     highlightsSection.style.display = 'block';
@@ -1150,7 +1175,7 @@ body::after {
                 gameModal.classList.add('active');
             }
 
-            // 体育新闻渲染
+            // ---------- 体育新闻渲染 ----------
             function renderNews() {
                 if (!newsData || !newsData.news || !newsData.news.length) {
                     newsTimeline.innerHTML = '<div style="padding:20px;">⚡ 暂无体育新闻</div>';
@@ -1163,7 +1188,7 @@ body::after {
                 newsTimeline.innerHTML = html;
             }
 
-            // 体育视频网格
+            // ---------- 体育视频网格 ----------
             function renderSportsVideos() {
                 if (!knockData) { sportsVideosGrid.innerHTML = '<div style="padding:20px;">⚡ 请确保knockknock.json存在</div>'; return; }
                 const sportCat = knockData.categories.find(c => c.id === 'sport');
@@ -1197,26 +1222,154 @@ body::after {
                 });
             }
 
-            // 初始化
+            // ---------- 全明星周末卡片渲染 & 模态框内容 ----------
+            function renderAllstarCards() {
+                if (!allstarData) {
+                    allstarGrid.innerHTML = '<div style="padding:20px;">⚡ 全明星数据加载中...</div>';
+                    return;
+                }
+                const events = [
+                    { key: 'celebrity', name: '名人赛', icon: 'fas fa-star', desc: '明星球员与各界名人同场竞技' },
+                    { key: 'risingStars', name: '新秀挑战赛', icon: 'fas fa-bolt', desc: '未来之星闪耀登场' },
+                    { key: 'threePoint', name: '三分球大赛', icon: 'fas fa-basketball-ball', desc: '神射手巅峰对决' },
+                    { key: 'slamDunk', name: '扣篮大赛', icon: 'fas fa-flying', desc: '创意与力量碰撞' },
+                    { key: 'skills', name: '技巧挑战赛', icon: 'fas fa-arrows-alt', desc: '全能技巧比拼' },
+                    { key: 'allStarGame', name: '全明星正赛', icon: 'fas fa-trophy', desc: '东西部巨星对抗' }
+                ];
+                let html = '';
+                events.forEach(ev => {
+                    html += `<div class="allstar-card" data-event="${ev.key}">
+                        <i class="${ev.icon}"></i>
+                        <h3>${ev.name}</h3>
+                        <p>${ev.desc}</p>
+                    </div>`;
+                });
+                allstarGrid.innerHTML = html;
+                document.querySelectorAll('.allstar-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        const event = card.dataset.event;
+                        showAllstarModal(event);
+                    });
+                });
+            }
+
+            function showAllstarModal(eventType) {
+                if (!allstarData) return;
+                allstarModal.classList.add('active');
+                switch(eventType) {
+                    case 'celebrity':
+                        allstarModalTitle.innerText = '🏆 名人赛';
+                        allstarModalBody.innerHTML = `<div class="award-badge">MVP: ${allstarData.awards?.find(a => a.award === 'Celebrity Game MVP')?.winner || '待定'}</div>
+                        <p><strong>日期：</strong>${allstarData.date || '2026-04-10'}</p>
+                        <p>${allstarData.highlights?.find(h => h.includes('名人赛')) || '精彩回顾：华兴市长吴鸣轩命中半场超远三分，引爆全场。'}</p>`;
+                        break;
+                    case 'risingStars':
+                        allstarModalTitle.innerText = '🌟 新秀挑战赛';
+                        allstarModalBody.innerHTML = `<div class="award-badge">MVP: ${allstarData.awards?.find(a => a.award === 'Rising Stars Challenge MVP')?.winner || 'Zeke Morrow'}</div>
+                        <p>${allstarData.highlights?.find(h => h.includes('新秀赛')) || 'Zeke Morrow率队逆转，并在最后时刻命中绝杀跳投。'}</p>`;
+                        break;
+                    case 'threePoint':
+                        allstarModalTitle.innerText = '🎯 三分球大赛';
+                        const threeData = allstarData.threePointContest;
+                        let threeHtml = `<div class="award-badge">冠军: ${threeData.champion} (${threeData.championScore}分)</div>`;
+                        threeHtml += `<h3>参赛选手</h3><ul>`;
+                        threeData.contestants.forEach(c => {
+                            threeHtml += `<li>${c.name} (${c.teamId})</li>`;
+                        });
+                        threeHtml += `</ul><h3>轮次详情</h3>`;
+                        threeData.rounds.forEach(round => {
+                            threeHtml += `<p><strong>第${round.roundNumber}轮</strong></p><ul>`;
+                            round.scores.forEach(s => {
+                                const player = threeData.contestants.find(p => p.playerId === s.playerId);
+                                threeHtml += `<li>${player?.name || s.playerId}: ${s.score}分</li>`;
+                            });
+                            threeHtml += `</ul>`;
+                        });
+                        allstarModalBody.innerHTML = threeHtml;
+                        break;
+                    case 'slamDunk':
+                        allstarModalTitle.innerText = '✈️ 扣篮大赛';
+                        const dunkData = allstarData.slamDunkContest;
+                        let dunkHtml = `<div class="award-badge">扣篮王: ${dunkData.champion}</div>`;
+                        dunkHtml += `<h3>参赛选手</h3><ul>`;
+                        dunkData.contestants.forEach(c => {
+                            dunkHtml += `<li>${c.name} (${c.teamId})</li>`;
+                        });
+                        dunkHtml += `</ul><h3>扣篮表现</h3>`;
+                        dunkData.dunks.forEach(d => {
+                            const player = dunkData.contestants.find(p => p.playerId === d.playerId);
+                            dunkHtml += `<p><strong>${player?.name || d.playerId}</strong> - 第${d.dunkNumber}扣: 总分${d.totalScore} (${d.scores.join(',')})</p>`;
+                            dunkHtml += `<p><em>“${d.description}”</em></p>`;
+                        });
+                        allstarModalBody.innerHTML = dunkHtml;
+                        break;
+                    case 'skills':
+                        allstarModalTitle.innerText = '⚡ 技巧挑战赛';
+                        const skillsData = allstarData.skillsChallenge;
+                        let skillsHtml = `<div class="award-badge">冠军: ${skillsData.champion}</div>`;
+                        skillsHtml += `<h3>对阵结果</h3><ul>`;
+                        skillsData.bracket.forEach(m => {
+                            skillsHtml += `<li>${m.player1} vs ${m.player2} → 胜者: ${m.winner} (${m.time})</li>`;
+                        });
+                        skillsHtml += `</ul>`;
+                        allstarModalBody.innerHTML = skillsHtml;
+                        break;
+                    case 'allStarGame':
+                        allstarModalTitle.innerText = '🏀 全明星正赛';
+                        const gameData = allstarData.allStarGame;
+                        const mvp = allstarData.awards?.find(a => a.award === 'All-Star Game MVP')?.winner || gameData.mvp;
+                        let gameHtml = `<div class="award-badge">MVP: ${mvp}</div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+                            <div><strong>${gameData.teamA.name}</strong> ${gameData.finalScore.teamAScore} : ${gameData.finalScore.teamBScore} <strong>${gameData.teamB.name}</strong></div>
+                        </div>
+                        <h3>单节比分</h3>
+                        <p>${gameData.quarters.join(' | ')}</p>
+                        <h3>球员数据</h3>
+                        <table class="stats-table">`;
+                        gameData.playerStats.forEach(p => {
+                            const playerInfo = allstarData.allStarPlayers?.find(ap => ap.playerId === p.playerId);
+                            const name = playerInfo?.name || p.playerId;
+                            gameHtml += `<tr><td>${name}</td><td>${p.points}分</td><td>${p.rebounds}板</td><td>${p.assists}助</td><td>${p.steals}断</td><td>${p.blocks}帽</td></tr>`;
+                        });
+                        gameHtml += `</table><h3>高光时刻</h3><ul>`;
+                        gameData.playerStats.forEach(p => {
+                            if (p.highlightPlays) {
+                                p.highlightPlays.forEach(play => {
+                                    gameHtml += `<li>${play}</li>`;
+                                });
+                            }
+                        });
+                        gameHtml += `</ul>`;
+                        allstarModalBody.innerHTML = gameHtml;
+                        break;
+                    default:
+                        allstarModalBody.innerHTML = '<p>敬请期待</p>';
+                }
+            }
+
+            // ---------- 初始化 ----------
             async function init() {
                 featuredRow.innerHTML = '<div class="loading-container"><div class="spinner"></div></div>';
                 teamsRow.innerHTML = '<div class="loading-container"><div class="spinner"></div></div>';
                 timelineContainer.innerHTML = '<div class="loading-container"><div class="spinner"></div></div>';
                 newsTimeline.innerHTML = '<div class="loading-container"><div class="spinner"></div></div>';
                 sportsVideosGrid.innerHTML = '<div class="loading-container"><div class="spinner"></div></div>';
+                allstarGrid.innerHTML = '<div class="loading-container"><div class="spinner"></div></div>';
 
-                await Promise.all([loadKnock(), loadTeams(), loadSchedule(), loadNews()]);
+                await Promise.all([loadKnock(), loadTeams(), loadSchedule(), loadNews(), loadAllstar()]);
 
                 renderFeatured();
                 renderTeams();
                 renderTimeline();
                 renderNews();
                 renderSportsVideos();
+                renderAllstarCards();
 
                 if (!teamsData.length) teamsRow.innerHTML = '<div style="padding:40px; text-align:center;">⚡ 请创建 yhdleague-basketball.json</div>';
                 if (!scheduleData.length) timelineContainer.innerHTML = '<div style="padding:40px; text-align:center;">⚡ 请创建 basketballschedule2026.json</div>';
-                if (!newsData || !newsData.news || !newsData.news.length) newsTimeline.innerHTML = '<div style="padding:40px; text-align:center;">⚡ 请创建 yhdsports-news.json 并包含新闻数组</div>';
+                if (!newsData || !newsData.news || !newsData.news.length) newsTimeline.innerHTML = '<div style="padding:40px; text-align:center;">⚡ 请创建 yhdsports-news.json</div>';
                 if (!knockData) sportsVideosGrid.innerHTML = '<div style="padding:40px; text-align:center;">⚡ 请确保 knockknock.json 存在</div>';
+                if (!allstarData) allstarGrid.innerHTML = '<div style="padding:40px; text-align:center;">⚡ 请创建 yhdallstar2026.json</div>';
             }
 
             init();
