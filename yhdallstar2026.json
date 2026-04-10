@@ -1,0 +1,340 @@
+{
+  "event": "YHDL All-Star Weekend 2026",
+  "date": "2026-04-10 to 2026-04-12",
+  "venue": "Yuanyuade Center, Yuanyuade City",
+
+  "allStarPlayers": [
+    {
+      "playerId": "yy12",
+      "name": "Ouyang Jing",
+      "teamId": "Yuanyuyulong",
+      "position": "SG",
+      "isAllStar": true,
+      "allStarTeam": "Yuanyuade",
+      "isStarter": true
+    },
+    {
+      "playerId": "yy7",
+      "name": "Li Yifei",
+      "teamId": "Yuanyuyulong",
+      "position": "PG",
+      "isAllStar": true,
+      "allStarTeam": "Yuanyuade",
+      "isStarter": true
+    },
+    {
+      "playerId": "yy16",
+      "name": "Andre Ivanov",
+      "teamId": "Yuanyuyulong",
+      "position": "PF/C",
+      "isAllStar": true,
+      "allStarTeam": "World",
+      "isStarter": true
+    },
+    {
+      "playerId": "dc2",
+      "name": "Michael Mash",
+      "teamId": "DeshuiCity",
+      "position": "SF",
+      "isAllStar": true,
+      "allStarTeam": "World",
+      "isStarter": true
+    },
+    {
+      "playerId": "dc3",
+      "name": "LeBron Curry",
+      "teamId": "DeshuiCity",
+      "position": "SG/PG",
+      "isAllStar": true,
+      "allStarTeam": "Yuanyuade",
+      "isStarter": false
+    },
+    {
+      "playerId": "dc1",
+      "name": "Magic Waggins",
+      "teamId": "DeshuiCity",
+      "position": "PG",
+      "isAllStar": true,
+      "allStarTeam": "Yuanyuade",
+      "isStarter": true
+    },
+    {
+      "playerId": "hx09",
+      "name": "Richard Braxton",
+      "teamId": "HuaxingXiaolong",
+      "position": "C",
+      "isAllStar": true,
+      "allStarTeam": "World",
+      "isStarter": true
+    },
+    {
+      "playerId": "hx32",
+      "name": "Arvin Konstantinos",
+      "teamId": "HuaxingXiaolong",
+      "position": "SG",
+      "isAllStar": true,
+      "allStarTeam": "World",
+      "isStarter": false
+    },
+    {
+      "playerId": "ia22",
+      "name": "Rafael Silva",
+      "teamId": "Huanzhi",
+      "position": "SF/PF",
+      "isAllStar": true,
+      "allStarTeam": "World",
+      "isStarter": true
+    },
+    {
+      "playerId": "ia7",
+      "name": "Liam O'Connor",
+      "teamId": "Huanzhi",
+      "position": "SG",
+      "isAllStar": true,
+      "allStarTeam": "World",
+      "isStarter": false
+    },
+    {
+      "playerId": "pca4",
+      "name": "Luka Petrović",
+      "teamId": "PhantomCityArcs",
+      "position": "SF/PF",
+      "isAllStar": true,
+      "allStarTeam": "World",
+      "isStarter": true
+    },
+    {
+      "playerId": "pca1",
+      "name": "Lars Johansson",
+      "teamId": "PhantomCityArcs",
+      "position": "PG",
+      "isAllStar": true,
+      "allStarTeam": "World",
+      "isStarter": false
+    },
+    {
+      "playerId": "yne2",
+      "name": "Zeke Morrow",
+      "teamId": "YuanyuNextEra",
+      "position": "SG",
+      "isAllStar": true,
+      "allStarTeam": "World",
+      "isStarter": false
+    },
+    {
+      "playerId": "yne1",
+      "name": "Jax Torrin",
+      "teamId": "YuanyuNextEra",
+      "position": "PG",
+      "isAllStar": true,
+      "allStarTeam": "World",
+      "isStarter": false
+    },
+    {
+      "playerId": "dx3",
+      "name": "Evan Wang",
+      "teamId": "DeshuiXihuan",
+      "position": "SG/SF",
+      "isAllStar": true,
+      "allStarTeam": "Yuanyuade",
+      "isStarter": false
+    },
+    {
+      "playerId": "dx1",
+      "name": "Tyson De",
+      "teamId": "DeshuiXihuan",
+      "position": "PG",
+      "isAllStar": true,
+      "allStarTeam": "Yuanyuade",
+      "isStarter": false
+    },
+    {
+      "playerId": "yy3",
+      "name": "Chen Hao",
+      "teamId": "Yuanyuyulong",
+      "position": "SF",
+      "isAllStar": true,
+      "allStarTeam": "Yuanyuade",
+      "isStarter": false
+    },
+    {
+      "playerId": "hx20",
+      "name": "Danniell Desmond",
+      "teamId": "HuaxingXiaolong",
+      "position": "C",
+      "isAllStar": true,
+      "allStarTeam": "World",
+      "isStarter": false
+    },
+    {
+      "playerId": "ia33",
+      "name": "Nikolai Petrov",
+      "teamId": "Huanzhi",
+      "position": "C",
+      "isAllStar": true,
+      "allStarTeam": "World",
+      "isStarter": false
+    },
+    {
+      "playerId": "pca2",
+      "name": "Nicolas Dubois",
+      "teamId": "PhantomCityArcs",
+      "position": "SG",
+      "isAllStar": true,
+      "allStarTeam": "World",
+      "isStarter": false
+    },
+    {
+      "playerId": "yne3",
+      "name": "Caius Vale",
+      "teamId": "YuanyuNextEra",
+      "position": "PF",
+      "isAllStar": true,
+      "allStarTeam": "World",
+      "isStarter": false
+    },
+    {
+      "playerId": "gf34",
+      "name": "Derrall Lhommedieu",
+      "teamId": "GuangfuQidong",
+      "position": "C",
+      "isAllStar": true,
+      "allStarTeam": "World",
+      "isStarter": false
+    },
+    {
+      "playerId": "yy2",
+      "name": "Zhang Zhenyue",
+      "teamId": "Yuanyuyulong",
+      "position": "PF",
+      "isAllStar": true,
+      "allStarTeam": "Yuanyuade",
+      "isStarter": false
+    },
+    {
+      "playerId": "dc5",
+      "name": "Kareem Abdul-David",
+      "teamId": "DeshuiCity",
+      "position": "C",
+      "isAllStar": true,
+      "allStarTeam": "Yuanyuade",
+      "isStarter": false
+    }
+  ],
+
+  "threePointContest": {
+    "contestants": [
+      { "playerId": "yne2", "name": "Zeke Morrow", "teamId": "YuanyuNextEra" },
+      { "playerId": "ia7", "name": "Liam O'Connor", "teamId": "Huanzhi" },
+      { "playerId": "pca2", "name": "Nicolas Dubois", "teamId": "PhantomCityArcs" },
+      { "playerId": "dc3", "name": "LeBron Curry", "teamId": "DeshuiCity" },
+      { "playerId": "hx32", "name": "Arvin Konstantinos", "teamId": "HuaxingXiaolong" },
+      { "playerId": "yy12", "name": "Ouyang Jing", "teamId": "Yuanyuyulong" }
+    ],
+    "rounds": [
+      {
+        "roundNumber": 1,
+        "scores": [
+          { "playerId": "yne2", "score": 24 },
+          { "playerId": "ia7", "score": 26 },
+          { "playerId": "pca2", "score": 22 },
+          { "playerId": "dc3", "score": 28 },
+          { "playerId": "hx32", "score": 25 },
+          { "playerId": "yy12", "score": 23 }
+        ]
+      },
+      {
+        "roundNumber": 2,
+        "scores": [
+          { "playerId": "ia7", "score": 28 },
+          { "playerId": "dc3", "score": 30 },
+          { "playerId": "hx32", "score": 27 }
+        ]
+      }
+    ],
+    "champion": "dc3",
+    "championScore": 30
+  },
+
+  "slamDunkContest": {
+    "contestants": [
+      { "playerId": "yne3", "name": "Caius Vale", "teamId": "YuanyuNextEra" },
+      { "playerId": "yne5", "name": "Bodin Stroud", "teamId": "YuanyuNextEra" },
+      { "playerId": "gf34", "name": "Derrall Lhommedieu", "teamId": "GuangfuQidong" },
+      { "playerId": "pca4", "name": "Luka Petrović", "teamId": "PhantomCityArcs" }
+    ],
+    "dunks": [
+      { "playerId": "yne3", "dunkNumber": 1, "scores": [9, 10, 9, 10, 9], "totalScore": 47, "description": "空中接球转体360度双手背扣" },
+      { "playerId": "yne5", "dunkNumber": 1, "scores": [8, 9, 9, 9, 8], "totalScore": 43, "description": "飞跃队友折叠暴扣" },
+      { "playerId": "gf34", "dunkNumber": 1, "scores": [10, 9, 10, 10, 9], "totalScore": 48, "description": "底线突破，空中拉杆换手劈扣" },
+      { "playerId": "pca4", "dunkNumber": 1, "scores": [9, 9, 9, 8, 9], "totalScore": 44, "description": "打板后自抛自扣" },
+      { "playerId": "yne3", "dunkNumber": 2, "scores": [10, 10, 10, 10, 10], "totalScore": 50, "description": "罚球线内一步起跳，滑翔战斧劈扣！" },
+      { "playerId": "yne5", "dunkNumber": 2, "scores": [9, 9, 10, 9, 9], "totalScore": 46, "description": "背后换手扣篮" },
+      { "playerId": "gf34", "dunkNumber": 2, "scores": [9, 10, 9, 10, 10], "totalScore": 48, "description": "空中接力，隔着道具完成隔扣" }
+    ],
+    "champion": "yne3"
+  },
+
+  "skillsChallenge": {
+    "contestants": [
+      { "playerId": "yne1", "name": "Jax Torrin", "teamId": "YuanyuNextEra" },
+      { "playerId": "pca1", "name": "Lars Johansson", "teamId": "PhantomCityArcs" },
+      { "playerId": "dx1", "name": "Tyson De", "teamId": "DeshuiXihuan" },
+      { "playerId": "dc1", "name": "Magic Waggins", "teamId": "DeshuiCity" }
+    ],
+    "bracket": [
+      { "match": 1, "player1": "yne1", "player2": "dc1", "winner": "yne1", "time": "28.5s" },
+      { "match": 2, "player1": "pca1", "player2": "dx1", "winner": "pca1", "time": "29.1s" },
+      { "match": "final", "player1": "yne1", "player2": "pca1", "winner": "yne1", "time": "26.8s" }
+    ],
+    "champion": "yne1"
+  },
+
+  "allStarGame": {
+    "teamA": {
+      "name": "渊华德联队 (Yuanyuade)",
+      "starters": ["yy12", "yy7", "dc1", "ia22", "hx09"],
+      "bench": ["dc3", "dx3", "dx1", "yy3", "yy2", "dc5", "yy16"]
+    },
+    "teamB": {
+      "name": "世界联队 (World)",
+      "starters": ["pca4", "dc2", "yne2", "yne1", "yne3"],
+      "bench": ["hx32", "ia7", "pca1", "pca2", "hx20", "ia33", "gf34"]
+    },
+    "finalScore": { "teamAScore": 178, "teamBScore": 172 },
+    "quarters": ["45-42", "88-85", "132-130", "178-172"],
+    "mvp": "yy12",
+    "playerStats": [
+      { "playerId": "yy12", "points": 42, "rebounds": 6, "assists": 8, "steals": 3, "blocks": 0, "highlightPlays": ["半场超远三分", "连续变向突破扣篮", "关键第四节连得10分"] },
+      { "playerId": "pca4", "points": 38, "rebounds": 9, "assists": 6, "steals": 2, "blocks": 1, "highlightPlays": ["360度转身扣篮", "追身大帽", "压哨logo shot"] },
+      { "playerId": "dc2", "points": 30, "rebounds": 5, "assists": 4, "steals": 1, "blocks": 0, "highlightPlays": ["多次高难度后仰跳投", "与Johansson空接配合"] },
+      { "playerId": "yne2", "points": 28, "rebounds": 4, "assists": 5, "steals": 2, "blocks": 0, "highlightPlays": ["快攻大风车扣篮", "连续胯下运球后撤步三分"] },
+      { "playerId": "ia22", "points": 22, "rebounds": 10, "assists": 12, "steals": 2, "blocks": 1, "highlightPlays": ["不看人背后传球助攻", "一条龙突破暴扣"] },
+      { "playerId": "hx09", "points": 20, "rebounds": 15, "assists": 2, "steals": 0, "blocks": 3, "highlightPlays": ["多次空中接力扣篮", "内线强硬2+1"] },
+      { "playerId": "dc1", "points": 18, "rebounds": 4, "assists": 18, "steals": 4, "blocks": 0, "highlightPlays": ["穿裆传球", "声东击西助攻"] },
+      { "playerId": "yne1", "points": 16, "rebounds": 3, "assists": 15, "steals": 3, "blocks": 0, "highlightPlays": ["精准长传快攻", "背后运球戏耍防守"] },
+      { "playerId": "yy7", "points": 12, "rebounds": 5, "assists": 20, "steals": 2, "blocks": 0, "highlightPlays": ["20次助攻创全明星赛纪录", "多次手术刀般直塞"] },
+      { "playerId": "gf34", "points": 10, "rebounds": 8, "assists": 1, "steals": 0, "blocks": 2, "highlightPlays": ["暴力隔扣", "前场篮板补扣"] }
+    ]
+  },
+
+  "highlights": [
+    "名人赛：华兴市长吴鸣轩命中半场超远三分，引爆全场。",
+    "新秀赛：Zeke Morrow率队逆转，并在最后时刻命中绝杀跳投。",
+    "三分赛：LeBron Curry在决赛轮投出30分满分，强势夺冠。",
+    "扣篮赛：Caius Vale上演罚球线内一步滑翔战斧劈扣，获得满分50分，加冕扣篮王。",
+    "技巧赛：Jax Torrin以26.8秒打破赛事纪录，展现极致人球结合。",
+    "全明星正赛：欧阳靖与卢卡·彼得罗维奇上演史诗级对飙，合计砍下80分。",
+    "全明星正赛：李逸飞送出20次助攻，打破全明星赛助攻纪录。",
+    "全明星正赛：欧阳靖末节独得16分，率领渊华德联队逆转取胜，荣膺AMVP。"
+  ],
+
+  "awards": [
+    { "award": "Celebrity Game MVP", "winner": "Wu Mingxuan" },
+    { "award": "Rising Stars Challenge MVP", "winner": "Zeke Morrow" },
+    { "award": "Three-Point Contest Champion", "winner": "LeBron Curry" },
+    { "award": "Slam Dunk Contest Champion", "winner": "Caius Vale" },
+    { "award": "Skills Challenge Champion", "winner": "Jax Torrin" },
+    { "award": "All-Star Game MVP", "winner": "Ouyang Jing" }
+  ]
+}
