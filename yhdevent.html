@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>渊华德全明星周末 · 2026</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gold: #FFD966;
+            --primary-cyan: #00E5FF;
+            --primary-purple: #B026FF;
+            --dark-bg: #0A0C10;
+            --card-bg: rgba(20, 22, 36, 0.85);
+            --text-light: #F0F0F0;
+            --text-muted: #A0A5B0;
+            --border-glow: rgba(0, 229, 255, 0.5);
+            --shadow-neon: 0 0 20px rgba(0, 229, 255, 0.3);
+            --gradient-gold: linear-gradient(135deg, #FFD966, #FFA500);
+            --gradient-cyan: linear-gradient(135deg, #00E5FF, #007BFF);
+            --gradient-bg: radial-gradient(circle at 20% 30%, #1A1C2C, #0A0C10);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gradient-bg);
+            color: var(--text-light);
+            line-height: 1.5;
+            overflow-x: hidden;
+            padding-bottom: 60px;
+        }
+
+        /* 开屏动画遮罩 */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0A0C10;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: opacity 1.2s ease, visibility 1.2s;
+            backdrop-filter: blur(0);
+        }
+        .splash-screen.hide {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .splash-logo {
+            font-size: 5rem;
+            background: var(--gradient-cyan);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: pulseGlow 1.5s infinite alternate;
+        }
+        .splash-text {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2.5rem;
+            letter-spacing: 6px;
+            margin-top: 20px;
+            background: linear-gradient(135deg, #FFD966, #00E5FF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        @keyframes pulseGlow {
+            0% { text-shadow: 0 0 0px rgba(0,229,255,0); transform: scale(1);}
+            100% { text-shadow: 0 0 30px rgba(0,229,255,0.8); transform: scale(1.05);}
+        }
+
+        /* 动态星空背景 */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: twinkle 3s infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(1);}
+            100% { opacity: 1; transform: scale(1.2);}
+        }
+
+        /* 容器 */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero 区域 */
+        .hero {
+            text-align: center;
+            padding: 80px 20px 60px;
+            position: relative;
+        }
+        .hero h1 {
+            font-size: 5rem;
+            font-family: 'Bebas Neue', cursive;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px rgba(0,229,255,0.3);
+        }
+        .hero .date-venue {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .hero .date-venue i {
+            margin-right: 8px;
+            color: var(--primary-cyan);
+        }
+
+        /* 通用卡片 */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 24px;
+            padding: 28px 24px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 45px rgba(0,0,0,0.4), 0 0 15px rgba(0,229,255,0.2);
+        }
+        .card-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            border-left: 6px solid var(--primary-cyan);
+            padding-left: 20px;
+            font-family: 'Bebas Neue', cursive;
+            letter-spacing: 1px;
+        }
+        .card-title i {
+            margin-right: 12px;
+            color: var(--primary-gold);
+        }
+
+        /* 全明星阵容两列 */
+        .teams-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .team-col {
+            flex: 1;
+            min-width: 280px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 20px;
+            padding: 20px;
+        }
+        .team-col h3 {
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 20px;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .player-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .player-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.05);
+            padding: 10px 15px;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+        .player-item:hover {
+            background: rgba(0,229,255,0.2);
+        }
+        .player-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        .player-info {
+            flex: 1;
+        }
+        .player-name {
+            font-weight: 700;
+        }
+        .player-team {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        .starter-badge {
+            background: var(--primary-gold);
+            color: #000;
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        /* 数据表格 */
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            display: block;
+        }
+        .stats-table th, .stats-table td {
+            padding: 12px 8px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .stats-table th {
+            color: var(--primary-cyan);
+            font-weight: 600;
+        }
+        .highlight-plays {
+            font-size: 0.75rem;
+            color: var(--primary-gold);
+            margin-top: 4px;
+        }
+
+        /* 三分赛,扣篮赛卡片 */
+        .contest-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .contestant-card {
+            background: rgba(0,0,0,0.5);
+            border-radius: 20px;
+            padding: 16px;
+            text-align: center;
+            border: 1px solid rgba(0,229,255,0.2);
+        }
+        .contestant-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        .contestant-score {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-gold);
+            margin: 8px 0;
+        }
+        .dunk-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+        .champion-tag {
+            background: var(--gradient-gold);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #000;
+            margin-top: 8px;
+        }
+
+        /* 高光时刻 & 奖项 */
+        .highlights-list {
+            list-style: none;
+        }
+        .highlights-list li {
+            margin-bottom: 12px;
+            padding-left: 24px;
+            position: relative;
+        }
+        .highlights-list li:before {
+            content: "⭐";
+            position: absolute;
+            left: 0;
+            color: var(--primary-gold);
+        }
+        .awards-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .award-item {
+            background: linear-gradient(145deg, #2a2e45, #1a1c2c);
+            border-radius: 40px;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            border-left: 4px solid var(--primary-cyan);
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.8rem; }
+            .card-title { font-size: 1.5rem; }
+            .team-col h3 { font-size: 1.3rem; }
+        }
+        @media (max-width: 480px) {
+            .stats-table th, .stats-table td { font-size: 0.7rem; padding: 8px 4px; }
+        }
+
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1a1c2c; }
+        ::-webkit-scrollbar-thumb { background: var(--primary-cyan); border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <div class="splash-screen" id="splash">
+        <div class="splash-logo"><i class="fas fa-basketball-ball"></i></div>
+        <div class="splash-text">ALL-STAR WEEKEND 2026</div>
+    </div>
+    <div class="stars" id="starsContainer"></div>
+
+    <div class="container">
+        <div class="hero">
+            <h1>YHDL ALL-STAR <br>WEEKEND 2026</h1>
+            <div class="date-venue">
+                <span><i class="fas fa-calendar-alt"></i> 2026.04.10 - 04.12</span>
+                <span><i class="fas fa-map-marker-alt"></i> 渊华德中心 · 渊华德市</span>
+            </div>
+        </div>
+
+        <!-- 全明星正赛阵容 -->
+        <div class="card" id="allStarGameCard">
+            <div class="card-title"><i class="fas fa-star"></i> 全明星正赛 · 阵容</div>
+            <div class="teams-row" id="teamsContainer"></div>
+            <div style="margin-top: 30px;">
+                <h3 style="margin-bottom: 15px;">最终比分: <span id="finalScore"></span></h3>
+                <div>四节比分: <span id="quarters"></span></div>
+            </div>
+        </div>
+
+        <!-- 全明星正赛数据统计 -->
+        <div class="card">
+            <div class="card-title"><i class="fas fa-chart-line"></i> 全明星赛 · 球员数据</div>
+            <div class="stats-table-wrapper">
+                <table class="stats-table" id="gameStatsTable">
+                    <thead>
+                        <tr><th>球员</th><th>球队</th><th>得分</th><th>篮板</th><th>助攻</th><th>抢断</th><th>盖帽</th><th>精彩时刻</th></tr>
+                    </thead>
+                    <tbody id="gameStatsBody"></tbody>
+                </table>
+            </div>
+            <div style="margin-top: 20px; text-align: center; font-size: 1.2rem;">
+                🏆 全明星MVP: <strong id="mvpName"></strong>
+            </div>
+        </div>
+
+        <!-- 三分大赛 -->
+        <div class="card">
+            <div class="card-title"><i class="fas fa-basketball-ball"></i> 三分球大赛</div>
+            <div id="threePointContent"></div>
+        </div>
+
+        <!-- 扣篮大赛 -->
+        <div class="card">
+            <div class="card-title"><i class="fas fa-dove"></i> 扣篮大赛</div>
+            <div id="slamDunkContent"></div>
+        </div>
+
+        <!-- 技巧挑战赛 -->
+        <div class="card">
+            <div class="card-title"><i class="fas fa-robot"></i> 技巧挑战赛</div>
+            <div id="skillsContent"></div>
+        </div>
+
+        <!-- 高光时刻 & 奖项 -->
+        <div class="card">
+            <div class="card-title"><i class="fas fa-crown"></i> 赛事高光 & 奖项</div>
+            <div id="highlightsAwards"></div>
+        </div>
+    </div>
+
+    <script>
+        // 全明星数据 (内嵌)
+        const allStarData = {
+            "event": "YHDL All-Star Weekend 2026",
+            "date": "2026-04-10 to 2026-04-12",
+            "venue": "Yuanyuade Center, Yuanyuade City",
+            "allStarPlayers": [
+                { "playerId": "yy12", "name": "Ouyang Jing", "teamId": "Yuanyuyulong", "position": "SG", "isAllStar": true, "allStarTeam": "Yuanyuade", "isStarter": true },
+                { "playerId": "yy7", "name": "Li Yifei", "teamId": "Yuanyuyulong", "position": "PG", "isAllStar": true, "allStarTeam": "Yuanyuade", "isStarter": true },
+                { "playerId": "yy16", "name": "Andre Ivanov", "teamId": "Yuanyuyulong", "position": "PF/C", "isAllStar": true, "allStarTeam": "World", "isStarter": true },
+                { "playerId": "dc2", "name": "Michael Mash", "teamId": "DeshuiCity", "position": "SF", "isAllStar": true, "allStarTeam": "World", "isStarter": true },
+                { "playerId": "dc3", "name": "LeBron Curry", "teamId": "DeshuiCity", "position": "SG/PG", "isAllStar": true, "allStarTeam": "Yuanyuade", "isStarter": false },
+                { "playerId": "dc1", "name": "Magic Waggins", "teamId": "DeshuiCity", "position": "PG", "isAllStar": true, "allStarTeam": "Yuanyuade", "isStarter": true },
+                { "playerId": "hx09", "name": "Richard Braxton", "teamId": "HuaxingXiaolong", "position": "C", "isAllStar": true, "allStarTeam": "World", "isStarter": true },
+                { "playerId": "hx32", "name": "Arvin Konstantinos", "teamId": "HuaxingXiaolong", "position": "SG", "isAllStar": true, "allStarTeam": "World", "isStarter": false },
+                { "playerId": "ia22", "name": "Rafael Silva", "teamId": "Huanzhi", "position": "SF/PF", "isAllStar": true, "allStarTeam": "World", "isStarter": true },
+                { "playerId": "ia7", "name": "Liam O'Connor", "teamId": "Huanzhi", "position": "SG", "isAllStar": true, "allStarTeam": "World", "isStarter": false },
+                { "playerId": "pca4", "name": "Luka Petrović", "teamId": "PhantomCityArcs", "position": "SF/PF", "isAllStar": true, "allStarTeam": "World", "isStarter": true },
+                { "playerId": "pca1", "name": "Lars Johansson", "teamId": "PhantomCityArcs", "position": "PG", "isAllStar": true, "allStarTeam": "World", "isStarter": false },
+                { "playerId": "yne2", "name": "Zeke Morrow", "teamId": "YuanyuNextEra", "position": "SG", "isAllStar": true, "allStarTeam": "World", "isStarter": true },
+                { "playerId": "yne1", "name": "Jax Torrin", "teamId": "YuanyuNextEra", "position": "PG", "isAllStar": true, "allStarTeam": "World", "isStarter": true },
+                { "playerId": "dx3", "name": "Evan Wang", "teamId": "DeshuiXihuan", "position": "SG/SF", "isAllStar": true, "allStarTeam": "Yuanyuade", "isStarter": false },
+                { "playerId": "dx1", "name": "Tyson De", "teamId": "DeshuiXihuan", "position": "PG", "isAllStar": true, "allStarTeam": "Yuanyuade", "isStarter": false },
+                { "playerId": "yy3", "name": "Chen Hao", "teamId": "Yuanyuyulong", "position": "SF", "isAllStar": true, "allStarTeam": "Yuanyuade", "isStarter": false },
+                { "playerId": "hx20", "name": "Danniell Desmond", "teamId": "HuaxingXiaolong", "position": "C", "isAllStar": true, "allStarTeam": "World", "isStarter": false },
+                { "playerId": "ia33", "name": "Nikolai Petrov", "teamId": "Huanzhi", "position": "C", "isAllStar": true, "allStarTeam": "World", "isStarter": false },
+                { "playerId": "pca2", "name": "Nicolas Dubois", "teamId": "PhantomCityArcs", "position": "SG", "isAllStar": true, "allStarTeam": "World", "isStarter": false },
+                { "playerId": "yne3", "name": "Caius Vale", "teamId": "YuanyuNextEra", "position": "PF", "isAllStar": true, "allStarTeam": "World", "isStarter": false },
+                { "playerId": "gf34", "name": "Derrall Lhommedieu", "teamId": "GuangfuQidong", "position": "C", "isAllStar": true, "allStarTeam": "World", "isStarter": false },
+                { "playerId": "yy2", "name": "Zhang Zhenyue", "teamId": "Yuanyuyulong", "position": "PF", "isAllStar": true, "allStarTeam": "Yuanyuade", "isStarter": false },
+                { "playerId": "dc5", "name": "Kareem Abdul-David", "teamId": "DeshuiCity", "position": "C", "isAllStar": true, "allStarTeam": "Yuanyuade", "isStarter": false }
+            ],
+            "threePointContest": {
+                "contestants": [
+                    { "playerId": "yne2", "name": "Zeke Morrow", "teamId": "YuanyuNextEra" },
+                    { "playerId": "ia7", "name": "Liam O'Connor", "teamId": "Huanzhi" },
+                    { "playerId": "pca2", "name": "Nicolas Dubois", "teamId": "PhantomCityArcs" },
+                    { "playerId": "dc3", "name": "LeBron Curry", "teamId": "DeshuiCity" },
+                    { "playerId": "hx32", "name": "Arvin Konstantinos", "teamId": "HuaxingXiaolong" },
+                    { "playerId": "yy12", "name": "Ouyang Jing", "teamId": "Yuanyuyulong" }
+                ],
+                "rounds": [
+                    { "roundNumber": 1, "scores": [{"playerId":"yne2","score":24},{"playerId":"ia7","score":26},{"playerId":"pca2","score":22},{"playerId":"dc3","score":28},{"playerId":"hx32","score":25},{"playerId":"yy12","score":23}] },
+                    { "roundNumber": 2, "scores": [{"playerId":"ia7","score":28},{"playerId":"dc3","score":30},{"playerId":"hx32","score":27}] }
+                ],
+                "champion": "dc3",
+                "championScore": 30
+            },
+            "slamDunkContest": {
+                "contestants": [
+                    { "playerId": "yne3", "name": "Caius Vale", "teamId": "YuanyuNextEra" },
+                    { "playerId": "yne5", "name": "Bodin Stroud", "teamId": "YuanyuNextEra" },
+                    { "playerId": "gf34", "name": "Derrall Lhommedieu", "teamId": "GuangfuQidong" },
+                    { "playerId": "pca4", "name": "Luka Petrović", "teamId": "PhantomCityArcs" }
+                ],
+                "dunks": [
+                    { "playerId": "yne3", "dunkNumber": 1, "scores": [9,10,9,10,9], "totalScore": 47, "description": "空中接球转体360度双手背扣" },
+                    { "playerId": "yne5", "dunkNumber": 1, "scores": [8,9,9,9,8], "totalScore": 43, "description": "飞跃队友折叠暴扣" },
+                    { "playerId": "gf34", "dunkNumber": 1, "scores": [10,9,10,10,9], "totalScore": 48, "description": "底线突破，空中拉杆换手劈扣" },
+                    { "playerId": "pca4", "dunkNumber": 1, "scores": [9,9,9,8,9], "totalScore": 44, "description": "打板后自抛自扣" },
+                    { "playerId": "yne3", "dunkNumber": 2, "scores": [10,10,10,10,10], "totalScore": 50, "description": "罚球线内一步起跳，滑翔战斧劈扣！" },
+                    { "playerId": "yne5", "dunkNumber": 2, "scores": [9,9,10,9,9], "totalScore": 46, "description": "背后换手扣篮" },
+                    { "playerId": "gf34", "dunkNumber": 2, "scores": [9,10,9,10,10], "totalScore": 48, "description": "空中接力，隔着道具完成隔扣" }
+                ],
+                "champion": "yne3"
+            },
+            "skillsChallenge": {
+                "contestants": [
+                    { "playerId": "yne1", "name": "Jax Torrin", "teamId": "YuanyuNextEra" },
+                    { "playerId": "pca1", "name": "Lars Johansson", "teamId": "PhantomCityArcs" },
+                    { "playerId": "dx1", "name": "Tyson De", "teamId": "DeshuiXihuan" },
+                    { "playerId": "dc1", "name": "Magic Waggins", "teamId": "DeshuiCity" }
+                ],
+                "bracket": [
+                    { "match": 1, "player1": "yne1", "player2": "dc1", "winner": "yne1", "time": "28.5s" },
+                    { "match": 2, "player1": "pca1", "player2": "dx1", "winner": "pca1", "time": "29.1s" },
+                    { "match": "final", "player1": "yne1", "player2": "pca1", "winner": "yne1", "time": "26.8s" }
+                ],
+                "champion": "yne1"
+            },
+            "allStarGame": {
+                "teamA": { "name": "渊华德联队 (Yuanyuade)", "starters": ["yy12","yy7","dc1","ia22","hx09"], "bench": ["dc3","dx3","dx1","yy3","yy2","dc5","yy16"] },
+                "teamB": { "name": "世界联队 (World)", "starters": ["pca4","dc2","yne2","yne1","yne3"], "bench": ["hx32","ia7","pca1","pca2","hx20","ia33","gf34"] },
+                "finalScore": { "teamAScore": 178, "teamBScore": 172 },
+                "quarters": ["45-42", "88-85", "132-130", "178-172"],
+                "mvp": "yy12",
+                "playerStats": [
+                    { "playerId": "yy12", "points": 42, "rebounds": 6, "assists": 8, "steals": 3, "blocks": 0, "highlightPlays": ["半场超远三分", "连续变向突破扣篮", "关键第四节连得10分"] },
+                    { "playerId": "pca4", "points": 38, "rebounds": 9, "assists": 6, "steals": 2, "blocks": 1, "highlightPlays": ["360度转身扣篮", "追身大帽", "压哨logo shot"] },
+                    { "playerId": "dc2", "points": 30, "rebounds": 5, "assists": 4, "steals": 1, "blocks": 0, "highlightPlays": ["多次高难度后仰跳投", "与Johansson空接配合"] },
+                    { "playerId": "yne2", "points": 28, "rebounds": 4, "assists": 5, "steals": 2, "blocks": 0, "highlightPlays": ["快攻大风车扣篮", "连续胯下运球后撤步三分"] },
+                    { "playerId": "ia22", "points": 22, "rebounds": 10, "assists": 12, "steals": 2, "blocks": 1, "highlightPlays": ["不看人背后传球助攻", "一条龙突破暴扣"] },
+                    { "playerId": "hx09", "points": 20, "rebounds": 15, "assists": 2, "steals": 0, "blocks": 3, "highlightPlays": ["多次空中接力扣篮", "内线强硬2+1"] },
+                    { "playerId": "dc1", "points": 18, "rebounds": 4, "assists": 18, "steals": 4, "blocks": 0, "highlightPlays": ["穿裆传球", "声东击西助攻"] },
+                    { "playerId": "yne1", "points": 16, "rebounds": 3, "assists": 15, "steals": 3, "blocks": 0, "highlightPlays": ["精准长传快攻", "背后运球戏耍防守"] },
+                    { "playerId": "yy7", "points": 12, "rebounds": 5, "assists": 20, "steals": 2, "blocks": 0, "highlightPlays": ["20次助攻创全明星赛纪录", "多次手术刀般直塞"] },
+                    { "playerId": "gf34", "points": 10, "rebounds": 8, "assists": 1, "steals": 0, "blocks": 2, "highlightPlays": ["暴力隔扣", "前场篮板补扣"] }
+                ]
+            },
+            "highlights": [
+                "名人赛：华兴市长吴鸣轩命中半场超远三分，引爆全场。",
+                "新秀赛：Zeke Morrow率队逆转，并在最后时刻命中绝杀跳投。",
+                "三分赛：LeBron Curry在决赛轮投出30分满分，强势夺冠。",
+                "扣篮赛：Caius Vale上演罚球线内一步滑翔战斧劈扣，获得满分50分，加冕扣篮王。",
+                "技巧赛：Jax Torrin以26.8秒打破赛事纪录，展现极致人球结合。",
+                "全明星正赛：欧阳靖与卢卡·彼得罗维奇上演史诗级对飙，合计砍下80分。",
+                "全明星正赛：李逸飞送出20次助攻，打破全明星赛助攻纪录。",
+                "全明星正赛：欧阳靖末节独得16分，率领渊华德联队逆转取胜，荣膺AMVP。"
+            ],
+            "awards": [
+                { "award": "Celebrity Game MVP", "winner": "Wu Mingxuan" },
+                { "award": "Rising Stars Challenge MVP", "winner": "Zeke Morrow" },
+                { "award": "Three-Point Contest Champion", "winner": "LeBron Curry" },
+                { "award": "Slam Dunk Contest Champion", "winner": "Caius Vale" },
+                { "award": "Skills Challenge Champion", "winner": "Jax Torrin" },
+                { "award": "All-Star Game MVP", "winner": "Ouyang Jing" }
+            ]
+        };
+
+        let teamsMap = {}; // 存储球队信息 (id -> {name, logo?})
+        // 加载球队数据映射 (yhdleague-basketball.json)
+        async function loadTeamsData() {
+            try {
+                const res = await fetch('yhdleague-basketball.json');
+                if (res.ok) {
+                    const teams = await res.json();
+                    teams.forEach(team => {
+                        teamsMap[team.id] = { name: team.name, logo: team.logo };
+                    });
+                }
+            } catch(e) { console.warn("球队数据加载失败，将不显示队标"); }
+        }
+
+        function getTeamName(teamId) {
+            return teamsMap[teamId]?.name || teamId;
+        }
+
+        function renderAllStarGame() {
+            const teamA = allStarData.allStarGame.teamA;
+            const teamB = allStarData.allStarGame.teamB;
+            const allPlayers = allStarData.allStarPlayers;
+            const getPlayer = (id) => allPlayers.find(p => p.playerId === id);
+            const renderTeam = (teamData, teamType) => {
+                let html = `<div class="team-col"><h3>${teamData.name}</h3><div class="player-list">`;
+                // 首发
+                teamData.starters.forEach(pid => {
+                    const p = getPlayer(pid);
+                    if(p) {
+                        html += `<div class="player-item"><div class="player-avatar"><i class="fas fa-user"></i></div><div class="player-info"><div class="player-name">${p.name} <span class="starter-badge">首发</span></div><div class="player-team">${getTeamName(p.teamId)} · ${p.position}</div></div></div>`;
+                    }
+                });
+                // 替补
+                teamData.bench.forEach(pid => {
+                    const p = getPlayer(pid);
+                    if(p) {
+                        html += `<div class="player-item"><div class="player-avatar"><i class="fas fa-user"></i></div><div class="player-info"><div class="player-name">${p.name}</div><div class="player-team">${getTeamName(p.teamId)} · ${p.position}</div></div></div>`;
+                    }
+                });
+                html += `</div></div>`;
+                return html;
+            };
+            document.getElementById('teamsContainer').innerHTML = renderTeam(teamA, 'A') + renderTeam(teamB, 'B');
+            const final = allStarData.allStarGame.finalScore;
+            document.getElementById('finalScore').innerHTML = `<span style="color:#FFD966">${final.teamAScore}</span> : <span style="color:#00E5FF">${final.teamBScore}</span>`;
+            document.getElementById('quarters').innerHTML = allStarData.allStarGame.quarters.join(' · ');
+            // 球员数据表格
+            const statsBody = document.getElementById('gameStatsBody');
+            const statsData = allStarData.allStarGame.playerStats;
+            const mvpId = allStarData.allStarGame.mvp;
+            let mvpName = '';
+            statsData.forEach(stat => {
+                const player = allStarData.allStarPlayers.find(p => p.playerId === stat.playerId);
+                if(!player) return;
+                if(stat.playerId === mvpId) mvpName = player.name;
+                const highlightStr = stat.highlightPlays ? stat.highlightPlays.slice(0,2).join('; ') : '';
+                statsBody.innerHTML += `<tr>
+                    <td>${player.name}</td>
+                    <td>${getTeamName(player.teamId)}</td>
+                    <td>${stat.points}</td>
+                    <td>${stat.rebounds}</td>
+                    <td>${stat.assists}</td>
+                    <td>${stat.steals || 0}</td>
+                    <td>${stat.blocks || 0}</td>
+                    <td><div class="highlight-plays">${highlightStr}</div></td>
+                </tr>`;
+            });
+            document.getElementById('mvpName').innerHTML = mvpName;
+        }
+
+        function renderThreePoint() {
+            const tp = allStarData.threePointContest;
+            let html = `<div class="contest-grid">`;
+            tp.contestants.forEach(c => {
+                const round1Score = tp.rounds[0].scores.find(s => s.playerId === c.playerId)?.score || 0;
+                const round2Score = tp.rounds[1]?.scores.find(s => s.playerId === c.playerId)?.score;
+                const isChamp = tp.champion === c.playerId;
+                html += `<div class="contestant-card">
+                    <div class="contestant-name">${c.name}</div>
+                    <div>预赛: ${round1Score}分</div>
+                    ${round2Score !== undefined ? `<div>决赛: ${round2Score}分</div>` : '<div>未晋级决赛</div>'}
+                    ${isChamp ? `<div class="champion-tag"><i class="fas fa-trophy"></i> 冠军 (${tp.championScore}分)</div>` : ''}
+                </div>`;
+            });
+            html += `</div>`;
+            document.getElementById('threePointContent').innerHTML = html;
+        }
+
+        function renderSlamDunk() {
+            const sd = allStarData.slamDunkContest;
+            let map = new Map();
+            sd.dunks.forEach(d => {
+                if(!map.has(d.playerId)) map.set(d.playerId, []);
+                map.get(d.playerId).push(d);
+            });
+            let html = `<div class="contest-grid">`;
+            sd.contestants.forEach(c => {
+                const dunks = map.get(c.playerId) || [];
+                let dunksHtml = '';
+                dunks.forEach(d => {
+                    dunksHtml += `<div class="dunk-desc"><strong>第${d.dunkNumber}扣:</strong> ${d.totalScore}分 (${d.scores.join(',')})<br>${d.description}</div>`;
+                });
+                const isChamp = sd.champion === c.playerId;
+                html += `<div class="contestant-card">
+                    <div class="contestant-name">${c.name}</div>
+                    ${dunksHtml}
+                    ${isChamp ? `<div class="champion-tag"><i class="fas fa-trophy"></i> 扣篮王</div>` : ''}
+                </div>`;
+            });
+            html += `</div>`;
+            document.getElementById('slamDunkContent').innerHTML = html;
+        }
+
+        function renderSkills() {
+            const sc = allStarData.skillsChallenge;
+            let html = `<div class="contest-grid">`;
+            sc.contestants.forEach(c => {
+                let resultText = '';
+                const matches = sc.bracket.filter(m => m.winner === c.playerId || (m.player1 === c.playerId && m.player2));
+                const winMatch = sc.bracket.find(m => m.winner === c.playerId);
+                if(winMatch) resultText = `最好成绩: ${winMatch.time}`;
+                const isChamp = sc.champion === c.playerId;
+                html += `<div class="contestant-card">
+                    <div class="contestant-name">${c.name}</div>
+                    <div>${resultText || '参赛选手'}</div>
+                    ${isChamp ? `<div class="champion-tag"><i class="fas fa-trophy"></i> 技巧王 (${sc.bracket.find(m=>m.winner===c.playerId)?.time})</div>` : ''}
+                </div>`;
+            });
+            html += `</div>`;
+            document.getElementById('skillsContent').innerHTML = html;
+        }
+
+        function renderHighlightsAwards() {
+            let html = `<div><h3>✨ 赛事高光</h3><ul class="highlights-list">`;
+            allStarData.highlights.forEach(h => html += `<li>${h}</li>`);
+            html += `</ul><h3 style="margin-top:30px;">🏅 奖项汇总</h3><div class="awards-grid">`;
+            allStarData.awards.forEach(a => html += `<div class="award-item"><strong>${a.award}</strong> — ${a.winner}</div>`);
+            html += `</div></div>`;
+            document.getElementById('highlightsAwards').innerHTML = html;
+        }
+
+        // 开屏动画及星星背景
+        function initStars() {
+            const starsContainer = document.getElementById('starsContainer');
+            for(let i=0;i<150;i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                const size = Math.random() * 3 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        window.addEventListener('load', async () => {
+            initStars();
+            await loadTeamsData();
+            renderAllStarGame();
+            renderThreePoint();
+            renderSlamDunk();
+            renderSkills();
+            renderHighlightsAwards();
+            // 开屏消失
+            setTimeout(() => {
+                const splash = document.getElementById('splash');
+                splash.classList.add('hide');
+                setTimeout(() => splash.style.display = 'none', 1200);
+            }, 1800);
+        });
+    </script>
+</body>
+</html>
