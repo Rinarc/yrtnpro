@@ -318,6 +318,23 @@
               "views": "1古戈尔"
             }
           ]
+        },
+        {
+          "id": "life-2",
+          "title": "综合节目-第二季 [RTD]The Daily Whistle-Season 2",
+          "image": "https://origin.picgo.net/2026/04/20/811991cba372f8f11a0f3.jpeg",
+          "description": "由华兴市出品的知名节目拉起了第二季的序幕",
+          "episodes": [
+            {
+              "id": "TheDailyWhistleSeason2-1",
+              "title": "第一集",
+              "date": "2026-04-20",
+              "thumbnail": "https://origin.picgo.net/2026/04/20/811991cba372f8f11a0f3.jpeg",
+              "videoUrl": "https://www.qmpan.com/f/kqnpT3/TheDailyWhistle-Season2-Episode1.mov",
+              "duration": "11:14",
+              "views": "1古戈尔"
+            }
+          ]
         }
       ]
     },
