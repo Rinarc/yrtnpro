@@ -4,169 +4,1704 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YRTN+ | 渊迂新闻（架空）</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
-    <script src="firebase-config.js"></script>
+    <!-- PWA配置 -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#FF3E4D">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="YRTN+">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="shortcut icon" href="icon.JPG" type="image/JPG">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // 请替换为你的 Supabase 项目 URL 和 anon key
+        const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    </script>
     
     <style>
-        /* 新增文章预览样式 */
-        .news-preview {
-            color: #444;
-            line-height: 1.6;
-            margin-top: 1rem;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
+        :root {
+            --primary: #FF3E4D; /* 活力红 */
+            --secondary: #4A90E2; /* 科技蓝 */
+            --accent: #FFD166; /* 活力黄 */
+            --dark: #1A1A2E; /* 深蓝黑 */
+            --light: #F8F9FA; /* 浅灰白 */
+            --success: #06D6A0; /* 清新绿 */
+            
+            --gradient-primary: linear-gradient(135deg, #FF3E4D 0%, #FF6B6B 100%);
+            --gradient-secondary: linear-gradient(135deg, #4A90E2 0%, #5F72BE 100%);
+            --gradient-accent: linear-gradient(135deg, #FFD166 0%, #FFA630 100%);
+            
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.12);
+            --shadow-lg: 0 16px 48px rgba(0,0,0,0.16);
+            
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            
+            --transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --transition-fast: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
-        .views-count {
-            margin-left: auto;
-            font-size: 0.9em;
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-bottom: 90px;
+        }
+        
+        /* ========= 开屏动画 splash ========= */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: clamp(2rem, 15vh, 6rem) clamp(2rem, 10vw, 8rem);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            line-height: 1.1;
+            transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1), visibility 0s 0.6s;
+            will-change: opacity;
+        }
+        .splash-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .splash-content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        .splash-line {
+            font-size: clamp(3rem, 18vw, 8rem);
+            margin: 0.05em 0;
+            opacity: 0;
+            transform: translateY(60px);
+            animation: floatReveal 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+        }
+        .splash-line1 {
+            color: #FF3E4D;
+            animation-delay: 0.2s;
+        }
+        .splash-line2 {
+            color: #4A90E2;
+            animation-delay: 0.5s;
+        }
+        .splash-line3 {
+            color: #1A1A2E;
+            animation-delay: 0.8s;
+            letter-spacing: -0.02em;
+        }
+        @keyframes floatReveal {
+            0% {
+                opacity: 0;
+                transform: translateY(60px) scale(0.98);
+                filter: blur(4px);
+            }
+            60% {
+                opacity: 0.9;
+                transform: translateY(-5px) scale(1.01);
+                filter: blur(0);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+        .splash-skip-hint {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            color: rgba(0,0,0,0.2);
+            font-size: 0.75rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            pointer-events: none;
+        }
+        
+        /* ========= 公告栏 ========= */
+        .announcement-bar {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 10px 20px;
+            font-weight: 500;
+            font-size: 1rem;
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            width: 100%;
+        }
+        
+        /* 顶部导航栏 - 中间图标版 */
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0,0,0,0.03);
+            padding: 6px 12px;
+            border-radius: 50px;
+            transition: var(--transition-fast);
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .user-name {
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 4px 8px;
+            border-radius: 50px;
+            transition: var(--transition-fast);
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255,62,77,0.1);
+        }
+        
+        .login-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition-fast);
+        }
+        
+        .login-btn:hover {
+            color: var(--primary);
+        }
+        
+        .login-btn i {
+            font-size: 1.2rem;
+        }
+        
+        /* 中间图标 */
+        .header-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .center-logo {
+            height: 40px;
+            width: auto;
+        }
+        
+        /* 右侧图标 */
+        .header-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-icon {
+            font-size: 1.3rem;
+            color: var(--dark);
+            position: relative;
+            transition: var(--transition-fast);
+        }
+        
+        .nav-icon:hover {
+            color: var(--primary);
+        }
+        
+        /* 内容容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+        }
+        
+        /* 新闻轮播区 */
+        .news-carousel {
+            position: relative;
+            margin: 25px 0;
+            overflow: hidden;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .carousel-container {
+            display: flex;
+            transition: transform 0.5s ease;
+            height: 300px;
+        }
+        
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+        }
+        
+        .carousel-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+        }
+        
+        .carousel-badge {
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+        
+        .carousel-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        
+        .carousel-summary {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 12px;
+        }
+        
+        .carousel-meta {
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
             opacity: 0.8;
+        }
+        
+        .carousel-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        
+        .carousel-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+        
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: var(--transition-fast);
+        }
+        
+        .carousel-arrow:hover {
+            background: rgba(0,0,0,0.7);
+        }
+        
+        .carousel-arrow.prev {
+            left: 15px;
+        }
+        
+        .carousel-arrow.next {
+            right: 15px;
+        }
+        
+        /* 主新闻区 */
+        .main-news {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            margin: 25px 0;
+        }
+        
+        .featured-news {
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            height: 300px;
+            cursor: pointer;
+        }
+        
+        .featured-image {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .featured-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+        }
+        
+        .featured-badge {
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+        
+        .featured-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        
+        .featured-summary {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 12px;
+        }
+        
+        .featured-meta {
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        /* 次要新闻区 */
+        .secondary-news {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .secondary-item {
+            display: flex;
+            gap: 12px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        
+        .secondary-item:last-child {
+            border-bottom: none;
+        }
+        
+        .secondary-image {
+            width: 90px;
+            height: 70px;
+            border-radius: var(--radius-sm);
+            background-size: cover;
+            background-position: center;
+            flex-shrink: 0;
+        }
+        
+        .secondary-content {
+            flex: 1;
+        }
+        
+        .secondary-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+        
+        .secondary-meta {
+            display: flex;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        /* 新闻分类区 */
+        .news-categories {
+            margin: 40px 0;
+        }
+        
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+        }
+        
+        .category-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .view-all {
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .category-news {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .category-item {
+            background: white;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .category-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .category-item-image {
+            width: 100%;
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .play-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
+        .category-item-content {
+            padding: 15px;
+        }
+        
+        .category-item-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .category-item-meta {
+            display: flex;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        /* 视频分区 */
+        .video-section {
+            margin: 40px 0;
+        }
+        
+        .video-category {
+            margin-bottom: 40px;
+        }
+        
+        .video-category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary);
+        }
+        
+        .video-category-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .video-card {
+            background: white;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .video-thumbnail {
+            width: 100%;
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .video-duration {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
+        .video-info {
+            padding: 15px;
+        }
+        
+        .video-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        /* 底部导航栏 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            padding: 12px;
+            border-radius: 50px;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            width: calc(100% - 40px);
+            max-width: 500px;
+            justify-content: space-around;
+            transition: var(--transition);
+        }
+        
+        .bottom-nav.hidden {
+            transform: translateX(-50%) translateY(100px);
+            opacity: 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--dark);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: var(--transition-fast);
+            opacity: 0.6;
+            position: relative;
+        }
+        
+        .nav-item.active {
+            opacity: 1;
+            color: var(--primary);
+            transform: translateY(-10px);
+        }
+        
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary);
+        }
+        
+        .nav-item i {
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+            transition: var(--transition-fast);
+        }
+        
+        .nav-item.active i {
+            transform: scale(1.2);
+        }
+        
+        .nav-item:hover {
+            opacity: 1;
+            color: var(--primary);
+        }
+        
+        /* 配置面板 */
+        .config-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100%;
+            background: white;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            z-index: 2000;
+            transition: var(--transition);
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .config-panel.active {
+            right: 0;
+        }
+        
+        .config-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .config-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .config-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+        
+        .config-section {
+            margin-bottom: 25px;
+        }
+        
+        .config-section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .config-checkbox {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .config-checkbox input {
+            margin-right: 8px;
+        }
+        
+        .config-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .config-btn:hover {
+            background: var(--secondary);
+        }
+        
+        .config-toggle {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            z-index: 1001;
+            transition: var(--transition);
+        }
+        
+        .config-toggle:hover {
+            transform: scale(1.1);
+        }
+        
+        /* PWA离线提示 */
+        .offline-alert {
+            display: none;
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            z-index: 1002;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            max-width: 90%;
+        }
+        
+        .update-notification {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--secondary);
+            color: white;
+            padding: 15px 20px;
+            border-radius: var(--radius-sm);
+            z-index: 1002;
+            box-shadow: var(--shadow-lg);
+            max-width: 300px;
+        }
+        
+        .update-notification button {
+            background: white;
+            color: var(--secondary);
+            border: none;
+            padding: 5px 10px;
+            border-radius: var(--radius-sm);
+            margin-top: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .main-news {
+                grid-template-columns: 1.5fr 1fr;
+                gap: 20px;
+            }
+            
+            .category-news, .video-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .carousel-container {
+                height: 250px;
+            }
+            
+            .carousel-title {
+                font-size: 1.2rem;
+            }
+            
+            .config-panel {
+                width: 350px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-news {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .featured-news {
+                height: 250px;
+            }
+            
+            .featured-title {
+                font-size: 1.2rem;
+            }
+            
+            .category-news, .video-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .secondary-item {
+                flex-direction: column;
+            }
+            
+            .secondary-image {
+                width: 100%;
+                height: 120px;
+            }
+            
+            .center-logo {
+                height: 32px;
+            }
+            
+            .carousel-container {
+                height: 200px;
+            }
+            
+            .carousel-title {
+                font-size: 1.1rem;
+            }
+            
+            .carousel-summary {
+                font-size: 0.85rem;
+            }
+            
+            .carousel-arrow {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .config-panel {
+                width: 300px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .app-header {
+                padding: 12px 15px;
+            }
+            
+            .user-name {
+                display: none; /* 手机上只显示头像和退出图标 */
+            }
+            
+            .header-right {
+                gap: 15px;
+            }
+            
+            .carousel-container {
+                height: 180px;
+            }
+            
+            .carousel-content {
+                padding: 15px;
+            }
+            
+            .carousel-title {
+                font-size: 1rem;
+            }
+            
+            .carousel-summary {
+                display: none;
+            }
+            
+            .featured-title {
+                font-size: 1.1rem;
+            }
+            
+            .featured-summary {
+                font-size: 0.85rem;
+            }
+            
+            .category-title, .video-category-title {
+                font-size: 1.2rem;
+            }
+            
+            .category-item-image, .video-thumbnail {
+                height: 140px;
+            }
+            
+            .config-panel {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .config-toggle {
+                bottom: 80px;
+                right: 15px;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .carousel-container {
+                height: 160px;
+            }
+            
+            .carousel-title {
+                font-size: 0.95rem;
+            }
+            
+            .featured-news {
+                height: 220px;
+            }
+            
+            .featured-title {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- 导航栏 -->
-    <header class="site-header">
-        <div class="header-container">
-            <div class="branding">
-                <span class="brand-red">「架空」渊迂电视新闻网+</span>
-            </div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="index.html" class="active">首页</a></li>
-                    <li><a href="#news">新闻</a></li>
-                    <li><a href="replay.html">节目回看</a></li>
-                    <li><a href="archive.html">历史新闻</a></li>
-                    <li><a href="metroann.html">地铁之声</a></li>
-                    <li class="admin-link" style="display:none;"><a href="admin.html">发布文章</a></li>
-                    <li><a href="login.html" id="login-link">登录</a></li>
-                </ul>
-            </nav>
+    <!-- 开屏动画 splash -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-content">
+            <div class="splash-line splash-line1">独家新闻</div>
+            <div class="splash-line splash-line2">与视频</div>
+            <div class="splash-line splash-line3">尽在YRTN+</div>
+        </div>
+        <div class="splash-skip-hint">©2026 Yuanyu Reality Television Network</div>
+    </div>
+
+    <!-- 顶部导航栏 -->
+    <header class="app-header">
+        <div class="header-left" id="header-left">
+            <!-- 动态显示登录/用户信息 -->
+        </div>
+        
+        <div class="header-center">
+            <img src="https://origin.picgo.net/2026/04/07/knockout63238d6237aaada6.png" alt="YRTN+" class="center-logo">
+        </div>
+        
+        <div class="header-right">
+            <a href="yrtnunrealive.html" class="nav-icon">
+                <i class="fas fa-tv"></i>
+            </a>
+            <a href="events.html" class="nav-icon">
+                <i class="fas fa-bell"></i>
+            </a>
         </div>
     </header>
 
-    <!-- 突发新闻 -->
-    <section class="breaking-news">
-        <div class="container">
-            <div class="breaking-label">热点</div>
-            <div id="breaking-content" class="breaking-text"></div>
-        </div>
-    </section>
+    <!-- 公告栏 -->
+    <div class="announcement-bar" id="announcementBar">
+        <span>渊迂电视新闻网一周年快乐</span>
+    </div>
 
-    <!-- 新闻列表 -->
-    <section class="news-grid" id="news">
-        <div class="container">
-            <h2 class="section-title">最新动态</h2>
-            <div class="grid" id="news-container"></div>
+    <!-- 内容区域 -->
+    <div class="container">
+        <!-- 新闻轮播区 -->
+        <section class="news-carousel">
+            <div class="carousel-container" id="carousel-container"></div>
+            <div class="carousel-arrow prev" id="carousel-prev">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <div class="carousel-arrow next" id="carousel-next">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="carousel-controls" id="carousel-controls"></div>
+        </section>
+        
+        <!-- 主新闻区 -->
+        <section class="main-news">
+            <div class="featured-news">
+                <div class="featured-image" id="featured-image"></div>
+                <div class="featured-content">
+                    <span class="featured-badge" id="featured-category">热点</span>
+                    <h2 class="featured-title" id="featured-title">正在加载头条新闻...</h2>
+                    <p class="featured-summary" id="featured-summary">新闻摘要加载中</p>
+                    <div class="featured-meta">
+                        <span id="featured-date">今天</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="secondary-news" id="secondary-news"></div>
+        </section>
+        
+        <!-- 新闻分类区 -->
+        <section class="news-categories">
+            <div class="category-header">
+                <h2 class="category-title">最新新闻</h2>
+                <a href="archive.html" class="view-all">查看全部</a>
+            </div>
+            <div class="category-news" id="latest-news"></div>
+        </section>
+        
+        <!-- 视频分区 -->
+        <section class="video-section" id="video-section"></section>
+    </div>
+    
+    <!-- 底部导航栏 -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </a>
+        <a href="knock.html" class="nav-item">
+            <i class="fas fa-play-circle"></i>
+            <span>视频</span>
+        </a>
+        <a href="archive.html" class="nav-item">
+            <i class="fas fa-bolt"></i>
+            <span>历史</span>
+        </a>
+        <a href="tool.html" class="nav-item">
+            <i class="fas fa-sync-alt"></i>
+            <span>服务</span>
+        </a>
+    </nav>
+    
+    <!-- PWA离线提示 -->
+    <div class="offline-alert" id="offline-alert">
+        <i class="fas fa-wifi-slash"></i> 当前处于离线模式
+    </div>
+    
+    <!-- 更新提示 -->
+    <div class="update-notification" id="update-notification">
+        <p>新版本已推送至您的设备，是否更新？</p>
+        <button id="update-now">立即更新</button>
+        <button id="update-later">稍后提醒</button>
+    </div>
+    
+    <!-- 配置面板 -->
+    <div class="config-panel" id="config-panel">
+        <div class="config-header">
+            <h3 class="config-title">主页内容配置</h3>
+            <button class="config-close" id="config-close">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
-    </section>
+        
+        <div class="config-section">
+            <h4 class="config-section-title">新闻分区</h4>
+            <div class="config-checkbox">
+                <input type="checkbox" id="news-carousel" checked>
+                <label for="news-carousel">显示新闻轮播</label>
+            </div>
+            <div class="config-checkbox">
+                <input type="checkbox" id="news-featured" checked>
+                <label for="news-featured">显示头条新闻</label>
+            </div>
+            <div class="config-checkbox">
+                <input type="checkbox" id="news-secondary" checked>
+                <label for="news-secondary">显示次要新闻</label>
+            </div>
+            <div class="config-checkbox">
+                <input type="checkbox" id="news-latest" checked>
+                <label for="news-latest">显示最新新闻</label>
+            </div>
+        </div>
+        
+        <div class="config-section">
+            <h4 class="config-section-title">视频分区</h4>
+            <div class="config-checkbox">
+                <input type="checkbox" id="video-section-toggle" checked>
+                <label for="video-section-toggle">显示视频分区</label>
+            </div>
+            <div id="video-categories-config"></div>
+        </div>
+        
+        <button class="config-btn" id="apply-config">应用配置</button>
+    </div>
+    
+    <!-- 配置按钮 -->
+    <div class="config-toggle" id="config-toggle">
+        <i class="fas fa-cog"></i>
+    </div>
 
     <script>
-        // Firebase服务引用
-        const db = firebase.firestore();
-        const auth = firebase.auth();
-
-        // 初始化函数
-        function initHomePage() {
-            // 加载突发新闻（最新3篇带紧急标记的文章）
-            db.collection("posts")
-                .where("isBreaking", "==", true)
-                .orderBy("timestamp", "desc")
-                .limit(3)
-                .onSnapshot(
-                    (snapshot) => {
-                        const breakingContent = document.getElementById('breaking-content');
-                        breakingContent.innerHTML = snapshot.empty 
-                            ? '<span>当前无突发新闻</span>'
-                            : snapshot.docs.map(doc => `
-                                <a href="news-detail.html?id=${doc.id}">${doc.data().title}</a>
-                            `).join(' · ');
-                    },
-                    (error) => console.error("突发新闻加载失败:", error)
-                );
-
-            // 加载常规文章列表
-            db.collection("posts")
-                .orderBy("timestamp", "desc")
-                .limit(9)
-                .onSnapshot(
-                    (snapshot) => {
-                        const container = document.getElementById('news-container');
-                        container.innerHTML = snapshot.docs.map(doc => {
-                            const data = doc.data();
-                            return `
-                                <div class="news-card">
-                                    <a href="news-detail.html?id=${doc.id}">
-                                        <h3>${data.title}</h3>
-                                        <div class="news-meta">
-                                            <time>${formatFirebaseDate(data.timestamp)}</time>
-                                            <span class="category-tag">${data.category || '综合报道'}</span>
-                                            <span class="views-count">👁️ ${data.views || 0}</span>
-                                        </div>
-                                        <div class="news-preview">
-                                            ${marked.parse(data.content.substring(0, 150) + '...'}
-                                        </div>
-                                    </a>
-                                </div>
-                            `;
-                        }).join('');
-                    },
-                    (error) => console.error("新闻加载失败:", error)
-                );
-
-            // 登录状态管理
-            auth.onAuthStateChanged((user) => {
-                const loginLink = document.getElementById('login-link');
-                const adminLinks = document.querySelectorAll('.admin-link');
-                
-                if (user) {
-                    loginLink.textContent = '注销';
-                    loginLink.href = 'javascript:void(0)';
-                    loginLink.onclick = () => auth.signOut().then(() => window.location.reload());
-                    adminLinks.forEach(link => link.style.display = 'block');
-                } else {
-                    loginLink.textContent = '登录';
-                    loginLink.href = 'login.html';
-                    loginLink.onclick = null;
-                    adminLinks.forEach(link => link.style.display = 'none');
+        // ========== 开屏动画控制 ==========
+        (function() {
+            var splash = document.getElementById('splashScreen');
+            var storageKey = 'yrtn_plus_splash_v1';
+            var isFirstVisit = !localStorage.getItem(storageKey);
+            var timeoutId = null;
+            
+            function hideSplash() {
+                if (!splash) return;
+                splash.classList.add('hidden');
+                if (timeoutId) {
+                    clearTimeout(timeoutId);
+                    timeoutId = null;
                 }
+            }
+            
+            splash.addEventListener('click', function() {
+                localStorage.setItem(storageKey, 'true');
+                hideSplash();
             });
+            
+            var delay = isFirstVisit ? 3200 : 1500;
+            timeoutId = setTimeout(function() {
+                localStorage.setItem(storageKey, 'true');
+                hideSplash();
+            }, delay);
+        })();
 
-            // 阅读量统计
-            document.addEventListener('click', async (e) => {
-                if (e.target.closest('a[href*="news-detail"]')) {
-                    const articleId = new URL(e.target.href).searchParams.get('id');
-                    await db.collection("posts").doc(articleId).update({
-                        views: firebase.firestore.FieldValue.increment(1)
-                    });
-                }
-            });
+        // ========== 公告栏控制 ==========
+        (function() {
+            const showAnnouncement = true;
+            const bar = document.getElementById('announcementBar');
+            if (bar) {
+                bar.style.display = showAnnouncement ? 'block' : 'none';
+            }
+        })();
+
+        // 配置数据
+        let config = {
+            news: {
+                carousel: true,
+                featured: true,
+                secondary: true,
+                latest: true
+            },
+            video: {
+                enabled: true,
+                categories: {}
+            }
+        };
+        
+        // 日期格式化函数
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            return date.toLocaleDateString('zh-CN', options);
         }
-
-        // 日期格式化辅助函数
-        function formatFirebaseDate(timestamp) {
+        
+        // ========== 从 Supabase 加载新闻数据 ==========
+        async function loadNewsData() {
             try {
-                return timestamp?.toDate?.().toLocaleDateString('zh-CN', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit'
-                }) || '日期未记录';
-            } catch {
-                return new Date().toLocaleDateString();
+                const { data, error } = await supabase
+                    .from('news')
+                    .select('*')
+                    .order('date', { ascending: false });
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('加载新闻数据失败:', error);
+                return [];
             }
         }
-
-        // 页面初始化
-        document.addEventListener('DOMContentLoaded', initHomePage);
+        
+        // 加载视频数据（保持不变）
+        async function loadVideoData() {
+            try {
+                const response = await fetch('knockknock.json');
+                if (!response.ok) throw new Error('加载视频数据失败');
+                const data = await response.json();
+                return data.categories;
+            } catch (error) {
+                console.error('加载视频数据时出错:', error);
+                return [];
+            }
+        }
+        
+        // ========== 渲染新闻轮播 ==========
+        function renderNewsCarousel(articles) {
+            if (!config.news.carousel) {
+                document.querySelector('.news-carousel').style.display = 'none';
+                return;
+            }
+            
+            const carouselContainer = document.getElementById('carousel-container');
+            const carouselControls = document.getElementById('carousel-controls');
+            carouselContainer.innerHTML = '';
+            carouselControls.innerHTML = '';
+            
+            // 取最新5条作为轮播
+            const carouselArticles = articles.slice(0, 5);
+            
+            carouselArticles.forEach((article, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'carousel-slide';
+                slide.style.backgroundImage = `url('${article.image}')`;
+                slide.innerHTML = `
+                    <div class="carousel-content">
+                        <span class="carousel-badge">${article.category}</span>
+                        <h3 class="carousel-title">${article.title}</h3>
+                        <p class="carousel-summary">${article.summary || ''}</p>
+                        <div class="carousel-meta">
+                            <span>${formatDate(article.date)}</span>
+                        </div>
+                    </div>
+                `;
+                slide.addEventListener('click', () => {
+                    window.location.href = `news-detail.html?id=${article.id}`;
+                });
+                carouselContainer.appendChild(slide);
+                
+                const dot = document.createElement('div');
+                dot.className = 'carousel-dot';
+                dot.dataset.index = index;
+                carouselControls.appendChild(dot);
+            });
+            
+            initCarousel();
+        }
+        
+        // 轮播初始化（与原逻辑完全相同）
+        function initCarousel() {
+            const container = document.getElementById('carousel-container');
+            const slides = document.querySelectorAll('.carousel-slide');
+            const dots = document.querySelectorAll('.carousel-dot');
+            const prevBtn = document.getElementById('carousel-prev');
+            const nextBtn = document.getElementById('carousel-next');
+            let currentSlide = 0;
+            let autoSlideInterval;
+            
+            function updateCarousel() {
+                if (!container) return;
+                container.style.transform = `translateX(-${currentSlide * 100}%)`;
+                dots.forEach((dot, idx) => {
+                    if (idx === currentSlide) dot.classList.add('active');
+                    else dot.classList.remove('active');
+                });
+            }
+            
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                updateCarousel();
+            }
+            
+            function prevSlide() {
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                updateCarousel();
+            }
+            
+            function startAutoSlide() {
+                autoSlideInterval = setInterval(nextSlide, 5000);
+            }
+            function stopAutoSlide() { clearInterval(autoSlideInterval); }
+            
+            if (slides.length) {
+                updateCarousel();
+                startAutoSlide();
+                container.addEventListener('mouseenter', stopAutoSlide);
+                container.addEventListener('mouseleave', startAutoSlide);
+                prevBtn.addEventListener('click', () => { prevSlide(); stopAutoSlide(); startAutoSlide(); });
+                nextBtn.addEventListener('click', () => { nextSlide(); stopAutoSlide(); startAutoSlide(); });
+                dots.forEach(dot => {
+                    dot.addEventListener('click', () => {
+                        currentSlide = parseInt(dot.dataset.index);
+                        updateCarousel();
+                        stopAutoSlide();
+                        startAutoSlide();
+                    });
+                });
+            }
+        }
+        
+        // 渲染主新闻区（头条 + 次要）
+        function renderMainNews(articles) {
+            if (!articles.length) return;
+            // 头条取第6条（跳过轮播的5条），不够则取第一条
+            const featured = articles[5] || articles[0];
+            if (config.news.featured) {
+                const featuredDiv = document.querySelector('.featured-news');
+                document.getElementById('featured-image').style.backgroundImage = `url('${featured.image}')`;
+                document.getElementById('featured-category').textContent = featured.category;
+                document.getElementById('featured-title').textContent = featured.title;
+                document.getElementById('featured-summary').textContent = featured.summary || '';
+                document.getElementById('featured-date').textContent = formatDate(featured.date);
+                featuredDiv.onclick = () => window.location.href = `news-detail.html?id=${featured.id}`;
+            } else {
+                document.querySelector('.featured-news').style.display = 'none';
+            }
+            
+            if (config.news.secondary) {
+                const secondaryContainer = document.getElementById('secondary-news');
+                secondaryContainer.innerHTML = '';
+                const secondaryNews = articles.slice(6, 10);
+                secondaryNews.forEach(article => {
+                    const item = document.createElement('div');
+                    item.className = 'secondary-item';
+                    item.innerHTML = `
+                        <div class="secondary-image" style="background-image: url('${article.image}')"></div>
+                        <div class="secondary-content">
+                            <h3 class="secondary-title">${article.title}</h3>
+                            <div class="secondary-meta"><span>${formatDate(article.date)}</span></div>
+                        </div>
+                    `;
+                    item.onclick = () => window.location.href = `news-detail.html?id=${article.id}`;
+                    secondaryContainer.appendChild(item);
+                });
+            } else {
+                document.querySelector('.secondary-news').style.display = 'none';
+                document.querySelector('.main-news').style.gridTemplateColumns = '1fr';
+            }
+        }
+        
+        // 渲染最新新闻（分类区）
+        function renderLatestNews(articles) {
+            const container = document.getElementById('latest-news');
+            if (!config.news.latest) {
+                document.querySelector('.news-categories').style.display = 'none';
+                return;
+            }
+            container.innerHTML = '';
+            const latestNews = articles.slice(10, 16);
+            latestNews.forEach(article => {
+                const item = document.createElement('div');
+                item.className = 'category-item';
+                item.innerHTML = `
+                    <div class="category-item-image" style="background-image: url('${article.image}')"></div>
+                    <div class="category-item-content">
+                        <h3 class="category-item-title">${article.title}</h3>
+                        <div class="category-item-meta"><span>${formatDate(article.date)}</span></div>
+                    </div>
+                `;
+                item.onclick = () => window.location.href = `news-detail.html?id=${article.id}`;
+                container.appendChild(item);
+            });
+        }
+        
+        // 渲染视频分区（与原逻辑一致，仅从 knockknock.json 加载）
+        function renderVideoSection(categories) {
+            const container = document.getElementById('video-section');
+            if (!config.video.enabled) {
+                container.style.display = 'none';
+                return;
+            }
+            container.innerHTML = '';
+            if (!categories.length) {
+                container.innerHTML = '<p>暂无视频内容</p>';
+                return;
+            }
+            categories.forEach(category => {
+                if (!config.video.categories[category.id]?.enabled) return;
+                const categoryContainer = document.createElement('div');
+                categoryContainer.className = 'video-category';
+                categoryContainer.innerHTML = `
+                    <div class="video-category-header">
+                        <h3 class="video-category-title">${category.name}</h3>
+                        <a href="knock.html?category=${category.id}" class="view-all">查看全部</a>
+                    </div>
+                    <div class="video-grid" id="video-grid-${category.id}"></div>
+                `;
+                container.appendChild(categoryContainer);
+                const grid = categoryContainer.querySelector('.video-grid');
+                category.shows.forEach(show => {
+                    if (!config.video.categories[category.id].shows[show.id]?.enabled) return;
+                    const episodeCount = config.video.categories[category.id].shows[show.id].episodeCount || 3;
+                    const episodesToShow = show.episodes.slice(0, episodeCount);
+                    episodesToShow.forEach(episode => {
+                        const card = document.createElement('div');
+                        card.className = 'video-card';
+                        card.innerHTML = `
+                            <div class="video-thumbnail" style="background-image: url('${episode.thumbnail}')">
+                                <span class="video-duration">${episode.duration}</span>
+                            </div>
+                            <div class="video-info">
+                                <h4 class="video-title">${episode.title}</h4>
+                                <div class="video-meta"><span>${show.title}</span><span>${episode.views}</span></div>
+                            </div>
+                        `;
+                        card.onclick = () => {
+                            if (episode.videoUrl && episode.videoUrl.includes('bilibili.com')) window.open(episode.videoUrl, '_blank');
+                            else window.location.href = `video-player.html?id=${episode.id}`;
+                        };
+                        grid.appendChild(card);
+                    });
+                });
+            });
+        }
+        
+        // 配置面板相关
+        function renderConfigPanel(categories) {
+            const container = document.getElementById('video-categories-config');
+            container.innerHTML = '';
+            categories.forEach(category => {
+                const categorySection = document.createElement('div');
+                categorySection.className = 'config-section';
+                categorySection.innerHTML = `
+                    <h4 class="config-section-title">${category.name}</h4>
+                    <div class="config-checkbox">
+                        <input type="checkbox" id="category-${category.id}" ${config.video.categories[category.id]?.enabled ? 'checked' : ''}>
+                        <label for="category-${category.id}">显示${category.name}分类</label>
+                    </div>
+                    <div class="show-config" id="show-config-${category.id}"></div>
+                `;
+                container.appendChild(categorySection);
+                const showContainer = categorySection.querySelector(`#show-config-${category.id}`);
+                category.shows.forEach(show => {
+                    const showDiv = document.createElement('div');
+                    showDiv.className = 'config-checkbox show-checkbox';
+                    showDiv.style.marginLeft = '20px';
+                    showDiv.innerHTML = `
+                        <input type="checkbox" id="show-${show.id}" ${config.video.categories[category.id]?.shows[show.id]?.enabled ? 'checked' : ''}>
+                        <label for="show-${show.id}">${show.title}</label>
+                        <select id="episodes-${show.id}" style="margin-left:10px;padding:2px 5px;">
+                            <option value="1" ${config.video.categories[category.id]?.shows[show.id]?.episodeCount === 1 ? 'selected' : ''}>1集</option>
+                            <option value="2" ${config.video.categories[category.id]?.shows[show.id]?.episodeCount === 2 ? 'selected' : ''}>2集</option>
+                            <option value="3" ${(!config.video.categories[category.id]?.shows[show.id] || config.video.categories[category.id]?.shows[show.id]?.episodeCount === 3) ? 'selected' : ''}>3集</option>
+                            <option value="5" ${config.video.categories[category.id]?.shows[show.id]?.episodeCount === 5 ? 'selected' : ''}>5集</option>
+                            <option value="10" ${config.video.categories[category.id]?.shows[show.id]?.episodeCount === 10 ? 'selected' : ''}>10集</option>
+                        </select>
+                    `;
+                    showContainer.appendChild(showDiv);
+                });
+            });
+            document.getElementById('news-carousel').checked = config.news.carousel;
+            document.getElementById('news-featured').checked = config.news.featured;
+            document.getElementById('news-secondary').checked = config.news.secondary;
+            document.getElementById('news-latest').checked = config.news.latest;
+            document.getElementById('video-section-toggle').checked = config.video.enabled;
+        }
+        
+        function saveConfig() { localStorage.setItem('homepage-config', JSON.stringify(config)); }
+        function loadConfig() {
+            const saved = localStorage.getItem('homepage-config');
+            if (saved) config = JSON.parse(saved);
+        }
+        
+        function applyConfig() {
+            config.news.carousel = document.getElementById('news-carousel').checked;
+            config.news.featured = document.getElementById('news-featured').checked;
+            config.news.secondary = document.getElementById('news-secondary').checked;
+            config.news.latest = document.getElementById('news-latest').checked;
+            config.video.enabled = document.getElementById('video-section-toggle').checked;
+            const categories = document.querySelectorAll('.config-section');
+            categories.forEach(catSection => {
+                const catCheck = catSection.querySelector('input[id^="category-"]');
+                if (!catCheck) return;
+                const catId = catCheck.id.replace('category-', '');
+                if (!config.video.categories[catId]) config.video.categories[catId] = { enabled: false, shows: {} };
+                config.video.categories[catId].enabled = catCheck.checked;
+                const showDivs = catSection.querySelectorAll('.show-checkbox');
+                showDivs.forEach(showDiv => {
+                    const showCheck = showDiv.querySelector('input[id^="show-"]');
+                    const showSelect = showDiv.querySelector('select');
+                    if (!showCheck) return;
+                    const showId = showCheck.id.replace('show-', '');
+                    if (!config.video.categories[catId].shows[showId]) config.video.categories[catId].shows[showId] = { enabled: false, episodeCount: 3 };
+                    config.video.categories[catId].shows[showId].enabled = showCheck.checked;
+                    config.video.categories[catId].shows[showId].episodeCount = parseInt(showSelect.value);
+                });
+            });
+            saveConfig();
+            initPage();
+            document.getElementById('config-panel').classList.remove('active');
+        }
+        
+        // ========== 用户登录状态管理 ==========
+        async function updateUserUI() {
+            const headerLeft = document.getElementById('header-left');
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                // 从 profiles 表获取 username，若没有则用 email 前缀
+                let username = user.email ? user.email.split('@')[0] : '用户';
+                const { data: profile } = await supabase
+                    .from('profiles')
+                    .select('username')
+                    .eq('id', user.id)
+                    .single();
+                if (profile && profile.username) username = profile.username;
+                const avatarLetter = username.charAt(0).toUpperCase();
+                headerLeft.innerHTML = `
+                    <div class="user-info">
+                        <div class="user-avatar">${avatarLetter}</div>
+                        <span class="user-name">${escapeHtml(username)}</span>
+                        <button class="logout-btn" id="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
+                    </div>
+                `;
+                document.getElementById('logout-btn')?.addEventListener('click', async () => {
+                    await supabase.auth.signOut();
+                    window.location.reload();
+                });
+            } else {
+                headerLeft.innerHTML = `<a href="login.html" class="login-btn"><i class="fas fa-user-circle"></i><span>登录</span></a>`;
+            }
+        }
+        
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+        
+        // ========== 页面初始化 ==========
+        async function initPage() {
+            loadConfig();
+            const articles = await loadNewsData();
+            if (articles.length) {
+                renderNewsCarousel(articles);
+                renderMainNews(articles);
+                renderLatestNews(articles);
+            } else {
+                document.getElementById('latest-news').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;">暂无新闻，请稍后再试。</div>';
+            }
+            const categories = await loadVideoData();
+            if (categories.length) {
+                categories.forEach(cat => {
+                    if (!config.video.categories[cat.id]) {
+                        config.video.categories[cat.id] = { enabled: true, shows: {} };
+                        cat.shows.forEach(show => {
+                            config.video.categories[cat.id].shows[show.id] = { enabled: true, episodeCount: 3 };
+                        });
+                    }
+                });
+                renderVideoSection(categories);
+                renderConfigPanel(categories);
+            }
+            await updateUserUI();
+        }
+        
+        // 事件绑定
+        function initEventListeners() {
+            document.getElementById('config-toggle')?.addEventListener('click', () => {
+                document.getElementById('config-panel').classList.add('active');
+            });
+            document.getElementById('config-close')?.addEventListener('click', () => {
+                document.getElementById('config-panel').classList.remove('active');
+            });
+            document.getElementById('apply-config')?.addEventListener('click', applyConfig);
+        }
+        
+        // 滚动隐藏底部导航
+        let lastScroll = 0;
+        function setupScrollBehavior() {
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                const bottomNav = document.querySelector('.bottom-nav');
+                if (currentScroll <= 0) {
+                    bottomNav.classList.remove('hidden');
+                    return;
+                }
+                if (currentScroll > lastScroll && currentScroll > 100) bottomNav.classList.add('hidden');
+                else if (currentScroll < lastScroll) bottomNav.classList.remove('hidden');
+                lastScroll = currentScroll;
+            });
+        }
+        
+        // PWA 功能（简单保留）
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/sw.js').catch(e => console.log('SW注册失败', e));
+                });
+            }
+        }
+        function setupOfflineDetection() {
+            window.addEventListener('online', () => document.getElementById('offline-alert').style.display = 'none');
+            window.addEventListener('offline', () => document.getElementById('offline-alert').style.display = 'block');
+            if (!navigator.onLine) document.getElementById('offline-alert').style.display = 'block';
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            initPage();
+            initEventListeners();
+            setupScrollBehavior();
+            registerServiceWorker();
+            setupOfflineDetection();
+            // 高亮底部当前项
+            const currentPage = window.location.pathname.split('/').pop();
+            document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
+                const link = item.getAttribute('href');
+                if (link === currentPage) item.classList.add('active');
+                else item.classList.remove('active');
+            });
+        });
     </script>
 </body>
 </html>
