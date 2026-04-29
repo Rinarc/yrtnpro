@@ -16,37 +16,31 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Supabase SDK (仅用于登录状态) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
         :root {
-            --primary: #FF3E4D; /* 活力红 */
-            --secondary: #4A90E2; /* 科技蓝 */
-            --accent: #FFD166; /* 活力黄 */
-            --dark: #1A1A2E; /* 深蓝黑 */
-            --light: #F8F9FA; /* 浅灰白 */
-            --success: #06D6A0; /* 清新绿 */
-            
+            --primary: #FF3E4D;
+            --secondary: #4A90E2;
+            --accent: #FFD166;
+            --dark: #1A1A2E;
+            --light: #F8F9FA;
+            --success: #06D6A0;
             --gradient-primary: linear-gradient(135deg, #FF3E4D 0%, #FF6B6B 100%);
             --gradient-secondary: linear-gradient(135deg, #4A90E2 0%, #5F72BE 100%);
             --gradient-accent: linear-gradient(135deg, #FFD166 0%, #FFA630 100%);
-            
             --shadow-sm: 0 4px 12px rgba(0,0,0,0.08);
             --shadow-md: 0 8px 24px rgba(0,0,0,0.12);
             --shadow-lg: 0 16px 48px rgba(0,0,0,0.16);
-            
             --radius-sm: 12px;
             --radius-md: 16px;
             --radius-lg: 24px;
-            
             --transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             --transition-fast: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--light);
@@ -55,8 +49,7 @@
             overflow-x: hidden;
             padding-bottom: 90px;
         }
-        
-        /* ========= 开屏动画 splash ========= */
+        /* 开屏动画 splash */
         .splash-screen {
             position: fixed;
             top: 0;
@@ -67,13 +60,12 @@
             z-index: 10000;
             display: flex;
             align-items: center;
-            justify-content: flex-start; /* 内容居左 */
+            justify-content: flex-start;
             padding: clamp(2rem, 15vh, 6rem) clamp(2rem, 10vw, 8rem);
             font-family: 'Poppins', sans-serif;
             font-weight: 700;
             line-height: 1.1;
             transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1), visibility 0s 0.6s;
-            will-change: opacity;
         }
         .splash-screen.hidden {
             opacity: 0;
@@ -92,37 +84,14 @@
             transform: translateY(60px);
             animation: floatReveal 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
         }
-        .splash-line1 {
-            color: #FF3E4D; /* 红 */
-            animation-delay: 0.2s;
-        }
-        .splash-line2 {
-            color: #4A90E2; /* 蓝 */
-            animation-delay: 0.5s;
-        }
-        .splash-line3 {
-            color: #1A1A2E; /* 深色，高级感 */
-            animation-delay: 0.8s;
-            letter-spacing: -0.02em;
-        }
+        .splash-line1 { color: #FF3E4D; animation-delay: 0.2s; }
+        .splash-line2 { color: #4A90E2; animation-delay: 0.5s; }
+        .splash-line3 { color: #1A1A2E; animation-delay: 0.8s; letter-spacing: -0.02em; }
         @keyframes floatReveal {
-            0% {
-                opacity: 0;
-                transform: translateY(60px) scale(0.98);
-                filter: blur(4px);
-            }
-            60% {
-                opacity: 0.9;
-                transform: translateY(-5px) scale(1.01);
-                filter: blur(0);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-                filter: blur(0);
-            }
+            0% { opacity: 0; transform: translateY(60px) scale(0.98); filter: blur(4px); }
+            60% { opacity: 0.9; transform: translateY(-5px) scale(1.01); filter: blur(0); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
-        /* 可选的跳过提示 */
         .splash-skip-hint {
             position: absolute;
             bottom: 30px;
@@ -133,13 +102,8 @@
             letter-spacing: 1px;
             text-transform: uppercase;
             pointer-events: none;
-            transition: color 0.2s;
         }
-        .splash-screen:active .splash-skip-hint {
-            color: rgba(0,0,0,0.4);
-        }
-        
-        /* ========= 公告栏 ========= */
+        /* 公告栏 */
         .announcement-bar {
             background-color: var(--primary);
             color: white;
@@ -149,13 +113,8 @@
             font-size: 1rem;
             box-shadow: var(--shadow-sm);
             border-bottom: 1px solid rgba(255,255,255,0.2);
-            width: 100%;
         }
-        .announcement-bar span {
-            display: inline-block;
-        }
-        
-        /* 顶部导航栏 - 中间图标版 */
+        /* 顶部导航栏 */
         .app-header {
             position: sticky;
             top: 0;
@@ -168,12 +127,39 @@
             box-shadow: var(--shadow-sm);
             border-bottom: 1px solid rgba(0,0,0,0.1);
         }
-        
-        .header-left {
+        .header-left { display: flex; align-items: center; }
+        .user-info {
             display: flex;
             align-items: center;
+            gap: 12px;
+            background: rgba(0,0,0,0.03);
+            padding: 6px 12px;
+            border-radius: 50px;
+            transition: var(--transition-fast);
         }
-        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .user-name { font-weight: 500; color: var(--dark); font-size: 0.9rem; }
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 4px 8px;
+            border-radius: 50px;
+        }
+        .logout-btn:hover { background: rgba(255,62,77,0.1); }
         .login-btn {
             display: flex;
             align-items: center;
@@ -183,53 +169,32 @@
             font-weight: 500;
             transition: var(--transition-fast);
         }
-        
-        .login-btn:hover {
-            color: var(--primary);
-        }
-        
-        .login-btn i {
-            font-size: 1.2rem;
-        }
-        
-        /* 中间图标 */
+        .login-btn:hover { color: var(--primary); }
+        .login-btn i { font-size: 1.2rem; }
         .header-center {
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
         }
-        
-        .center-logo {
-            height: 40px;
-            width: auto;
-        }
-        
-        /* 右侧图标 */
+        .center-logo { height: 40px; width: auto; }
         .header-right {
             display: flex;
             gap: 20px;
             align-items: center;
         }
-        
         .nav-icon {
             font-size: 1.3rem;
             color: var(--dark);
-            position: relative;
+            text-decoration: none;
             transition: var(--transition-fast);
         }
-        
-        .nav-icon:hover {
-            color: var(--primary);
-        }
-        
+        .nav-icon:hover { color: var(--primary); }
         /* 内容容器 */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
-            position: relative;
         }
-        
         /* 新闻轮播区 */
         .news-carousel {
             position: relative;
@@ -238,21 +203,19 @@
             border-radius: var(--radius-md);
             box-shadow: var(--shadow-md);
         }
-        
         .carousel-container {
             display: flex;
             transition: transform 0.5s ease;
             height: 300px;
         }
-        
         .carousel-slide {
             min-width: 100%;
             height: 100%;
             position: relative;
             background-size: cover;
             background-position: center;
+            cursor: pointer;
         }
-        
         .carousel-content {
             position: absolute;
             bottom: 0;
@@ -262,7 +225,6 @@
             background: linear-gradient(transparent, rgba(0,0,0,0.8));
             color: white;
         }
-        
         .carousel-badge {
             background: var(--primary);
             color: white;
@@ -270,30 +232,12 @@
             border-radius: 4px;
             font-size: 0.75rem;
             font-weight: 600;
-            margin-bottom: 8px;
             display: inline-block;
-        }
-        
-        .carousel-title {
-            font-size: 1.4rem;
-            font-weight: 700;
             margin-bottom: 8px;
-            line-height: 1.3;
         }
-        
-        .carousel-summary {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            margin-bottom: 12px;
-        }
-        
-        .carousel-meta {
-            display: flex;
-            align-items: center;
-            font-size: 0.8rem;
-            opacity: 0.8;
-        }
-        
+        .carousel-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+        .carousel-summary { font-size: 0.9rem; opacity: 0.9; margin-bottom: 12px; }
+        .carousel-meta { display: flex; align-items: center; font-size: 0.8rem; opacity: 0.8; }
         .carousel-controls {
             position: absolute;
             bottom: 20px;
@@ -302,21 +246,15 @@
             gap: 10px;
             z-index: 10;
         }
-        
         .carousel-dot {
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255,255,255,0.5);
             cursor: pointer;
             transition: var(--transition-fast);
         }
-        
-        .carousel-dot.active {
-            background: white;
-            transform: scale(1.2);
-        }
-        
+        .carousel-dot.active { background: white; transform: scale(1.2); }
         .carousel-arrow {
             position: absolute;
             top: 50%;
@@ -331,21 +269,10 @@
             justify-content: center;
             cursor: pointer;
             z-index: 10;
-            transition: var(--transition-fast);
         }
-        
-        .carousel-arrow:hover {
-            background: rgba(0,0,0,0.7);
-        }
-        
-        .carousel-arrow.prev {
-            left: 15px;
-        }
-        
-        .carousel-arrow.next {
-            right: 15px;
-        }
-        
+        .carousel-arrow:hover { background: rgba(0,0,0,0.7); }
+        .carousel-arrow.prev { left: 15px; }
+        .carousel-arrow.next { right: 15px; }
         /* 主新闻区 */
         .main-news {
             display: grid;
@@ -353,23 +280,20 @@
             gap: 25px;
             margin: 25px 0;
         }
-        
         .featured-news {
             position: relative;
             border-radius: var(--radius-md);
             overflow: hidden;
             box-shadow: var(--shadow-md);
             height: 300px;
+            cursor: pointer;
         }
-        
         .featured-image {
             width: 100%;
             height: 100%;
             background-size: cover;
             background-position: center;
-            position: relative;
         }
-        
         .featured-content {
             position: absolute;
             bottom: 0;
@@ -379,7 +303,6 @@
             background: linear-gradient(transparent, rgba(0,0,0,0.8));
             color: white;
         }
-        
         .featured-badge {
             background: var(--primary);
             color: white;
@@ -387,48 +310,25 @@
             border-radius: 4px;
             font-size: 0.75rem;
             font-weight: 600;
-            margin-bottom: 8px;
             display: inline-block;
-        }
-        
-        .featured-title {
-            font-size: 1.4rem;
-            font-weight: 700;
             margin-bottom: 8px;
-            line-height: 1.3;
         }
-        
-        .featured-summary {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            margin-bottom: 12px;
-        }
-        
-        .featured-meta {
-            display: flex;
-            align-items: center;
-            font-size: 0.8rem;
-            opacity: 0.8;
-        }
-        
+        .featured-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+        .featured-summary { font-size: 0.9rem; opacity: 0.9; margin-bottom: 12px; }
+        .featured-meta { font-size: 0.8rem; opacity: 0.8; }
         /* 次要新闻区 */
         .secondary-news {
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
-        
         .secondary-item {
             display: flex;
             gap: 12px;
             padding-bottom: 15px;
             border-bottom: 1px solid rgba(0,0,0,0.1);
+            cursor: pointer;
         }
-        
-        .secondary-item:last-child {
-            border-bottom: none;
-        }
-        
         .secondary-image {
             width: 90px;
             height: 70px;
@@ -437,30 +337,11 @@
             background-position: center;
             flex-shrink: 0;
         }
-        
-        .secondary-content {
-            flex: 1;
-        }
-        
-        .secondary-title {
-            font-size: 0.95rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-            line-height: 1.4;
-        }
-        
-        .secondary-meta {
-            display: flex;
-            align-items: center;
-            font-size: 0.75rem;
-            color: #666;
-        }
-        
+        .secondary-content { flex: 1; }
+        .secondary-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 5px; line-height: 1.4; }
+        .secondary-meta { font-size: 0.75rem; color: #666; }
         /* 新闻分类区 */
-        .news-categories {
-            margin: 40px 0;
-        }
-        
+        .news-categories { margin: 40px 0; }
         .category-header {
             display: flex;
             justify-content: space-between;
@@ -469,85 +350,34 @@
             border-bottom: 2px solid var(--primary);
             padding-bottom: 10px;
         }
-        
-        .category-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--dark);
-        }
-        
-        .view-all {
-            color: var(--primary);
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-decoration: none;
-        }
-        
+        .category-title { font-size: 1.4rem; font-weight: 700; }
+        .view-all { color: var(--primary); font-size: 0.9rem; font-weight: 600; text-decoration: none; }
         .category-news {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
         }
-        
         .category-item {
             background: white;
             border-radius: var(--radius-md);
             overflow: hidden;
             box-shadow: var(--shadow-sm);
             transition: var(--transition);
+            cursor: pointer;
         }
-        
-        .category-item:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
-        }
-        
+        .category-item:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
         .category-item-image {
             width: 100%;
             height: 160px;
             background-size: cover;
             background-position: center;
-            position: relative;
         }
-        
-        .play-indicator {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-        }
-        
-        .category-item-content {
-            padding: 15px;
-        }
-        
-        .category-item-title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            line-height: 1.4;
-        }
-        
-        .category-item-meta {
-            display: flex;
-            align-items: center;
-            font-size: 0.75rem;
-            color: #666;
-        }
-        
+        .category-item-content { padding: 15px; }
+        .category-item-title { font-size: 1rem; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
+        .category-item-meta { font-size: 0.75rem; color: #666; }
         /* 视频分区 */
-        .video-section {
-            margin: 40px 0;
-        }
-        
-        .video-category {
-            margin-bottom: 40px;
-        }
-        
+        .video-section { margin: 40px 0; }
+        .video-category { margin-bottom: 40px; }
         .video-category-header {
             display: flex;
             justify-content: space-between;
@@ -556,32 +386,21 @@
             padding-bottom: 10px;
             border-bottom: 2px solid var(--secondary);
         }
-        
-        .video-category-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--dark);
-        }
-        
+        .video-category-title { font-size: 1.4rem; font-weight: 700; }
         .video-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
         }
-        
         .video-card {
             background: white;
             border-radius: var(--radius-md);
             overflow: hidden;
             box-shadow: var(--shadow-sm);
             transition: var(--transition);
+            cursor: pointer;
         }
-        
-        .video-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
-        }
-        
+        .video-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
         .video-thumbnail {
             width: 100%;
             height: 160px;
@@ -589,7 +408,6 @@
             background-position: center;
             position: relative;
         }
-        
         .video-duration {
             position: absolute;
             bottom: 10px;
@@ -600,34 +418,17 @@
             border-radius: 4px;
             font-size: 0.8rem;
         }
-        
-        .video-info {
-            padding: 15px;
-        }
-        
-        .video-title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            line-height: 1.4;
-        }
-        
-        .video-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.75rem;
-            color: #666;
-        }
-        
-        /* 底部导航栏 - 恢复原样 */
+        .video-info { padding: 15px; }
+        .video-title { font-size: 1rem; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
+        .video-meta { display: flex; justify-content: space-between; font-size: 0.75rem; color: #666; }
+        /* 底部导航栏 */
         .bottom-nav {
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255,255,255,0.95);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             display: flex;
             padding: 12px;
             border-radius: 50px;
@@ -638,12 +439,10 @@
             justify-content: space-around;
             transition: var(--transition);
         }
-        
         .bottom-nav.hidden {
             transform: translateX(-50%) translateY(100px);
             opacity: 0;
         }
-        
         .nav-item {
             display: flex;
             flex-direction: column;
@@ -655,13 +454,11 @@
             opacity: 0.6;
             position: relative;
         }
-        
         .nav-item.active {
             opacity: 1;
             color: var(--primary);
             transform: translateY(-10px);
         }
-        
         .nav-item.active::before {
             content: '';
             position: absolute;
@@ -672,22 +469,9 @@
             border-radius: 50%;
             box-shadow: 0 0 10px var(--primary);
         }
-        
-        .nav-item i {
-            font-size: 1.4rem;
-            margin-bottom: 4px;
-            transition: var(--transition-fast);
-        }
-        
-        .nav-item.active i {
-            transform: scale(1.2);
-        }
-        
-        .nav-item:hover {
-            opacity: 1;
-            color: var(--primary);
-        }
-        
+        .nav-item i { font-size: 1.4rem; margin-bottom: 4px; transition: var(--transition-fast); }
+        .nav-item.active i { transform: scale(1.2); }
+        .nav-item:hover { opacity: 1; color: var(--primary); }
         /* 配置面板 */
         .config-panel {
             position: fixed;
@@ -702,11 +486,7 @@
             padding: 20px;
             overflow-y: auto;
         }
-        
-        .config-panel.active {
-            right: 0;
-        }
-        
+        .config-panel.active { right: 0; }
         .config-header {
             display: flex;
             justify-content: space-between;
@@ -715,12 +495,7 @@
             padding-bottom: 10px;
             border-bottom: 1px solid #eee;
         }
-        
-        .config-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-        
+        .config-title { font-size: 1.2rem; font-weight: 600; }
         .config-close {
             background: none;
             border: none;
@@ -728,28 +503,14 @@
             cursor: pointer;
             color: var(--dark);
         }
-        
-        .config-section {
-            margin-bottom: 25px;
-        }
-        
-        .config-section-title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--dark);
-        }
-        
+        .config-section { margin-bottom: 25px; }
+        .config-section-title { font-size: 1rem; font-weight: 600; margin-bottom: 10px; }
         .config-checkbox {
             display: flex;
             align-items: center;
             margin-bottom: 8px;
         }
-        
-        .config-checkbox input {
-            margin-right: 8px;
-        }
-        
+        .config-checkbox input { margin-right: 8px; }
         .config-btn {
             background: var(--primary);
             color: white;
@@ -759,15 +520,10 @@
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition-fast);
-            display: block;
             width: 100%;
             margin-top: 20px;
         }
-        
-        .config-btn:hover {
-            background: var(--secondary);
-        }
-        
+        .config-btn:hover { background: var(--secondary); }
         .config-toggle {
             position: fixed;
             bottom: 90px;
@@ -784,13 +540,8 @@
             cursor: pointer;
             box-shadow: var(--shadow-md);
             z-index: 1001;
-            transition: var(--transition);
         }
-        
-        .config-toggle:hover {
-            transform: scale(1.1);
-        }
-        
+        .config-toggle:hover { transform: scale(1.1); }
         /* PWA离线提示 */
         .offline-alert {
             display: none;
@@ -803,11 +554,8 @@
             padding: 10px 20px;
             border-radius: var(--radius-sm);
             z-index: 1002;
-            box-shadow: var(--shadow-md);
             text-align: center;
-            max-width: 90%;
         }
-        
         .update-notification {
             display: none;
             position: fixed;
@@ -821,7 +569,6 @@
             box-shadow: var(--shadow-lg);
             max-width: 300px;
         }
-        
         .update-notification button {
             background: white;
             color: var(--secondary);
@@ -832,167 +579,19 @@
             cursor: pointer;
             font-weight: 600;
         }
-        
-        /* 响应式设计 */
-        @media (max-width: 1200px) {
-            .container {
-                padding: 0 15px;
-            }
-        }
-        
-        @media (max-width: 992px) {
-            .main-news {
-                grid-template-columns: 1.5fr 1fr;
-                gap: 20px;
-            }
-            
-            .category-news, .video-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .carousel-container {
-                height: 250px;
-            }
-            
-            .carousel-title {
-                font-size: 1.2rem;
-            }
-            
-            .config-panel {
-                width: 350px;
-            }
-        }
-        
         @media (max-width: 768px) {
-            .main-news {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .featured-news {
-                height: 250px;
-            }
-            
-            .featured-title {
-                font-size: 1.2rem;
-            }
-            
-            .category-news, .video-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .secondary-item {
-                flex-direction: column;
-            }
-            
-            .secondary-image {
-                width: 100%;
-                height: 120px;
-            }
-            
-            .center-logo {
-                height: 32px;
-            }
-            
-            .carousel-container {
-                height: 200px;
-            }
-            
-            .carousel-title {
-                font-size: 1.1rem;
-            }
-            
-            .carousel-summary {
-                font-size: 0.85rem;
-            }
-            
-            .carousel-arrow {
-                width: 35px;
-                height: 35px;
-            }
-            
-            .config-panel {
-                width: 300px;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .app-header {
-                padding: 12px 15px;
-            }
-            
-            .login-btn span {
-                display: none;
-            }
-            
-            .header-right {
-                gap: 15px;
-            }
-            
-            .carousel-container {
-                height: 180px;
-            }
-            
-            .carousel-content {
-                padding: 15px;
-            }
-            
-            .carousel-title {
-                font-size: 1rem;
-            }
-            
-            .carousel-summary {
-                display: none;
-            }
-            
-            .featured-title {
-                font-size: 1.1rem;
-            }
-            
-            .featured-summary {
-                font-size: 0.85rem;
-            }
-            
-            .category-title, .video-category-title {
-                font-size: 1.2rem;
-            }
-            
-            .category-item-image, .video-thumbnail {
-                height: 140px;
-            }
-            
-            .config-panel {
-                width: 100%;
-                right: -100%;
-            }
-            
-            .config-toggle {
-                bottom: 80px;
-                right: 15px;
-            }
-        }
-        
-        @media (max-width: 400px) {
-            .carousel-container {
-                height: 160px;
-            }
-            
-            .carousel-title {
-                font-size: 0.95rem;
-            }
-            
-            .featured-news {
-                height: 220px;
-            }
-            
-            .featured-title {
-                font-size: 1rem;
-            }
+            .main-news { grid-template-columns: 1fr; }
+            .featured-news { height: 250px; }
+            .category-news { grid-template-columns: 1fr; }
+            .carousel-container { height: 200px; }
+            .carousel-title { font-size: 1.1rem; }
+            .center-logo { height: 32px; }
+            .config-panel { width: 300px; }
+            .user-name { display: none; }
         }
     </style>
 </head>
 <body>
-    <!-- 开屏动画 splash - 每次打开播放，时长依访问次数变化 -->
     <div class="splash-screen" id="splashScreen">
         <div class="splash-content">
             <div class="splash-line splash-line1">独家新闻</div>
@@ -1002,946 +601,413 @@
         <div class="splash-skip-hint">©2026 Yuanyu Reality Television Network</div>
     </div>
 
-    <!-- 顶部导航栏 -->
     <header class="app-header">
-        <div class="header-left">
-            <a href="login.html" class="login-btn">
-                <i class="fas fa-user-circle"></i>
-                <span>登录</span>
-            </a>
-        </div>
-        
+        <div class="header-left" id="header-left"></div>
         <div class="header-center">
             <img src="https://origin.picgo.net/2026/04/07/knockout63238d6237aaada6.png" alt="YRTN+" class="center-logo">
         </div>
-        
         <div class="header-right">
-            <a href="yrtnunrealive.html" class="nav-icon">
-                <i class="fas fa-tv"></i>
-            </a>
-            <a href="events.html" class="nav-icon">
-                <i class="fas fa-bell"></i>
-            </a>
+            <a href="yrtnunrealive.html" class="nav-icon"><i class="fas fa-tv"></i></a>
+            <a href="events.html" class="nav-icon"><i class="fas fa-bell"></i></a>
         </div>
     </header>
 
-    <!-- 公告栏 - 通过变量控制显示/隐藏 -->
-    <div class="announcement-bar" id="announcementBar">
-        <span>渊迂电视新闻网一周年快乐</span>
-    </div>
+    <div class="announcement-bar" id="announcementBar"><span>渊迂电视新闻网一周年快乐</span></div>
 
-    <!-- 内容区域 -->
     <div class="container">
-        <!-- 新闻轮播区 -->
         <section class="news-carousel">
-            <div class="carousel-container" id="carousel-container">
-                <!-- 轮播幻灯片将通过JS动态加载 -->
-            </div>
-            
-            <div class="carousel-arrow prev" id="carousel-prev">
-                <i class="fas fa-chevron-left"></i>
-            </div>
-            <div class="carousel-arrow next" id="carousel-next">
-                <i class="fas fa-chevron-right"></i>
-            </div>
-            
-            <div class="carousel-controls" id="carousel-controls">
-                <!-- 轮播控制点将通过JS动态加载 -->
-            </div>
+            <div class="carousel-container" id="carousel-container"></div>
+            <div class="carousel-arrow prev" id="carousel-prev"><i class="fas fa-chevron-left"></i></div>
+            <div class="carousel-arrow next" id="carousel-next"><i class="fas fa-chevron-right"></i></div>
+            <div class="carousel-controls" id="carousel-controls"></div>
         </section>
         
-        <!-- 主新闻区 -->
         <section class="main-news">
             <div class="featured-news">
-                <div class="featured-image" id="featured-image">
-                    <!-- 图片将通过JS动态加载 -->
-                </div>
+                <div class="featured-image" id="featured-image"></div>
                 <div class="featured-content">
                     <span class="featured-badge" id="featured-category">热点</span>
                     <h2 class="featured-title" id="featured-title">正在加载头条新闻...</h2>
                     <p class="featured-summary" id="featured-summary">新闻摘要加载中</p>
-                    <div class="featured-meta">
-                        <span id="featured-date">今天</span>
-                    </div>
+                    <div class="featured-meta"><span id="featured-date">今天</span></div>
                 </div>
             </div>
-            
-            <div class="secondary-news" id="secondary-news">
-                <!-- 次要新闻将通过JS动态加载 -->
-            </div>
+            <div class="secondary-news" id="secondary-news"></div>
         </section>
         
-        <!-- 新闻分类区 -->
         <section class="news-categories">
             <div class="category-header">
                 <h2 class="category-title">最新新闻</h2>
                 <a href="archive.html" class="view-all">查看全部</a>
             </div>
-            <div class="category-news" id="latest-news">
-                <!-- 最新新闻将通过JS动态加载 -->
-            </div>
+            <div class="category-news" id="latest-news"></div>
         </section>
         
-        <!-- 视频分区 -->
-        <section class="video-section" id="video-section">
-            <!-- 视频分区将通过JS动态加载 -->
-        </section>
+        <section class="video-section" id="video-section"></section>
     </div>
     
-    <!-- 底部导航栏 -->
     <nav class="bottom-nav">
-        <a href="index.html" class="nav-item active">
-            <i class="fas fa-home"></i>
-            <span>首页</span>
-        </a>
-        <a href="knock.html" class="nav-item">
-            <i class="fas fa-play-circle"></i>
-            <span>视频</span>
-        </a>
-        <a href="archive.html" class="nav-item">
-            <i class="fas fa-bolt"></i>
-            <span>历史</span>
-        </a>
-        <a href="tool.html" class="nav-item">
-            <i class="fas fa-sync-alt"></i>
-            <span>服务</span>
-        </a>
+        <a href="index.html" class="nav-item active"><i class="fas fa-home"></i><span>首页</span></a>
+        <a href="knock.html" class="nav-item"><i class="fas fa-play-circle"></i><span>视频</span></a>
+        <a href="archive.html" class="nav-item"><i class="fas fa-bolt"></i><span>历史</span></a>
+        <a href="tool.html" class="nav-item"><i class="fas fa-sync-alt"></i><span>服务</span></a>
     </nav>
     
-    <!-- PWA离线提示 -->
-    <div class="offline-alert" id="offline-alert">
-        <i class="fas fa-wifi-slash"></i> 当前处于离线模式
-    </div>
-    
-    <!-- 更新提示 -->
+    <div class="offline-alert" id="offline-alert"><i class="fas fa-wifi-slash"></i> 当前处于离线模式</div>
     <div class="update-notification" id="update-notification">
         <p>新版本已推送至您的设备，是否更新？</p>
         <button id="update-now">立即更新</button>
         <button id="update-later">稍后提醒</button>
     </div>
     
-    <!-- 配置面板 -->
     <div class="config-panel" id="config-panel">
         <div class="config-header">
             <h3 class="config-title">主页内容配置</h3>
-            <button class="config-close" id="config-close">
-                <i class="fas fa-times"></i>
-            </button>
+            <button class="config-close" id="config-close"><i class="fas fa-times"></i></button>
         </div>
-        
         <div class="config-section">
             <h4 class="config-section-title">新闻分区</h4>
-            <div class="config-checkbox">
-                <input type="checkbox" id="news-carousel" checked>
-                <label for="news-carousel">显示新闻轮播</label>
-            </div>
-            <div class="config-checkbox">
-                <input type="checkbox" id="news-featured" checked>
-                <label for="news-featured">显示头条新闻</label>
-            </div>
-            <div class="config-checkbox">
-                <input type="checkbox" id="news-secondary" checked>
-                <label for="news-secondary">显示次要新闻</label>
-            </div>
-            <div class="config-checkbox">
-                <input type="checkbox" id="news-latest" checked>
-                <label for="news-latest">显示最新新闻</label>
-            </div>
+            <div class="config-checkbox"><input type="checkbox" id="news-carousel" checked><label for="news-carousel">显示新闻轮播</label></div>
+            <div class="config-checkbox"><input type="checkbox" id="news-featured" checked><label for="news-featured">显示头条新闻</label></div>
+            <div class="config-checkbox"><input type="checkbox" id="news-secondary" checked><label for="news-secondary">显示次要新闻</label></div>
+            <div class="config-checkbox"><input type="checkbox" id="news-latest" checked><label for="news-latest">显示最新新闻</label></div>
         </div>
-        
         <div class="config-section">
             <h4 class="config-section-title">视频分区</h4>
-            <div class="config-checkbox">
-                <input type="checkbox" id="video-section-toggle" checked>
-                <label for="video-section-toggle">显示视频分区</label>
-            </div>
-            
-            <div id="video-categories-config">
-                <!-- 视频分类配置将通过JS动态加载 -->
-            </div>
+            <div class="config-checkbox"><input type="checkbox" id="video-section-toggle" checked><label for="video-section-toggle">显示视频分区</label></div>
+            <div id="video-categories-config"></div>
         </div>
-        
         <button class="config-btn" id="apply-config">应用配置</button>
     </div>
-    
-    <!-- 配置按钮 -->
-    <div class="config-toggle" id="config-toggle">
-        <i class="fas fa-cog"></i>
-    </div>
+    <div class="config-toggle" id="config-toggle"><i class="fas fa-cog"></i></div>
 
     <script>
-        // ========== 开屏动画控制（每次播放，时长依首次/后续） ==========
+        // Supabase 配置
+        const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // 开屏动画
         (function() {
             var splash = document.getElementById('splashScreen');
             var storageKey = 'yrtn_plus_splash_v1';
-            var isFirstVisit = !localStorage.getItem(storageKey); // 如果没有标记，则是第一次访问
-            
+            var isFirstVisit = !localStorage.getItem(storageKey);
             var timeoutId = null;
-            
             function hideSplash() {
                 if (!splash) return;
                 splash.classList.add('hidden');
-                if (timeoutId) {
-                    clearTimeout(timeoutId);
-                    timeoutId = null;
-                }
+                if (timeoutId) clearTimeout(timeoutId);
             }
-            
-            // 点击任意位置立即隐藏，并标记为已访问（后续短时间）
             splash.addEventListener('click', function() {
                 localStorage.setItem(storageKey, 'true');
                 hideSplash();
             });
-            
-            // 根据是否第一次设置不同的延迟时间
-            var delay = isFirstVisit ? 3200 : 1500; // 第一次长(3.2s)，后续短(1.5s)
+            var delay = isFirstVisit ? 3200 : 1500;
             timeoutId = setTimeout(function() {
-                localStorage.setItem(storageKey, 'true'); // 自动隐藏时也标记
+                localStorage.setItem(storageKey, 'true');
                 hideSplash();
             }, delay);
         })();
 
-        // ========== 公告栏控制 (true 显示, false 隐藏) ==========
+        // 公告栏（可配置）
         (function() {
-            const showAnnouncement = true; // 改为 false 即可隐藏公告栏
+            const showAnnouncement = true;
             const bar = document.getElementById('announcementBar');
-            if (bar) {
-                bar.style.display = showAnnouncement ? 'block' : 'none';
-            }
+            if (bar) bar.style.display = showAnnouncement ? 'block' : 'none';
         })();
 
         // 配置数据
         let config = {
-            news: {
-                carousel: true,
-                featured: true,
-                secondary: true,
-                latest: true
-            },
-            video: {
-                enabled: true,
-                categories: {}
-            }
+            news: { carousel: true, featured: true, secondary: true, latest: true },
+            video: { enabled: true, categories: {} }
         };
-        
-        // 日期格式化函数
+
         function formatDate(dateString) {
             const date = new Date(dateString);
-            const options = { 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            };
-            return date.toLocaleDateString('zh-CN', options);
+            return date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
         }
-        
-        // 加载新闻数据
+
+        // 加载新闻数据 (REST API)
         async function loadNewsData() {
             try {
-                const response = await fetch('news.json');
-                if (!response.ok) throw new Error('加载新闻数据失败');
-                
+                const url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc`;
+                const response = await fetch(url, {
+                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+                });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
-                return data.articles;
+                return data || [];
             } catch (error) {
-                console.error('加载新闻数据时出错:', error);
+                console.error('加载新闻失败:', error);
                 return [];
             }
         }
-        
-        // 加载视频数据
+
+        // 加载视频数据 (本地knockknock.json)
         async function loadVideoData() {
             try {
                 const response = await fetch('knockknock.json');
                 if (!response.ok) throw new Error('加载视频数据失败');
-                
-                const data = await response.json();
-                return data.categories;
+                return (await response.json()).categories;
             } catch (error) {
-                console.error('加载视频数据时出错:', error);
+                console.error(error);
                 return [];
             }
         }
-        
-        // 渲染新闻轮播
+
+        // 渲染轮播
         function renderNewsCarousel(articles) {
-            if (!config.news.carousel) {
-                document.querySelector('.news-carousel').style.display = 'none';
-                return;
-            }
-            
-            const carouselContainer = document.getElementById('carousel-container');
-            const carouselControls = document.getElementById('carousel-controls');
-            
-            // 清空现有内容
-            carouselContainer.innerHTML = '';
-            carouselControls.innerHTML = '';
-            
-            // 按日期排序（最新优先）
-            articles.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            // 取最新5条新闻作为轮播内容
+            if (!config.news.carousel) { document.querySelector('.news-carousel').style.display = 'none'; return; }
+            const container = document.getElementById('carousel-container');
+            const controls = document.getElementById('carousel-controls');
+            container.innerHTML = ''; controls.innerHTML = '';
             const carouselArticles = articles.slice(0, 5);
-            
-            // 创建轮播幻灯片
-            carouselArticles.forEach((article, index) => {
+            carouselArticles.forEach((article, idx) => {
                 const slide = document.createElement('div');
                 slide.className = 'carousel-slide';
                 slide.style.backgroundImage = `url('${article.image}')`;
-                slide.innerHTML = `
-                    <div class="carousel-content">
-                        <span class="carousel-badge">${article.category}</span>
-                        <h3 class="carousel-title">${article.title}</h3>
-                        <p class="carousel-summary">${article.summary}</p>
-                        <div class="carousel-meta">
-                            <span>${formatDate(article.date)}</span>
-                        </div>
-                    </div>
-                `;
-                
-                // 添加点击事件跳转到详情页
-                slide.addEventListener('click', () => {
-                    window.location.href = `news-detail.html?id=${article.id}`;
-                });
-                
-                carouselContainer.appendChild(slide);
-                
-                // 创建控制点
-                const dot = document.createElement('div');
-                dot.className = 'carousel-dot';
-                dot.dataset.index = index;
-                carouselControls.appendChild(dot);
+                slide.innerHTML = `<div class="carousel-content"><span class="carousel-badge">${article.category}</span><h3 class="carousel-title">${article.title}</h3><p class="carousel-summary">${article.summary || ''}</p><div class="carousel-meta"><span>${formatDate(article.date)}</span></div></div>`;
+                slide.onclick = () => window.location.href = `news-detail.html?id=${article.id}`;
+                container.appendChild(slide);
+                const dot = document.createElement('div'); dot.className = 'carousel-dot'; dot.dataset.index = idx;
+                controls.appendChild(dot);
             });
-            
-            // 初始化轮播
             initCarousel();
         }
-        
-        // 初始化轮播
+
         function initCarousel() {
             const container = document.getElementById('carousel-container');
             const slides = document.querySelectorAll('.carousel-slide');
             const dots = document.querySelectorAll('.carousel-dot');
             const prevBtn = document.getElementById('carousel-prev');
             const nextBtn = document.getElementById('carousel-next');
-            
-            let currentSlide = 0;
-            let autoSlideInterval;
-            
-            // 显示第一张幻灯片
-            if (slides.length > 0) {
-                updateCarousel();
-            }
-            
-            // 自动轮播
-            function startAutoSlide() {
-                autoSlideInterval = setInterval(() => {
-                    nextSlide();
-                }, 5000);
-            }
-            
-            // 停止自动轮播
-            function stopAutoSlide() {
-                clearInterval(autoSlideInterval);
-            }
-            
-            // 切换到下一张幻灯片
-            function nextSlide() {
-                currentSlide = (currentSlide + 1) % slides.length;
-                updateCarousel();
-            }
-            
-            // 切换到上一张幻灯片
-            function prevSlide() {
-                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-                updateCarousel();
-            }
-            
-            // 更新轮播显示
-            function updateCarousel() {
+            let currentSlide = 0, autoInterval;
+            function update() {
+                if (!container) return;
                 container.style.transform = `translateX(-${currentSlide * 100}%)`;
-                
-                // 更新控制点状态
-                dots.forEach((dot, index) => {
-                    if (index === currentSlide) {
-                        dot.classList.add('active');
-                    } else {
-                        dot.classList.remove('active');
-                    }
-                });
+                dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
             }
-            
-            // 切换到指定幻灯片
-            function goToSlide(index) {
-                currentSlide = index;
-                updateCarousel();
+            function next() { currentSlide = (currentSlide + 1) % slides.length; update(); }
+            function prev() { currentSlide = (currentSlide - 1 + slides.length) % slides.length; update(); }
+            function startAuto() { autoInterval = setInterval(next, 5000); }
+            function stopAuto() { clearInterval(autoInterval); }
+            if (slides.length) {
+                update(); startAuto();
+                container.addEventListener('mouseenter', stopAuto);
+                container.addEventListener('mouseleave', startAuto);
+                prevBtn.onclick = () => { prev(); stopAuto(); startAuto(); };
+                nextBtn.onclick = () => { next(); stopAuto(); startAuto(); };
+                dots.forEach(dot => dot.onclick = () => { currentSlide = parseInt(dot.dataset.index); update(); stopAuto(); startAuto(); });
             }
-            
-            // 事件监听
-            prevBtn.addEventListener('click', () => {
-                prevSlide();
-                stopAutoSlide();
-                startAutoSlide();
-            });
-            
-            nextBtn.addEventListener('click', () => {
-                nextSlide();
-                stopAutoSlide();
-                startAutoSlide();
-            });
-            
-            dots.forEach(dot => {
-                dot.addEventListener('click', () => {
-                    const index = parseInt(dot.dataset.index);
-                    goToSlide(index);
-                    stopAutoSlide();
-                    startAutoSlide();
-                });
-            });
-            
-            // 触摸滑动支持
-            let startX = 0;
-            let endX = 0;
-            
-            container.addEventListener('touchstart', (e) => {
-                startX = e.touches[0].clientX;
-                stopAutoSlide();
-            });
-            
-            container.addEventListener('touchmove', (e) => {
-                endX = e.touches[0].clientX;
-            });
-            
-            container.addEventListener('touchend', () => {
-                const diff = startX - endX;
-                if (Math.abs(diff) > 50) { // 最小滑动距离
-                    if (diff > 0) {
-                        nextSlide();
-                    } else {
-                        prevSlide();
-                    }
-                }
-                startAutoSlide();
-            });
-            
-            // 开始自动轮播
-            startAutoSlide();
-            
-            // 鼠标悬停时暂停自动轮播
-            container.addEventListener('mouseenter', stopAutoSlide);
-            container.addEventListener('mouseleave', startAutoSlide);
         }
-        
-        // 渲染主新闻区
+
+        // 渲染头条和次要新闻
         function renderMainNews(articles) {
-            if (articles.length === 0) return;
-            
-            // 按日期排序（最新优先）
-            articles.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            // 设置头条新闻（跳过轮播中已显示的5条）
+            if (!articles.length) return;
             const featured = articles[5] || articles[0];
-            
             if (config.news.featured) {
+                const fd = document.querySelector('.featured-news');
                 document.getElementById('featured-image').style.backgroundImage = `url('${featured.image}')`;
-                document.getElementById('featured-category').textContent = featured.category;
-                document.getElementById('featured-title').textContent = featured.title;
-                document.getElementById('featured-summary').textContent = featured.summary;
-                document.getElementById('featured-date').textContent = formatDate(featured.date);
-                
-                // 添加点击事件
-                document.querySelector('.featured-news').addEventListener('click', () => {
-                    window.location.href = `news-detail.html?id=${featured.id}`;
-                });
+                document.getElementById('featured-category').innerText = featured.category;
+                document.getElementById('featured-title').innerText = featured.title;
+                document.getElementById('featured-summary').innerText = featured.summary || '';
+                document.getElementById('featured-date').innerText = formatDate(featured.date);
+                fd.onclick = () => window.location.href = `news-detail.html?id=${featured.id}`;
             } else {
                 document.querySelector('.featured-news').style.display = 'none';
             }
-            
-            // 渲染次要新闻
             if (config.news.secondary) {
-                const secondaryContainer = document.getElementById('secondary-news');
-                secondaryContainer.innerHTML = '';
-                
-                // 取接下来的4条新闻作为次要新闻
-                const secondaryNews = articles.slice(6, 10);
-                
-                secondaryNews.forEach(article => {
+                const secContainer = document.getElementById('secondary-news');
+                secContainer.innerHTML = '';
+                articles.slice(6, 10).forEach(article => {
                     const item = document.createElement('div');
                     item.className = 'secondary-item';
-                    item.innerHTML = `
-                        <div class="secondary-image" style="background-image: url('${article.image}')"></div>
-                        <div class="secondary-content">
-                            <h3 class="secondary-title">${article.title}</h3>
-                            <div class="secondary-meta">
-                                <span>${formatDate(article.date)}</span>
-                            </div>
-                        </div>
-                    `;
-                    
-                    // 添加点击事件
-                    item.addEventListener('click', () => {
-                        window.location.href = `news-detail.html?id=${article.id}`;
-                    });
-                    
-                    secondaryContainer.appendChild(item);
+                    item.innerHTML = `<div class="secondary-image" style="background-image:url('${article.image}')"></div><div class="secondary-content"><h3 class="secondary-title">${article.title}</h3><div class="secondary-meta">${formatDate(article.date)}</div></div>`;
+                    item.onclick = () => window.location.href = `news-detail.html?id=${article.id}`;
+                    secContainer.appendChild(item);
                 });
             } else {
                 document.querySelector('.secondary-news').style.display = 'none';
                 document.querySelector('.main-news').style.gridTemplateColumns = '1fr';
             }
         }
-        
-        // 渲染最新新闻
+
+        // 渲染最新新闻（分类区）
         function renderLatestNews(articles) {
             const container = document.getElementById('latest-news');
-            
-            if (!config.news.latest) {
-                document.querySelector('.news-categories').style.display = 'none';
-                return;
-            }
-            
+            if (!config.news.latest) { document.querySelector('.news-categories').style.display = 'none'; return; }
             container.innerHTML = '';
-            
-            if (articles.length === 0) {
-                container.innerHTML = '<p>暂无新闻</p>';
-                return;
-            }
-            
-            // 按日期排序（最新优先）
-            articles.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            // 取10条之后的新闻作为最新新闻
-            const latestNews = articles.slice(10, 16);
-            
-            latestNews.forEach(article => {
+            articles.slice(10, 16).forEach(article => {
                 const item = document.createElement('div');
                 item.className = 'category-item';
-                item.innerHTML = `
-                    <div class="category-item-image" style="background-image: url('${article.image}')"></div>
-                    <div class="category-item-content">
-                        <h3 class="category-item-title">${article.title}</h3>
-                        <div class="category-item-meta">
-                            <span>${formatDate(article.date)}</span>
-                        </div>
-                    </div>
-                `;
-                
-                // 添加点击事件
-                item.addEventListener('click', () => {
-                    window.location.href = `news-detail.html?id=${article.id}`;
-                });
-                
+                item.innerHTML = `<div class="category-item-image" style="background-image:url('${article.image}')"></div><div class="category-item-content"><h3 class="category-item-title">${article.title}</h3><div class="category-item-meta">${formatDate(article.date)}</div></div>`;
+                item.onclick = () => window.location.href = `news-detail.html?id=${article.id}`;
                 container.appendChild(item);
             });
         }
-        
+
         // 渲染视频分区
         function renderVideoSection(categories) {
             const container = document.getElementById('video-section');
-            
-            if (!config.video.enabled) {
-                container.style.display = 'none';
-                return;
-            }
-            
+            if (!config.video.enabled) { container.style.display = 'none'; return; }
             container.innerHTML = '';
-            
-            if (categories.length === 0) {
-                container.innerHTML = '<p>暂无视频内容</p>';
-                return;
-            }
-            
-            // 遍历每个分类
-            categories.forEach(category => {
-                // 检查配置中是否启用该分类
-                if (!config.video.categories[category.id] || !config.video.categories[category.id].enabled) {
-                    return;
-                }
-                
-                // 创建分类容器
-                const categoryContainer = document.createElement('div');
-                categoryContainer.className = 'video-category';
-                
-                // 创建分类标题
-                const categoryHeader = document.createElement('div');
-                categoryHeader.className = 'video-category-header';
-                categoryHeader.innerHTML = `
-                    <h3 class="video-category-title">${category.name}</h3>
-                    <a href="knock.html?category=${category.id}" class="view-all">查看全部</a>
-                `;
-                
-                // 创建视频网格
-                const videoGrid = document.createElement('div');
-                videoGrid.className = 'video-grid';
-                
-                // 遍历该分类下的节目
-                category.shows.forEach(show => {
-                    // 检查配置中是否启用该节目
-                    if (!config.video.categories[category.id].shows[show.id] || 
-                        !config.video.categories[category.id].shows[show.id].enabled) {
-                        return;
-                    }
-                    
-                    // 获取要显示的剧集数量
-                    const episodeCount = config.video.categories[category.id].shows[show.id].episodeCount || 3;
-                    
-                    // 取指定数量的剧集
-                    const episodesToShow = show.episodes.slice(0, episodeCount);
-                    
-                    // 为每个剧集创建视频卡片
-                    episodesToShow.forEach(episode => {
-                        const videoCard = document.createElement('div');
-                        videoCard.className = 'video-card';
-                        videoCard.innerHTML = `
-                            <div class="video-thumbnail" style="background-image: url('${episode.thumbnail}')">
-                                <span class="video-duration">${episode.duration}</span>
-                            </div>
-                            <div class="video-info">
-                                <h4 class="video-title">${episode.title}</h4>
-                                <div class="video-meta">
-                                    <span>${show.title}</span>
-                                    <span>${episode.views}</span>
-                                </div>
-                            </div>
-                        `;
-                        
-                        // 添加点击事件
-                        videoCard.addEventListener('click', () => {
-                            if (episode.videoUrl.includes('bilibili.com')) {
-                                // B站视频，在新窗口打开
-                                window.open(episode.videoUrl, '_blank');
-                            } else {
-                                // 其他视频，跳转到播放页
-                                window.location.href = `video-player.html?id=${episode.id}`;
-                            }
-                        });
-                        
-                        videoGrid.appendChild(videoCard);
+            if (!categories.length) { container.innerHTML = '<p>暂无视频内容</p>'; return; }
+            categories.forEach(cat => {
+                if (!config.video.categories[cat.id]?.enabled) return;
+                const catDiv = document.createElement('div'); catDiv.className = 'video-category';
+                catDiv.innerHTML = `<div class="video-category-header"><h3 class="video-category-title">${cat.name}</h3><a href="knock.html?category=${cat.id}" class="view-all">查看全部</a></div><div class="video-grid" id="video-grid-${cat.id}"></div>`;
+                container.appendChild(catDiv);
+                const grid = catDiv.querySelector('.video-grid');
+                cat.shows.forEach(show => {
+                    if (!config.video.categories[cat.id].shows[show.id]?.enabled) return;
+                    const episodes = show.episodes.slice(0, config.video.categories[cat.id].shows[show.id].episodeCount || 3);
+                    episodes.forEach(ep => {
+                        const card = document.createElement('div'); card.className = 'video-card';
+                        card.innerHTML = `<div class="video-thumbnail" style="background-image:url('${ep.thumbnail}')"><span class="video-duration">${ep.duration}</span></div><div class="video-info"><h4 class="video-title">${ep.title}</h4><div class="video-meta"><span>${show.title}</span><span>${ep.views}</span></div></div>`;
+                        card.onclick = () => { if (ep.videoUrl?.includes('bilibili.com')) window.open(ep.videoUrl, '_blank'); else window.location.href = `video-player.html?id=${ep.id}`; };
+                        grid.appendChild(card);
                     });
                 });
-                
-                // 如果该分类下有视频，添加到容器中
-                if (videoGrid.children.length > 0) {
-                    categoryContainer.appendChild(categoryHeader);
-                    categoryContainer.appendChild(videoGrid);
-                    container.appendChild(categoryContainer);
-                }
             });
-            
-            // 如果没有视频内容
-            if (container.children.length === 0) {
-                container.innerHTML = '<p>暂无视频内容</p>';
-            }
         }
-        
-        // 渲染配置面板
+
+        // 配置面板渲染及交互
         function renderConfigPanel(categories) {
             const container = document.getElementById('video-categories-config');
             container.innerHTML = '';
-            
-            // 创建分类配置
-            categories.forEach(category => {
-                const categorySection = document.createElement('div');
-                categorySection.className = 'config-section';
-                categorySection.innerHTML = `
-                    <h4 class="config-section-title">${category.name}</h4>
-                    <div class="config-checkbox">
-                        <input type="checkbox" id="category-${category.id}" ${config.video.categories[category.id] && config.video.categories[category.id].enabled ? 'checked' : ''}>
-                        <label for="category-${category.id}">显示${category.name}分类</label>
-                    </div>
-                    <div class="show-config" id="show-config-${category.id}">
-                        <!-- 节目配置将通过JS动态加载 -->
-                    </div>
-                `;
-                
-                container.appendChild(categorySection);
-                
-                // 创建节目配置
-                const showConfigContainer = document.getElementById(`show-config-${category.id}`);
-                category.shows.forEach(show => {
-                    const showConfig = document.createElement('div');
-                    showConfig.className = 'config-checkbox show-checkbox';
-                    showConfig.style.marginLeft = '20px';
-                    showConfig.innerHTML = `
-                        <input type="checkbox" id="show-${show.id}" ${config.video.categories[category.id] && config.video.categories[category.id].shows[show.id] && config.video.categories[category.id].shows[show.id].enabled ? 'checked' : ''}>
-                        <label for="show-${show.id}">${show.title}</label>
-                        <select id="episodes-${show.id}" style="margin-left: 10px; padding: 2px 5px; border-radius: 4px; border: 1px solid #ddd;">
-                            <option value="1" ${config.video.categories[category.id] && config.video.categories[category.id].shows[show.id] && config.video.categories[category.id].shows[show.id].episodeCount === 1 ? 'selected' : ''}>1集</option>
-                            <option value="2" ${config.video.categories[category.id] && config.video.categories[category.id].shows[show.id] && config.video.categories[category.id].shows[show.id].episodeCount === 2 ? 'selected' : ''}>2集</option>
-                            <option value="3" ${(!config.video.categories[category.id] || !config.video.categories[category.id].shows[show.id] || config.video.categories[category.id].shows[show.id].episodeCount === 3) ? 'selected' : ''}>3集</option>
-                            <option value="5" ${config.video.categories[category.id] && config.video.categories[category.id].shows[show.id] && config.video.categories[category.id].shows[show.id].episodeCount === 5 ? 'selected' : ''}>5集</option>
-                            <option value="10" ${config.video.categories[category.id] && config.video.categories[category.id].shows[show.id] && config.video.categories[category.id].shows[show.id].episodeCount === 10 ? 'selected' : ''}>10集</option>
-                        </select>
-                    `;
-                    
-                    showConfigContainer.appendChild(showConfig);
+            categories.forEach(cat => {
+                const section = document.createElement('div'); section.className = 'config-section';
+                section.innerHTML = `<h4 class="config-section-title">${cat.name}</h4><div class="config-checkbox"><input type="checkbox" id="category-${cat.id}" ${config.video.categories[cat.id]?.enabled ? 'checked' : ''}><label for="category-${cat.id}">显示${cat.name}分类</label></div><div id="show-config-${cat.id}"></div>`;
+                container.appendChild(section);
+                const showContainer = section.querySelector(`#show-config-${cat.id}`);
+                cat.shows.forEach(show => {
+                    const div = document.createElement('div'); div.className = 'config-checkbox show-checkbox'; div.style.marginLeft = '20px';
+                    div.innerHTML = `<input type="checkbox" id="show-${show.id}" ${config.video.categories[cat.id]?.shows[show.id]?.enabled ? 'checked' : ''}><label for="show-${show.id}">${show.title}</label><select id="episodes-${show.id}" style="margin-left:10px;padding:2px 5px;"><option value="1">1集</option><option value="2">2集</option><option value="3" selected>3集</option><option value="5">5集</option><option value="10">10集</option></select>`;
+                    showContainer.appendChild(div);
                 });
             });
-            
-            // 设置新闻配置
             document.getElementById('news-carousel').checked = config.news.carousel;
             document.getElementById('news-featured').checked = config.news.featured;
             document.getElementById('news-secondary').checked = config.news.secondary;
             document.getElementById('news-latest').checked = config.news.latest;
             document.getElementById('video-section-toggle').checked = config.video.enabled;
         }
-        
-        // 保存配置到本地存储
-        function saveConfig() {
-            localStorage.setItem('homepage-config', JSON.stringify(config));
-        }
-        
-        // 从本地存储加载配置
+
+        function saveConfig() { localStorage.setItem('homepage-config', JSON.stringify(config)); }
         function loadConfig() {
-            const savedConfig = localStorage.getItem('homepage-config');
-            if (savedConfig) {
-                config = JSON.parse(savedConfig);
-            }
+            const saved = localStorage.getItem('homepage-config');
+            if (saved) config = JSON.parse(saved);
         }
-        
-        // 应用配置
         function applyConfig() {
-            // 获取新闻配置
             config.news.carousel = document.getElementById('news-carousel').checked;
             config.news.featured = document.getElementById('news-featured').checked;
             config.news.secondary = document.getElementById('news-secondary').checked;
             config.news.latest = document.getElementById('news-latest').checked;
-            
-            // 获取视频分区配置
             config.video.enabled = document.getElementById('video-section-toggle').checked;
-            
-            // 获取视频分类配置
             const categories = document.querySelectorAll('.config-section');
-            categories.forEach(categorySection => {
-                const categoryCheckbox = categorySection.querySelector('input[type="checkbox"]');
-                if (categoryCheckbox && categoryCheckbox.id.startsWith('category-')) {
-                    const categoryId = categoryCheckbox.id.replace('category-', '');
-                    
-                    // 初始化分类配置
-                    if (!config.video.categories[categoryId]) {
-                        config.video.categories[categoryId] = {
-                            enabled: false,
-                            shows: {}
-                        };
-                    }
-                    
-                    // 更新分类启用状态
-                    config.video.categories[categoryId].enabled = categoryCheckbox.checked;
-                    
-                    // 获取节目配置
-                    const showConfigs = categorySection.querySelectorAll('.show-checkbox');
-                    showConfigs.forEach(showConfig => {
-                        const showCheckbox = showConfig.querySelector('input[type="checkbox"]');
-                        const showSelect = showConfig.querySelector('select');
-                        
-                        if (showCheckbox && showCheckbox.id.startsWith('show-')) {
-                            const showId = showCheckbox.id.replace('show-', '');
-                            
-                            // 初始化节目配置
-                            if (!config.video.categories[categoryId].shows[showId]) {
-                                config.video.categories[categoryId].shows[showId] = {
-                                    enabled: false,
-                                    episodeCount: 3
-                                };
-                            }
-                            
-                            // 更新节目启用状态和剧集数量
-                            config.video.categories[categoryId].shows[showId].enabled = showCheckbox.checked;
-                            config.video.categories[categoryId].shows[showId].episodeCount = parseInt(showSelect.value);
-                        }
-                    });
-                }
+            categories.forEach(catSec => {
+                const catCheck = catSec.querySelector('input[id^="category-"]');
+                if (!catCheck) return;
+                const catId = catCheck.id.replace('category-', '');
+                if (!config.video.categories[catId]) config.video.categories[catId] = { enabled: false, shows: {} };
+                config.video.categories[catId].enabled = catCheck.checked;
+                catSec.querySelectorAll('.show-checkbox').forEach(showDiv => {
+                    const showCheck = showDiv.querySelector('input[id^="show-"]');
+                    const showSelect = showDiv.querySelector('select');
+                    if (!showCheck) return;
+                    const showId = showCheck.id.replace('show-', '');
+                    if (!config.video.categories[catId].shows[showId]) config.video.categories[catId].shows[showId] = { enabled: false, episodeCount: 3 };
+                    config.video.categories[catId].shows[showId].enabled = showCheck.checked;
+                    config.video.categories[catId].shows[showId].episodeCount = parseInt(showSelect.value);
+                });
             });
-            
-            // 保存配置
             saveConfig();
-            
-            // 重新渲染页面
             initPage();
-            
-            // 关闭配置面板
             document.getElementById('config-panel').classList.remove('active');
         }
-        
-        // ==================== PWA功能 ====================
-        
-        // 注册Service Worker
-        function registerServiceWorker() {
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/sw.js')
-                        .then(registration => {
-                            console.log('Service Worker 注册成功:', registration.scope);
-                            
-                            // 检查更新
-                            registration.addEventListener('updatefound', () => {
-                                const newWorker = registration.installing;
-                                newWorker.addEventListener('statechange', () => {
-                                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                        showUpdateNotification();
-                                    }
-                                });
-                            });
-                        })
-                        .catch(error => {
-                            console.log('Service Worker 注册失败:', error);
-                        });
-                });
+
+        // 用户登录状态显示
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+        async function updateUserUI() {
+            const headerLeft = document.getElementById('header-left');
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                let username = user.email ? user.email.split('@')[0] : '用户';
+                const { data: profile } = await supabase.from('profiles').select('username').eq('id', user.id).single();
+                if (profile?.username) username = profile.username;
+                const avatarLetter = username.charAt(0).toUpperCase();
+                headerLeft.innerHTML = `<div class="user-info"><div class="user-avatar">${avatarLetter}</div><span class="user-name">${escapeHtml(username)}</span><button class="logout-btn" id="logout-btn"><i class="fas fa-sign-out-alt"></i></button></div>`;
+                document.getElementById('logout-btn')?.addEventListener('click', async () => { await supabase.auth.signOut(); window.location.reload(); });
+            } else {
+                headerLeft.innerHTML = `<a href="login.html" class="login-btn"><i class="fas fa-user-circle"></i><span>登录</span></a>`;
             }
         }
-        
-        // 显示更新通知
-        function showUpdateNotification() {
-            const notification = document.getElementById('update-notification');
-            notification.style.display = 'block';
-            
-            document.getElementById('update-now').addEventListener('click', () => {
-                window.location.reload();
-            });
-            
-            document.getElementById('update-later').addEventListener('click', () => {
-                notification.style.display = 'none';
-                localStorage.setItem('updateDismissed', new Date().toISOString());
-            });
-        }
-        
-        // 检查是否有更新
-        function checkForUpdates() {
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.ready.then(registration => {
-                    registration.update();
-                });
-            }
-        }
-        
-        // 离线状态检测
-        function setupOfflineDetection() {
-            window.addEventListener('online', () => {
-                document.getElementById('offline-alert').style.display = 'none';
-            });
-            
-            window.addEventListener('offline', () => {
-                document.getElementById('offline-alert').style.display = 'block';
-            });
-            
-            // 初始检查
-            if (!navigator.onLine) {
-                document.getElementById('offline-alert').style.display = 'block';
-            }
-        }
-        
-        // ==================== 页面初始化 ====================
-        
-        // 初始化页面
+
+        // 主初始化函数
         async function initPage() {
-            // 加载配置
             loadConfig();
-            
-            // 加载新闻数据
             const articles = await loadNewsData();
-            
-            if (articles.length > 0) {
-                // 渲染新闻轮播
+            if (articles.length) {
                 renderNewsCarousel(articles);
-                
-                // 渲染主新闻区
                 renderMainNews(articles);
-                
-                // 渲染最新新闻
                 renderLatestNews(articles);
             } else {
-                // 如果没有加载到文章，显示错误信息
-                const container = document.getElementById('latest-news');
-                container.innerHTML = `
-                    <div style="grid-column:1/-1; text-align:center; padding:40px;">
-                        <p>未找到新闻文章，请稍后再试。</p>
-                    </div>
-                `;
+                document.getElementById('latest-news').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;">暂无新闻，请检查数据库</div>';
             }
-            
-            // 加载视频数据
             const categories = await loadVideoData();
-            
-            if (categories.length > 0) {
-                // 初始化视频配置（如果不存在）
-                categories.forEach(category => {
-                    if (!config.video.categories[category.id]) {
-                        config.video.categories[category.id] = {
-                            enabled: true,
-                            shows: {}
-                        };
-                        
-                        category.shows.forEach(show => {
-                            config.video.categories[category.id].shows[show.id] = {
-                                enabled: true,
-                                episodeCount: 3
-                            };
-                        });
+            if (categories.length) {
+                categories.forEach(cat => {
+                    if (!config.video.categories[cat.id]) {
+                        config.video.categories[cat.id] = { enabled: true, shows: {} };
+                        cat.shows.forEach(show => { config.video.categories[cat.id].shows[show.id] = { enabled: true, episodeCount: 3 }; });
                     }
                 });
-                
-                // 渲染视频分区
                 renderVideoSection(categories);
-                
-                // 渲染配置面板
                 renderConfigPanel(categories);
             }
+            await updateUserUI();
         }
-        
-        // 初始化配置面板事件
-        function initConfigPanel() {
-            document.getElementById('config-toggle').addEventListener('click', () => {
-                document.getElementById('config-panel').classList.add('active');
-            });
-            
-            document.getElementById('config-close').addEventListener('click', () => {
-                document.getElementById('config-panel').classList.remove('active');
-            });
-            
-            document.getElementById('apply-config').addEventListener('click', applyConfig);
+
+        // 事件监听
+        function initEventListeners() {
+            document.getElementById('config-toggle')?.addEventListener('click', () => document.getElementById('config-panel').classList.add('active'));
+            document.getElementById('config-close')?.addEventListener('click', () => document.getElementById('config-panel').classList.remove('active'));
+            document.getElementById('apply-config')?.addEventListener('click', applyConfig);
         }
-        
-        // 滚动时隐藏/显示导航栏
+
+        // 滚动隐藏底部栏
+        let lastScroll = 0;
         function setupScrollBehavior() {
-            let lastScroll = 0;
             window.addEventListener('scroll', () => {
                 const currentScroll = window.pageYOffset;
                 const bottomNav = document.querySelector('.bottom-nav');
-                
-                if (currentScroll <= 0) {
-                    bottomNav.classList.remove('hidden');
-                    return;
-                }
-                
-                if (currentScroll > lastScroll && currentScroll > 100) {
-                    bottomNav.classList.add('hidden');
-                } else if (currentScroll < lastScroll) {
-                    bottomNav.classList.remove('hidden');
-                }
-                
+                if (currentScroll <= 0) { bottomNav.classList.remove('hidden'); return; }
+                if (currentScroll > lastScroll && currentScroll > 100) bottomNav.classList.add('hidden');
+                else if (currentScroll < lastScroll) bottomNav.classList.remove('hidden');
                 lastScroll = currentScroll;
             });
         }
-        
-        // 初始化所有功能
+
+        // 启动
         document.addEventListener('DOMContentLoaded', () => {
-            // 初始化页面
             initPage();
-            
-            // 初始化配置面板
-            initConfigPanel();
-            
-            // 初始化滚动行为
+            initEventListeners();
             setupScrollBehavior();
-            
-            // PWA功能
-            registerServiceWorker();
-            setupOfflineDetection();
-            
-            // 检查更新（每24小时）
-            setInterval(checkForUpdates, 24 * 60 * 60 * 1000);
+            // 高亮当前页面
+            const currentPage = window.location.pathname.split('/').pop();
+            document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
+                const link = item.getAttribute('href');
+                if (link === currentPage) item.classList.add('active');
+                else item.classList.remove('active');
+            });
         });
     </script>
 </body>
