@@ -133,6 +133,14 @@
         .back-link:hover {
             text-decoration: underline;
         }
+        .debug-info {
+            margin-top: 15px;
+            font-size: 0.7rem;
+            color: #aaa;
+            text-align: left;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -145,11 +153,11 @@
     <div id="login-form">
         <div class="form-group">
             <label>邮箱</label>
-            <input type="email" id="login-email" placeholder="your@email.com" autocomplete="email">
+            <input type="email" id="login-email" placeholder="your@email.com">
         </div>
         <div class="form-group">
             <label>密码</label>
-            <input type="password" id="login-password" placeholder="密码" autocomplete="current-password">
+            <input type="password" id="login-password" placeholder="密码">
         </div>
         <button id="login-btn">登录</button>
         <div id="login-error" class="error-msg"></div>
@@ -157,149 +165,167 @@
     <div id="register-form" style="display: none;">
         <div class="form-group">
             <label>邮箱</label>
-            <input type="email" id="register-email" placeholder="your@email.com" autocomplete="email">
+            <input type="email" id="register-email" placeholder="your@email.com">
         </div>
         <div class="form-group">
             <label>密码（至少6位）</label>
-            <input type="password" id="register-password" placeholder="密码" autocomplete="new-password">
+            <input type="password" id="register-password" placeholder="密码">
         </div>
         <div class="form-group">
             <label>昵称（可选）</label>
-            <input type="text" id="register-username" placeholder="昵称" autocomplete="nickname">
+            <input type="text" id="register-username" placeholder="昵称">
         </div>
         <button id="register-btn">注册</button>
         <div id="register-error" class="error-msg"></div>
     </div>
     <div class="message">
-        登录后即可评论新闻，享受更多互动体验
+        登录后即可评论新闻
     </div>
     <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> 返回首页</a>
+    <div class="debug-info" id="debug-log">初始化中...</div>
 </div>
 
 <script>
-    // Supabase 配置（与首页保持一致）
-    const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    // DOM 元素
-    const tabs = document.querySelectorAll('.tab');
-    const loginForm = document.getElementById('login-form');
-    const registerForm = document.getElementById('register-form');
-    const loginBtn = document.getElementById('login-btn');
-    const registerBtn = document.getElementById('register-btn');
-    const loginError = document.getElementById('login-error');
-    const registerError = document.getElementById('register-error');
-
-    // 获取 redirect 参数（登录后跳转回原页面）
-    function getRedirectUrl() {
-        const urlParams = new URLSearchParams(window.location.search);
-        let redirect = urlParams.get('redirect');
-        if (redirect && !redirect.startsWith('http') && !redirect.startsWith('/')) {
-            // 相对路径，保留原样
-            return redirect;
+    (function() {
+        const debugDiv = document.getElementById('debug-log');
+        function log(msg) {
+            console.log(msg);
+            if (debugDiv) debugDiv.innerHTML += '<br>✓ ' + msg;
         }
-        return redirect || 'index.html';
-    }
-
-    // Tab 切换
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            const target = tab.dataset.tab;
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            if (target === 'login') {
-                loginForm.style.display = 'block';
-                registerForm.style.display = 'none';
-                loginError.textContent = '';
-            } else {
-                loginForm.style.display = 'none';
-                registerForm.style.display = 'block';
-                registerError.textContent = '';
+        function error(msg) {
+            console.error(msg);
+            if (debugDiv) debugDiv.innerHTML += '<br>❌ ' + msg;
+        }
+        
+        log('页面加载，开始初始化 Supabase...');
+        // Supabase 配置
+        const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
+        
+        if (typeof window.supabase === 'undefined') {
+            error('Supabase SDK 未加载！');
+            return;
+        }
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        log('Supabase 客户端创建成功');
+        
+        // 获取 redirect 参数
+        function getRedirectUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let redirect = urlParams.get('redirect');
+            if (redirect && !redirect.startsWith('http') && !redirect.startsWith('/')) {
+                return redirect;
             }
-        });
-    });
-
-    // 登录逻辑
-    loginBtn.addEventListener('click', async () => {
-        const email = document.getElementById('login-email').value.trim();
-        const password = document.getElementById('login-password').value;
-        loginError.textContent = '';
-        if (!email || !password) {
-            loginError.textContent = '请填写邮箱和密码';
-            return;
+            return redirect || 'index.html';
         }
-        loginBtn.disabled = true;
-        loginBtn.textContent = '登录中...';
-        try {
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) throw error;
-            // 登录成功，跳转到原页面
-            const redirect = getRedirectUrl();
-            window.location.href = redirect;
-        } catch (err) {
-            loginError.textContent = err.message || '登录失败，请检查邮箱和密码';
-            loginBtn.disabled = false;
-            loginBtn.textContent = '登录';
-        }
-    });
-
-    // 注册逻辑
-    registerBtn.addEventListener('click', async () => {
-        const email = document.getElementById('register-email').value.trim();
-        const password = document.getElementById('register-password').value;
-        const username = document.getElementById('register-username').value.trim();
-        registerError.textContent = '';
-        if (!email || !password) {
-            registerError.textContent = '请填写邮箱和密码';
-            return;
-        }
-        if (password.length < 6) {
-            registerError.textContent = '密码至少需要6位';
-            return;
-        }
-        registerBtn.disabled = true;
-        registerBtn.textContent = '注册中...';
-        try {
-            // 注册用户。注意：元数据中 username 会在触发器中被写入 profiles 表
-            const { data, error } = await supabase.auth.signUp({
-                email,
-                password,
-                options: {
-                    data: { username: username || email.split('@')[0] }
+        
+        // 如果已登录，自动跳转
+        (async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                log('检测到已登录，自动跳转');
+                window.location.href = getRedirectUrl();
+            }
+        })();
+        
+        // Tab 切换
+        const tabs = document.querySelectorAll('.tab');
+        const loginFormDiv = document.getElementById('login-form');
+        const registerFormDiv = document.getElementById('register-form');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.dataset.tab;
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                if (target === 'login') {
+                    loginFormDiv.style.display = 'block';
+                    registerFormDiv.style.display = 'none';
+                } else {
+                    loginFormDiv.style.display = 'none';
+                    registerFormDiv.style.display = 'block';
                 }
             });
-            if (error) throw error;
-            if (data.user?.identities?.length === 0) {
-                registerError.textContent = '该邮箱已被注册，请直接登录';
-                registerBtn.disabled = false;
-                registerBtn.textContent = '注册';
+        });
+        
+        // 登录按钮
+        const loginBtn = document.getElementById('login-btn');
+        loginBtn.addEventListener('click', async () => {
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            const errorDiv = document.getElementById('login-error');
+            errorDiv.textContent = '';
+            if (!email || !password) {
+                errorDiv.textContent = '请填写邮箱和密码';
                 return;
             }
-            // 注册成功，提示并切换到登录页
-            alert('注册成功！请登录。');
-            // 清空注册表单
-            document.getElementById('register-email').value = '';
-            document.getElementById('register-password').value = '';
-            document.getElementById('register-username').value = '';
-            // 切换到登录 tab
-            const loginTab = document.querySelector('.tab[data-tab="login"]');
-            if (loginTab) loginTab.click();
-        } catch (err) {
-            registerError.textContent = err.message || '注册失败，请稍后再试';
-        } finally {
-            registerBtn.disabled = false;
-            registerBtn.textContent = '注册';
-        }
-    });
-
-    // 如果已经登录，自动跳回原页面
-    (async () => {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-            const redirect = getRedirectUrl();
-            window.location.href = redirect;
-        }
+            loginBtn.disabled = true;
+            loginBtn.textContent = '登录中...';
+            log('尝试登录: ' + email);
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                if (error) throw error;
+                log('登录成功');
+                const redirect = getRedirectUrl();
+                window.location.href = redirect;
+            } catch (err) {
+                errorDiv.textContent = err.message;
+                error('登录失败: ' + err.message);
+                loginBtn.disabled = false;
+                loginBtn.textContent = '登录';
+            }
+        });
+        
+        // 注册按钮
+        const registerBtn = document.getElementById('register-btn');
+        registerBtn.addEventListener('click', async () => {
+            const email = document.getElementById('register-email').value.trim();
+            const password = document.getElementById('register-password').value;
+            const username = document.getElementById('register-username').value.trim();
+            const errorDiv = document.getElementById('register-error');
+            errorDiv.textContent = '';
+            if (!email || !password) {
+                errorDiv.textContent = '请填写邮箱和密码';
+                return;
+            }
+            if (password.length < 6) {
+                errorDiv.textContent = '密码至少6位';
+                return;
+            }
+            registerBtn.disabled = true;
+            registerBtn.textContent = '注册中...';
+            log('尝试注册: ' + email);
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: { username: username || email.split('@')[0] }
+                    }
+                });
+                if (error) throw error;
+                if (data.user?.identities?.length === 0) {
+                    errorDiv.textContent = '该邮箱已被注册，请直接登录';
+                    registerBtn.disabled = false;
+                    registerBtn.textContent = '注册';
+                    return;
+                }
+                log('注册成功，请登录');
+                alert('注册成功！请登录。');
+                // 清空并切换到登录
+                document.getElementById('register-email').value = '';
+                document.getElementById('register-password').value = '';
+                document.getElementById('register-username').value = '';
+                document.querySelector('.tab[data-tab="login"]').click();
+            } catch (err) {
+                errorDiv.textContent = err.message;
+                error('注册失败: ' + err.message);
+            } finally {
+                registerBtn.disabled = false;
+                registerBtn.textContent = '注册';
+            }
+        });
+        
+        log('页面初始化完成，事件已绑定');
     })();
 </script>
 </body>
