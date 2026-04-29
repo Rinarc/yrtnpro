@@ -178,6 +178,47 @@
             align-items: center;
         }
         
+        /* 新增的用户信息样式 */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0,0,0,0.03);
+            padding: 6px 12px;
+            border-radius: 50px;
+            transition: var(--transition-fast);
+        }
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .user-name {
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 4px 8px;
+            border-radius: 50px;
+            transition: var(--transition-fast);
+        }
+        .logout-btn:hover {
+            background: rgba(255,62,77,0.1);
+        }
+        
         .login-btn {
             display: flex;
             align-items: center;
@@ -1009,7 +1050,7 @@
     <!-- 顶部导航栏 -->
     <header class="app-header">
         <div class="header-left" id="header-left">
-            <!-- 动态插入登录状态 -->
+            <!-- 动态内容会由JS填充 -->
         </div>
         
         <div class="header-center">
@@ -1243,7 +1284,7 @@
             return date.toLocaleDateString('zh-CN', options);
         }
         
-        // ========== 加载新闻数据（从 Supabase） ==========
+        // ========== 加载新闻数据（从 Supabase REST API） ==========
         async function loadNewsData() {
             try {
                 const url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc`;
@@ -1787,10 +1828,10 @@
                 if (profile && profile.username) username = profile.username;
                 const avatarLetter = username.charAt(0).toUpperCase();
                 headerLeft.innerHTML = `
-                    <div class="user-info" style="display:flex; align-items:center; gap:12px; background:rgba(0,0,0,0.03); padding:6px 12px; border-radius:50px;">
-                        <div class="user-avatar" style="width:32px; height:32px; border-radius:50%; background:var(--gradient-primary); display:flex; align-items:center; justify-content:center; color:white; font-weight:600;">${avatarLetter}</div>
-                        <span class="user-name" style="font-weight:500;">${escapeHtml(username)}</span>
-                        <button class="logout-btn" style="background:none; border:none; color:var(--primary); cursor:pointer; font-size:0.8rem;">退出</button>
+                    <div class="user-info">
+                        <div class="user-avatar">${avatarLetter}</div>
+                        <span class="user-name">${escapeHtml(username)}</span>
+                        <button class="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
                     </div>
                 `;
                 document.querySelector('.logout-btn').addEventListener('click', async () => {
