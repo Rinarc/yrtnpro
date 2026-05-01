@@ -17,9 +17,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Supabase SDK（用于登录状态） -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
     <style>
         :root {
             --primary: #FF3E4D;
@@ -49,7 +46,6 @@
             overflow-x: hidden;
             padding-bottom: 90px;
         }
-        /* 开屏动画 */
         .splash-screen {
             position: fixed;
             top: 0;
@@ -104,7 +100,6 @@
             text-transform: uppercase;
             pointer-events: none;
         }
-        /* 公告栏 */
         .announcement-bar {
             background-color: var(--primary);
             color: white;
@@ -116,7 +111,6 @@
             border-bottom: 1px solid rgba(255,255,255,0.2);
             width: 100%;
         }
-        /* 顶部导航栏 */
         .app-header {
             position: sticky;
             top: 0;
@@ -130,46 +124,6 @@
             border-bottom: 1px solid rgba(0,0,0,0.1);
         }
         .header-left { display: flex; align-items: center; }
-        /* 登录状态样式 */
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(0,0,0,0.03);
-            padding: 6px 12px;
-            border-radius: 50px;
-            transition: var(--transition-fast);
-        }
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--gradient-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        .user-name {
-            font-weight: 500;
-            color: var(--dark);
-            font-size: 0.9rem;
-        }
-        .logout-btn {
-            background: none;
-            border: none;
-            color: var(--primary);
-            cursor: pointer;
-            font-size: 0.8rem;
-            padding: 4px 8px;
-            border-radius: 50px;
-            transition: var(--transition-fast);
-        }
-        .logout-btn:hover {
-            background: rgba(255,62,77,0.1);
-        }
         .login-btn {
             display: flex;
             align-items: center;
@@ -181,7 +135,6 @@
         }
         .login-btn:hover { color: var(--primary); }
         .login-btn i { font-size: 1.2rem; }
-        /* 中间图标 */
         .header-center {
             position: absolute;
             left: 50%;
@@ -603,22 +556,6 @@
             .carousel-summary { font-size: 0.85rem; }
             .carousel-arrow { width: 35px; height: 35px; }
             .config-panel { width: 300px; }
-            .user-name { display: none; }
-        }
-        @media (max-width: 576px) {
-            .app-header { padding: 12px 15px; }
-            .login-btn span { display: none; }
-            .header-right { gap: 15px; }
-            .carousel-container { height: 180px; }
-            .carousel-content { padding: 15px; }
-            .carousel-title { font-size: 1rem; }
-            .carousel-summary { display: none; }
-            .featured-title { font-size: 1.1rem; }
-            .featured-summary { font-size: 0.85rem; }
-            .category-title, .video-category-title { font-size: 1.2rem; }
-            .category-item-image, .video-thumbnail { height: 140px; }
-            .config-panel { width: 100%; right: -100%; }
-            .config-toggle { bottom: 80px; right: 15px; }
         }
     </style>
 </head>
@@ -633,7 +570,12 @@
     </div>
 
     <header class="app-header">
-        <div class="header-left" id="header-left"></div>
+        <div class="header-left">
+            <a href="login.html" class="login-btn">
+                <i class="fas fa-user-circle"></i>
+                <span>登录</span>
+            </a>
+        </div>
         <div class="header-center">
             <img src="https://origin.picgo.net/2026/04/07/knockout63238d6237aaada6.png" alt="YRTN+" class="center-logo">
         </div>
@@ -713,11 +655,6 @@
     <div class="config-toggle" id="config-toggle"><i class="fas fa-cog"></i></div>
 
     <script>
-        // ========== Supabase 客户端初始化（用于登录状态） ==========
-        const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
         // ========== 开屏动画控制 ==========
         (function() {
             var splash = document.getElementById('splashScreen');
@@ -758,17 +695,10 @@
             return date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
         }
         
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            });
-        }
+        // ========== 新闻加载 (REST API) ==========
+        const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
         
-        // ========== 新闻加载（REST API） ==========
         async function loadNewsData() {
             try {
                 const url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc`;
@@ -959,40 +889,6 @@
             document.getElementById('config-panel').classList.remove('active');
         }
         
-        // ========== 登录状态显示 ==========
-        async function updateUserUI() {
-            const headerLeft = document.getElementById('header-left');
-            if (!headerLeft) return;
-            try {
-                const { data: { user } } = await supabase.auth.getUser();
-                if (user) {
-                    let username = user.email ? user.email.split('@')[0] : '用户';
-                    try {
-                        const { data: profile } = await supabase.from('profiles').select('username').eq('id', user.id).single();
-                        if (profile?.username) username = profile.username;
-                    } catch(e) { /* 忽略 */ }
-                    const avatarLetter = username.charAt(0).toUpperCase();
-                    headerLeft.innerHTML = `
-                        <div class="user-info">
-                            <div class="user-avatar">${escapeHtml(avatarLetter)}</div>
-                            <span class="user-name">${escapeHtml(username)}</span>
-                            <button class="logout-btn" id="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
-                        </div>
-                    `;
-                    document.getElementById('logout-btn')?.addEventListener('click', async () => {
-                        await supabase.auth.signOut();
-                        window.location.reload();
-                    });
-                } else {
-                    headerLeft.innerHTML = `<a href="login.html" class="login-btn"><i class="fas fa-user-circle"></i><span>登录</span></a>`;
-                }
-            } catch (err) {
-                console.warn('更新登录状态失败', err);
-                headerLeft.innerHTML = `<a href="login.html" class="login-btn"><i class="fas fa-user-circle"></i><span>登录</span></a>`;
-            }
-        }
-        
-        // ========== 页面初始化 ==========
         async function initPage() {
             loadConfig();
             const articles = await loadNewsData();
@@ -1014,7 +910,6 @@
                 renderVideoSection(categories);
                 renderConfigPanel(categories);
             }
-            await updateUserUI();
         }
         
         function initEventListeners() {
