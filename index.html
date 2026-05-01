@@ -17,8 +17,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Supabase SDK (仅用于登录状态) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
-        /* 所有原有样式不变（从你之前的版本复制，此处省略以节省长度，但保证功能） */
         :root {
             --primary: #FF3E4D;
             --secondary: #4A90E2;
@@ -125,6 +127,45 @@
             border-bottom: 1px solid rgba(0,0,0,0.1);
         }
         .header-left { display: flex; align-items: center; }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0,0,0,0.03);
+            padding: 6px 12px;
+            border-radius: 50px;
+            transition: var(--transition-fast);
+        }
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .user-name {
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 4px 8px;
+            border-radius: 50px;
+            transition: var(--transition-fast);
+        }
+        .logout-btn:hover {
+            background: rgba(255,62,77,0.1);
+        }
         .login-btn {
             display: flex;
             align-items: center;
@@ -293,6 +334,7 @@
             border-bottom: 1px solid rgba(0,0,0,0.1);
             cursor: pointer;
         }
+        .secondary-item:last-child { border-bottom: none; }
         .secondary-image {
             width: 90px;
             height: 70px;
@@ -543,25 +585,6 @@
             cursor: pointer;
             font-weight: 600;
         }
-        /* 调试框样式 */
-        .debug-panel {
-            position: fixed;
-            bottom: 100px;
-            left: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.85);
-            color: #0f0;
-            font-family: monospace;
-            font-size: 12px;
-            padding: 10px;
-            border-radius: 8px;
-            z-index: 9999;
-            max-height: 200px;
-            overflow: auto;
-            white-space: pre-wrap;
-            word-break: break-all;
-            pointer-events: none;
-        }
         @media (max-width: 768px) {
             .main-news { grid-template-columns: 1fr; gap: 20px; }
             .featured-news { height: 250px; }
@@ -575,7 +598,22 @@
             .carousel-summary { font-size: 0.85rem; }
             .carousel-arrow { width: 35px; height: 35px; }
             .config-panel { width: 300px; }
-            .debug-panel { bottom: 80px; font-size: 10px; }
+            .user-name { display: none; }
+        }
+        @media (max-width: 576px) {
+            .app-header { padding: 12px 15px; }
+            .login-btn span { display: none; }
+            .header-right { gap: 15px; }
+            .carousel-container { height: 180px; }
+            .carousel-content { padding: 15px; }
+            .carousel-title { font-size: 1rem; }
+            .carousel-summary { display: none; }
+            .featured-title { font-size: 1.1rem; }
+            .featured-summary { font-size: 0.85rem; }
+            .category-title, .video-category-title { font-size: 1.2rem; }
+            .category-item-image, .video-thumbnail { height: 140px; }
+            .config-panel { width: 100%; right: -100%; }
+            .config-toggle { bottom: 80px; right: 15px; }
         }
     </style>
 </head>
@@ -590,12 +628,7 @@
     </div>
 
     <header class="app-header">
-        <div class="header-left">
-            <a href="login.html" class="login-btn">
-                <i class="fas fa-user-circle"></i>
-                <span>登录</span>
-            </a>
-        </div>
+        <div class="header-left" id="header-left"></div>
         <div class="header-center">
             <img src="https://origin.picgo.net/2026/04/07/knockout63238d6237aaada6.png" alt="YRTN+" class="center-logo">
         </div>
@@ -674,37 +707,12 @@
     </div>
     <div class="config-toggle" id="config-toggle"><i class="fas fa-cog"></i></div>
 
-    <!-- 调试面板 -->
-    <div id="debug-panel" class="debug-panel"></div>
-
     <script>
-        // Supabase 配置（直接用 REST API，不依赖 SDK）
+        // Supabase 配置
         const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // 调试函数
-        function debugLog(msg, isError = false) {
-            const panel = document.getElementById('debug-panel');
-            const time = new Date().toLocaleTimeString();
-            const line = `[${time}] ${msg}`;
-            console.log(line);
-            if (panel) {
-                const color = isError ? '#f99' : '#0f0';
-                panel.innerHTML += `<div style="color:${color};">${escapeHtml(line)}</div>`;
-                panel.scrollTop = panel.scrollHeight;
-            }
-        }
-        
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            });
-        }
-        
         // 开屏动画
         (function() {
             var splash = document.getElementById('splashScreen');
@@ -745,49 +753,53 @@
             return date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
         }
         
-        // ========== 使用 REST API 加载新闻 ==========
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        // 新闻加载 (REST API)
         async function loadNewsData() {
-            debugLog('开始从 Supabase 加载新闻（REST API）...');
             try {
                 const url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc`;
-                debugLog(`请求 URL: ${url}`);
                 const response = await fetch(url, {
                     headers: {
                         'apikey': SUPABASE_ANON_KEY,
                         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
                     }
                 });
-                debugLog(`HTTP 状态码: ${response.status}`);
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`HTTP ${response.status}: ${errorText}`);
-                }
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
-                debugLog(`✅ 成功获取 ${data?.length || 0} 条新闻`);
-                if (data && data.length > 0) {
-                    debugLog(`第一条新闻标题: ${data[0].title}`);
-                }
                 return data || [];
-            } catch (err) {
-                debugLog(`❌ 查询失败: ${err.message}`, true);
+            } catch (error) {
+                console.error('加载新闻失败:', error);
                 return [];
             }
         }
-        
+
+        // 视频加载 (本地 knockknock.json)
         async function loadVideoData() {
             try {
                 const response = await fetch('knockknock.json');
                 if (!response.ok) throw new Error('加载视频数据失败');
                 return (await response.json()).categories;
             } catch (error) {
-                console.error(error);
+                console.error('加载视频数据失败:', error);
                 return [];
             }
         }
-        
-        // 渲染函数（与之前相同，省略细节但保证存在）
+
+        // 渲染新闻轮播
         function renderNewsCarousel(articles) {
-            if (!config.news.carousel) { document.querySelector('.news-carousel').style.display = 'none'; return; }
+            if (!config.news.carousel) {
+                document.querySelector('.news-carousel').style.display = 'none';
+                return;
+            }
             const container = document.getElementById('carousel-container');
             const controls = document.getElementById('carousel-controls');
             container.innerHTML = ''; controls.innerHTML = '';
@@ -804,6 +816,7 @@
             });
             initCarousel();
         }
+
         function initCarousel() {
             const container = document.getElementById('carousel-container');
             const slides = document.querySelectorAll('.carousel-slide');
@@ -829,6 +842,8 @@
                 dots.forEach(dot => dot.onclick = () => { currentSlide = parseInt(dot.dataset.index); update(); stopAuto(); startAuto(); });
             }
         }
+
+        // 渲染主新闻区
         function renderMainNews(articles) {
             if (!articles.length) return;
             const featured = articles[5] || articles[0];
@@ -840,7 +855,9 @@
                 document.getElementById('featured-summary').innerText = featured.summary || '';
                 document.getElementById('featured-date').innerText = formatDate(featured.date);
                 fd.onclick = () => window.location.href = `news-detail.html?id=${featured.id}`;
-            } else document.querySelector('.featured-news').style.display = 'none';
+            } else {
+                document.querySelector('.featured-news').style.display = 'none';
+            }
             if (config.news.secondary) {
                 const secContainer = document.getElementById('secondary-news');
                 secContainer.innerHTML = '';
@@ -851,11 +868,19 @@
                     item.onclick = () => window.location.href = `news-detail.html?id=${article.id}`;
                     secContainer.appendChild(item);
                 });
-            } else { document.querySelector('.secondary-news').style.display = 'none'; document.querySelector('.main-news').style.gridTemplateColumns = '1fr'; }
+            } else {
+                document.querySelector('.secondary-news').style.display = 'none';
+                document.querySelector('.main-news').style.gridTemplateColumns = '1fr';
+            }
         }
+
+        // 渲染最新新闻
         function renderLatestNews(articles) {
             const container = document.getElementById('latest-news');
-            if (!config.news.latest) { document.querySelector('.news-categories').style.display = 'none'; return; }
+            if (!config.news.latest) {
+                document.querySelector('.news-categories').style.display = 'none';
+                return;
+            }
             container.innerHTML = '';
             articles.slice(10, 16).forEach(article => {
                 const item = document.createElement('div');
@@ -865,11 +890,19 @@
                 container.appendChild(item);
             });
         }
+
+        // 渲染视频分区
         function renderVideoSection(categories) {
             const container = document.getElementById('video-section');
-            if (!config.video.enabled) { container.style.display = 'none'; return; }
+            if (!config.video.enabled) {
+                container.style.display = 'none';
+                return;
+            }
             container.innerHTML = '';
-            if (!categories.length) { container.innerHTML = '<p>暂无视频内容</p>'; return; }
+            if (!categories.length) {
+                container.innerHTML = '<p>暂无视频内容</p>';
+                return;
+            }
             categories.forEach(cat => {
                 if (!config.video.categories[cat.id]?.enabled) return;
                 const catDiv = document.createElement('div'); catDiv.className = 'video-category';
@@ -888,6 +921,8 @@
                 });
             });
         }
+
+        // 配置面板渲染及交互
         function renderConfigPanel(categories) {
             const container = document.getElementById('video-categories-config');
             container.innerHTML = '';
@@ -908,6 +943,7 @@
             document.getElementById('news-latest').checked = config.news.latest;
             document.getElementById('video-section-toggle').checked = config.video.enabled;
         }
+
         function saveConfig() { localStorage.setItem('homepage-config', JSON.stringify(config)); }
         function loadConfig() {
             const saved = localStorage.getItem('homepage-config');
@@ -940,9 +976,34 @@
             initPage();
             document.getElementById('config-panel').classList.remove('active');
         }
-        
+
+        // 用户登录状态显示
+        async function updateUserUI() {
+            const headerLeft = document.getElementById('header-left');
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                let username = user.email ? user.email.split('@')[0] : '用户';
+                const { data: profile } = await supabase.from('profiles').select('username').eq('id', user.id).single();
+                if (profile?.username) username = profile.username;
+                const avatarLetter = username.charAt(0).toUpperCase();
+                headerLeft.innerHTML = `
+                    <div class="user-info">
+                        <div class="user-avatar">${avatarLetter}</div>
+                        <span class="user-name">${escapeHtml(username)}</span>
+                        <button class="logout-btn" id="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
+                    </div>
+                `;
+                document.getElementById('logout-btn')?.addEventListener('click', async () => {
+                    await supabase.auth.signOut();
+                    window.location.reload();
+                });
+            } else {
+                headerLeft.innerHTML = `<a href="login.html" class="login-btn"><i class="fas fa-user-circle"></i><span>登录</span></a>`;
+            }
+        }
+
+        // 页面初始化
         async function initPage() {
-            debugLog('页面初始化开始...');
             loadConfig();
             const articles = await loadNewsData();
             if (articles.length) {
@@ -950,7 +1011,6 @@
                 renderMainNews(articles);
                 renderLatestNews(articles);
             } else {
-                debugLog('⚠️ 新闻列表为空，请检查网络或数据库', true);
                 document.getElementById('latest-news').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;">无法加载新闻，请稍后再试。</div>';
             }
             const categories = await loadVideoData();
@@ -964,14 +1024,15 @@
                 renderVideoSection(categories);
                 renderConfigPanel(categories);
             }
+            await updateUserUI();
         }
-        
+
         function initEventListeners() {
             document.getElementById('config-toggle')?.addEventListener('click', () => document.getElementById('config-panel').classList.add('active'));
             document.getElementById('config-close')?.addEventListener('click', () => document.getElementById('config-panel').classList.remove('active'));
             document.getElementById('apply-config')?.addEventListener('click', applyConfig);
         }
-        
+
         let lastScroll = 0;
         function setupScrollBehavior() {
             window.addEventListener('scroll', () => {
@@ -983,12 +1044,29 @@
                 lastScroll = currentScroll;
             });
         }
-        
+
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then(reg => console.log('SW注册成功', reg.scope))
+                        .catch(err => console.log('SW注册失败', err));
+                });
+            }
+        }
+
+        function setupOfflineDetection() {
+            window.addEventListener('online', () => document.getElementById('offline-alert').style.display = 'none');
+            window.addEventListener('offline', () => document.getElementById('offline-alert').style.display = 'block');
+            if (!navigator.onLine) document.getElementById('offline-alert').style.display = 'block';
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-            debugLog('DOMContentLoaded, 启动页面...');
             initPage();
             initEventListeners();
             setupScrollBehavior();
+            registerServiceWorker();
+            setupOfflineDetection();
             const currentPage = window.location.pathname.split('/').pop();
             document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
                 const link = item.getAttribute('href');
