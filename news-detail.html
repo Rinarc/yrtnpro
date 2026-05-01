@@ -8,8 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* 完整样式（与原一致，省略节省空间，但实际代码中会保留） */
-        /* 为保证可运行，此处包含完整样式，但为了简洁不重复贴出，实际上我会复制之前的完整样式 */
         :root {
             --primary: #FF3E4D;
             --secondary: #4A90E2;
@@ -367,16 +365,6 @@
             font-weight: 600;
             margin-bottom: 20px;
         }
-        .debug-error {
-            background: #ffeeee;
-            color: #cc0000;
-            padding: 10px;
-            margin-top: 20px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            border-left: 3px solid #cc0000;
-            display: none;
-        }
         @media (max-width: 768px) {
             .news-detail { padding: 0 15px; }
             .article-container { padding: 25px; }
@@ -427,7 +415,6 @@
                     <h2>用户评论</h2>
                     <div id="comment-form-area"></div>
                     <div id="comments-container" class="comments-list"><div class="loading" style="margin:0 auto;"><div></div><div></div><div></div><div></div></div></div>
-                    <div id="debug-error" class="debug-error"></div>
                 </section>
             </article>
             <div id="error-message" class="error-message"><p>新闻加载失败，请稍后再试</p><a href="index.html" class="error-btn">返回首页</a></div>
@@ -473,7 +460,7 @@
     let currentNewsId = null;
     let currentUser = null;
 
-    // 新闻加载（纯 REST API，已验证可用）
+    // 新闻加载（纯 REST API）
     async function loadNewsOnly() {
         const loadingDiv = document.getElementById('loading');
         const errorDiv = document.getElementById('error-message');
@@ -517,49 +504,90 @@
         }
     }
 
-    // 评论加载（带调试输出）
+    // 评论加载（通过 Supabase JS 客户端联表查询，避免 RLS 递归）
     async function loadComments() {
         if (!currentNewsId) return;
         const container = document.getElementById('comments-container');
-        const debugDiv = document.getElementById('debug-error');
         container.innerHTML = '<div class="loading" style="margin:0 auto;"><div></div><div></div><div></div><div></div></div>';
-        debugDiv.style.display = 'none';
         try {
-            // 先尝试不带关联的简单查询
-            const url = `${SUPABASE_URL}/rest/v1/comments?news_id=eq.${currentNewsId}&status=eq.approved&order=created_at.desc&select=*`;
-            console.log('请求评论URL:', url);
-            const response = await fetch(url, {
-                headers: {
-                    'apikey': SUPABASE_ANON_KEY,
-                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-                }
-            });
-            console.log('评论响应状态:', response.status);
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP ${response.status}: ${errorText}`);
-            }
-            const comments = await response.json();
-            console.log('获取到的评论数量:', comments.length);
-            if (comments.length === 0) {
-                container.innerHTML = '<div class="no-comments">暂无评论，成为第一个评论者吧！</div>';
-                return;
-            }
-            // 由于没有 profiles 关联，暂时用 user_id 代替用户名
-            renderCommentsSimple(comments);
+            if (!supabaseClient) throw new Error('Supabase 客户端未初始化');
+            // 使用 supabase 客户端进行联表查询，它会自动处理 RLS 且不会引起递归（因为 profiles 的读取策略已设为 true）
+            const { data, error } = await supabaseClient
+                .from('comments')
+                .select(`
+                    id,
+                    content,
+                    created_at,
+                    user_id,
+                    profiles (username)
+                `)
+                .eq('news_id', currentNewsId)
+                .eq('status', 'approved')
+                .order('created_at', { ascending: false });
+            if (error) throw error;
+            renderCommentsWithProfiles(data || []);
         } catch (err) {
-            console.error('加载评论失败:', err);
-            container.innerHTML = '<div class="no-comments">评论加载失败，请稍后再试。</div>';
-            debugDiv.textContent = `错误详情: ${err.message}`;
-            debugDiv.style.display = 'block';
+            console.error('加载评论失败（使用客户端）:', err);
+            // 降级方案：直接查询评论，不联表
+            try {
+                const fallbackUrl = `${SUPABASE_URL}/rest/v1/comments?news_id=eq.${currentNewsId}&status=eq.approved&order=created_at.desc&select=*`;
+                const response = await fetch(fallbackUrl, {
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const comments = await response.json();
+                renderCommentsSimple(comments);
+            } catch (e) {
+                console.error('降级方案也失败', e);
+                container.innerHTML = '<div class="no-comments">评论加载失败，请稍后再试。</div>';
+            }
         }
+    }
+
+    function renderCommentsWithProfiles(comments) {
+        const container = document.getElementById('comments-container');
+        if (!comments || comments.length === 0) {
+            container.innerHTML = '<div class="no-comments">暂无评论，成为第一个评论者吧！</div>';
+            return;
+        }
+        container.innerHTML = '';
+        comments.forEach(comment => {
+            // 从 profiles 对象中提取 username，如果 profiles 为 null 或者没有 username 则使用 user_id 后缀
+            let username = '匿名用户';
+            if (comment.profiles && comment.profiles.username) {
+                username = comment.profiles.username;
+            } else if (comment.user_id) {
+                username = '用户_' + comment.user_id.slice(-6);
+            }
+            const avatarLetter = username.charAt(0).toUpperCase();
+            const date = new Date(comment.created_at);
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'comment-item';
+            commentDiv.innerHTML = `
+                <div class="comment-header">
+                    <div class="user-info">
+                        <div class="user-avatar">${escapeHtml(avatarLetter)}</div>
+                        <div class="comment-nickname">${escapeHtml(username)}</div>
+                    </div>
+                    <div class="comment-date">${formatDate(date)}</div>
+                </div>
+                <div class="comment-content">${escapeHtml(comment.content)}</div>
+            `;
+            container.appendChild(commentDiv);
+        });
     }
 
     function renderCommentsSimple(comments) {
         const container = document.getElementById('comments-container');
+        if (!comments || comments.length === 0) {
+            container.innerHTML = '<div class="no-comments">暂无评论，成为第一个评论者吧！</div>';
+            return;
+        }
         container.innerHTML = '';
         comments.forEach(comment => {
-            // 临时用 user_id 的后几位作为昵称
             const shortId = comment.user_id ? comment.user_id.slice(-6) : '匿名';
             const avatarLetter = shortId.charAt(0).toUpperCase();
             const date = new Date(comment.created_at);
@@ -579,7 +607,7 @@
         });
     }
 
-    // 评论表单渲染（与之前相同）
+    // 评论表单渲染
     function renderCommentForm() {
         const area = document.getElementById('comment-form-area');
         if (!currentUser) {
