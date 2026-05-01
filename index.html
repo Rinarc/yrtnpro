@@ -17,10 +17,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Supabase SDK (仅用于登录状态) -->
+    <!-- Supabase SDK (仅用于登录状态，新闻加载使用独立 REST API) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
+        /* 完整样式（与 index3 完全一致） */
         :root {
             --primary: #FF3E4D;
             --secondary: #4A90E2;
@@ -49,6 +50,62 @@
             overflow-x: hidden;
             padding-bottom: 90px;
         }
+        /* 开屏动画 */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: clamp(2rem, 15vh, 6rem) clamp(2rem, 10vw, 8rem);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            line-height: 1.1;
+            transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1), visibility 0s 0.6s;
+            will-change: opacity;
+        }
+        .splash-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .splash-content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        .splash-line {
+            font-size: clamp(3rem, 18vw, 8rem);
+            margin: 0.05em 0;
+            opacity: 0;
+            transform: translateY(60px);
+            animation: floatReveal 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+        }
+        .splash-line1 { color: #FF3E4D; animation-delay: 0.2s; }
+        .splash-line2 { color: #4A90E2; animation-delay: 0.5s; }
+        .splash-line3 { color: #1A1A2E; animation-delay: 0.8s; letter-spacing: -0.02em; }
+        @keyframes floatReveal {
+            0% { opacity: 0; transform: translateY(60px) scale(0.98); filter: blur(4px); }
+            60% { opacity: 0.9; transform: translateY(-5px) scale(1.01); filter: blur(0); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+        .splash-skip-hint {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            color: rgba(0,0,0,0.2);
+            font-size: 0.75rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            pointer-events: none;
+        }
+        /* 公告栏 */
         .announcement-bar {
             background-color: var(--primary);
             color: white;
@@ -60,6 +117,7 @@
             border-bottom: 1px solid rgba(255,255,255,0.2);
             width: 100%;
         }
+        /* 顶部导航栏 */
         .app-header {
             position: sticky;
             top: 0;
@@ -109,9 +167,7 @@
             border-radius: 50px;
             transition: var(--transition-fast);
         }
-        .logout-btn:hover {
-            background: rgba(255,62,77,0.1);
-        }
+        .logout-btn:hover { background: rgba(255,62,77,0.1); }
         .login-btn {
             display: flex;
             align-items: center;
@@ -564,6 +620,16 @@
     </style>
 </head>
 <body>
+    <!-- 开屏动画 -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-content">
+            <div class="splash-line splash-line1">独家新闻</div>
+            <div class="splash-line splash-line2">与视频</div>
+            <div class="splash-line splash-line3">尽在YRTN+</div>
+        </div>
+        <div class="splash-skip-hint">©2026 Yuanyu Reality Television Network</div>
+    </div>
+
     <header class="app-header">
         <div class="header-left" id="header-left"></div>
         <div class="header-center">
@@ -645,19 +711,41 @@
     <div class="config-toggle" id="config-toggle"><i class="fas fa-cog"></i></div>
 
     <script>
-        // Supabase 配置
+        // ========== Supabase 配置 ==========
         const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // 公告栏控制
+        // ========== 开屏动画控制（完全复制于 index3，已验证可正常隐藏） ==========
+        (function() {
+            var splash = document.getElementById('splashScreen');
+            var storageKey = 'yrtn_plus_splash_v1';
+            var isFirstVisit = !localStorage.getItem(storageKey);
+            var timeoutId = null;
+            function hideSplash() {
+                if (!splash) return;
+                splash.classList.add('hidden');
+                if (timeoutId) clearTimeout(timeoutId);
+            }
+            splash.addEventListener('click', function() {
+                localStorage.setItem(storageKey, 'true');
+                hideSplash();
+            });
+            var delay = isFirstVisit ? 3200 : 1500;
+            timeoutId = setTimeout(function() {
+                localStorage.setItem(storageKey, 'true');
+                hideSplash();
+            }, delay);
+        })();
+
+        // ========== 公告栏控制 ==========
         (function() {
             const showAnnouncement = true;
             const bar = document.getElementById('announcementBar');
             if (bar) bar.style.display = showAnnouncement ? 'block' : 'none';
         })();
 
-        // 配置数据
+        // ========== 配置数据 ==========
         let config = {
             news: { carousel: true, featured: true, secondary: true, latest: true },
             video: { enabled: true, categories: {} }
@@ -667,6 +755,7 @@
             const date = new Date(dateString);
             return date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
         }
+        
         function escapeHtml(str) {
             if (!str) return '';
             return str.replace(/[&<>]/g, function(m) {
@@ -677,7 +766,7 @@
             });
         }
 
-        // 新闻加载 (REST API)
+        // ========== 新闻加载（REST API，复制于 index6 但去掉 debugLog） ==========
         async function loadNewsData() {
             try {
                 const url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc`;
@@ -694,7 +783,8 @@
                 return [];
             }
         }
-
+        
+        // ========== 视频数据加载（本地 knockknock.json） ==========
         async function loadVideoData() {
             try {
                 const response = await fetch('knockknock.json');
@@ -705,17 +795,13 @@
                 return [];
             }
         }
-
-        // 渲染轮播
+        
+        // ========== 渲染函数（与 index3 完全一致） ==========
         function renderNewsCarousel(articles) {
-            if (!config.news.carousel) {
-                document.querySelector('.news-carousel').style.display = 'none';
-                return;
-            }
+            if (!config.news.carousel) { document.querySelector('.news-carousel').style.display = 'none'; return; }
             const container = document.getElementById('carousel-container');
             const controls = document.getElementById('carousel-controls');
-            container.innerHTML = '';
-            controls.innerHTML = '';
+            container.innerHTML = ''; controls.innerHTML = '';
             const carouselArticles = articles.slice(0, 5);
             carouselArticles.forEach((article, idx) => {
                 const slide = document.createElement('div');
@@ -724,14 +810,12 @@
                 slide.innerHTML = `<div class="carousel-content"><span class="carousel-badge">${article.category}</span><h3 class="carousel-title">${article.title}</h3><p class="carousel-summary">${article.summary || ''}</p><div class="carousel-meta"><span>${formatDate(article.date)}</span></div></div>`;
                 slide.onclick = () => window.location.href = `news-detail.html?id=${article.id}`;
                 container.appendChild(slide);
-                const dot = document.createElement('div');
-                dot.className = 'carousel-dot';
-                dot.dataset.index = idx;
+                const dot = document.createElement('div'); dot.className = 'carousel-dot'; dot.dataset.index = idx;
                 controls.appendChild(dot);
             });
             initCarousel();
         }
-
+        
         function initCarousel() {
             const container = document.getElementById('carousel-container');
             const slides = document.querySelectorAll('.carousel-slide');
@@ -749,21 +833,15 @@
             function startAuto() { autoInterval = setInterval(next, 5000); }
             function stopAuto() { clearInterval(autoInterval); }
             if (slides.length) {
-                update();
-                startAuto();
+                update(); startAuto();
                 container.addEventListener('mouseenter', stopAuto);
                 container.addEventListener('mouseleave', startAuto);
                 prevBtn.onclick = () => { prev(); stopAuto(); startAuto(); };
                 nextBtn.onclick = () => { next(); stopAuto(); startAuto(); };
-                dots.forEach(dot => dot.onclick = () => {
-                    currentSlide = parseInt(dot.dataset.index);
-                    update();
-                    stopAuto();
-                    startAuto();
-                });
+                dots.forEach(dot => dot.onclick = () => { currentSlide = parseInt(dot.dataset.index); update(); stopAuto(); startAuto(); });
             }
         }
-
+        
         function renderMainNews(articles) {
             if (!articles.length) return;
             const featured = articles[5] || articles[0];
@@ -793,7 +871,7 @@
                 document.querySelector('.main-news').style.gridTemplateColumns = '1fr';
             }
         }
-
+        
         function renderLatestNews(articles) {
             const container = document.getElementById('latest-news');
             if (!config.news.latest) {
@@ -809,7 +887,7 @@
                 container.appendChild(item);
             });
         }
-
+        
         function renderVideoSection(categories) {
             const container = document.getElementById('video-section');
             if (!config.video.enabled) {
@@ -823,8 +901,7 @@
             }
             categories.forEach(cat => {
                 if (!config.video.categories[cat.id]?.enabled) return;
-                const catDiv = document.createElement('div');
-                catDiv.className = 'video-category';
+                const catDiv = document.createElement('div'); catDiv.className = 'video-category';
                 catDiv.innerHTML = `<div class="video-category-header"><h3 class="video-category-title">${cat.name}</h3><a href="knock.html?category=${cat.id}" class="view-all">查看全部</a></div><div class="video-grid" id="video-grid-${cat.id}"></div>`;
                 container.appendChild(catDiv);
                 const grid = catDiv.querySelector('.video-grid');
@@ -832,32 +909,25 @@
                     if (!config.video.categories[cat.id].shows[show.id]?.enabled) return;
                     const episodes = show.episodes.slice(0, config.video.categories[cat.id].shows[show.id].episodeCount || 3);
                     episodes.forEach(ep => {
-                        const card = document.createElement('div');
-                        card.className = 'video-card';
+                        const card = document.createElement('div'); card.className = 'video-card';
                         card.innerHTML = `<div class="video-thumbnail" style="background-image:url('${ep.thumbnail}')"><span class="video-duration">${ep.duration}</span></div><div class="video-info"><h4 class="video-title">${ep.title}</h4><div class="video-meta"><span>${show.title}</span><span>${ep.views}</span></div></div>`;
-                        card.onclick = () => {
-                            if (ep.videoUrl?.includes('bilibili.com')) window.open(ep.videoUrl, '_blank');
-                            else window.location.href = `video-player.html?id=${ep.id}`;
-                        };
+                        card.onclick = () => { if (ep.videoUrl?.includes('bilibili.com')) window.open(ep.videoUrl, '_blank'); else window.location.href = `video-player.html?id=${ep.id}`; };
                         grid.appendChild(card);
                     });
                 });
             });
         }
-
+        
         function renderConfigPanel(categories) {
             const container = document.getElementById('video-categories-config');
             container.innerHTML = '';
             categories.forEach(cat => {
-                const section = document.createElement('div');
-                section.className = 'config-section';
+                const section = document.createElement('div'); section.className = 'config-section';
                 section.innerHTML = `<h4 class="config-section-title">${cat.name}</h4><div class="config-checkbox"><input type="checkbox" id="category-${cat.id}" ${config.video.categories[cat.id]?.enabled ? 'checked' : ''}><label for="category-${cat.id}">显示${cat.name}分类</label></div><div id="show-config-${cat.id}"></div>`;
                 container.appendChild(section);
                 const showContainer = section.querySelector(`#show-config-${cat.id}`);
                 cat.shows.forEach(show => {
-                    const div = document.createElement('div');
-                    div.className = 'config-checkbox show-checkbox';
-                    div.style.marginLeft = '20px';
+                    const div = document.createElement('div'); div.className = 'config-checkbox show-checkbox'; div.style.marginLeft = '20px';
                     div.innerHTML = `<input type="checkbox" id="show-${show.id}" ${config.video.categories[cat.id]?.shows[show.id]?.enabled ? 'checked' : ''}><label for="show-${show.id}">${show.title}</label><select id="episodes-${show.id}" style="margin-left:10px;padding:2px 5px;"><option value="1">1集</option><option value="2">2集</option><option value="3" selected>3集</option><option value="5">5集</option><option value="10">10集</option></select>`;
                     showContainer.appendChild(div);
                 });
@@ -868,7 +938,7 @@
             document.getElementById('news-latest').checked = config.news.latest;
             document.getElementById('video-section-toggle').checked = config.video.enabled;
         }
-
+        
         function saveConfig() { localStorage.setItem('homepage-config', JSON.stringify(config)); }
         function loadConfig() {
             const saved = localStorage.getItem('homepage-config');
@@ -901,8 +971,8 @@
             initPage();
             document.getElementById('config-panel').classList.remove('active');
         }
-
-        // 用户登录状态显示
+        
+        // ========== 用户登录状态显示 ==========
         async function updateUserUI() {
             const headerLeft = document.getElementById('header-left');
             if (!headerLeft) return;
@@ -913,7 +983,7 @@
                     try {
                         const { data: profile } = await supabase.from('profiles').select('username').eq('id', user.id).single();
                         if (profile?.username) username = profile.username;
-                    } catch(e) { console.warn(e); }
+                    } catch(e) { /* 忽略，使用 email 前缀 */ }
                     const avatarLetter = username.charAt(0).toUpperCase();
                     headerLeft.innerHTML = `
                         <div class="user-info">
@@ -930,12 +1000,42 @@
                     headerLeft.innerHTML = `<a href="login.html" class="login-btn"><i class="fas fa-user-circle"></i><span>登录</span></a>`;
                 }
             } catch (err) {
-                console.warn('更新登录状态失败', err);
+                console.warn('登录状态检查失败', err);
                 headerLeft.innerHTML = `<a href="login.html" class="login-btn"><i class="fas fa-user-circle"></i><span>登录</span></a>`;
             }
         }
-
-        // 页面初始化
+        
+        // ========== PWA 等辅助功能（与 index3 相同） ==========
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then(registration => console.log('Service Worker 注册成功:', registration.scope))
+                        .catch(error => console.log('Service Worker 注册失败:', error));
+                });
+            }
+        }
+        
+        function showUpdateNotification() {
+            const notification = document.getElementById('update-notification');
+            notification.style.display = 'block';
+            document.getElementById('update-now').addEventListener('click', () => window.location.reload());
+            document.getElementById('update-later').addEventListener('click', () => notification.style.display = 'none');
+        }
+        
+        function checkForUpdates() {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.ready.then(registration => registration.update());
+            }
+        }
+        
+        function setupOfflineDetection() {
+            window.addEventListener('online', () => document.getElementById('offline-alert').style.display = 'none');
+            window.addEventListener('offline', () => document.getElementById('offline-alert').style.display = 'block');
+            if (!navigator.onLine) document.getElementById('offline-alert').style.display = 'block';
+        }
+        
+        // ========== 页面主初始化 ==========
         async function initPage() {
             loadConfig();
             const articles = await loadNewsData();
@@ -944,8 +1044,7 @@
                 renderMainNews(articles);
                 renderLatestNews(articles);
             } else {
-                const latestContainer = document.getElementById('latest-news');
-                if (latestContainer) latestContainer.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;">无法加载新闻，请稍后再试。</div>';
+                document.getElementById('latest-news').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;">无法加载新闻，请稍后再试。</div>';
             }
             const categories = await loadVideoData();
             if (categories.length) {
@@ -960,57 +1059,32 @@
             }
             await updateUserUI();
         }
-
-        function initEventListeners() {
-            const toggle = document.getElementById('config-toggle');
-            const close = document.getElementById('config-close');
-            const apply = document.getElementById('apply-config');
-            if (toggle) toggle.addEventListener('click', () => document.getElementById('config-panel')?.classList.add('active'));
-            if (close) close.addEventListener('click', () => document.getElementById('config-panel')?.classList.remove('active'));
-            if (apply) apply.addEventListener('click', applyConfig);
+        
+        function initConfigPanel() {
+            document.getElementById('config-toggle').addEventListener('click', () => document.getElementById('config-panel').classList.add('active'));
+            document.getElementById('config-close').addEventListener('click', () => document.getElementById('config-panel').classList.remove('active'));
+            document.getElementById('apply-config').addEventListener('click', applyConfig);
         }
-
+        
         let lastScroll = 0;
         function setupScrollBehavior() {
             window.addEventListener('scroll', () => {
                 const currentScroll = window.pageYOffset;
                 const bottomNav = document.querySelector('.bottom-nav');
-                if (!bottomNav) return;
-                if (currentScroll <= 0) {
-                    bottomNav.classList.remove('hidden');
-                    return;
-                }
+                if (currentScroll <= 0) { bottomNav.classList.remove('hidden'); return; }
                 if (currentScroll > lastScroll && currentScroll > 100) bottomNav.classList.add('hidden');
                 else if (currentScroll < lastScroll) bottomNav.classList.remove('hidden');
                 lastScroll = currentScroll;
             });
         }
-
-        function registerServiceWorker() {
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/sw.js')
-                        .then(reg => console.log('SW注册成功', reg.scope))
-                        .catch(err => console.log('SW注册失败', err));
-                });
-            }
-        }
-
-        function setupOfflineDetection() {
-            const alertDiv = document.getElementById('offline-alert');
-            if (!alertDiv) return;
-            window.addEventListener('online', () => alertDiv.style.display = 'none');
-            window.addEventListener('offline', () => alertDiv.style.display = 'block');
-            if (!navigator.onLine) alertDiv.style.display = 'block';
-        }
-
-        // 启动所有
+        
         document.addEventListener('DOMContentLoaded', () => {
             initPage();
-            initEventListeners();
+            initConfigPanel();
             setupScrollBehavior();
             registerServiceWorker();
             setupOfflineDetection();
+            setInterval(checkForUpdates, 24 * 60 * 60 * 1000);
             const currentPage = window.location.pathname.split('/').pop();
             document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
                 const link = item.getAttribute('href');
