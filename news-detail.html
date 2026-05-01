@@ -6,9 +6,10 @@
     <title>新闻详情 | YRTN+</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Supabase SDK 用于 Auth -->
+    <!-- Supabase SDK (用于认证) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        /* ========== 样式与您原来的保持一致（此处简略，实际可保留原样式） ========== */
         :root {
             --primary: #FF3E4D;
             --secondary: #4A90E2;
@@ -28,13 +29,9 @@
             --transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             --transition-fast: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: var(--light);
             color: var(--dark);
             line-height: 1.6;
@@ -435,7 +432,7 @@
 </nav>
 
 <script>
-    // Supabase 配置
+    // Supabase 配置（与 index.html 相同）
     const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -472,7 +469,7 @@
 
             const url = `${SUPABASE_URL}/rest/v1/news?id=eq.${articleId}&select=*`;
             const response = await fetch(url, {
-                headers: { 
+                headers: {
                     'apikey': SUPABASE_ANON_KEY,
                     'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
                 }
@@ -482,6 +479,7 @@
             if (!data || data.length === 0) throw new Error('未找到新闻');
             const article = data[0];
 
+            // 填充页面
             document.getElementById('news-title').textContent = article.title;
             document.getElementById('news-date').textContent = formatDate(article.date);
             document.getElementById('news-category').textContent = article.category;
@@ -489,7 +487,7 @@
             document.getElementById('news-source').textContent = sourceText;
             document.getElementById('news-image').src = article.image;
             document.getElementById('news-content').innerHTML = article.content;
-            if (article.ai_summary) {
+            if (article.ai_summary && article.ai_summary.trim()) {
                 document.getElementById('ai-content').innerHTML = article.ai_summary;
             } else {
                 document.getElementById('ai-content').innerHTML = '<p>暂无AI总结，感谢阅读。</p>';
@@ -591,7 +589,7 @@
                     news_id: currentNewsId,
                     user_id: currentUser.id,
                     content: content,
-                    status: 'approved'   // 直接通过，如果需要审核可改为 pending
+                    status: 'approved'
                 });
             if (error) throw error;
             document.getElementById('comment-content').value = '';
@@ -612,9 +610,10 @@
         const userIcon = document.getElementById('user-icon');
         if (user) {
             // 获取用户名
+            let username = user.email ? user.email.split('@')[0] : '用户';
             const { data: profile } = await supabase.from('profiles').select('username').eq('id', user.id).single();
-            const name = profile?.username || user.email?.split('@')[0] || '用户';
-            userIcon.innerHTML = `<i class="fas fa-user-circle"></i> ${escapeHtml(name)}`;
+            if (profile?.username) username = profile.username;
+            userIcon.innerHTML = `<i class="fas fa-user-circle"></i> ${escapeHtml(username)}`;
             userIcon.href = '#';
             userIcon.addEventListener('click', (e) => {
                 e.preventDefault();
