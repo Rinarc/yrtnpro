@@ -8,7 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* 完整样式（与你原版一致） */
+        /* 完整样式（与原一致，省略节省空间，但实际代码中会保留） */
+        /* 为保证可运行，此处包含完整样式，但为了简洁不重复贴出，实际上我会复制之前的完整样式 */
         :root {
             --primary: #FF3E4D;
             --secondary: #4A90E2;
@@ -366,6 +367,16 @@
             font-weight: 600;
             margin-bottom: 20px;
         }
+        .debug-error {
+            background: #ffeeee;
+            color: #cc0000;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            border-left: 3px solid #cc0000;
+            display: none;
+        }
         @media (max-width: 768px) {
             .news-detail { padding: 0 15px; }
             .article-container { padding: 25px; }
@@ -416,6 +427,7 @@
                     <h2>用户评论</h2>
                     <div id="comment-form-area"></div>
                     <div id="comments-container" class="comments-list"><div class="loading" style="margin:0 auto;"><div></div><div></div><div></div><div></div></div></div>
+                    <div id="debug-error" class="debug-error"></div>
                 </section>
             </article>
             <div id="error-message" class="error-message"><p>新闻加载失败，请稍后再试</p><a href="index.html" class="error-btn">返回首页</a></div>
@@ -431,22 +443,37 @@
 </nav>
 
 <script>
-    // ==================== 新闻加载（纯 REST API，与简化版完全一致，已验证） ====================
+    // Supabase 配置
     const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
+    let supabaseClient;
+    try {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } catch(e) { console.warn(e); }
 
+    // 辅助函数
     function getUrlParam(name) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(name);
     }
-
     function formatDate(dateString) {
         const date = new Date(dateString);
         return date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
     }
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
 
     let currentNewsId = null;
+    let currentUser = null;
 
+    // 新闻加载（纯 REST API，已验证可用）
     async function loadNewsOnly() {
         const loadingDiv = document.getElementById('loading');
         const errorDiv = document.getElementById('error-message');
@@ -467,7 +494,6 @@
             if (!data || data.length === 0) throw new Error('未找到该新闻');
             const article = data[0];
 
-            // 填充内容
             document.getElementById('news-title').textContent = article.title;
             document.getElementById('news-date').textContent = formatDate(article.date);
             document.getElementById('news-category').textContent = article.category;
@@ -491,55 +517,51 @@
         }
     }
 
-    // ==================== 评论和登录（完全独立，延迟执行，错误捕获） ====================
-    let supabaseClient;
-    try {
-        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    } catch(e) { console.warn('Supabase 客户端初始化失败', e); }
-
-    let currentUser = null;
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
-
+    // 评论加载（带调试输出）
     async function loadComments() {
         if (!currentNewsId) return;
         const container = document.getElementById('comments-container');
+        const debugDiv = document.getElementById('debug-error');
         container.innerHTML = '<div class="loading" style="margin:0 auto;"><div></div><div></div><div></div><div></div></div>';
+        debugDiv.style.display = 'none';
         try {
-            const url = `${SUPABASE_URL}/rest/v1/comments?select=*,profiles(username)&news_id=eq.${currentNewsId}&status=eq.approved&order=created_at.desc`;
+            // 先尝试不带关联的简单查询
+            const url = `${SUPABASE_URL}/rest/v1/comments?news_id=eq.${currentNewsId}&status=eq.approved&order=created_at.desc&select=*`;
+            console.log('请求评论URL:', url);
             const response = await fetch(url, {
                 headers: {
                     'apikey': SUPABASE_ANON_KEY,
                     'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
                 }
             });
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            console.log('评论响应状态:', response.status);
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`HTTP ${response.status}: ${errorText}`);
+            }
             const comments = await response.json();
-            renderComments(comments);
+            console.log('获取到的评论数量:', comments.length);
+            if (comments.length === 0) {
+                container.innerHTML = '<div class="no-comments">暂无评论，成为第一个评论者吧！</div>';
+                return;
+            }
+            // 由于没有 profiles 关联，暂时用 user_id 代替用户名
+            renderCommentsSimple(comments);
         } catch (err) {
             console.error('加载评论失败:', err);
             container.innerHTML = '<div class="no-comments">评论加载失败，请稍后再试。</div>';
+            debugDiv.textContent = `错误详情: ${err.message}`;
+            debugDiv.style.display = 'block';
         }
     }
 
-    function renderComments(comments) {
+    function renderCommentsSimple(comments) {
         const container = document.getElementById('comments-container');
-        if (!comments || comments.length === 0) {
-            container.innerHTML = '<div class="no-comments">暂无评论，成为第一个评论者吧！</div>';
-            return;
-        }
         container.innerHTML = '';
         comments.forEach(comment => {
-            const username = comment.profiles?.username || '匿名用户';
-            const avatarLetter = username.charAt(0).toUpperCase();
+            // 临时用 user_id 的后几位作为昵称
+            const shortId = comment.user_id ? comment.user_id.slice(-6) : '匿名';
+            const avatarLetter = shortId.charAt(0).toUpperCase();
             const date = new Date(comment.created_at);
             const commentDiv = document.createElement('div');
             commentDiv.className = 'comment-item';
@@ -547,7 +569,7 @@
                 <div class="comment-header">
                     <div class="user-info">
                         <div class="user-avatar">${escapeHtml(avatarLetter)}</div>
-                        <div class="comment-nickname">${escapeHtml(username)}</div>
+                        <div class="comment-nickname">用户${escapeHtml(shortId)}</div>
                     </div>
                     <div class="comment-date">${formatDate(date)}</div>
                 </div>
@@ -557,6 +579,7 @@
         });
     }
 
+    // 评论表单渲染（与之前相同）
     function renderCommentForm() {
         const area = document.getElementById('comment-form-area');
         if (!currentUser) {
@@ -636,16 +659,15 @@
         }
     }
 
-    // 启动：先加载新闻，等新闻显示后再延时加载评论和登录
+    // 启动
     loadNewsOnly().then(() => {
-        // 新闻显示后，延迟100ms再启动评论和登录，确保不阻塞UI
         setTimeout(() => {
             loadComments().catch(e => console.warn(e));
             checkAuthAndRender().catch(e => console.warn(e));
         }, 100);
     }).catch(e => console.error(e));
 
-    // 底部导航高亮
+    // 底部高亮
     const currentPage = window.location.pathname.split('/').pop();
     document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
         const link = item.getAttribute('href');
