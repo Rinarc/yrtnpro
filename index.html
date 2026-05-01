@@ -814,10 +814,7 @@
     <!-- 顶部导航栏 -->
     <header class="app-header">
         <div class="header-left" id="header-left">
-            <a href="login.html" class="login-btn">
-                <i class="fas fa-user-circle"></i>
-                <span>登录</span>
-            </a>
+            <a href="login.html" class="login-btn"><i class="fas fa-user-circle"></i><span>登录</span></a>
         </div>
         <div class="header-center">
             <img src="https://origin.picgo.net/2026/04/07/knockout63238d6237aaada6.png" alt="YRTN+" class="center-logo">
@@ -908,14 +905,10 @@
     <div class="config-toggle" id="config-toggle"><i class="fas fa-cog"></i></div>
 
     <script>
-        // Supabase 配置
-        const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        // ========== 开屏动画 ==========
+        // ========== 开屏动画控制 - 独立且最优先执行，确保在任何错误前隐藏 ==========
         (function() {
             var splash = document.getElementById('splashScreen');
+            if (!splash) return;
             var storageKey = 'yrtn_plus_splash_v1';
             var isFirstVisit = !localStorage.getItem(storageKey);
             var timeoutId = null;
@@ -935,12 +928,26 @@
             }, delay);
         })();
 
-        // ========== 公告栏 ==========
+        // ========== 公告栏控制 ==========
         (function() {
             const showAnnouncement = true;
             const bar = document.getElementById('announcementBar');
             if (bar) bar.style.display = showAnnouncement ? 'block' : 'none';
         })();
+
+        // Supabase 配置 (容错初始化，避免阻断页面)
+        const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
+        let supabase = null;
+        try {
+            if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            } else {
+                console.warn('Supabase SDK 未加载成功，将使用离线模式');
+            }
+        } catch (err) {
+            console.error('Supabase 初始化失败:', err);
+        }
 
         // 配置数据
         let config = {
@@ -966,6 +973,10 @@
 
         // ========== 从 Supabase 加载新闻数据 (REST API) ==========
         async function loadNewsData() {
+            if (!supabase) {
+                console.warn('Supabase 不可用，新闻数据无法加载');
+                return [];
+            }
             try {
                 const url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc`;
                 const response = await fetch(url, {
@@ -989,14 +1000,14 @@
                 const response = await fetch('knockknock.json');
                 if (!response.ok) throw new Error('加载视频数据失败');
                 const data = await response.json();
-                return data.categories;
+                return data.categories || [];
             } catch (error) {
                 console.error('加载视频数据失败:', error);
                 return [];
             }
         }
 
-        // ========== 渲染新闻轮播 ==========
+        // 渲染新闻轮播 (同之前逻辑)
         function renderNewsCarousel(articles) {
             if (!config.news.carousel) {
                 document.querySelector('.news-carousel').style.display = 'none';
@@ -1035,6 +1046,7 @@
             const dots = document.querySelectorAll('.carousel-dot');
             const prevBtn = document.getElementById('carousel-prev');
             const nextBtn = document.getElementById('carousel-next');
+            if (!slides.length) return;
             let currentSlide = 0, autoSlideInterval;
             function updateCarousel() {
                 container.style.transform = `translateX(-${currentSlide * 100}%)`;
@@ -1044,23 +1056,20 @@
             function prevSlide() { currentSlide = (currentSlide - 1 + slides.length) % slides.length; updateCarousel(); }
             function startAutoSlide() { autoSlideInterval = setInterval(nextSlide, 5000); }
             function stopAutoSlide() { clearInterval(autoSlideInterval); }
-            if (slides.length) {
+            updateCarousel();
+            startAutoSlide();
+            container.addEventListener('mouseenter', stopAutoSlide);
+            container.addEventListener('mouseleave', startAutoSlide);
+            prevBtn.addEventListener('click', () => { prevSlide(); stopAutoSlide(); startAutoSlide(); });
+            nextBtn.addEventListener('click', () => { nextSlide(); stopAutoSlide(); startAutoSlide(); });
+            dots.forEach(dot => dot.addEventListener('click', () => {
+                currentSlide = parseInt(dot.dataset.index);
                 updateCarousel();
+                stopAutoSlide();
                 startAutoSlide();
-                container.addEventListener('mouseenter', stopAutoSlide);
-                container.addEventListener('mouseleave', startAutoSlide);
-                prevBtn.addEventListener('click', () => { prevSlide(); stopAutoSlide(); startAutoSlide(); });
-                nextBtn.addEventListener('click', () => { nextSlide(); stopAutoSlide(); startAutoSlide(); });
-                dots.forEach(dot => dot.addEventListener('click', () => {
-                    currentSlide = parseInt(dot.dataset.index);
-                    updateCarousel();
-                    stopAutoSlide();
-                    startAutoSlide();
-                }));
-            }
+            }));
         }
 
-        // 渲染主新闻区
         function renderMainNews(articles) {
             if (!articles.length) return;
             const featured = articles[5] || articles[0];
@@ -1096,7 +1105,6 @@
             }
         }
 
-        // 渲染最新新闻
         function renderLatestNews(articles) {
             const container = document.getElementById('latest-news');
             if (!config.news.latest) {
@@ -1120,7 +1128,6 @@
             });
         }
 
-        // 渲染视频分区（保持不变）
         function renderVideoSection(categories) {
             const container = document.getElementById('video-section');
             if (!config.video.enabled) {
@@ -1162,7 +1169,7 @@
                             </div>
                         `;
                         videoCard.addEventListener('click', () => {
-                            if (episode.videoUrl.includes('bilibili.com')) window.open(episode.videoUrl, '_blank');
+                            if (episode.videoUrl && episode.videoUrl.includes('bilibili.com')) window.open(episode.videoUrl, '_blank');
                             else window.location.href = `video-player.html?id=${episode.id}`;
                         });
                         grid.appendChild(videoCard);
@@ -1171,7 +1178,6 @@
             });
         }
 
-        // 配置面板逻辑（保持不变）
         function renderConfigPanel(categories) {
             const container = document.getElementById('video-categories-config');
             container.innerHTML = '';
@@ -1249,38 +1255,46 @@
             document.getElementById('config-panel').classList.remove('active');
         }
 
-        // ========== 用户登录状态显示 ==========
+        // 用户登录状态显示（容错）
         async function updateUserUI() {
             const headerLeft = document.getElementById('header-left');
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) {
-                let username = user.email ? user.email.split('@')[0] : '用户';
-                const { data: profile } = await supabase.from('profiles').select('username').eq('id', user.id).single();
-                if (profile?.username) username = profile.username;
-                const avatarLetter = username.charAt(0).toUpperCase();
-                headerLeft.innerHTML = `
-                    <div class="user-info">
-                        <div class="user-avatar">${avatarLetter}</div>
-                        <span class="user-name">${escapeHtml(username)}</span>
-                        <button class="logout-btn" id="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
-                    </div>
-                `;
-                document.getElementById('logout-btn')?.addEventListener('click', async () => {
-                    await supabase.auth.signOut();
-                    window.location.reload();
-                });
-            } else {
+            if (!supabase) {
+                headerLeft.innerHTML = `<a href="login.html" class="login-btn"><i class="fas fa-user-circle"></i><span>登录</span></a>`;
+                return;
+            }
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) {
+                    let username = user.email ? user.email.split('@')[0] : '用户';
+                    try {
+                        const { data: profile } = await supabase.from('profiles').select('username').eq('id', user.id).single();
+                        if (profile?.username) username = profile.username;
+                    } catch (e) { /* 忽略profile错误 */ }
+                    const avatarLetter = username.charAt(0).toUpperCase();
+                    headerLeft.innerHTML = `
+                        <div class="user-info">
+                            <div class="user-avatar">${avatarLetter}</div>
+                            <span class="user-name">${escapeHtml(username)}</span>
+                            <button class="logout-btn" id="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
+                        </div>
+                    `;
+                    document.getElementById('logout-btn')?.addEventListener('click', async () => {
+                        if (supabase) await supabase.auth.signOut();
+                        window.location.reload();
+                    });
+                } else {
+                    headerLeft.innerHTML = `<a href="login.html" class="login-btn"><i class="fas fa-user-circle"></i><span>登录</span></a>`;
+                }
+            } catch (err) {
+                console.warn('获取用户状态失败', err);
                 headerLeft.innerHTML = `<a href="login.html" class="login-btn"><i class="fas fa-user-circle"></i><span>登录</span></a>`;
             }
         }
 
-        // ========== PWA 功能 ==========
         function registerServiceWorker() {
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/sw.js')
-                        .then(registration => console.log('SW注册成功:', registration.scope))
-                        .catch(error => console.log('SW注册失败:', error));
+                    navigator.serviceWorker.register('/sw.js').catch(e => console.log('SW注册失败:', e));
                 });
             }
         }
@@ -1296,7 +1310,6 @@
             if (!navigator.onLine) document.getElementById('offline-alert').style.display = 'block';
         }
 
-        // ========== 页面主初始化 ==========
         async function initPage() {
             loadConfig();
             const articles = await loadNewsData();
@@ -1323,7 +1336,6 @@
             await updateUserUI();
         }
 
-        // 事件绑定
         function initConfigPanel() {
             document.getElementById('config-toggle').addEventListener('click', () => document.getElementById('config-panel').classList.add('active'));
             document.getElementById('config-close').addEventListener('click', () => document.getElementById('config-panel').classList.remove('active'));
@@ -1335,6 +1347,7 @@
             window.addEventListener('scroll', () => {
                 const currentScroll = window.pageYOffset;
                 const bottomNav = document.querySelector('.bottom-nav');
+                if (!bottomNav) return;
                 if (currentScroll <= 0) { bottomNav.classList.remove('hidden'); return; }
                 if (currentScroll > lastScroll && currentScroll > 100) bottomNav.classList.add('hidden');
                 else if (currentScroll < lastScroll) bottomNav.classList.remove('hidden');
@@ -1342,7 +1355,6 @@
             });
         }
 
-        // 启动页面
         document.addEventListener('DOMContentLoaded', () => {
             initPage();
             initConfigPanel();
