@@ -49,63 +49,6 @@
             overflow-x: hidden;
             padding-bottom: 90px;
         }
-        /* 开屏动画 - 确保始终可见且优先级最高 */
-        .splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #ffffff;
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            padding: clamp(2rem, 15vh, 6rem) clamp(2rem, 10vw, 8rem);
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            line-height: 1.1;
-            transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1), visibility 0s 0.6s;
-            will-change: opacity;
-            opacity: 1;
-            visibility: visible;
-        }
-        .splash-screen.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-        .splash-content {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-        .splash-line {
-            font-size: clamp(3rem, 18vw, 8rem);
-            margin: 0.05em 0;
-            opacity: 0;
-            transform: translateY(60px);
-            animation: floatReveal 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
-        }
-        .splash-line1 { color: #FF3E4D; animation-delay: 0.2s; }
-        .splash-line2 { color: #4A90E2; animation-delay: 0.5s; }
-        .splash-line3 { color: #1A1A2E; animation-delay: 0.8s; letter-spacing: -0.02em; }
-        @keyframes floatReveal {
-            0% { opacity: 0; transform: translateY(60px) scale(0.98); filter: blur(4px); }
-            60% { opacity: 0.9; transform: translateY(-5px) scale(1.01); filter: blur(0); }
-            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-        }
-        .splash-skip-hint {
-            position: absolute;
-            bottom: 30px;
-            right: 30px;
-            color: rgba(0,0,0,0.2);
-            font-size: 0.75rem;
-            font-weight: 300;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            pointer-events: none;
-        }
         .announcement-bar {
             background-color: var(--primary);
             color: white;
@@ -621,15 +564,6 @@
     </style>
 </head>
 <body>
-    <div class="splash-screen" id="splashScreen">
-        <div class="splash-content">
-            <div class="splash-line splash-line1">独家新闻</div>
-            <div class="splash-line splash-line2">与视频</div>
-            <div class="splash-line splash-line3">尽在YRTN+</div>
-        </div>
-        <div class="splash-skip-hint">©2026 Yuanyu Reality Television Network</div>
-    </div>
-
     <header class="app-header">
         <div class="header-left" id="header-left"></div>
         <div class="header-center">
@@ -711,31 +645,6 @@
     <div class="config-toggle" id="config-toggle"><i class="fas fa-cog"></i></div>
 
     <script>
-        // ========== 开屏动画：多重保障 ==========
-        (function() {
-            var splash = document.getElementById('splashScreen');
-            if (!splash) return;
-            var hideSplash = function() {
-                if (splash) splash.classList.add('hidden');
-            };
-            // 1. 延迟 1.5 秒（后续访问）或 3.2 秒（首次访问）
-            var storageKey = 'yrtn_plus_splash_v1';
-            var isFirstVisit = !localStorage.getItem(storageKey);
-            var delay = isFirstVisit ? 3200 : 1500;
-            setTimeout(function() {
-                localStorage.setItem(storageKey, 'true');
-                hideSplash();
-            }, delay);
-            // 2. 点击任意位置立即隐藏
-            splash.addEventListener('click', hideSplash);
-            // 3. 页面完全加载后也隐藏（保险）
-            window.addEventListener('load', hideSplash);
-            // 4. DOMContentLoaded 后 0.1 秒再隐藏一次（极端情况）
-            document.addEventListener('DOMContentLoaded', function() {
-                setTimeout(hideSplash, 100);
-            });
-        })();
-
         // Supabase 配置
         const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
