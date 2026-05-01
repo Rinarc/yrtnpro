@@ -554,7 +554,9 @@
             <div class="logo">Y</div>
             <div class="brand-name">渊迂电视新闻网+</div>
         </div>
-        
+        <div class="nav-actions">
+            <a href="login.html" class="nav-icon">
+                <i class="fas fa-user"></i>
             </a>
         </div>
     </header>
@@ -610,10 +612,13 @@
             <i class="fas fa-sync-alt"></i>
             <span>服务</span>
         </a>
-    
     </nav>
 
     <script>
+        // Supabase 配置（与首页保持一致）
+        const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
+        
         // 创建动态粒子背景
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
@@ -623,21 +628,14 @@
                 const particle = document.createElement('div');
                 particle.classList.add('particle');
                 
-                // 随机大小
                 const size = Math.random() * 10 + 5;
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
-                
-                // 随机位置
                 particle.style.left = `${Math.random() * 100}%`;
                 particle.style.bottom = `-${size}px`;
-                
-                // 随机动画
                 const duration = Math.random() * 20 + 10;
                 const delay = Math.random() * 10;
                 particle.style.animation = `float ${duration}s linear ${delay}s infinite`;
-                
-                // 随机透明度
                 particle.style.opacity = Math.random() * 0.4 + 0.1;
                 
                 particlesContainer.appendChild(particle);
@@ -657,16 +655,21 @@
             return date.toLocaleDateString('zh-CN', options);
         }
         
-        // 加载新闻数据
+        // 从 Supabase 加载新闻数据
         async function loadNewsData() {
             try {
-                const response = await fetch('news.json');
-                if (!response.ok) throw new Error('加载新闻数据失败');
-                
+                const url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc`;
+                const response = await fetch(url, {
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
-                return data.articles;
+                return data;
             } catch (error) {
-                console.error('加载新闻数据时出错:', error);
+                console.error('加载新闻失败:', error);
                 return [];
             }
         }
@@ -674,49 +677,58 @@
         // 渲染新闻卡片
         function renderNewsCards(articles, containerId) {
             const container = document.getElementById(containerId);
+            container.innerHTML = '';
             
-            // 按日期排序（最新优先）
+            // 按日期排序（最新优先）—— 已通过 order 参数保证，此处再保险一次
             articles.sort((a, b) => new Date(b.date) - new Date(a.date));
             
-            // 创建新闻卡片
             articles.forEach((article, index) => {
                 const newsCard = document.createElement('div');
                 newsCard.className = 'archive-card';
                 newsCard.style.animationDelay = `${index * 0.1}s`;
                 newsCard.innerHTML = `
                     <div class="card-image" style="background-image: url('${article.image}')">
-                        <span class="card-badge">${article.category}</span>
+                        <span class="card-badge">${escapeHtml(article.category)}</span>
                     </div>
                     <div class="card-content">
-                        <h3 class="card-title">${article.title}</h3>
-                        <p class="card-summary">${article.summary}</p>
+                        <h3 class="card-title">${escapeHtml(article.title)}</h3>
+                        <p class="card-summary">${escapeHtml(article.summary || '')}</p>
                         <div class="card-meta">
                             <span class="card-date">
                                 <i class="far fa-clock"></i>
                                 ${formatDate(article.date)}
                             </span>
-                            <span>${article.category}</span>
+                            <span>${escapeHtml(article.category)}</span>
                         </div>
                     </div>
                 `;
-                
-                // 添加点击事件跳转到详情页
                 newsCard.addEventListener('click', () => {
                     window.location.href = `news-detail.html?id=${article.id}`;
                 });
-                
                 container.appendChild(newsCard);
+            });
+        }
+        
+        // 辅助函数，防止XSS
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
             });
         }
         
         // 生成分类标签
         function generateCategoryTags(articles) {
             const tagContainer = document.getElementById('tag-container');
+            // 保留“全部”标签
+            tagContainer.innerHTML = '<div class="filter-tag active" data-category="all">全部</div>';
             
             // 获取所有分类
             const categories = [...new Set(articles.map(article => article.category))];
             
-            // 生成标签
             categories.forEach(category => {
                 const tag = document.createElement('div');
                 tag.className = 'filter-tag';
@@ -725,24 +737,18 @@
                 tagContainer.appendChild(tag);
             });
             
-            // 添加标签点击事件
+            // 绑定标签点击事件
             document.querySelectorAll('.filter-tag').forEach(tag => {
                 tag.addEventListener('click', function() {
-                    // 更新活动标签
                     document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
                     this.classList.add('active');
                     
-                    // 过滤新闻
                     const category = this.dataset.category;
                     const filteredArticles = category === 'all' 
                         ? articles 
                         : articles.filter(article => article.category === category);
                     
-                    // 重新渲染新闻
-                    document.getElementById('archive-container').innerHTML = '';
                     renderNewsCards(filteredArticles, 'archive-container');
-                    
-                    // 更新分页信息
                     document.getElementById('page-info').textContent = 
                         `显示 ${filteredArticles.length} 条中的 ${filteredArticles.length} 条新闻`;
                 });
@@ -751,27 +757,18 @@
         
         // 初始化页面
         document.addEventListener('DOMContentLoaded', async () => {
-            // 创建动态背景
             createParticles();
             
-            // 加载新闻数据
             const articles = await loadNewsData();
             
             if (articles.length > 0) {
-                // 渲染新闻卡片
                 renderNewsCards(articles, 'archive-container');
-                
-                // 生成分类标签
                 generateCategoryTags(articles);
-                
-                // 初始化分页信息
                 document.getElementById('page-info').textContent = 
                     `显示 ${articles.length} 条中的 ${articles.length} 条新闻`;
             } else {
-                // 如果没有加载到文章，显示错误信息
-                const container = document.getElementById('archive-container');
-                container.innerHTML = `
-                    <div class="error-message">
+                document.getElementById('archive-container').innerHTML = `
+                    <div class="error-message" style="grid-column:1/-1; text-align:center; padding:40px;">
                         <p>未找到新闻，请稍后再试。</p>
                     </div>
                 `;
@@ -779,35 +776,29 @@
             
             // 搜索功能
             document.getElementById('archive-search-btn').addEventListener('click', function() {
-                const searchTerm = document.getElementById('archive-search').value.toLowerCase();
-                if (!searchTerm) return;
-                
+                const searchTerm = document.getElementById('archive-search').value.toLowerCase().trim();
+                if (!searchTerm) {
+                    // 如果搜索框为空，重置显示全部新闻
+                    renderNewsCards(articles, 'archive-container');
+                    document.getElementById('page-info').textContent = `显示 ${articles.length} 条中的 ${articles.length} 条新闻`;
+                    return;
+                }
                 const filteredArticles = articles.filter(article => 
                     article.title.toLowerCase().includes(searchTerm) || 
-                    article.summary.toLowerCase().includes(searchTerm)
+                    (article.summary && article.summary.toLowerCase().includes(searchTerm))
                 );
-                
-                // 重新渲染新闻
-                document.getElementById('archive-container').innerHTML = '';
                 renderNewsCards(filteredArticles, 'archive-container');
-                
-                // 更新分页信息
                 document.getElementById('page-info').textContent = 
                     `找到 ${filteredArticles.length} 条相关新闻`;
             });
             
-            // 加载更多功能
-            document.getElementById('load-more').addEventListener('click', function() {
-                // 在实际应用中，这里会加载更多数据
-                // 本示例中我们只是显示一个通知
-                this.textContent = "正在加载更多新闻...";
+            // 加载更多功能（由于所有数据已经一次性加载，此按钮改为提示）
+            const loadMoreBtn = document.getElementById('load-more');
+            loadMoreBtn.addEventListener('click', function() {
+                this.textContent = "已加载所有新闻";
                 this.disabled = true;
-                
-                setTimeout(() => {
-                    this.textContent = "已加载所有新闻";
-                    document.getElementById('page-info').textContent = 
-                        `已显示所有 ${articles.length} 条新闻`;
-                }, 1500);
+                document.getElementById('page-info').textContent = 
+                    `已显示所有 ${articles.length} 条新闻`;
             });
         });
     </script>
