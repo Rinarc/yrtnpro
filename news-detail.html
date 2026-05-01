@@ -6,9 +6,9 @@
     <title>新闻详情 | YRTN+</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Supabase SDK (仅用于认证，新闻数据通过 REST API 获取) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        /* 完整样式保持不变（与之前美化版相同，节省篇幅此处省略，但实际代码会包含完整样式） */
         :root {
             --primary: #FF3E4D;
             --secondary: #4A90E2;
@@ -37,7 +37,6 @@
             overflow-x: hidden;
             padding-bottom: 90px;
         }
-        /* 波浪背景 */
         .wave-bg {
             position: fixed;
             bottom: 0;
@@ -53,7 +52,6 @@
             0% { background-position-x: 0; }
             100% { background-position-x: 1440px; }
         }
-        /* 顶部导航栏 */
         .app-header {
             position: sticky;
             top: 0;
@@ -95,7 +93,6 @@
             transition: var(--transition-fast);
         }
         .nav-icon:hover { color: var(--primary); }
-        /* 底部导航栏 */
         .bottom-nav {
             position: fixed;
             bottom: 20px;
@@ -128,11 +125,7 @@
             transform: translateY(-10px);
         }
         .nav-item i { font-size: 1.4rem; margin-bottom: 4px; }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         .news-detail { max-width: 800px; margin: 40px auto; }
         .article-container {
             background: white;
@@ -441,7 +434,12 @@
     // Supabase 配置
     const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    let supabase;
+    try {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } catch(e) {
+        console.warn('Supabase 初始化失败', e);
+    }
 
     // 辅助函数
     function getUrlParam(name) {
@@ -465,7 +463,7 @@
     let currentNewsId = null;
     let currentUser = null;
 
-    // 加载新闻详情 (REST API)
+    // 核心：加载新闻（独立，不依赖 supabase 客户端）
     async function loadArticle() {
         try {
             const articleId = getUrlParam('id');
@@ -497,33 +495,45 @@
             }
             document.getElementById('loading').style.display = 'none';
             document.getElementById('article-content').style.display = 'block';
-            await loadComments();
+
+            // 新闻显示后，尝试加载评论和登录状态（不阻塞）
+            tryLoadCommentsAndAuth();
         } catch (error) {
-            console.error(error);
+            console.error('加载新闻失败:', error);
             document.getElementById('loading').style.display = 'none';
             document.getElementById('error-message').style.display = 'block';
         }
     }
 
-    // 加载评论列表
+    // 尝试加载评论和登录状态，出错不影响新闻显示
+    async function tryLoadCommentsAndAuth() {
+        try {
+            await loadComments();
+        } catch(e) {
+            console.error('加载评论出错', e);
+            document.getElementById('comments-container').innerHTML = '<div class="no-comments">评论加载失败，请稍后再试。</div>';
+        }
+        try {
+            await checkAuth();
+        } catch(e) {
+            console.error('登录状态检查出错', e);
+        }
+    }
+
     async function loadComments() {
+        if (!currentNewsId) return;
         const container = document.getElementById('comments-container');
         container.innerHTML = '<div class="loading" style="margin:0 auto;"><div></div><div></div><div></div><div></div></div>';
-        try {
-            const url = `${SUPABASE_URL}/rest/v1/comments?select=*,profiles(username)&news_id=eq.${currentNewsId}&status=eq.approved&order=created_at.desc`;
-            const response = await fetch(url, {
-                headers: {
-                    'apikey': SUPABASE_ANON_KEY,
-                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-                }
-            });
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const comments = await response.json();
-            renderComments(comments);
-        } catch (error) {
-            console.error('加载评论失败:', error);
-            container.innerHTML = '<div class="no-comments">评论加载失败，请稍后再试。</div>';
-        }
+        const url = `${SUPABASE_URL}/rest/v1/comments?select=*,profiles(username)&news_id=eq.${currentNewsId}&status=eq.approved&order=created_at.desc`;
+        const response = await fetch(url, {
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const comments = await response.json();
+        renderComments(comments);
     }
 
     function renderComments(comments) {
@@ -553,7 +563,6 @@
         });
     }
 
-    // 渲染评论表单（根据登录状态）
     function renderCommentForm() {
         const area = document.getElementById('comment-form-area');
         if (!currentUser) {
@@ -572,7 +581,6 @@
         document.getElementById('submit-comment')?.addEventListener('click', submitComment);
     }
 
-    // 提交评论
     async function submitComment() {
         const content = document.getElementById('comment-content').value.trim();
         if (!content) {
@@ -603,15 +611,17 @@
         }
     }
 
-    // 检查登录状态并更新UI
     async function checkAuth() {
+        if (!supabase) return;
         const { data: { user } } = await supabase.auth.getUser();
         currentUser = user;
         const userIcon = document.getElementById('user-icon');
         if (user) {
             let username = user.email ? user.email.split('@')[0] : '用户';
-            const { data: profile } = await supabase.from('profiles').select('username').eq('id', user.id).single();
-            if (profile?.username) username = profile.username;
+            try {
+                const { data: profile } = await supabase.from('profiles').select('username').eq('id', user.id).single();
+                if (profile?.username) username = profile.username;
+            } catch(e) { console.warn(e); }
             userIcon.innerHTML = `<i class="fas fa-user-circle"></i> ${escapeHtml(username)}`;
             userIcon.href = '#';
             userIcon.addEventListener('click', (e) => {
@@ -627,17 +637,16 @@
         renderCommentForm();
     }
 
-    // 初始化
-    (async () => {
-        await loadArticle();
-        await checkAuth();
-        const currentPage = window.location.pathname.split('/').pop();
-        document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
-            const link = item.getAttribute('href');
-            if (link === currentPage) item.classList.add('active');
-            else item.classList.remove('active');
-        });
-    })();
+    // 启动
+    loadArticle();
+
+    // 底部导航高亮
+    const currentPage = window.location.pathname.split('/').pop();
+    document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
+        const link = item.getAttribute('href');
+        if (link === currentPage) item.classList.add('active');
+        else item.classList.remove('active');
+    });
 </script>
 </body>
 </html>
