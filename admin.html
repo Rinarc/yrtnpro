@@ -8,18 +8,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Poppins', sans-serif;
             background: #f0f2f5;
             color: #1e293b;
             min-height: 100vh;
         }
-        /* 遮罩层 - 权限验证时显示 */
+        /* 权限验证遮罩层 */
         .auth-overlay {
             position: fixed;
             top: 0;
@@ -39,6 +35,7 @@
         .auth-overlay.hidden {
             display: none;
         }
+        /* 主容器，默认隐藏 */
         .admin-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -460,7 +457,7 @@
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    let currentUser = null;
+    // 全局状态
     let newsList = [];
     let deleteId = null;
     let editId = null;
@@ -488,16 +485,25 @@
     const refreshBtn = document.getElementById('refresh-btn');
     const logoutBtn = document.getElementById('logout-btn');
 
-    // 权限验证并初始化
-    async function initAdmin() {
-        // 获取当前用户
+    // 辅助函数
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    async function checkAuthAndRedirect() {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) {
+            // 未登录，保存当前路径，跳转登录页
             window.location.href = `login.html?redirect=admin.html`;
-            return;
+            return false;
         }
-        currentUser = user;
-        // 查询 profiles 表获取角色
+        // 查询是否为管理员
         const { data: profile, error } = await supabase
             .from('profiles')
             .select('role, username')
@@ -506,9 +512,9 @@
         if (error || !profile || profile.role !== 'admin') {
             overlay.innerHTML = '<div style="text-align:center;"><i class="fas fa-ban fa-2x"></i><br><br>您没有管理员权限，请联系站长。<br>2秒后返回首页...</div>';
             setTimeout(() => { window.location.href = 'index.html'; }, 2000);
-            return;
+            return false;
         }
-        // 验证通过，显示后台
+        // 验证通过，隐藏遮罩，显示后台
         overlay.classList.add('hidden');
         adminContainer.style.display = 'block';
         // 显示用户信息
@@ -517,25 +523,30 @@
         document.getElementById('user-avatar').textContent = username.charAt(0).toUpperCase();
         // 加载新闻列表
         await loadNewsList();
+        return true;
     }
 
-    // 加载新闻列表
     async function loadNewsList(searchTerm = '') {
         let url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc`;
         if (searchTerm) {
             url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc&title=ilike.%${encodeURIComponent(searchTerm)}%`;
         }
-        const response = await fetch(url, {
-            headers: {
-                'apikey': SUPABASE_ANON_KEY,
-                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        try {
+            const response = await fetch(url, {
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                }
+            });
+            if (response.ok) {
+                newsList = await response.json();
+                renderNewsTable(newsList);
+            } else {
+                document.getElementById('news-list-body').innerHTML = '<tr><td colspan="5">加载失败，请刷新页面重试</td></tr>';
             }
-        });
-        if (response.ok) {
-            newsList = await response.json();
-            renderNewsTable(newsList);
-        } else {
-            document.getElementById('news-list-body').innerHTML = '<tr><td colspan="5">加载失败，请刷新页面重试</td></tr>';
+        } catch (err) {
+            console.error(err);
+            document.getElementById('news-list-body').innerHTML = '<tr><td colspan="5">网络错误，请稍后重试</td></tr>';
         }
     }
 
@@ -566,16 +577,6 @@
         });
         document.querySelectorAll('.delete-btn').forEach(btn => {
             btn.onclick = () => openDeleteModal(parseInt(btn.dataset.id));
-        });
-    }
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
         });
     }
 
@@ -677,20 +678,22 @@
         window.location.href = 'index.html';
     }
 
-    // 初始化
-    window.onload = initAdmin;
-    form.addEventListener('submit', submitNews);
-    cancelEditBtn.addEventListener('click', cancelEdit);
-    searchBtn.addEventListener('click', () => loadNewsList(searchInput.value));
-    refreshBtn.addEventListener('click', () => loadNewsList(searchInput.value));
-    logoutBtn.addEventListener('click', logout);
-    // 模态框关闭事件
-    document.querySelectorAll('.close-modal, #cancel-delete').forEach(btn => btn.addEventListener('click', closeModal));
-    document.getElementById('confirm-delete').addEventListener('click', confirmDelete);
-    window.addEventListener('click', (e) => {
-        const modal = document.getElementById('delete-modal');
-        if (e.target === modal) closeModal();
-    });
+    // 页面初始化
+    window.onload = async () => {
+        await checkAuthAndRedirect();
+        // 绑定事件（确保只有在验证通过后才绑定，但提前绑定也不影响）
+        form.addEventListener('submit', submitNews);
+        cancelEditBtn.addEventListener('click', cancelEdit);
+        searchBtn.addEventListener('click', () => loadNewsList(searchInput.value));
+        refreshBtn.addEventListener('click', () => loadNewsList(searchInput.value));
+        logoutBtn.addEventListener('click', logout);
+        document.querySelectorAll('.close-modal, #cancel-delete').forEach(btn => btn.addEventListener('click', closeModal));
+        document.getElementById('confirm-delete').addEventListener('click', confirmDelete);
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('delete-modal');
+            if (e.target === modal) closeModal();
+        });
+    };
 </script>
 </body>
 </html>
