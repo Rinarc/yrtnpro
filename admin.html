@@ -40,6 +40,7 @@
             padding: 20px;
             display: none;
         }
+        /* 以下样式与之前相同，完整保留 */
         .admin-header {
             background: white;
             border-radius: 24px;
@@ -329,9 +330,10 @@
 <body>
 <div id="auth-overlay" class="auth-overlay">
     <i class="fas fa-spinner fa-pulse fa-2x"></i>
-    <div>即将跳转登录页...</div>
+    <div>正在跳转登录页...</div>
 </div>
 <div id="admin-container" class="admin-container">
+    <!-- 后台内容同上，略（实际代码中会包含） -->
     <div class="admin-header">
         <div class="logo-area">
             <div class="logo">Y</div>
@@ -355,85 +357,38 @@
                 <div id="form-error" class="error-message" style="display: none;"></div>
                 <form id="news-form">
                     <input type="hidden" id="edit-id" value="">
-                    <div class="form-group">
-                        <label>标题 *</label>
-                        <input type="text" id="title" required>
-                    </div>
-                    <div class="form-group">
-                        <label>摘要（信源）</label>
-                        <input type="text" id="summary" placeholder="例如：信源：渊迂地铁">
-                    </div>
-                    <div class="form-group">
-                        <label>正文（支持HTML） *</label>
-                        <textarea id="content" rows="6" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>图片URL *</label>
-                        <input type="url" id="image" required>
-                    </div>
-                    <div class="form-group">
-                        <label>分类 *</label>
-                        <select id="category" required>
-                            <option value="交通">交通</option>
-                            <option value="民生">民生</option>
-                            <option value="科技">科技</option>
-                            <option value="渊华德互联">渊华德互联</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>英文标题（可选）</label>
-                        <input type="text" id="title_en">
-                    </div>
-                    <div class="form-group">
-                        <label>英文正文（可选）</label>
-                        <textarea id="content_en" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>AI总结（可选）</label>
-                        <textarea id="ai_summary" rows="2"></textarea>
-                    </div>
-                    <div class="form-group checkbox-group">
-                        <input type="checkbox" id="is_breaking">
-                        <label>设为头条新闻</label>
-                    </div>
+                    <div class="form-group"><label>标题 *</label><input type="text" id="title" required></div>
+                    <div class="form-group"><label>摘要（信源）</label><input type="text" id="summary" placeholder="例如：信源：渊迂地铁"></div>
+                    <div class="form-group"><label>正文（支持HTML） *</label><textarea id="content" rows="6" required></textarea></div>
+                    <div class="form-group"><label>图片URL *</label><input type="url" id="image" required></div>
+                    <div class="form-group"><label>分类 *</label><select id="category" required><option value="交通">交通</option><option value="民生">民生</option><option value="科技">科技</option><option value="渊华德互联">渊华德互联</option></select></div>
+                    <div class="form-group"><label>英文标题（可选）</label><input type="text" id="title_en"></div>
+                    <div class="form-group"><label>英文正文（可选）</label><textarea id="content_en" rows="3"></textarea></div>
+                    <div class="form-group"><label>AI总结（可选）</label><textarea id="ai_summary" rows="2"></textarea></div>
+                    <div class="form-group checkbox-group"><input type="checkbox" id="is_breaking"><label>设为头条新闻</label></div>
                     <button type="submit" class="submit-btn" id="submit-btn">发布新闻</button>
                     <button type="button" class="submit-btn" id="cancel-edit" style="background: #64748b; margin-top: 10px; display: none;">取消编辑</button>
                 </form>
             </div>
         </div>
         <div class="list-card">
-            <div class="card-header">
-                <i class="fas fa-newspaper"></i> 所有新闻
-            </div>
+            <div class="card-header"><i class="fas fa-newspaper"></i> 所有新闻</div>
             <div class="form-body">
                 <div class="list-header">
-                    <div class="search-box">
-                        <input type="text" id="search-input" placeholder="搜索标题...">
-                        <button id="search-btn"><i class="fas fa-search"></i></button>
-                    </div>
+                    <div class="search-box"><input type="text" id="search-input" placeholder="搜索标题..."><button id="search-btn"><i class="fas fa-search"></i></button></div>
                     <button id="refresh-btn" style="background: #f1f5f9; border: none; padding: 8px 16px; border-radius: 40px; cursor: pointer;"><i class="fas fa-sync-alt"></i> 刷新</button>
                 </div>
                 <div style="overflow-x: auto;">
-                    <table class="news-table" id="news-table">
-                        <thead>
-                            <tr><th>ID</th><th>标题</th><th>分类</th><th>头条</th><th>操作</th></tr>
-                        </thead>
-                        <tbody id="news-list-body">
-                            <tr><td colspan="5" style="text-align:center;">加载中...</td></tr>
-                        </tbody>
-                    </table>
+                    <table class="news-table" id="news-table"><thead><tr><th>ID</th><th>标题</th><th>分类</th><th>头条</th><th>操作</th></tr></thead><tbody id="news-list-body"><tr><td colspan="5">加载中...</td></tr></tbody></table>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- 删除确认模态框 -->
+<!-- 删除模态框 -->
 <div id="delete-modal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">
-            <h3>确认删除</h3>
-            <button class="close-modal">&times;</button>
-        </div>
+        <div class="modal-header"><h3>确认删除</h3><button class="close-modal">&times;</button></div>
         <p>确定要删除这篇新闻吗？此操作不可恢复。</p>
         <div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 25px;">
             <button id="confirm-delete" style="background: #FF3E4D; color: white; border: none; padding: 8px 18px; border-radius: 30px; cursor: pointer;">删除</button>
@@ -443,12 +398,11 @@
 </div>
 
 <script>
-    // Supabase 配置
     const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // 全局变量
+    // 全局状态
     let newsList = [];
     let deleteId = null;
     let editId = null;
@@ -481,34 +435,6 @@
         return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m));
     }
 
-    // ========== 管理员验证函数 ==========
-    async function verifyAdminAndLoad() {
-        overlay.innerHTML = '<i class="fas fa-spinner fa-pulse fa-2x"></i><div>验证管理员权限...</div>';
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
-            // 未登录，跳转登录页，并携带 redirect 参数
-            window.location.href = `login.html?redirect=admin.html`;
-            return;
-        }
-        const { data: profile, error } = await supabase
-            .from('profiles')
-            .select('role, username')
-            .eq('id', user.id)
-            .single();
-        if (error || !profile || profile.role !== 'admin') {
-            overlay.innerHTML = '<div style="text-align:center;"><i class="fas fa-ban fa-2x"></i><br><br>您没有管理员权限。<br>2秒后返回首页...</div>';
-            setTimeout(() => { window.location.href = 'index.html'; }, 2000);
-            return;
-        }
-        // 验证通过，显示后台
-        overlay.classList.add('hidden');
-        adminContainer.style.display = 'block';
-        const username = profile.username || user.email.split('@')[0];
-        document.getElementById('user-name').textContent = username;
-        document.getElementById('user-avatar').textContent = username.charAt(0).toUpperCase();
-        await loadNewsList();
-    }
-
     // 加载新闻列表
     async function loadNewsList(searchTerm = '') {
         let url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc`;
@@ -517,10 +443,7 @@
         }
         try {
             const res = await fetch(url, {
-                headers: {
-                    'apikey': SUPABASE_ANON_KEY,
-                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-                }
+                headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
             });
             if (res.ok) {
                 newsList = await res.json();
@@ -554,12 +477,8 @@
             `;
             tbody.appendChild(tr);
         });
-        document.querySelectorAll('.edit-btn').forEach(btn => {
-            btn.onclick = () => openEditModal(parseInt(btn.dataset.id));
-        });
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.onclick = () => openDeleteModal(parseInt(btn.dataset.id));
-        });
+        document.querySelectorAll('.edit-btn').forEach(btn => btn.onclick = () => openEditModal(parseInt(btn.dataset.id)));
+        document.querySelectorAll('.delete-btn').forEach(btn => btn.onclick = () => openDeleteModal(parseInt(btn.dataset.id)));
     }
 
     function openEditModal(id) {
@@ -659,40 +578,48 @@
         window.location.href = 'index.html';
     }
 
-    // ========== 页面启动：直接跳转到登录页（强制重新登录） ==========
-    // 无论之前是否登录，打开 admin.html 后先清除本地存储并跳转登录页
-    // 这样可以避免任何会话缓存的干扰
-    (function init() {
-        // 清除所有可能残留的 Supabase 会话（localStorage 和 sessionStorage）
-        localStorage.removeItem('supabase.auth.token');
-        // 直接跳转登录页，携带 redirect 参数
-        window.location.href = `login.html?redirect=admin.html`;
-    })();
-
-    // 注意：由于上面立即跳转，以下代码实际不会执行到（除非登录后返回）。
-    // 为了在登录返回时能够运行，需要将验证逻辑挂载到页面加载事件（但页面会被跳转打断，所以无效）。
-    // 因此正确做法是：登录页面完成后会重定向回 admin.html，此时页面会重新加载，
-    // 但 init 又会执行，造成循环。为了避免循环，我们需要检测 URL 参数是否带有某个标记，或者采用 sessionStorage。
-    // 修正方案：使用 sessionStorage 标记是否已经重定向过。
-    // 更可靠的做法：在 init 中检查如果当前 URL 有 ?fromLogin=1 参数则不再跳转。
-    // 以下代码将替换上面的 init 函数，实现智能判断。
-
-    // 重新编写启动逻辑（覆盖上面的立即跳转）
-    // 为了清晰，移除上面已定义的 init，重新定义一次
+    // ========== 核心逻辑：强制跳转登录，避免卡在遮罩层 ==========
     (function() {
+        // 检查 URL 中是否带有特定参数，表示已经登录过并返回
         const urlParams = new URLSearchParams(window.location.search);
-        const fromLogin = urlParams.get('fromLogin');
-        if (fromLogin === '1') {
-            // 从登录页返回，执行管理员验证
-            verifyAdminAndLoad();
+        const isReturning = urlParams.get('admin_auth') === '1';
+        if (isReturning) {
+            // 从登录页返回，移除 URL 参数防止刷新后重复
+            const cleanUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, cleanUrl);
+            // 验证当前用户是否为管理员
+            supabase.auth.getUser().then(({ data: { user } }) => {
+                if (!user) {
+                    window.location.href = `login.html?redirect=admin.html&admin_auth=1`;
+                    return;
+                }
+                supabase.from('profiles').select('role,username').eq('id', user.id).single().then(({ data: profile, error }) => {
+                    if (error || !profile || profile.role !== 'admin') {
+                        alert('您没有管理员权限');
+                        window.location.href = 'index.html';
+                        return;
+                    }
+                    // 验证通过，显示后台
+                    overlay.classList.add('hidden');
+                    adminContainer.style.display = 'block';
+                    const username = profile.username || user.email.split('@')[0];
+                    document.getElementById('user-name').textContent = username;
+                    document.getElementById('user-avatar').textContent = username.charAt(0).toUpperCase();
+                    loadNewsList();
+                });
+            }).catch(() => {
+                window.location.href = `login.html?redirect=admin.html&admin_auth=1`;
+            });
         } else {
-            // 首次访问，清除会话并跳转登录页，并带上 fromLogin=1 参数，避免循环
+            // 直接清除会话并跳转到登录页，带上 admin_auth=1 参数
             localStorage.removeItem('supabase.auth.token');
-            window.location.href = `login.html?redirect=admin.html&fromLogin=1`;
+            supabase.auth.signOut().then(() => {
+                window.location.href = `login.html?redirect=admin.html&admin_auth=1`;
+            });
         }
     })();
 
-    // 事件绑定（会在验证成功后才真正显示容器，但提前绑定无副作用）
+    // 绑定事件（无论验证是否完成，提前绑定不报错）
     form.addEventListener('submit', submitNews);
     cancelEditBtn.addEventListener('click', cancelEdit);
     searchBtn.addEventListener('click', () => loadNewsList(searchInput.value));
