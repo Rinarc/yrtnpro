@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新闻管理后台 | YRTN+</title>
+    <title>YRTN+ 管理后台</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -13,48 +13,33 @@
             font-family: 'Poppins', sans-serif;
             background: #f0f2f5;
             color: #1e293b;
-            min-height: 100vh;
+            padding: 20px;
         }
-        .auth-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            font-size: 1.2rem;
-            color: #FF3E4D;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .auth-overlay.hidden {
-            display: none;
-        }
-        .admin-container {
+        .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
-            display: none;
         }
-        .admin-header {
+        /* 头部 */
+        .header {
             background: white;
             border-radius: 24px;
             padding: 20px 30px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
-        .logo-area { display: flex; align-items: center; gap: 12px; }
         .logo {
-            width: 40px; height: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon {
+            width: 40px;
+            height: 40px;
             background: linear-gradient(135deg, #FF3E4D, #FF6B6B);
             border-radius: 12px;
             display: flex;
@@ -72,17 +57,22 @@
             background-clip: text;
             color: transparent;
         }
-        .user-area { display: flex; align-items: center; gap: 20px; }
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
         .user-info {
             display: flex;
             align-items: center;
             gap: 12px;
             background: #f1f5f9;
-            padding: 8px 16px;
+            padding: 6px 16px;
             border-radius: 40px;
         }
-        .user-avatar {
-            width: 32px; height: 32px;
+        .avatar {
+            width: 32px;
+            height: 32px;
             background: linear-gradient(135deg, #FF3E4D, #4A90E2);
             border-radius: 50%;
             display: flex;
@@ -92,7 +82,8 @@
             font-weight: 600;
         }
         .logout-btn {
-            background: none; border: none;
+            background: none;
+            border: none;
             color: #FF3E4D;
             cursor: pointer;
             font-size: 0.9rem;
@@ -101,16 +92,18 @@
             gap: 6px;
             padding: 6px 12px;
             border-radius: 40px;
-            transition: 0.2s;
         }
         .logout-btn:hover { background: #fee2e2; }
-        .admin-grid {
+        /* 双栏布局 */
+        .grid {
             display: grid;
             grid-template-columns: 1fr 1.5fr;
             gap: 30px;
         }
-        @media (max-width: 900px) { .admin-grid { grid-template-columns: 1fr; } }
-        .form-card, .list-card {
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+        .card {
             background: white;
             border-radius: 24px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.05);
@@ -125,8 +118,10 @@
             background: #fafcff;
         }
         .card-header i { margin-right: 8px; color: #FF3E4D; }
-        .form-body { padding: 25px; }
-        .form-group { margin-bottom: 20px; }
+        .card-body { padding: 25px; }
+        .form-group {
+            margin-bottom: 20px;
+        }
         .form-group label {
             display: block;
             margin-bottom: 8px;
@@ -140,7 +135,6 @@
             border-radius: 16px;
             font-family: inherit;
             font-size: 0.95rem;
-            transition: 0.2s;
         }
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
             outline: none;
@@ -153,45 +147,39 @@
             gap: 10px;
         }
         .checkbox-group input { width: 20px; height: 20px; cursor: pointer; }
-        .submit-btn {
+        .btn {
             background: linear-gradient(135deg, #FF3E4D, #FF6B6B);
             color: white;
             border: none;
-            padding: 14px 20px;
+            padding: 12px 20px;
             border-radius: 40px;
             font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
-            transition: 0.3s;
             width: 100%;
+            transition: 0.2s;
         }
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255,62,77,0.3);
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,62,77,0.3); }
+        .btn-secondary {
+            background: #64748b;
+            margin-top: 10px;
         }
-        .list-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .search-box {
+        .search-bar {
             display: flex;
             gap: 10px;
+            margin-bottom: 20px;
         }
-        .search-box input {
-            padding: 8px 15px;
+        .search-bar input {
+            flex: 1;
+            padding: 8px 16px;
             border: 1px solid #cbd5e1;
             border-radius: 40px;
-            width: 250px;
         }
-        .search-box button {
+        .search-bar button {
             background: #4A90E2;
             color: white;
             border: none;
-            padding: 8px 16px;
+            padding: 8px 20px;
             border-radius: 40px;
             cursor: pointer;
         }
@@ -203,10 +191,9 @@
             padding: 12px 10px;
             text-align: left;
             border-bottom: 1px solid #e2e8f0;
-            vertical-align: middle;
         }
         .news-table th { background: #f8fafc; font-weight: 600; }
-        .table-actions button {
+        .actions button {
             background: none;
             border: none;
             cursor: pointer;
@@ -214,24 +201,20 @@
             margin: 0 4px;
             padding: 6px;
             border-radius: 8px;
-            transition: 0.2s;
         }
         .edit-btn { color: #4A90E2; }
-        .edit-btn:hover { background: #e6f0ff; }
         .delete-btn { color: #FF3E4D; }
-        .delete-btn:hover { background: #fee2e2; }
-        .status-badge {
+        .badge {
             background: #22c55e;
             color: white;
-            padding: 4px 8px;
+            padding: 2px 8px;
             border-radius: 20px;
             font-size: 0.7rem;
-            display: inline-block;
         }
-        .error-message {
+        .error {
             color: #FF3E4D;
             background: #fff0f0;
-            padding: 15px;
+            padding: 12px;
             border-radius: 16px;
             margin-bottom: 20px;
         }
@@ -251,21 +234,15 @@
         .modal-content {
             background: white;
             border-radius: 24px;
-            max-width: 500px;
+            max-width: 400px;
             width: 90%;
             padding: 25px;
         }
-        .modal-header {
+        .modal-buttons {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .close-modal {
-            font-size: 1.5rem;
-            cursor: pointer;
-            background: none;
-            border: none;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 25px;
         }
         @media (max-width: 640px) {
             .news-table, .news-table thead, .news-table tbody, .news-table tr, .news-table td {
@@ -283,7 +260,6 @@
                 padding: 8px 0;
                 display: flex;
                 justify-content: space-between;
-                align-items: center;
             }
             .news-table td::before {
                 content: attr(data-label);
@@ -294,54 +270,56 @@
     </style>
 </head>
 <body>
-<div id="auth-overlay" class="auth-overlay">
-    <i class="fas fa-spinner fa-pulse fa-2x"></i>
-    <div>正在验证管理员权限...</div>
-</div>
-<div id="admin-container" class="admin-container">
-    <div class="admin-header">
-        <div class="logo-area">
-            <div class="logo">Y</div>
+<div class="container" id="app" style="display: none;">
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">Y</div>
             <div class="logo-text">YRTN+ 管理后台</div>
         </div>
         <div class="user-area">
             <div class="user-info">
-                <div class="user-avatar" id="user-avatar"></div>
+                <div class="avatar" id="user-avatar"></div>
                 <span id="user-name"></span>
             </div>
             <button class="logout-btn" id="logout-btn"><i class="fas fa-sign-out-alt"></i> 退出</button>
         </div>
     </div>
-    <div class="admin-grid">
-        <div class="form-card">
+    <div class="grid">
+        <!-- 左侧表单 -->
+        <div class="card">
             <div class="card-header"><i class="fas fa-pen-alt"></i> <span id="form-title">发布新新闻</span></div>
-            <div class="form-body">
-                <div id="form-error" class="error-message" style="display: none;"></div>
+            <div class="card-body">
+                <div id="form-error" class="error" style="display: none;"></div>
                 <form id="news-form">
-                    <input type="hidden" id="edit-id" value="">
+                    <input type="hidden" id="edit-id">
                     <div class="form-group"><label>标题 *</label><input type="text" id="title" required></div>
                     <div class="form-group"><label>摘要（信源）</label><input type="text" id="summary" placeholder="例如：信源：渊迂地铁"></div>
-                    <div class="form-group"><label>正文（支持HTML） *</label><textarea id="content" rows="6" required></textarea></div>
+                    <div class="form-group"><label>正文（支持HTML） *</label><textarea id="content" rows="5" required></textarea></div>
                     <div class="form-group"><label>图片URL *</label><input type="url" id="image" required></div>
                     <div class="form-group"><label>分类 *</label><select id="category" required><option value="交通">交通</option><option value="民生">民生</option><option value="科技">科技</option><option value="渊华德互联">渊华德互联</option></select></div>
-                    <div class="form-group"><label>英文标题（可选）</label><input type="text" id="title_en"></div>
-                    <div class="form-group"><label>英文正文（可选）</label><textarea id="content_en" rows="3"></textarea></div>
-                    <div class="form-group"><label>AI总结（可选）</label><textarea id="ai_summary" rows="2"></textarea></div>
+                    <div class="form-group"><label>英文标题</label><input type="text" id="title_en"></div>
+                    <div class="form-group"><label>英文正文</label><textarea id="content_en" rows="2"></textarea></div>
+                    <div class="form-group"><label>AI总结</label><textarea id="ai_summary" rows="2"></textarea></div>
                     <div class="form-group checkbox-group"><input type="checkbox" id="is_breaking"><label>设为头条新闻</label></div>
-                    <button type="submit" class="submit-btn" id="submit-btn">发布新闻</button>
-                    <button type="button" class="submit-btn" id="cancel-edit" style="background: #64748b; margin-top: 10px; display: none;">取消编辑</button>
+                    <button type="submit" class="btn" id="submit-btn">发布新闻</button>
+                    <button type="button" class="btn btn-secondary" id="cancel-edit" style="display: none;">取消编辑</button>
                 </form>
             </div>
         </div>
-        <div class="list-card">
+        <!-- 右侧新闻列表 -->
+        <div class="card">
             <div class="card-header"><i class="fas fa-newspaper"></i> 所有新闻</div>
-            <div class="form-body">
-                <div class="list-header">
-                    <div class="search-box"><input type="text" id="search-input" placeholder="搜索标题..."><button id="search-btn"><i class="fas fa-search"></i></button></div>
-                    <button id="refresh-btn" style="background: #f1f5f9; border: none; padding: 8px 16px; border-radius: 40px; cursor: pointer;"><i class="fas fa-sync-alt"></i> 刷新</button>
+            <div class="card-body">
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="搜索标题...">
+                    <button id="search-btn"><i class="fas fa-search"></i> 搜索</button>
+                    <button id="refresh-btn" style="background:#e2e8f0; color:#1e293b;"><i class="fas fa-sync-alt"></i> 刷新</button>
                 </div>
                 <div style="overflow-x: auto;">
-                    <table class="news-table" id="news-table"><thead><tr><th>ID</th><th>标题</th><th>分类</th><th>头条</th><th>操作</th></tr></thead><tbody id="news-list-body"><tr><td colspan="5">加载中...</td></tr></tbody></table>
+                    <table class="news-table" id="news-table">
+                        <thead><tr><th>ID</th><th>标题</th><th>分类</th><th>头条</th><th>操作</th></tr></thead>
+                        <tbody id="news-list"><tr><td colspan="5" style="text-align:center;">加载中...</td></tr></tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -349,11 +327,11 @@
 </div>
 <div id="delete-modal" class="modal">
     <div class="modal-content">
-        <div class="modal-header"><h3>确认删除</h3><button class="close-modal">&times;</button></div>
+        <h3>确认删除</h3>
         <p>确定要删除这篇新闻吗？此操作不可恢复。</p>
-        <div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 25px;">
-            <button id="confirm-delete" style="background: #FF3E4D; color: white; border: none; padding: 8px 18px; border-radius: 30px; cursor: pointer;">删除</button>
-            <button id="cancel-delete" style="background: #cbd5e1; border: none; padding: 8px 18px; border-radius: 30px; cursor: pointer;">取消</button>
+        <div class="modal-buttons">
+            <button id="confirm-delete" style="background:#FF3E4D; color:white; border:none; padding:8px 20px; border-radius:30px;">删除</button>
+            <button id="cancel-delete" style="background:#cbd5e1; border:none; padding:8px 20px; border-radius:30px;">取消</button>
         </div>
     </div>
 </div>
@@ -362,16 +340,15 @@
     const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    
+
+    let currentUser = null;
     let newsList = [];
     let deleteId = null;
     let editId = null;
-    
-    const overlay = document.getElementById('auth-overlay');
-    const adminContainer = document.getElementById('admin-container');
+
+    // DOM
+    const app = document.getElementById('app');
     const form = document.getElementById('news-form');
-    const submitBtn = document.getElementById('submit-btn');
-    const cancelEditBtn = document.getElementById('cancel-edit');
     const formTitle = document.getElementById('form-title');
     const formError = document.getElementById('form-error');
     const editIdInput = document.getElementById('edit-id');
@@ -384,20 +361,22 @@
     const contentEnInput = document.getElementById('content_en');
     const aiSummaryInput = document.getElementById('ai_summary');
     const isBreakingCheck = document.getElementById('is_breaking');
+    const submitBtn = document.getElementById('submit-btn');
+    const cancelEditBtn = document.getElementById('cancel-edit');
     const searchInput = document.getElementById('search-input');
     const searchBtn = document.getElementById('search-btn');
     const refreshBtn = document.getElementById('refresh-btn');
     const logoutBtn = document.getElementById('logout-btn');
-    
+
     function escapeHtml(str) {
         if (!str) return '';
-        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m));
+        return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m] || m));
     }
-    
-    async function loadNewsList(searchTerm = '') {
+
+    async function loadNews(search = '') {
         let url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc`;
-        if (searchTerm) {
-            url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc&title=ilike.%${encodeURIComponent(searchTerm)}%`;
+        if (search) {
+            url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc&title=ilike.%${encodeURIComponent(search)}%`;
         }
         try {
             const res = await fetch(url, {
@@ -405,41 +384,41 @@
             });
             if (res.ok) {
                 newsList = await res.json();
-                renderNewsTable(newsList);
+                renderTable(newsList);
             } else {
-                document.getElementById('news-list-body').innerHTML = '<tr><td colspan="5">加载失败，请刷新重试</td></tr>';
+                document.getElementById('news-list').innerHTML = '<tr><td colspan="5">加载失败</td></tr>';
             }
-        } catch (err) {
-            document.getElementById('news-list-body').innerHTML = '<tr><td colspan="5">网络错误</td></tr>';
+        } catch(e) {
+            document.getElementById('news-list').innerHTML = '<tr><td colspan="5">网络错误</td></tr>';
         }
     }
-    
-    function renderNewsTable(articles) {
-        const tbody = document.getElementById('news-list-body');
+
+    function renderTable(articles) {
+        const tbody = document.getElementById('news-list');
         if (!articles.length) {
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">暂无新闻</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5">暂无新闻</td></tr>';
             return;
         }
         tbody.innerHTML = '';
-        articles.forEach(article => {
+        articles.forEach(a => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td data-label="ID">${article.id}</td>
-                <td data-label="标题">${escapeHtml(article.title.length > 40 ? article.title.substring(0,40)+'...' : article.title)}</td>
-                <td data-label="分类">${escapeHtml(article.category)}</td>
-                <td data-label="头条">${article.is_breaking ? '<span class="status-badge">头条</span>' : ''}</td>
-                <td data-label="操作" class="table-actions">
-                    <button class="edit-btn" data-id="${article.id}"><i class="fas fa-edit"></i></button>
-                    <button class="delete-btn" data-id="${article.id}"><i class="fas fa-trash-alt"></i></button>
+                <td data-label="ID">${a.id}</td>
+                <td data-label="标题">${escapeHtml(a.title.length>40 ? a.title.substring(0,40)+'...' : a.title)}</td>
+                <td data-label="分类">${escapeHtml(a.category)}</td>
+                <td data-label="头条">${a.is_breaking ? '<span class="badge">头条</span>' : ''}</td>
+                <td data-label="操作" class="actions">
+                    <button class="edit-btn" data-id="${a.id}"><i class="fas fa-edit"></i></button>
+                    <button class="delete-btn" data-id="${a.id}"><i class="fas fa-trash-alt"></i></button>
                 </td>
             `;
             tbody.appendChild(tr);
         });
-        document.querySelectorAll('.edit-btn').forEach(btn => btn.onclick = () => openEditModal(parseInt(btn.dataset.id)));
-        document.querySelectorAll('.delete-btn').forEach(btn => btn.onclick = () => openDeleteModal(parseInt(btn.dataset.id)));
+        document.querySelectorAll('.edit-btn').forEach(btn => btn.onclick = () => openEdit(parseInt(btn.dataset.id)));
+        document.querySelectorAll('.delete-btn').forEach(btn => btn.onclick = () => openDelete(parseInt(btn.dataset.id)));
     }
-    
-    function openEditModal(id) {
+
+    function openEdit(id) {
         const article = newsList.find(a => a.id === id);
         if (!article) return;
         editId = article.id;
@@ -458,7 +437,7 @@
         cancelEditBtn.style.display = 'block';
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    
+
     function cancelEdit() {
         editId = null;
         editIdInput.value = '';
@@ -468,8 +447,8 @@
         cancelEditBtn.style.display = 'none';
         formError.style.display = 'none';
     }
-    
-    async function submitNews(e) {
+
+    async function submitForm(e) {
         e.preventDefault();
         const data = {
             title: titleInput.value.trim(),
@@ -502,40 +481,39 @@
                 alert('新闻已发布');
                 form.reset();
             }
-            await loadNewsList(searchInput.value);
+            await loadNews(searchInput.value);
         } catch (err) {
             formError.textContent = '操作失败: ' + err.message;
             formError.style.display = 'block';
             setTimeout(() => formError.style.display = 'none', 5000);
         }
     }
-    
-    function openDeleteModal(id) {
+
+    function openDelete(id) {
         deleteId = id;
         document.getElementById('delete-modal').classList.add('active');
     }
-    
     async function confirmDelete() {
         if (!deleteId) return;
         const { error } = await supabase.from('news').delete().eq('id', deleteId);
         if (error) alert('删除失败: ' + error.message);
         else {
             alert('删除成功');
-            await loadNewsList(searchInput.value);
+            await loadNews(searchInput.value);
         }
-        closeModal();
+        document.getElementById('delete-modal').classList.remove('active');
         deleteId = null;
     }
-    
     function closeModal() {
         document.getElementById('delete-modal').classList.remove('active');
     }
-    
+
     async function logout() {
         await supabase.auth.signOut();
         window.location.href = 'index.html';
     }
-    
+
+    // 权限验证入口
     (async () => {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) {
@@ -548,23 +526,26 @@
             window.location.href = 'index.html';
             return;
         }
-        overlay.style.display = 'none';
-        adminContainer.style.display = 'block';
+        currentUser = user;
         const username = profile.username || user.email.split('@')[0];
         document.getElementById('user-name').textContent = username;
         document.getElementById('user-avatar').textContent = username.charAt(0).toUpperCase();
-        await loadNewsList();
-        form.addEventListener('submit', submitNews);
-        cancelEditBtn.addEventListener('click', cancelEdit);
-        searchBtn.addEventListener('click', () => loadNewsList(searchInput.value));
-        refreshBtn.addEventListener('click', () => loadNewsList(searchInput.value));
-        logoutBtn.addEventListener('click', logout);
-        document.querySelectorAll('.close-modal, #cancel-delete').forEach(btn => btn.addEventListener('click', closeModal));
-        document.getElementById('confirm-delete').addEventListener('click', confirmDelete);
-        window.addEventListener('click', (e) => {
-            if (e.target === document.getElementById('delete-modal')) closeModal();
-        });
+        app.style.display = 'block';
+        await loadNews();
     })();
+
+    // 事件绑定
+    form.addEventListener('submit', submitForm);
+    cancelEditBtn.addEventListener('click', cancelEdit);
+    searchBtn.addEventListener('click', () => loadNews(searchInput.value));
+    refreshBtn.addEventListener('click', () => loadNews(searchInput.value));
+    logoutBtn.addEventListener('click', logout);
+    document.getElementById('confirm-delete').addEventListener('click', confirmDelete);
+    document.getElementById('cancel-delete').addEventListener('click', closeModal);
+    window.addEventListener('click', (e) => {
+        const modal = document.getElementById('delete-modal');
+        if (e.target === modal) closeModal();
+    });
 </script>
 </body>
 </html>
