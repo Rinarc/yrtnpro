@@ -15,11 +15,16 @@
             color: #1e293b;
             padding: 20px;
         }
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2rem;
+            color: #FF3E4D;
+        }
         .container {
             max-width: 1400px;
             margin: 0 auto;
         }
-        /* 头部 */
         .header {
             background: white;
             border-radius: 24px;
@@ -94,7 +99,6 @@
             border-radius: 40px;
         }
         .logout-btn:hover { background: #fee2e2; }
-        /* 双栏布局 */
         .grid {
             display: grid;
             grid-template-columns: 1fr 1.5fr;
@@ -270,7 +274,10 @@
     </style>
 </head>
 <body>
-<div class="container" id="app" style="display: none;">
+<div id="loading" class="loading">
+    <i class="fas fa-spinner fa-pulse"></i> 正在验证权限...
+</div>
+<div id="admin-panel" class="container" style="display: none;">
     <div class="header">
         <div class="logo">
             <div class="logo-icon">Y</div>
@@ -285,7 +292,6 @@
         </div>
     </div>
     <div class="grid">
-        <!-- 左侧表单 -->
         <div class="card">
             <div class="card-header"><i class="fas fa-pen-alt"></i> <span id="form-title">发布新新闻</span></div>
             <div class="card-body">
@@ -306,7 +312,6 @@
                 </form>
             </div>
         </div>
-        <!-- 右侧新闻列表 -->
         <div class="card">
             <div class="card-header"><i class="fas fa-newspaper"></i> 所有新闻</div>
             <div class="card-body">
@@ -340,14 +345,14 @@
     const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
+    
     let currentUser = null;
     let newsList = [];
     let deleteId = null;
     let editId = null;
-
-    // DOM
-    const app = document.getElementById('app');
+    
+    const loadingEl = document.getElementById('loading');
+    const adminPanel = document.getElementById('admin-panel');
     const form = document.getElementById('news-form');
     const formTitle = document.getElementById('form-title');
     const formError = document.getElementById('form-error');
@@ -367,12 +372,12 @@
     const searchBtn = document.getElementById('search-btn');
     const refreshBtn = document.getElementById('refresh-btn');
     const logoutBtn = document.getElementById('logout-btn');
-
+    
     function escapeHtml(str) {
         if (!str) return '';
         return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m] || m));
     }
-
+    
     async function loadNews(search = '') {
         let url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc`;
         if (search) {
@@ -392,7 +397,7 @@
             document.getElementById('news-list').innerHTML = '<tr><td colspan="5">网络错误</td></tr>';
         }
     }
-
+    
     function renderTable(articles) {
         const tbody = document.getElementById('news-list');
         if (!articles.length) {
@@ -417,7 +422,7 @@
         document.querySelectorAll('.edit-btn').forEach(btn => btn.onclick = () => openEdit(parseInt(btn.dataset.id)));
         document.querySelectorAll('.delete-btn').forEach(btn => btn.onclick = () => openDelete(parseInt(btn.dataset.id)));
     }
-
+    
     function openEdit(id) {
         const article = newsList.find(a => a.id === id);
         if (!article) return;
@@ -437,7 +442,7 @@
         cancelEditBtn.style.display = 'block';
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-
+    
     function cancelEdit() {
         editId = null;
         editIdInput.value = '';
@@ -447,7 +452,7 @@
         cancelEditBtn.style.display = 'none';
         formError.style.display = 'none';
     }
-
+    
     async function submitForm(e) {
         e.preventDefault();
         const data = {
@@ -488,11 +493,13 @@
             setTimeout(() => formError.style.display = 'none', 5000);
         }
     }
-
+    
     function openDelete(id) {
         deleteId = id;
-        document.getElementById('delete-modal').classList.add('active');
+        const modal = document.getElementById('delete-modal');
+        modal.classList.add('active');
     }
+    
     async function confirmDelete() {
         if (!deleteId) return;
         const { error } = await supabase.from('news').delete().eq('id', deleteId);
@@ -504,37 +511,48 @@
         document.getElementById('delete-modal').classList.remove('active');
         deleteId = null;
     }
+    
     function closeModal() {
         document.getElementById('delete-modal').classList.remove('active');
     }
-
+    
     async function logout() {
         await supabase.auth.signOut();
         window.location.href = 'index.html';
     }
-
-    // 权限验证入口
+    
+    // 主入口
     (async () => {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
-            window.location.href = `login.html?redirect=admin.html`;
-            return;
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+                window.location.href = `login.html?redirect=admin.html`;
+                return;
+            }
+            const { data: profile, error } = await supabase
+                .from('profiles')
+                .select('role, username')
+                .eq('id', user.id)
+                .single();
+            if (error || !profile || profile.role !== 'admin') {
+                alert('您没有管理员权限');
+                window.location.href = 'index.html';
+                return;
+            }
+            currentUser = user;
+            const username = profile.username || user.email.split('@')[0];
+            document.getElementById('user-name').textContent = username;
+            document.getElementById('user-avatar').textContent = username.charAt(0).toUpperCase();
+            loadingEl.style.display = 'none';
+            adminPanel.style.display = 'block';
+            await loadNews();
+        } catch (err) {
+            loadingEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 权限验证失败，请刷新重试。';
+            console.error(err);
         }
-        const { data: profile, error } = await supabase.from('profiles').select('role, username').eq('id', user.id).single();
-        if (error || !profile || profile.role !== 'admin') {
-            alert('您没有管理员权限');
-            window.location.href = 'index.html';
-            return;
-        }
-        currentUser = user;
-        const username = profile.username || user.email.split('@')[0];
-        document.getElementById('user-name').textContent = username;
-        document.getElementById('user-avatar').textContent = username.charAt(0).toUpperCase();
-        app.style.display = 'block';
-        await loadNews();
     })();
-
-    // 事件绑定
+    
+    // 绑定事件
     form.addEventListener('submit', submitForm);
     cancelEditBtn.addEventListener('click', cancelEdit);
     searchBtn.addEventListener('click', () => loadNews(searchInput.value));
