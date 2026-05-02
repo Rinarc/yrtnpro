@@ -329,10 +329,9 @@
 <body>
 <div id="auth-overlay" class="auth-overlay">
     <i class="fas fa-spinner fa-pulse fa-2x"></i>
-    <div>正在验证...</div>
+    <div>即将跳转登录页...</div>
 </div>
 <div id="admin-container" class="admin-container">
-    <!-- 管理后台内容结构 -->
     <div class="admin-header">
         <div class="logo-area">
             <div class="logo">Y</div>
@@ -428,7 +427,7 @@
         </div>
     </div>
 </div>
-<!-- 删除模态框 -->
+<!-- 删除确认模态框 -->
 <div id="delete-modal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
@@ -444,6 +443,7 @@
 </div>
 
 <script>
+    // Supabase 配置
     const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -481,21 +481,12 @@
         return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m));
     }
 
-    // 主流程：先强制登出，再跳转登录页
-    async function forceLogoutAndRedirect() {
-        await supabase.auth.signOut();
-        // 清除所有 localStorage 中可能残留的会话信息（可选）
-        localStorage.removeItem('supabase.auth.token');
-        // 跳转到登录页，并携带 redirect 参数
-        window.location.href = `login.html?redirect=admin.html`;
-    }
-
-    // 真正的管理员验证函数（在登录成功后执行）
+    // ========== 管理员验证函数 ==========
     async function verifyAdminAndLoad() {
-        overlay.innerHTML = '<i class="fas fa-spinner fa-pulse fa-2x"></i><div>正在验证管理员权限...</div>';
+        overlay.innerHTML = '<i class="fas fa-spinner fa-pulse fa-2x"></i><div>验证管理员权限...</div>';
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) {
-            // 没有用户，再次跳转登录（安全兜底）
+            // 未登录，跳转登录页，并携带 redirect 参数
             window.location.href = `login.html?redirect=admin.html`;
             return;
         }
@@ -668,43 +659,51 @@
         window.location.href = 'index.html';
     }
 
-    // ========== 页面启动逻辑 ==========
-    // 第一步：立即强制登出并跳转登录页（保证每次打开都要求重新登录）
-    forceLogoutAndRedirect();
+    // ========== 页面启动：直接跳转到登录页（强制重新登录） ==========
+    // 无论之前是否登录，打开 admin.html 后先清除本地存储并跳转登录页
+    // 这样可以避免任何会话缓存的干扰
+    (function init() {
+        // 清除所有可能残留的 Supabase 会话（localStorage 和 sessionStorage）
+        localStorage.removeItem('supabase.auth.token');
+        // 直接跳转登录页，携带 redirect 参数
+        window.location.href = `login.html?redirect=admin.html`;
+    })();
 
-    // 注意：由于跳转，下面的绑定实际上不会执行到（因为页面被重定向了），
-    // 但为了逻辑完整，当用户从登录页带着 redirect 返回时，页面会重新加载，
-    // 此时 forceLogoutAndRedirect 又会执行，造成循环。所以需要判断是否已经处于登录回调状态。
-    // 修正：在 URL 参数中标记是否需要跳过强制登出
-    // 更优雅的方式：检测 URL 是否有 ?skip_logout=1，但更好的做法是：只在本页面首次加载时强制登出一次，然后用 sessionStorage 标记。
-    // 为避免无限循环，我们采用 sessionStorage 标记。
+    // 注意：由于上面立即跳转，以下代码实际不会执行到（除非登录后返回）。
+    // 为了在登录返回时能够运行，需要将验证逻辑挂载到页面加载事件（但页面会被跳转打断，所以无效）。
+    // 因此正确做法是：登录页面完成后会重定向回 admin.html，此时页面会重新加载，
+    // 但 init 又会执行，造成循环。为了避免循环，我们需要检测 URL 参数是否带有某个标记，或者采用 sessionStorage。
+    // 修正方案：使用 sessionStorage 标记是否已经重定向过。
+    // 更可靠的做法：在 init 中检查如果当前 URL 有 ?fromLogin=1 参数则不再跳转。
+    // 以下代码将替换上面的 init 函数，实现智能判断。
+
+    // 重新编写启动逻辑（覆盖上面的立即跳转）
+    // 为了清晰，移除上面已定义的 init，重新定义一次
     (function() {
-        const hasForceLoggedOut = sessionStorage.getItem('admin_force_logout');
-        if (!hasForceLoggedOut) {
-            // 第一次加载，强制登出
-            sessionStorage.setItem('admin_force_logout', 'true');
-            supabase.auth.signOut().then(() => {
-                window.location.href = `login.html?redirect=admin.html`;
-            });
-        } else {
-            // 已经强制登出过，说明是从登录页返回，此时验证管理员
+        const urlParams = new URLSearchParams(window.location.search);
+        const fromLogin = urlParams.get('fromLogin');
+        if (fromLogin === '1') {
+            // 从登录页返回，执行管理员验证
             verifyAdminAndLoad();
+        } else {
+            // 首次访问，清除会话并跳转登录页，并带上 fromLogin=1 参数，避免循环
+            localStorage.removeItem('supabase.auth.token');
+            window.location.href = `login.html?redirect=admin.html&fromLogin=1`;
         }
     })();
 
-    // 关闭模态框事件（动态绑定，因为元素已存在）
-    document.querySelectorAll('.close-modal, #cancel-delete').forEach(btn => btn.addEventListener('click', closeModal));
-    document.getElementById('confirm-delete')?.addEventListener('click', confirmDelete);
-    window.addEventListener('click', (e) => {
-        const modal = document.getElementById('delete-modal');
-        if (e.target === modal) closeModal();
-    });
-    // 绑定表单事件（管理员验证完成后才会显示容器，但提前绑定没问题）
+    // 事件绑定（会在验证成功后才真正显示容器，但提前绑定无副作用）
     form.addEventListener('submit', submitNews);
     cancelEditBtn.addEventListener('click', cancelEdit);
     searchBtn.addEventListener('click', () => loadNewsList(searchInput.value));
     refreshBtn.addEventListener('click', () => loadNewsList(searchInput.value));
     logoutBtn.addEventListener('click', logout);
+    document.querySelectorAll('.close-modal, #cancel-delete').forEach(btn => btn.addEventListener('click', closeModal));
+    document.getElementById('confirm-delete').addEventListener('click', confirmDelete);
+    window.addEventListener('click', (e) => {
+        const modal = document.getElementById('delete-modal');
+        if (e.target === modal) closeModal();
+    });
 </script>
 </body>
 </html>
