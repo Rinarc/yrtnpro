@@ -2,16 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>YRTN+ 管理后台</title>
-    <!-- 立即清除会话并跳转，不等待任何异步 -->
-    <script>
-        localStorage.removeItem('supabase.auth.token');
-        // 如果当前 URL 没有 fromAdmin 参数，立即跳转到登录页
-        if (!window.location.search.includes('fromAdmin=1')) {
-            window.location.replace('login.html?redirect=admin.html&fromAdmin=1');
-        }
-    </script>
-    <!-- 以下内容仅当从登录页返回时才会加载 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新闻管理后台 | YRTN+</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -39,10 +31,14 @@
             flex-direction: column;
             gap: 15px;
         }
+        .auth-overlay.hidden {
+            display: none;
+        }
         .admin-container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
+            display: none;
         }
         .admin-header {
             background: white;
@@ -56,14 +52,9 @@
             flex-wrap: wrap;
             gap: 15px;
         }
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .logo-area { display: flex; align-items: center; gap: 12px; }
         .logo {
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             background: linear-gradient(135deg, #FF3E4D, #FF6B6B);
             border-radius: 12px;
             display: flex;
@@ -81,11 +72,7 @@
             background-clip: text;
             color: transparent;
         }
-        .user-area {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
+        .user-area { display: flex; align-items: center; gap: 20px; }
         .user-info {
             display: flex;
             align-items: center;
@@ -95,8 +82,7 @@
             border-radius: 40px;
         }
         .user-avatar {
-            width: 32px;
-            height: 32px;
+            width: 32px; height: 32px;
             background: linear-gradient(135deg, #FF3E4D, #4A90E2);
             border-radius: 50%;
             display: flex;
@@ -106,8 +92,7 @@
             font-weight: 600;
         }
         .logout-btn {
-            background: none;
-            border: none;
+            background: none; border: none;
             color: #FF3E4D;
             cursor: pointer;
             font-size: 0.9rem;
@@ -118,17 +103,13 @@
             border-radius: 40px;
             transition: 0.2s;
         }
-        .logout-btn:hover {
-            background: #fee2e2;
-        }
+        .logout-btn:hover { background: #fee2e2; }
         .admin-grid {
             display: grid;
             grid-template-columns: 1fr 1.5fr;
             gap: 30px;
         }
-        @media (max-width: 900px) {
-            .admin-grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 900px) { .admin-grid { grid-template-columns: 1fr; } }
         .form-card, .list-card {
             background: white;
             border-radius: 24px;
@@ -143,16 +124,9 @@
             font-size: 1.2rem;
             background: #fafcff;
         }
-        .card-header i {
-            margin-right: 8px;
-            color: #FF3E4D;
-        }
-        .form-body {
-            padding: 25px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .card-header i { margin-right: 8px; color: #FF3E4D; }
+        .form-body { padding: 25px; }
+        .form-group { margin-bottom: 20px; }
         .form-group label {
             display: block;
             margin-bottom: 8px;
@@ -178,11 +152,7 @@
             align-items: center;
             gap: 10px;
         }
-        .checkbox-group input {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
+        .checkbox-group input { width: 20px; height: 20px; cursor: pointer; }
         .submit-btn {
             background: linear-gradient(135deg, #FF3E4D, #FF6B6B);
             color: white;
@@ -235,10 +205,7 @@
             border-bottom: 1px solid #e2e8f0;
             vertical-align: middle;
         }
-        .news-table th {
-            background: #f8fafc;
-            font-weight: 600;
-        }
+        .news-table th { background: #f8fafc; font-weight: 600; }
         .table-actions button {
             background: none;
             border: none;
@@ -280,9 +247,7 @@
             justify-content: center;
             z-index: 1000;
         }
-        .modal.active {
-            display: flex;
-        }
+        .modal.active { display: flex; }
         .modal-content {
             background: white;
             border-radius: 24px;
@@ -306,9 +271,7 @@
             .news-table, .news-table thead, .news-table tbody, .news-table tr, .news-table td {
                 display: block;
             }
-            .news-table thead {
-                display: none;
-            }
+            .news-table thead { display: none; }
             .news-table tr {
                 margin-bottom: 15px;
                 border: 1px solid #e2e8f0;
@@ -333,9 +296,9 @@
 <body>
 <div id="auth-overlay" class="auth-overlay">
     <i class="fas fa-spinner fa-pulse fa-2x"></i>
-    <div>验证管理员权限...</div>
+    <div>正在验证管理员权限...</div>
 </div>
-<div id="admin-container" class="admin-container" style="display: none;">
+<div id="admin-container" class="admin-container">
     <div class="admin-header">
         <div class="logo-area">
             <div class="logo">Y</div>
@@ -351,10 +314,7 @@
     </div>
     <div class="admin-grid">
         <div class="form-card">
-            <div class="card-header">
-                <i class="fas fa-pen-alt"></i> 
-                <span id="form-title">发布新新闻</span>
-            </div>
+            <div class="card-header"><i class="fas fa-pen-alt"></i> <span id="form-title">发布新新闻</span></div>
             <div class="form-body">
                 <div id="form-error" class="error-message" style="display: none;"></div>
                 <form id="news-form">
@@ -387,7 +347,6 @@
         </div>
     </div>
 </div>
-<!-- 删除模态框 -->
 <div id="delete-modal" class="modal">
     <div class="modal-content">
         <div class="modal-header"><h3>确认删除</h3><button class="close-modal">&times;</button></div>
@@ -400,223 +359,212 @@
 </div>
 
 <script>
-    // 只有从登录页返回时才执行后续代码
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('fromAdmin') === '1') {
-        // 清理 URL 参数
-        window.history.replaceState({}, document.title, window.location.pathname);
-        
-        // 初始化 Supabase
-        const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
-        let newsList = [];
-        let deleteId = null;
-        let editId = null;
-        
-        // DOM 元素
-        const overlay = document.getElementById('auth-overlay');
-        const adminContainer = document.getElementById('admin-container');
-        const form = document.getElementById('news-form');
-        const submitBtn = document.getElementById('submit-btn');
-        const cancelEditBtn = document.getElementById('cancel-edit');
-        const formTitle = document.getElementById('form-title');
-        const formError = document.getElementById('form-error');
-        const editIdInput = document.getElementById('edit-id');
-        const titleInput = document.getElementById('title');
-        const summaryInput = document.getElementById('summary');
-        const contentInput = document.getElementById('content');
-        const imageInput = document.getElementById('image');
-        const categorySelect = document.getElementById('category');
-        const titleEnInput = document.getElementById('title_en');
-        const contentEnInput = document.getElementById('content_en');
-        const aiSummaryInput = document.getElementById('ai_summary');
-        const isBreakingCheck = document.getElementById('is_breaking');
-        const searchInput = document.getElementById('search-input');
-        const searchBtn = document.getElementById('search-btn');
-        const refreshBtn = document.getElementById('refresh-btn');
-        const logoutBtn = document.getElementById('logout-btn');
-        
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m));
-        }
-        
-        async function loadNewsList(searchTerm = '') {
-            let url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc`;
-            if (searchTerm) {
-                url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc&title=ilike.%${encodeURIComponent(searchTerm)}%`;
-            }
-            try {
-                const res = await fetch(url, {
-                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
-                });
-                if (res.ok) {
-                    newsList = await res.json();
-                    renderNewsTable(newsList);
-                } else {
-                    document.getElementById('news-list-body').innerHTML = '<tr><td colspan="5">加载失败，请刷新重试</td></tr>';
-                }
-            } catch (err) {
-                document.getElementById('news-list-body').innerHTML = '<tr><td colspan="5">网络错误</td></tr>';
-            }
-        }
-        
-        function renderNewsTable(articles) {
-            const tbody = document.getElementById('news-list-body');
-            if (!articles.length) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">暂无新闻</td></tr>';
-                return;
-            }
-            tbody.innerHTML = '';
-            articles.forEach(article => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td data-label="ID">${article.id}</td>
-                    <td data-label="标题">${escapeHtml(article.title.length > 40 ? article.title.substring(0,40)+'...' : article.title)}</td>
-                    <td data-label="分类">${escapeHtml(article.category)}</td>
-                    <td data-label="头条">${article.is_breaking ? '<span class="status-badge">头条</span>' : ''}</td>
-                    <td data-label="操作" class="table-actions">
-                        <button class="edit-btn" data-id="${article.id}"><i class="fas fa-edit"></i></button>
-                        <button class="delete-btn" data-id="${article.id}"><i class="fas fa-trash-alt"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-            document.querySelectorAll('.edit-btn').forEach(btn => btn.onclick = () => openEditModal(parseInt(btn.dataset.id)));
-            document.querySelectorAll('.delete-btn').forEach(btn => btn.onclick = () => openDeleteModal(parseInt(btn.dataset.id)));
-        }
-        
-        function openEditModal(id) {
-            const article = newsList.find(a => a.id === id);
-            if (!article) return;
-            editId = article.id;
-            editIdInput.value = article.id;
-            titleInput.value = article.title;
-            summaryInput.value = article.summary || '';
-            contentInput.value = article.content;
-            imageInput.value = article.image;
-            categorySelect.value = article.category;
-            titleEnInput.value = article.title_en || '';
-            contentEnInput.value = article.content_en || '';
-            aiSummaryInput.value = article.ai_summary || '';
-            isBreakingCheck.checked = article.is_breaking || false;
-            formTitle.innerHTML = '<i class="fas fa-edit"></i> 编辑新闻';
-            submitBtn.textContent = '更新新闻';
-            cancelEditBtn.style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        
-        function cancelEdit() {
-            editId = null;
-            editIdInput.value = '';
-            form.reset();
-            formTitle.innerHTML = '<i class="fas fa-pen-alt"></i> 发布新新闻';
-            submitBtn.textContent = '发布新闻';
-            cancelEditBtn.style.display = 'none';
-            formError.style.display = 'none';
-        }
-        
-        async function submitNews(e) {
-            e.preventDefault();
-            const data = {
-                title: titleInput.value.trim(),
-                summary: summaryInput.value.trim(),
-                content: contentInput.value,
-                image: imageInput.value.trim(),
-                category: categorySelect.value,
-                title_en: titleEnInput.value.trim() || null,
-                content_en: contentEnInput.value.trim() || null,
-                ai_summary: aiSummaryInput.value.trim() || null,
-                is_breaking: isBreakingCheck.checked,
-                date: new Date().toISOString()
-            };
-            if (!data.title || !data.content || !data.image) {
-                formError.textContent = '请填写标题、正文和图片URL';
-                formError.style.display = 'block';
-                setTimeout(() => formError.style.display = 'none', 3000);
-                return;
-            }
-            try {
-                if (editId) {
-                    const { error } = await supabase.from('news').update(data).eq('id', editId);
-                    if (error) throw error;
-                    alert('新闻已更新');
-                    cancelEdit();
-                } else {
-                    const newId = Date.now();
-                    const { error } = await supabase.from('news').insert({ ...data, id: newId });
-                    if (error) throw error;
-                    alert('新闻已发布');
-                    form.reset();
-                }
-                await loadNewsList(searchInput.value);
-            } catch (err) {
-                formError.textContent = '操作失败: ' + err.message;
-                formError.style.display = 'block';
-                setTimeout(() => formError.style.display = 'none', 5000);
-            }
-        }
-        
-        function openDeleteModal(id) {
-            deleteId = id;
-            document.getElementById('delete-modal').classList.add('active');
-        }
-        
-        async function confirmDelete() {
-            if (!deleteId) return;
-            const { error } = await supabase.from('news').delete().eq('id', deleteId);
-            if (error) alert('删除失败: ' + error.message);
-            else {
-                alert('删除成功');
-                await loadNewsList(searchInput.value);
-            }
-            closeModal();
-            deleteId = null;
-        }
-        
-        function closeModal() {
-            document.getElementById('delete-modal').classList.remove('active');
-        }
-        
-        async function logout() {
-            await supabase.auth.signOut();
-            window.location.href = 'index.html';
-        }
-        
-        // 验证管理员并加载页面
-        (async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) {
-                window.location.href = 'login.html?redirect=admin.html&fromAdmin=1';
-                return;
-            }
-            const { data: profile, error } = await supabase.from('profiles').select('role, username').eq('id', user.id).single();
-            if (error || !profile || profile.role !== 'admin') {
-                alert('您没有管理员权限');
-                window.location.href = 'index.html';
-                return;
-            }
-            overlay.style.display = 'none';
-            adminContainer.style.display = 'block';
-            const username = profile.username || user.email.split('@')[0];
-            document.getElementById('user-name').textContent = username;
-            document.getElementById('user-avatar').textContent = username.charAt(0).toUpperCase();
-            await loadNewsList();
-            // 绑定事件
-            form.addEventListener('submit', submitNews);
-            cancelEditBtn.addEventListener('click', cancelEdit);
-            searchBtn.addEventListener('click', () => loadNewsList(searchInput.value));
-            refreshBtn.addEventListener('click', () => loadNewsList(searchInput.value));
-            logoutBtn.addEventListener('click', logout);
-            document.querySelectorAll('.close-modal, #cancel-delete').forEach(btn => btn.addEventListener('click', closeModal));
-            document.getElementById('confirm-delete').addEventListener('click', confirmDelete);
-            window.addEventListener('click', (e) => {
-                if (e.target === document.getElementById('delete-modal')) closeModal();
-            });
-        })();
+    const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    
+    let newsList = [];
+    let deleteId = null;
+    let editId = null;
+    
+    const overlay = document.getElementById('auth-overlay');
+    const adminContainer = document.getElementById('admin-container');
+    const form = document.getElementById('news-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const cancelEditBtn = document.getElementById('cancel-edit');
+    const formTitle = document.getElementById('form-title');
+    const formError = document.getElementById('form-error');
+    const editIdInput = document.getElementById('edit-id');
+    const titleInput = document.getElementById('title');
+    const summaryInput = document.getElementById('summary');
+    const contentInput = document.getElementById('content');
+    const imageInput = document.getElementById('image');
+    const categorySelect = document.getElementById('category');
+    const titleEnInput = document.getElementById('title_en');
+    const contentEnInput = document.getElementById('content_en');
+    const aiSummaryInput = document.getElementById('ai_summary');
+    const isBreakingCheck = document.getElementById('is_breaking');
+    const searchInput = document.getElementById('search-input');
+    const searchBtn = document.getElementById('search-btn');
+    const refreshBtn = document.getElementById('refresh-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m));
     }
+    
+    async function loadNewsList(searchTerm = '') {
+        let url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc`;
+        if (searchTerm) {
+            url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc&title=ilike.%${encodeURIComponent(searchTerm)}%`;
+        }
+        try {
+            const res = await fetch(url, {
+                headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+            });
+            if (res.ok) {
+                newsList = await res.json();
+                renderNewsTable(newsList);
+            } else {
+                document.getElementById('news-list-body').innerHTML = '<tr><td colspan="5">加载失败，请刷新重试</td></tr>';
+            }
+        } catch (err) {
+            document.getElementById('news-list-body').innerHTML = '<tr><td colspan="5">网络错误</td></tr>';
+        }
+    }
+    
+    function renderNewsTable(articles) {
+        const tbody = document.getElementById('news-list-body');
+        if (!articles.length) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">暂无新闻</td></tr>';
+            return;
+        }
+        tbody.innerHTML = '';
+        articles.forEach(article => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td data-label="ID">${article.id}</td>
+                <td data-label="标题">${escapeHtml(article.title.length > 40 ? article.title.substring(0,40)+'...' : article.title)}</td>
+                <td data-label="分类">${escapeHtml(article.category)}</td>
+                <td data-label="头条">${article.is_breaking ? '<span class="status-badge">头条</span>' : ''}</td>
+                <td data-label="操作" class="table-actions">
+                    <button class="edit-btn" data-id="${article.id}"><i class="fas fa-edit"></i></button>
+                    <button class="delete-btn" data-id="${article.id}"><i class="fas fa-trash-alt"></i></button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+        document.querySelectorAll('.edit-btn').forEach(btn => btn.onclick = () => openEditModal(parseInt(btn.dataset.id)));
+        document.querySelectorAll('.delete-btn').forEach(btn => btn.onclick = () => openDeleteModal(parseInt(btn.dataset.id)));
+    }
+    
+    function openEditModal(id) {
+        const article = newsList.find(a => a.id === id);
+        if (!article) return;
+        editId = article.id;
+        editIdInput.value = article.id;
+        titleInput.value = article.title;
+        summaryInput.value = article.summary || '';
+        contentInput.value = article.content;
+        imageInput.value = article.image;
+        categorySelect.value = article.category;
+        titleEnInput.value = article.title_en || '';
+        contentEnInput.value = article.content_en || '';
+        aiSummaryInput.value = article.ai_summary || '';
+        isBreakingCheck.checked = article.is_breaking || false;
+        formTitle.innerHTML = '<i class="fas fa-edit"></i> 编辑新闻';
+        submitBtn.textContent = '更新新闻';
+        cancelEditBtn.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    function cancelEdit() {
+        editId = null;
+        editIdInput.value = '';
+        form.reset();
+        formTitle.innerHTML = '<i class="fas fa-pen-alt"></i> 发布新新闻';
+        submitBtn.textContent = '发布新闻';
+        cancelEditBtn.style.display = 'none';
+        formError.style.display = 'none';
+    }
+    
+    async function submitNews(e) {
+        e.preventDefault();
+        const data = {
+            title: titleInput.value.trim(),
+            summary: summaryInput.value.trim(),
+            content: contentInput.value,
+            image: imageInput.value.trim(),
+            category: categorySelect.value,
+            title_en: titleEnInput.value.trim() || null,
+            content_en: contentEnInput.value.trim() || null,
+            ai_summary: aiSummaryInput.value.trim() || null,
+            is_breaking: isBreakingCheck.checked,
+            date: new Date().toISOString()
+        };
+        if (!data.title || !data.content || !data.image) {
+            formError.textContent = '请填写标题、正文和图片URL';
+            formError.style.display = 'block';
+            setTimeout(() => formError.style.display = 'none', 3000);
+            return;
+        }
+        try {
+            if (editId) {
+                const { error } = await supabase.from('news').update(data).eq('id', editId);
+                if (error) throw error;
+                alert('新闻已更新');
+                cancelEdit();
+            } else {
+                const newId = Date.now();
+                const { error } = await supabase.from('news').insert({ ...data, id: newId });
+                if (error) throw error;
+                alert('新闻已发布');
+                form.reset();
+            }
+            await loadNewsList(searchInput.value);
+        } catch (err) {
+            formError.textContent = '操作失败: ' + err.message;
+            formError.style.display = 'block';
+            setTimeout(() => formError.style.display = 'none', 5000);
+        }
+    }
+    
+    function openDeleteModal(id) {
+        deleteId = id;
+        document.getElementById('delete-modal').classList.add('active');
+    }
+    
+    async function confirmDelete() {
+        if (!deleteId) return;
+        const { error } = await supabase.from('news').delete().eq('id', deleteId);
+        if (error) alert('删除失败: ' + error.message);
+        else {
+            alert('删除成功');
+            await loadNewsList(searchInput.value);
+        }
+        closeModal();
+        deleteId = null;
+    }
+    
+    function closeModal() {
+        document.getElementById('delete-modal').classList.remove('active');
+    }
+    
+    async function logout() {
+        await supabase.auth.signOut();
+        window.location.href = 'index.html';
+    }
+    
+    (async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+            window.location.href = `login.html?redirect=admin.html`;
+            return;
+        }
+        const { data: profile, error } = await supabase.from('profiles').select('role, username').eq('id', user.id).single();
+        if (error || !profile || profile.role !== 'admin') {
+            alert('您没有管理员权限');
+            window.location.href = 'index.html';
+            return;
+        }
+        overlay.style.display = 'none';
+        adminContainer.style.display = 'block';
+        const username = profile.username || user.email.split('@')[0];
+        document.getElementById('user-name').textContent = username;
+        document.getElementById('user-avatar').textContent = username.charAt(0).toUpperCase();
+        await loadNewsList();
+        form.addEventListener('submit', submitNews);
+        cancelEditBtn.addEventListener('click', cancelEdit);
+        searchBtn.addEventListener('click', () => loadNewsList(searchInput.value));
+        refreshBtn.addEventListener('click', () => loadNewsList(searchInput.value));
+        logoutBtn.addEventListener('click', logout);
+        document.querySelectorAll('.close-modal, #cancel-delete').forEach(btn => btn.addEventListener('click', closeModal));
+        document.getElementById('confirm-delete').addEventListener('click', confirmDelete);
+        window.addEventListener('click', (e) => {
+            if (e.target === document.getElementById('delete-modal')) closeModal();
+        });
+    })();
 </script>
 </body>
 </html>
