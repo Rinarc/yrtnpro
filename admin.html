@@ -15,7 +15,6 @@
             color: #1e293b;
             min-height: 100vh;
         }
-        /* 权限验证遮罩层 */
         .auth-overlay {
             position: fixed;
             top: 0;
@@ -35,14 +34,12 @@
         .auth-overlay.hidden {
             display: none;
         }
-        /* 主容器，默认隐藏 */
         .admin-container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
             display: none;
         }
-        /* 头部样式 */
         .admin-header {
             background: white;
             border-radius: 24px;
@@ -120,7 +117,6 @@
         .logout-btn:hover {
             background: #fee2e2;
         }
-        /* 双栏布局 */
         .admin-grid {
             display: grid;
             grid-template-columns: 1fr 1.5fr;
@@ -129,7 +125,6 @@
         @media (max-width: 900px) {
             .admin-grid { grid-template-columns: 1fr; }
         }
-        /* 卡片样式 */
         .form-card, .list-card {
             background: white;
             border-radius: 24px;
@@ -200,7 +195,6 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(255,62,77,0.3);
         }
-        /* 列表样式 */
         .list-header {
             display: flex;
             justify-content: space-between;
@@ -270,7 +264,6 @@
             border-radius: 16px;
             margin-bottom: 20px;
         }
-        /* 模态框 */
         .modal {
             display: none;
             position: fixed;
@@ -336,9 +329,10 @@
 <body>
 <div id="auth-overlay" class="auth-overlay">
     <i class="fas fa-spinner fa-pulse fa-2x"></i>
-    <div>正在验证管理员权限...</div>
+    <div>正在验证...</div>
 </div>
 <div id="admin-container" class="admin-container">
+    <!-- 管理后台内容结构 -->
     <div class="admin-header">
         <div class="logo-area">
             <div class="logo">Y</div>
@@ -353,7 +347,6 @@
         </div>
     </div>
     <div class="admin-grid">
-        <!-- 左侧表单 -->
         <div class="form-card">
             <div class="card-header">
                 <i class="fas fa-pen-alt"></i> 
@@ -409,7 +402,6 @@
                 </form>
             </div>
         </div>
-        <!-- 右侧新闻列表 -->
         <div class="list-card">
             <div class="card-header">
                 <i class="fas fa-newspaper"></i> 所有新闻
@@ -436,7 +428,7 @@
         </div>
     </div>
 </div>
-<!-- 删除确认模态框 -->
+<!-- 删除模态框 -->
 <div id="delete-modal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
@@ -452,12 +444,11 @@
 </div>
 
 <script>
-    // Supabase 初始化
     const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // 全局状态
+    // 全局变量
     let newsList = [];
     let deleteId = null;
     let editId = null;
@@ -485,68 +476,69 @@
     const refreshBtn = document.getElementById('refresh-btn');
     const logoutBtn = document.getElementById('logout-btn');
 
-    // 辅助函数
     function escapeHtml(str) {
         if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m));
     }
 
-    async function checkAuthAndRedirect() {
+    // 主流程：先强制登出，再跳转登录页
+    async function forceLogoutAndRedirect() {
+        await supabase.auth.signOut();
+        // 清除所有 localStorage 中可能残留的会话信息（可选）
+        localStorage.removeItem('supabase.auth.token');
+        // 跳转到登录页，并携带 redirect 参数
+        window.location.href = `login.html?redirect=admin.html`;
+    }
+
+    // 真正的管理员验证函数（在登录成功后执行）
+    async function verifyAdminAndLoad() {
+        overlay.innerHTML = '<i class="fas fa-spinner fa-pulse fa-2x"></i><div>正在验证管理员权限...</div>';
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) {
-            // 未登录，保存当前路径，跳转登录页
+            // 没有用户，再次跳转登录（安全兜底）
             window.location.href = `login.html?redirect=admin.html`;
-            return false;
+            return;
         }
-        // 查询是否为管理员
         const { data: profile, error } = await supabase
             .from('profiles')
             .select('role, username')
             .eq('id', user.id)
             .single();
         if (error || !profile || profile.role !== 'admin') {
-            overlay.innerHTML = '<div style="text-align:center;"><i class="fas fa-ban fa-2x"></i><br><br>您没有管理员权限，请联系站长。<br>2秒后返回首页...</div>';
+            overlay.innerHTML = '<div style="text-align:center;"><i class="fas fa-ban fa-2x"></i><br><br>您没有管理员权限。<br>2秒后返回首页...</div>';
             setTimeout(() => { window.location.href = 'index.html'; }, 2000);
-            return false;
+            return;
         }
-        // 验证通过，隐藏遮罩，显示后台
+        // 验证通过，显示后台
         overlay.classList.add('hidden');
         adminContainer.style.display = 'block';
-        // 显示用户信息
         const username = profile.username || user.email.split('@')[0];
         document.getElementById('user-name').textContent = username;
         document.getElementById('user-avatar').textContent = username.charAt(0).toUpperCase();
-        // 加载新闻列表
         await loadNewsList();
-        return true;
     }
 
+    // 加载新闻列表
     async function loadNewsList(searchTerm = '') {
         let url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc`;
         if (searchTerm) {
             url = `${SUPABASE_URL}/rest/v1/news?select=*&order=date.desc&title=ilike.%${encodeURIComponent(searchTerm)}%`;
         }
         try {
-            const response = await fetch(url, {
+            const res = await fetch(url, {
                 headers: {
                     'apikey': SUPABASE_ANON_KEY,
                     'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
                 }
             });
-            if (response.ok) {
-                newsList = await response.json();
+            if (res.ok) {
+                newsList = await res.json();
                 renderNewsTable(newsList);
             } else {
-                document.getElementById('news-list-body').innerHTML = '<tr><td colspan="5">加载失败，请刷新页面重试</td></tr>';
+                document.getElementById('news-list-body').innerHTML = '<tr><td colspan="5">加载失败，请刷新重试</td></tr>';
             }
         } catch (err) {
-            console.error(err);
-            document.getElementById('news-list-body').innerHTML = '<tr><td colspan="5">网络错误，请稍后重试</td></tr>';
+            document.getElementById('news-list-body').innerHTML = '<tr><td colspan="5">网络错误</td></tr>';
         }
     }
 
@@ -571,7 +563,6 @@
             `;
             tbody.appendChild(tr);
         });
-        // 绑定编辑删除事件
         document.querySelectorAll('.edit-btn').forEach(btn => {
             btn.onclick = () => openEditModal(parseInt(btn.dataset.id));
         });
@@ -610,8 +601,8 @@
         formError.style.display = 'none';
     }
 
-    async function submitNews(event) {
-        event.preventDefault();
+    async function submitNews(e) {
+        e.preventDefault();
         const data = {
             title: titleInput.value.trim(),
             summary: summaryInput.value.trim(),
@@ -659,9 +650,8 @@
     async function confirmDelete() {
         if (!deleteId) return;
         const { error } = await supabase.from('news').delete().eq('id', deleteId);
-        if (error) {
-            alert('删除失败: ' + error.message);
-        } else {
+        if (error) alert('删除失败: ' + error.message);
+        else {
             alert('删除成功');
             await loadNewsList(searchInput.value);
         }
@@ -678,22 +668,43 @@
         window.location.href = 'index.html';
     }
 
-    // 页面初始化
-    window.onload = async () => {
-        await checkAuthAndRedirect();
-        // 绑定事件（确保只有在验证通过后才绑定，但提前绑定也不影响）
-        form.addEventListener('submit', submitNews);
-        cancelEditBtn.addEventListener('click', cancelEdit);
-        searchBtn.addEventListener('click', () => loadNewsList(searchInput.value));
-        refreshBtn.addEventListener('click', () => loadNewsList(searchInput.value));
-        logoutBtn.addEventListener('click', logout);
-        document.querySelectorAll('.close-modal, #cancel-delete').forEach(btn => btn.addEventListener('click', closeModal));
-        document.getElementById('confirm-delete').addEventListener('click', confirmDelete);
-        window.addEventListener('click', (e) => {
-            const modal = document.getElementById('delete-modal');
-            if (e.target === modal) closeModal();
-        });
-    };
+    // ========== 页面启动逻辑 ==========
+    // 第一步：立即强制登出并跳转登录页（保证每次打开都要求重新登录）
+    forceLogoutAndRedirect();
+
+    // 注意：由于跳转，下面的绑定实际上不会执行到（因为页面被重定向了），
+    // 但为了逻辑完整，当用户从登录页带着 redirect 返回时，页面会重新加载，
+    // 此时 forceLogoutAndRedirect 又会执行，造成循环。所以需要判断是否已经处于登录回调状态。
+    // 修正：在 URL 参数中标记是否需要跳过强制登出
+    // 更优雅的方式：检测 URL 是否有 ?skip_logout=1，但更好的做法是：只在本页面首次加载时强制登出一次，然后用 sessionStorage 标记。
+    // 为避免无限循环，我们采用 sessionStorage 标记。
+    (function() {
+        const hasForceLoggedOut = sessionStorage.getItem('admin_force_logout');
+        if (!hasForceLoggedOut) {
+            // 第一次加载，强制登出
+            sessionStorage.setItem('admin_force_logout', 'true');
+            supabase.auth.signOut().then(() => {
+                window.location.href = `login.html?redirect=admin.html`;
+            });
+        } else {
+            // 已经强制登出过，说明是从登录页返回，此时验证管理员
+            verifyAdminAndLoad();
+        }
+    })();
+
+    // 关闭模态框事件（动态绑定，因为元素已存在）
+    document.querySelectorAll('.close-modal, #cancel-delete').forEach(btn => btn.addEventListener('click', closeModal));
+    document.getElementById('confirm-delete')?.addEventListener('click', confirmDelete);
+    window.addEventListener('click', (e) => {
+        const modal = document.getElementById('delete-modal');
+        if (e.target === modal) closeModal();
+    });
+    // 绑定表单事件（管理员验证完成后才会显示容器，但提前绑定没问题）
+    form.addEventListener('submit', submitNews);
+    cancelEditBtn.addEventListener('click', cancelEdit);
+    searchBtn.addEventListener('click', () => loadNewsList(searchInput.value));
+    refreshBtn.addEventListener('click', () => loadNewsList(searchInput.value));
+    logoutBtn.addEventListener('click', logout);
 </script>
 </body>
 </html>
