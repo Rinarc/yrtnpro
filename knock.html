@@ -6,10 +6,10 @@
     <title>YRTN+ | 开始观赏</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- 引入 Supabase SDK -->
+    <!-- 引入 Supabase SDK（仅用于插入评论，查询评论使用 REST API） -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* ========== 原有样式 (保持不变，仅增加评论区样式) ========== */
+        /* ========== 原有样式 (保持不变) ========== */
         :root {
             --primary: #E50914; 
             --secondary: #0071EB;
@@ -748,7 +748,7 @@
             gap: 15px;
         }
         
-        /* 自定义播放器样式 (保持不变) */
+        /* 自定义播放器样式 */
         .custom-player {
             position: relative;
             width: 100%;
@@ -968,7 +968,7 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* ---------- 评论区样式 (深色主题) ---------- */
+        /* ---------- 评论区样式 ---------- */
         .comments-section {
             margin-top: 40px;
             padding-top: 20px;
@@ -1242,7 +1242,6 @@
 </head>
 <body>
     <div class="particles" id="particles"></div>
-    
     <div id="historyCardContainer" style="padding: 0 20px; max-width: 1400px; margin: 0 auto;"></div>
 
     <header class="app-header">
@@ -1297,14 +1296,15 @@
 
     <script>
         (function() {
-            // Supabase 配置
+            // ==================== Supabase 配置 ====================
             const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
             const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
             const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             
+            // 全局变量
             let appData = null;
             let currentUser = null;
-            let currentVideoId = null;  // 存储当前视频的唯一ID (showId/episodeId)
+            let currentVideoId = null;  // 格式: "showId/episodeId"
             
             const contentArea = document.getElementById('contentArea');
             const loadingContainer = document.getElementById('loadingContainer');
@@ -1314,7 +1314,23 @@
             const closeModalBtn = document.getElementById('closeModalBtn');
             const userIcon = document.getElementById('userIcon');
             
-            // 更新右上角用户图标（显示登录状态）
+            // ==================== 辅助函数 ====================
+            function escapeHtml(str) {
+                if (!str) return '';
+                return str.replace(/[&<>]/g, function(m) {
+                    if (m === '&') return '&amp;';
+                    if (m === '<') return '&lt;';
+                    if (m === '>') return '&gt;';
+                    return m;
+                });
+            }
+            
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('zh-CN', { year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+            }
+            
+            // 更新右上角用户图标
             async function updateUserIcon() {
                 const { data: { user } } = await supabase.auth.getUser();
                 currentUser = user;
@@ -1338,42 +1354,29 @@
                 }
             }
             
-            function escapeHtml(str) {
-                if (!str) return '';
-                return str.replace(/[&<>]/g, function(m) {
-                    if (m === '&') return '&amp;';
-                    if (m === '<') return '&lt;';
-                    if (m === '>') return '&gt;';
-                    return m;
-                });
-            }
-            
-            // ---------- 评论相关函数 ----------
+            // ==================== 评论功能（纯 REST API 查询 + SDK 插入） ====================
             async function loadVideoComments(videoId, containerElement) {
                 if (!videoId) return;
                 try {
-                    const { data, error } = await supabase
-                        .from('video_comments')
-                        .select(`
-                            id,
-                            content,
-                            created_at,
-                            user_id,
-                            profiles (username)
-                        `)
-                        .eq('video_id', videoId)
-                        .eq('status', 'approved')
-                        .order('created_at', { ascending: false });
-                    if (error) throw error;
-                    renderComments(data || [], containerElement);
+                    // 使用 REST API 联表查询 profiles.username，避免 RLS 递归问题
+                    const url = `${SUPABASE_URL}/rest/v1/video_comments?select=id,content,created_at,user_id,profiles(username)&video_id=eq.${encodeURIComponent(videoId)}&status=eq.approved&order=created_at.desc`;
+                    const response = await fetch(url, {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    });
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const data = await response.json();
+                    renderComments(data, containerElement);
                 } catch (err) {
-                    console.error('加载评论失败', err);
+                    console.error('加载评论失败:', err);
                     containerElement.innerHTML = '<div class="no-comments">评论加载失败，请稍后再试。</div>';
                 }
             }
             
             function renderComments(comments, container) {
-                if (!comments.length) {
+                if (!comments || comments.length === 0) {
                     container.innerHTML = '<div class="no-comments">暂无评论，成为第一个评论者吧！</div>';
                     return;
                 }
@@ -1382,13 +1385,12 @@
                     const username = comment.profiles?.username || '匿名用户';
                     const avatarLetter = username.charAt(0).toUpperCase();
                     const date = new Date(comment.created_at);
-                    const dateStr = date.toLocaleDateString('zh-CN', { year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
                     const commentDiv = document.createElement('div');
                     commentDiv.className = 'comment-item';
                     commentDiv.innerHTML = `
                         <div class="comment-header">
                             <span class="comment-author">${escapeHtml(username)}</span>
-                            <span class="comment-date">${dateStr}</span>
+                            <span class="comment-date">${formatDate(date)}</span>
                         </div>
                         <div class="comment-content">${escapeHtml(comment.content)}</div>
                     `;
@@ -1428,7 +1430,6 @@
                             });
                         if (error) throw error;
                         textarea.value = '';
-                        // 重新加载评论
                         const commentsContainer = document.getElementById('videoCommentsList');
                         if (commentsContainer) {
                             await loadVideoComments(videoId, commentsContainer);
@@ -1443,7 +1444,7 @@
                 });
             }
             
-            // ---------- 原有函数保持不变 (粒子、数据加载、路由等) ----------
+            // ==================== 原有功能（保持不变） ====================
             function createParticles() {
                 const particlesContainer = document.getElementById('particles');
                 if (!particlesContainer) return;
@@ -1793,6 +1794,7 @@
                 modalOverlay.classList.add('show');
             }
             
+            // ==================== 路由与渲染 ====================
             function handleRoute() {
                 if (!appData) return;
                 let hash = window.location.hash.slice(1) || '/';
@@ -1830,17 +1832,16 @@
                 renderNotFound();
             }
             
-            // 修改 renderPlayerPage 以加入评论区域
             function renderPlayerPage(categoryId, showId, episodeId) {
                 const found = findEpisode(showId, episodeId);
                 if (!found) return renderNotFound();
                 const { episode, show, category } = found;
-                const videoId = `${showId}/${episodeId}`;  // 唯一标识
+                const videoId = `${showId}/${episodeId}`;
                 currentVideoId = videoId;
                 saveLastWatched(showId, episodeId, episode.title, episode.thumbnail || show.image);
                 
                 contentArea.innerHTML = `
-                    <div class="back-button" id="backBtn"><i class="fas fa-arrow-left"></i>返回${show.title}</div>
+                    <div class="back-button" id="backBtn"><i class="fas fa-arrow-left"></i>返回${escapeHtml(show.title)}</div>
                     <div class="player-container">
                         <div class="player-wrapper" id="playerWrapper">
                             ${getVideoEmbed(episode.videoUrl)}
@@ -2056,6 +2057,7 @@
                 document.getElementById('homeBtn')?.addEventListener('click', () => window.location.hash = '#/');
             }
             
+            // ==================== 数据加载与启动 ====================
             async function loadAppData() {
                 showLoading();
                 try {
@@ -2064,7 +2066,7 @@
                     appData = await response.json();
                     hideLoading();
                     displayHistoryCard();
-                    await updateUserIcon();      // 更新用户图标
+                    await updateUserIcon();
                     handleRoute();
                     window.addEventListener('hashchange', handleRoute);
                 } catch (error) {
