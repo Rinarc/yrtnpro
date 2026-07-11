@@ -208,6 +208,11 @@
             border-radius: var(--radius-md);
             margin: 30px 0;
             cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        .featured-image:hover {
+            transform: scale(1.01);
+            box-shadow: var(--shadow-md);
         }
         .content {
             font-size: 1.1rem;
@@ -365,6 +370,88 @@
             font-weight: 600;
             margin-bottom: 20px;
         }
+        /* ===== 新增：朗读按钮样式 ===== */
+        .read-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, var(--secondary), #5F72BE);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+            margin: 10px 0 20px 0;
+        }
+        .read-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(74, 144, 226, 0.4);
+        }
+        .read-btn i {
+            font-size: 1.2rem;
+        }
+        .read-btn.playing {
+            background: linear-gradient(135deg, #FF6B6B, var(--primary));
+            box-shadow: 0 4px 12px rgba(255, 62, 77, 0.3);
+        }
+        .read-btn.playing:hover {
+            box-shadow: 0 8px 20px rgba(255, 62, 77, 0.4);
+        }
+        /* ===== 新增：图片查看模态框 ===== */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 10000;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s forwards;
+            backdrop-filter: blur(10px);
+        }
+        .image-modal.active {
+            display: flex;
+        }
+        .image-modal img {
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
+            animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .image-modal .close-modal {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition-fast);
+            background: rgba(0,0,0,0.3);
+        }
+        .image-modal .close-modal:hover {
+            background: rgba(255,255,255,0.2);
+            transform: rotate(90deg) scale(1.1);
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
         @media (max-width: 768px) {
             .news-detail { padding: 0 15px; }
             .article-container { padding: 25px; }
@@ -373,6 +460,7 @@
             .content { font-size: 1rem; }
             .ai-content { padding-left: 0; }
             .comment-content { padding-left: 0; }
+            .read-btn { font-size: 0.9rem; padding: 8px 18px; }
         }
     </style>
 </head>
@@ -399,6 +487,10 @@
             </div>
             <article id="article-content">
                 <h1 id="news-title"></h1>
+                <!-- 朗读按钮 -->
+                <button id="read-btn" class="read-btn" style="display: none;">
+                    <i class="fas fa-volume-up"></i> <span id="read-btn-text">朗读新闻</span>
+                </button>
                 <div class="meta">
                     <span><i class="far fa-calendar-alt"></i> <span id="news-date"></span></span>
                     <span><span id="news-category" class="category-tag"></span></span>
@@ -420,6 +512,12 @@
             <div id="error-message" class="error-message"><p>新闻加载失败，请稍后再试</p><a href="index.html" class="error-btn">返回首页</a></div>
         </div>
     </div>
+</div>
+
+<!-- 图片查看模态框 -->
+<div id="image-modal" class="image-modal">
+    <span class="close-modal" id="close-modal">&times;</span>
+    <img id="modal-image" src="" alt="新闻配图大图">
 </div>
 
 <nav class="bottom-nav">
@@ -459,6 +557,9 @@
 
     let currentNewsId = null;
     let currentUser = null;
+    let speechSynth = window.speechSynthesis;
+    let speechUtterance = null;
+    let isSpeaking = false;
 
     // 新闻加载（纯 REST API）
     async function loadNewsOnly() {
@@ -497,6 +598,17 @@
 
             loadingDiv.style.display = 'none';
             contentDiv.style.display = 'block';
+
+            // 显示朗读按钮
+            const readBtn = document.getElementById('read-btn');
+            readBtn.style.display = 'inline-flex';
+
+            // 绑定朗读功能
+            setupReadButton();
+
+            // 绑定图片点击查看大图
+            setupImageModal();
+
         } catch (err) {
             console.error('新闻加载失败:', err);
             loadingDiv.style.display = 'none';
@@ -504,14 +616,125 @@
         }
     }
 
-    // 评论加载（通过 Supabase JS 客户端联表查询，避免 RLS 递归）
+    // ===== 朗读功能 =====
+    function setupReadButton() {
+        const btn = document.getElementById('read-btn');
+        const btnText = document.getElementById('read-btn-text');
+        const icon = btn.querySelector('i');
+        const contentElement = document.getElementById('news-content');
+        let utterance = null;
+        let isPlaying = false;
+
+        // 获取纯文本（去除HTML标签）
+        function getPlainText() {
+            const clone = contentElement.cloneNode(true);
+            // 移除不需要朗读的元素（如脚注、广告等）
+            return clone.textContent.replace(/\s+/g, ' ').trim();
+        }
+
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (isPlaying) {
+                // 停止朗读
+                if (speechSynth.speaking) {
+                    speechSynth.cancel();
+                }
+                isPlaying = false;
+                btn.classList.remove('playing');
+                btnText.textContent = '朗读新闻';
+                icon.className = 'fas fa-volume-up';
+                return;
+            }
+
+            // 开始朗读
+            const text = getPlainText();
+            if (!text) {
+                alert('没有可朗读的内容');
+                return;
+            }
+
+            if (!window.speechSynthesis) {
+                alert('您的浏览器不支持语音朗读功能');
+                return;
+            }
+
+            // 取消之前可能正在朗读的
+            if (speechSynth.speaking) {
+                speechSynth.cancel();
+            }
+
+            utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'zh-CN';
+            utterance.rate = 1;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+
+            utterance.onstart = function() {
+                isPlaying = true;
+                btn.classList.add('playing');
+                btnText.textContent = '停止朗读';
+                icon.className = 'fas fa-stop';
+            };
+
+            utterance.onend = function() {
+                isPlaying = false;
+                btn.classList.remove('playing');
+                btnText.textContent = '朗读新闻';
+                icon.className = 'fas fa-volume-up';
+            };
+
+            utterance.onerror = function() {
+                isPlaying = false;
+                btn.classList.remove('playing');
+                btnText.textContent = '朗读新闻';
+                icon.className = 'fas fa-volume-up';
+                console.warn('朗读出错');
+            };
+
+            speechSynth.speak(utterance);
+        });
+    }
+
+    // ===== 图片查看大图功能 =====
+    function setupImageModal() {
+        const img = document.getElementById('news-image');
+        const modal = document.getElementById('image-modal');
+        const modalImg = document.getElementById('modal-image');
+        const closeBtn = document.getElementById('close-modal');
+
+        if (!img || !modal) return;
+
+        img.addEventListener('click', function(e) {
+            e.stopPropagation();
+            modalImg.src = this.src;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        // 点击关闭
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+    }
+
+    // ===== 评论加载（与之前相同） =====
     async function loadComments() {
         if (!currentNewsId) return;
         const container = document.getElementById('comments-container');
         container.innerHTML = '<div class="loading" style="margin:0 auto;"><div></div><div></div><div></div><div></div></div>';
         try {
             if (!supabaseClient) throw new Error('Supabase 客户端未初始化');
-            // 使用 supabase 客户端进行联表查询，它会自动处理 RLS 且不会引起递归（因为 profiles 的读取策略已设为 true）
             const { data, error } = await supabaseClient
                 .from('comments')
                 .select(`
@@ -528,7 +751,6 @@
             renderCommentsWithProfiles(data || []);
         } catch (err) {
             console.error('加载评论失败（使用客户端）:', err);
-            // 降级方案：直接查询评论，不联表
             try {
                 const fallbackUrl = `${SUPABASE_URL}/rest/v1/comments?news_id=eq.${currentNewsId}&status=eq.approved&order=created_at.desc&select=*`;
                 const response = await fetch(fallbackUrl, {
@@ -555,7 +777,6 @@
         }
         container.innerHTML = '';
         comments.forEach(comment => {
-            // 从 profiles 对象中提取 username，如果 profiles 为 null 或者没有 username 则使用 user_id 后缀
             let username = '匿名用户';
             if (comment.profiles && comment.profiles.username) {
                 username = comment.profiles.username;
@@ -607,7 +828,6 @@
         });
     }
 
-    // 评论表单渲染
     function renderCommentForm() {
         const area = document.getElementById('comment-form-area');
         if (!currentUser) {
