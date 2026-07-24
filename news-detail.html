@@ -245,8 +245,152 @@
         }
         .ai-title { font-weight: 700; font-size: 1.4rem; color: var(--dark); }
         .ai-content { font-size: 1.05rem; line-height: 1.8; padding-left: 52px; }
+
+        /* ===== 文章导航（新增） ===== */
+        .article-navigation {
+            display: flex;
+            gap: 20px;
+            margin: 40px 0 30px 0;
+            padding-top: 30px;
+            border-top: 2px solid rgba(0,0,0,0.06);
+            justify-content: space-between;
+        }
+        .nav-article-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 16px 22px;
+            border-radius: var(--radius-md);
+            background: rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.06);
+            text-decoration: none;
+            color: var(--dark);
+            transition: var(--transition-fast);
+            min-width: 0;
+            position: relative;
+        }
+        .nav-article-btn:hover:not(.disabled) {
+            background: rgba(74,144,226,0.06);
+            border-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        .nav-article-btn.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .nav-article-btn .nav-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: rgba(0,0,0,0.5);
+            margin-bottom: 6px;
+        }
+        .nav-article-btn .nav-label i {
+            font-size: 0.9rem;
+        }
+        .nav-article-btn .nav-title {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            word-break: break-word;
+            width: 100%;
+        }
+        .nav-article-btn.next {
+            align-items: flex-end;
+            text-align: right;
+        }
+        .nav-article-btn.next .nav-label {
+            flex-direction: row-reverse;
+        }
+        .nav-article-btn .nav-empty {
+            font-size: 0.9rem;
+            color: rgba(0,0,0,0.3);
+            font-weight: 400;
+        }
+        /* 响应式：文章导航 */
+        @media (max-width: 768px) {
+            .article-navigation {
+                flex-direction: column;
+                gap: 14px;
+                margin: 30px 0 20px 0;
+                padding-top: 24px;
+            }
+            .nav-article-btn {
+                padding: 14px 18px;
+                align-items: flex-start !important;
+                text-align: left !important;
+            }
+            .nav-article-btn.next {
+                align-items: flex-start !important;
+                text-align: left !important;
+            }
+            .nav-article-btn.next .nav-label {
+                flex-direction: row !important;
+            }
+            .nav-article-btn .nav-title {
+                font-size: 0.95rem;
+                -webkit-line-clamp: 2;
+            }
+            .nav-article-btn .nav-label {
+                font-size: 0.8rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .article-navigation {
+                gap: 12px;
+                margin: 24px 0 16px 0;
+                padding-top: 18px;
+            }
+            .nav-article-btn {
+                padding: 12px 14px;
+                border-radius: var(--radius-sm);
+            }
+            .nav-article-btn .nav-title {
+                font-size: 0.88rem;
+                -webkit-line-clamp: 2;
+            }
+            .nav-article-btn .nav-label {
+                font-size: 0.75rem;
+            }
+        }
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .article-navigation {
+                gap: 16px;
+            }
+            .nav-article-btn {
+                padding: 14px 18px;
+            }
+            .nav-article-btn .nav-title {
+                font-size: 0.95rem;
+                -webkit-line-clamp: 2;
+            }
+        }
+        /* 大屏优化 */
+        @media (min-width: 1400px) {
+            .article-navigation {
+                gap: 30px;
+            }
+            .nav-article-btn {
+                padding: 20px 28px;
+            }
+            .nav-article-btn .nav-title {
+                font-size: 1.1rem;
+                -webkit-line-clamp: 2;
+            }
+        }
+
         .comments-section {
-            margin-top: 60px;
+            margin-top: 40px;
             padding-top: 30px;
             border-top: 1px solid rgba(0,0,0,0.1);
         }
@@ -370,7 +514,8 @@
             font-weight: 600;
             margin-bottom: 20px;
         }
-        /* ===== 新增：朗读按钮样式 ===== */
+
+        /* 朗读按钮 */
         .read-btn {
             display: inline-flex;
             align-items: center;
@@ -401,7 +546,8 @@
         .read-btn.playing:hover {
             box-shadow: 0 8px 20px rgba(255, 62, 77, 0.4);
         }
-        /* ===== 新增：图片查看模态框 ===== */
+
+        /* 图片查看模态框 */
         .image-modal {
             display: none;
             position: fixed;
@@ -452,6 +598,7 @@
             from { transform: scale(0.8); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
+
         @media (max-width: 768px) {
             .news-detail { padding: 0 15px; }
             .article-container { padding: 25px; }
@@ -502,6 +649,18 @@
                 </section>
                 <img id="news-image" class="featured-image" alt="新闻配图">
                 <div id="news-content" class="content"></div>
+
+                <!-- ===== 文章导航（新增） ===== -->
+                <div id="article-navigation" class="article-navigation">
+                    <a id="prev-article" class="nav-article-btn" href="#">
+                        <span class="nav-label"><i class="fas fa-chevron-left"></i> 上一篇</span>
+                        <span class="nav-title" id="prev-title">加载中...</span>
+                    </a>
+                    <a id="next-article" class="nav-article-btn next" href="#">
+                        <span class="nav-label">下一篇 <i class="fas fa-chevron-right"></i></span>
+                        <span class="nav-title" id="next-title">加载中...</span>
+                    </a>
+                </div>
 
                 <section class="comments-section">
                     <h2>用户评论</h2>
@@ -561,7 +720,7 @@
     let speechUtterance = null;
     let isSpeaking = false;
 
-    // 新闻加载（纯 REST API）
+    // ===== 新闻加载（含上一篇/下一篇） =====
     async function loadNewsOnly() {
         const loadingDiv = document.getElementById('loading');
         const errorDiv = document.getElementById('error-message');
@@ -570,6 +729,8 @@
             const articleId = getUrlParam('id');
             if (!articleId) throw new Error('缺少新闻ID参数');
             currentNewsId = articleId;
+
+            // 1. 获取当前新闻
             const url = `${SUPABASE_URL}/rest/v1/news?id=eq.${articleId}&select=*`;
             const response = await fetch(url, {
                 headers: {
@@ -582,6 +743,7 @@
             if (!data || data.length === 0) throw new Error('未找到该新闻');
             const article = data[0];
 
+            // 渲染当前新闻
             document.getElementById('news-title').textContent = article.title;
             document.getElementById('news-date').textContent = formatDate(article.date);
             document.getElementById('news-category').textContent = article.category;
@@ -595,6 +757,60 @@
             img.src = article.image;
             img.style.display = 'block';
             document.getElementById('news-content').innerHTML = article.content;
+
+            // 2. 获取上一篇（id < 当前id，按id降序取第一条）
+            const prevUrl = `${SUPABASE_URL}/rest/v1/news?id=lt.${articleId}&order=id.desc&limit=1&select=id,title`;
+            const prevResp = await fetch(prevUrl, {
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                }
+            });
+            let prevData = [];
+            if (prevResp.ok) {
+                prevData = await prevResp.json();
+            }
+
+            // 3. 获取下一篇（id > 当前id，按id升序取第一条）
+            const nextUrl = `${SUPABASE_URL}/rest/v1/news?id=gt.${articleId}&order=id.asc&limit=1&select=id,title`;
+            const nextResp = await fetch(nextUrl, {
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                }
+            });
+            let nextData = [];
+            if (nextResp.ok) {
+                nextData = await nextResp.json();
+            }
+
+            // 4. 更新导航
+            const prevBtn = document.getElementById('prev-article');
+            const nextBtn = document.getElementById('next-article');
+            const prevTitle = document.getElementById('prev-title');
+            const nextTitle = document.getElementById('next-title');
+
+            if (prevData && prevData.length > 0) {
+                const p = prevData[0];
+                prevBtn.href = `news-detail.html?id=${p.id}`;
+                prevTitle.textContent = p.title || '无标题';
+                prevBtn.classList.remove('disabled');
+            } else {
+                prevBtn.href = '#';
+                prevTitle.textContent = '已是第一篇';
+                prevBtn.classList.add('disabled');
+            }
+
+            if (nextData && nextData.length > 0) {
+                const n = nextData[0];
+                nextBtn.href = `news-detail.html?id=${n.id}`;
+                nextTitle.textContent = n.title || '无标题';
+                nextBtn.classList.remove('disabled');
+            } else {
+                nextBtn.href = '#';
+                nextTitle.textContent = '已是最后一篇';
+                nextBtn.classList.add('disabled');
+            }
 
             loadingDiv.style.display = 'none';
             contentDiv.style.display = 'block';
@@ -622,20 +838,16 @@
         const btnText = document.getElementById('read-btn-text');
         const icon = btn.querySelector('i');
         const contentElement = document.getElementById('news-content');
-        let utterance = null;
         let isPlaying = false;
 
-        // 获取纯文本（去除HTML标签）
         function getPlainText() {
             const clone = contentElement.cloneNode(true);
-            // 移除不需要朗读的元素（如脚注、广告等）
             return clone.textContent.replace(/\s+/g, ' ').trim();
         }
 
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
             if (isPlaying) {
-                // 停止朗读
                 if (speechSynth.speaking) {
                     speechSynth.cancel();
                 }
@@ -646,7 +858,6 @@
                 return;
             }
 
-            // 开始朗读
             const text = getPlainText();
             if (!text) {
                 alert('没有可朗读的内容');
@@ -658,12 +869,11 @@
                 return;
             }
 
-            // 取消之前可能正在朗读的
             if (speechSynth.speaking) {
                 speechSynth.cancel();
             }
 
-            utterance = new SpeechSynthesisUtterance(text);
+            const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'zh-CN';
             utterance.rate = 1;
             utterance.pitch = 1;
@@ -695,7 +905,7 @@
         });
     }
 
-    // ===== 图片查看大图功能 =====
+    // ===== 图片查看大图 =====
     function setupImageModal() {
         const img = document.getElementById('news-image');
         const modal = document.getElementById('image-modal');
@@ -711,7 +921,6 @@
             document.body.style.overflow = 'hidden';
         });
 
-        // 点击关闭
         function closeModal() {
             modal.classList.remove('active');
             document.body.style.overflow = '';
@@ -728,7 +937,7 @@
         });
     }
 
-    // ===== 评论加载（与之前相同） =====
+    // ===== 评论加载 =====
     async function loadComments() {
         if (!currentNewsId) return;
         const container = document.getElementById('comments-container');
@@ -744,7 +953,7 @@
                     user_id,
                     profiles (username)
                 `)
-                .eq('news_id', currentNewsId)
+                .eq('news_id', parseInt(currentNewsId))
                 .eq('status', 'approved')
                 .order('created_at', { ascending: false });
             if (error) throw error;
@@ -907,7 +1116,7 @@
         }
     }
 
-    // 启动
+    // ===== 启动 =====
     loadNewsOnly().then(() => {
         setTimeout(() => {
             loadComments().catch(e => console.warn(e));
