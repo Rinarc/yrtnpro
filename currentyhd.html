@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        /* 样式与之前相同，省略以节省长度，但实际代码会包含完整样式 */
         :root { --primary: #FF3E4D; --light: #f8f9fa; --dark: #1a1a2e; --shadow: 0 4px 12px rgba(0,0,0,0.08); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; background: var(--light); color: var(--dark); padding: 20px; }
@@ -33,7 +34,7 @@
         .post-identity { font-weight: 600; }
         .post-identity small { font-weight: 400; color: #888; font-size: 0.8rem; margin-left: 8px; }
         .post-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
-        .post-content { font-size: 0.95rem; line-height: 1.6; margin-bottom: 12px; white-space: pre-wrap; word-break: break-word; }
+        .post-content { font-size: 0.95rem; line-height: 1.6; margin-bottom: 12px; white-space: pre-wrap; }
         .post-images { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin: 10px 0; }
         .post-images img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 12px; cursor: pointer; }
         .post-actions { display: flex; gap: 20px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; }
@@ -42,9 +43,7 @@
         .comments-section { margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; display: none; }
         .comments-section.open { display: block; }
         .comment-item { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f5f5f5; }
-        .comment-item .c-avatar { width: 28px; height: 28px; border-radius: 50%; background: #4A90E2; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 600; flex-shrink: 0; }
-        .comment-item .c-content { font-size: 0.9rem; color: #333; word-break: break-word; }
-        .comment-item .c-meta { font-size: 0.75rem; color: #999; margin-left: 6px; }
+        .comment-item .c-avatar { width: 28px; height: 28px; border-radius: 50%; background: #4A90E2; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 600; }
         .comment-form-input { display: flex; gap: 10px; margin-top: 10px; }
         .comment-form-input input { flex: 1; padding: 8px 14px; border: 1px solid #ddd; border-radius: 30px; }
         .comment-form-input button { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 30px; cursor: pointer; }
@@ -143,7 +142,6 @@
         statusArea.className = 'status-box';
         if (type === 'error') statusArea.classList.add('error');
         else if (type === 'success') statusArea.classList.add('success');
-        console.log(`[STATUS] ${msg}`);
     }
 
     function escapeHtml(str) {
@@ -194,13 +192,12 @@
         }
     }
 
-    // ===== 加载帖子（简化版，不联表） =====
+    // ===== 加载帖子（完全无联表，只查 posts，显示 user_id） =====
     async function loadPosts() {
         setStatus('正在加载帖子...', 'info');
         postsContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i> 加载中...</div>';
         try {
             const order = currentSort === 'latest' ? 'created_at' : 'likes_count';
-            // 先查 posts 表本身
             const { data: postsData, error: postsError } = await supabase
                 .from('posts')
                 .select('*')
@@ -213,16 +210,16 @@
                 return;
             }
 
-            // 单独查询 identities 获取显示名称（避免联表卡住）
-            const identityIds = postsData.map(p => p.identity_id).filter(Boolean);
-            let identityMap = {};
-            if (identityIds.length > 0) {
-                const { data: idData, error: idError } = await supabase
-                    .from('identities')
-                    .select('id, display_name, avatar_url')
-                    .in('id', identityIds);
-                if (!idError && idData) {
-                    identityMap = idData.reduce((acc, row) => { acc[row.id] = row; return acc; }, {});
+            // 获取所有 user_id 对应的用户名（从 profiles 表单独查询，避免联表）
+            const userIds = postsData.map(p => p.user_id).filter(Boolean);
+            let userMap = {};
+            if (userIds.length > 0) {
+                const { data: userData, error: userError } = await supabase
+                    .from('profiles')
+                    .select('id, username')
+                    .in('id', userIds);
+                if (!userError && userData) {
+                    userMap = userData.reduce((acc, row) => { acc[row.id] = row.username || row.id.slice(-6); return acc; }, {});
                 }
             }
 
@@ -241,8 +238,8 @@
             }
 
             const posts = postsData.map(p => {
-                const identity = identityMap[p.identity_id] || { display_name: '未知', avatar_url: null };
-                return { ...p, identities: identity, userLiked: likedMap[p.id] || false };
+                const username = userMap[p.user_id] || p.user_id.slice(-6);
+                return { ...p, displayName: username, userLiked: likedMap[p.id] || false };
             });
 
             renderPosts(posts);
@@ -264,8 +261,7 @@
     function renderPosts(posts) {
         let html = '';
         posts.forEach(post => {
-            const identity = post.identities || { display_name: '未知', avatar_url: null };
-            const avatarLetter = identity.display_name.charAt(0).toUpperCase();
+            const avatarLetter = post.displayName.charAt(0).toUpperCase();
             const hasLiked = post.userLiked || false;
             const images = post.images ? post.images.split(',').filter(Boolean) : [];
             const videoUrl = post.video_url;
@@ -275,7 +271,7 @@
                     <div class="post-header">
                         <div class="post-avatar">${avatarLetter}</div>
                         <div>
-                            <div class="post-identity">${escapeHtml(identity.display_name)} <small>${formatTime(post.created_at)}</small></div>
+                            <div class="post-identity">${escapeHtml(post.displayName)} <small>${formatTime(post.created_at)}</small></div>
                         </div>
                     </div>
                     ${post.title ? `<div class="post-title">${escapeHtml(post.title)}</div>` : ''}
@@ -314,7 +310,7 @@
         document.querySelectorAll('.share-btn').forEach(btn => btn.addEventListener('click', () => sharePost(btn)));
     }
 
-    // ===== 点赞 =====
+    // ===== 点赞、评论、转发（与之前相同） =====
     async function handleLike(btn) {
         if (!currentUser) { alert('请先登录'); return; }
         const postId = parseInt(btn.dataset.postId);
@@ -334,7 +330,6 @@
         } catch (err) { alert('操作失败: ' + err.message); }
     }
 
-    // ===== 评论 =====
     async function toggleComments(btn) {
         const postId = btn.dataset.postId;
         const section = document.querySelector(`.comments-section[data-post-id="${postId}"]`);
