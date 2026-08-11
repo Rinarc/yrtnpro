@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        /* ---- 与主页一致的样式 ---- */
         :root {
             --primary: #FF3E4D;
             --secondary: #4A90E2;
@@ -33,7 +34,6 @@
             color: var(--dark);
             padding-bottom: 90px;
         }
-        /* ---- 顶部导航 ---- */
         .app-header {
             position: sticky;
             top: 0;
@@ -82,7 +82,6 @@
         }
         .user-area .logout:hover { background: rgba(255,62,77,0.1); }
         .container { max-width: 720px; margin: 0 auto; padding: 20px; }
-        /* ---- 发帖卡片 ---- */
         .post-form {
             background: white;
             border-radius: var(--radius-lg);
@@ -135,7 +134,6 @@
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(255,62,77,0.4);
         }
-        /* ---- 排序栏 ---- */
         .sort-bar {
             display: flex;
             gap: 20px;
@@ -162,7 +160,6 @@
             background: rgba(255,62,77,0.08);
         }
         .sort-bar button:hover { color: var(--primary); }
-        /* ---- 帖子卡片 ---- */
         .post-card {
             background: white;
             border-radius: var(--radius-lg);
@@ -207,11 +204,7 @@
             font-size: 0.8rem;
             margin-left: 8px;
         }
-        .post-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
+        .post-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
         .post-content {
             font-size: 1rem;
             line-height: 1.7;
@@ -270,7 +263,6 @@
         .post-actions .liked { color: var(--primary); }
         .post-actions .liked i { font-weight: 900; }
         .post-actions .comment-toggle { margin-left: auto; }
-        /* ---- 评论区 ---- */
         .comments-section {
             margin-top: 16px;
             padding-top: 16px;
@@ -302,16 +294,8 @@
             font-weight: 600;
             flex-shrink: 0;
         }
-        .comment-item .c-content {
-            font-size: 0.95rem;
-            color: #333;
-            word-break: break-word;
-        }
-        .comment-item .c-meta {
-            font-size: 0.75rem;
-            color: #999;
-            margin-left: 6px;
-        }
+        .comment-item .c-content { font-size: 0.95rem; color: #333; word-break: break-word; }
+        .comment-item .c-meta { font-size: 0.75rem; color: #999; margin-left: 6px; }
         .comment-form-input {
             display: flex;
             gap: 10px;
@@ -345,7 +329,6 @@
             color: #999;
         }
         .empty-state i { font-size: 4rem; color: #ddd; margin-bottom: 15px; }
-        /* ---- 图片查看模态框 ---- */
         .image-modal {
             display: none;
             position: fixed;
@@ -389,6 +372,14 @@
         }
         .loading-spinner i { font-size: 2rem; animation: spin 1s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
+        .error-box {
+            background: #fff0f0;
+            border-left: 4px solid var(--primary);
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            color: #b91c1c;
+            margin: 20px 0;
+        }
         .no-posts { color: #bbb; }
         @media (max-width: 600px) {
             .container { padding: 15px; }
@@ -453,13 +444,11 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // ===== 状态 =====
         let currentUser = null;
         let identities = [];
         let currentSort = 'latest';
         let posts = [];
 
-        // ===== DOM =====
         const userDisplay = document.getElementById('userDisplay');
         const logoutBtn = document.getElementById('logoutBtn');
         const postForm = document.getElementById('postForm');
@@ -476,12 +465,11 @@
         const modalImg = document.getElementById('modalImg');
         const closeModal = document.getElementById('closeModal');
 
-        // ===== 辅助函数 =====
+        // ===== 辅助 =====
         function escapeHtml(str) {
             if (!str) return '';
             return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m));
         }
-
         function formatTime(dateStr) {
             const d = new Date(dateStr);
             return d.toLocaleString('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
@@ -520,6 +508,7 @@
                 .eq('user_id', currentUser.id);
             if (error) {
                 console.error('加载身份失败', error);
+                identitySelect.innerHTML = `<option value="">加载失败，请刷新</option>`;
                 return;
             }
             identities = data || [];
@@ -557,35 +546,54 @@
                 alert('发布失败: ' + error.message);
                 return;
             }
-            // 清空表单
             postTitle.value = '';
             postContent.value = '';
             postImages.value = '';
             postVideo.value = '';
             charCount.textContent = '0';
-            // 重新加载
             loadPosts();
         }
 
-        // ===== 加载帖子 =====
+        // ===== 加载帖子（修复版） =====
         async function loadPosts() {
             postsContainer.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner"></i></div>';
             try {
                 const order = currentSort === 'latest' ? 'created_at' : 'likes_count';
+                // 先查帖子
                 const { data, error } = await supabase
                     .from('posts')
                     .select(`
                         *,
-                        identities (display_name, avatar_url),
-                        post_likes (user_id)
+                        identities (display_name, avatar_url)
                     `)
                     .order(order, { ascending: false });
                 if (error) throw error;
                 posts = data || [];
+
+                // 如果用户已登录，批量查询点赞状态
+                let likedMap = {};
+                if (currentUser && posts.length > 0) {
+                    const postIds = posts.map(p => p.id);
+                    const { data: likes, error: likeErr } = await supabase
+                        .from('post_likes')
+                        .select('post_id')
+                        .eq('user_id', currentUser.id)
+                        .in('post_id', postIds);
+                    if (!likeErr && likes) {
+                        likedMap = likes.reduce((acc, l) => { acc[l.post_id] = true; return acc; }, {});
+                    }
+                }
+                // 为每个帖子附加点赞状态
+                posts = posts.map(p => ({ ...p, userLiked: likedMap[p.id] || false }));
                 renderPosts();
             } catch (err) {
-                console.error(err);
-                postsContainer.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>加载失败，请刷新</p></div>`;
+                console.error('加载帖子失败:', err);
+                postsContainer.innerHTML = `
+                    <div class="error-box">
+                        <i class="fas fa-exclamation-circle"></i> 加载失败：${err.message}
+                        <br><button onclick="loadPosts()" style="margin-top:10px;padding:6px 16px;background:var(--primary);color:white;border:none;border-radius:30px;cursor:pointer;">重试</button>
+                    </div>
+                `;
             }
         }
 
@@ -599,7 +607,7 @@
             posts.forEach(post => {
                 const identity = post.identities || { display_name: '未知', avatar_url: null };
                 const avatarLetter = identity.display_name.charAt(0).toUpperCase();
-                const hasLiked = post.post_likes?.some(l => l.user_id === currentUser?.id) || false;
+                const hasLiked = post.userLiked || false;
                 const images = post.images ? post.images.split(',').filter(Boolean) : [];
                 const videoUrl = post.video_url;
 
@@ -774,7 +782,12 @@
         // ===== 启动 =====
         (async () => {
             await checkAuth();
-            if (currentUser) await loadPosts();
+            if (currentUser) {
+                await loadPosts();
+            } else {
+                // 未登录仍然加载帖子（只读）
+                await loadPosts();
+            }
         })();
     </script>
 </body>
