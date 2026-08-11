@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* ---- 与主页一致的样式 ---- */
+        /* 与主页一致的样式（略，和前版本相同） */
         :root {
             --primary: #FF3E4D;
             --secondary: #4A90E2;
@@ -386,6 +386,52 @@
             .post-images { grid-template-columns: repeat(2, 1fr); }
             .post-card { padding: 18px; }
         }
+
+        /* ---- 调试面板 ---- */
+        #debugPanel {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            max-height: 300px;
+            background: rgba(0,0,0,0.85);
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            padding: 12px;
+            border-radius: 12px;
+            overflow-y: auto;
+            z-index: 9999;
+            display: none;
+            backdrop-filter: blur(4px);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        #debugPanel.open { display: block; }
+        #debugPanel .log-entry { border-bottom: 1px solid rgba(255,255,255,0.05); padding: 4px 0; }
+        #debugPanel .log-error { color: #ff6b6b; }
+        #debugPanel .log-success { color: #69db7c; }
+        #debugPanel .log-info { color: #74c0fc; }
+        #debugToggle {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background: var(--dark);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            z-index: 10000;
+            transition: var(--transition-fast);
+        }
+        #debugToggle:hover { transform: scale(1.1); }
+        @media (max-width: 600px) {
+            #debugPanel { max-height: 200px; font-size: 10px; }
+        }
     </style>
 </head>
 <body>
@@ -438,12 +484,49 @@
         <img id="modalImg" src="" alt="大图">
     </div>
 
+    <!-- 调试面板 -->
+    <button id="debugToggle"><i class="fas fa-bug"></i></button>
+    <div id="debugPanel"></div>
+
     <script>
         // ===== Supabase 配置 =====
         const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        // ===== 调试工具 =====
+        const debugPanel = document.getElementById('debugPanel');
+        const debugToggle = document.getElementById('debugToggle');
+        let debugOpen = false;
+
+        function log(msg, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            const time = new Date().toLocaleTimeString();
+            entry.textContent = `[${time}] ${msg}`;
+            debugPanel.appendChild(entry);
+            debugPanel.scrollTop = debugPanel.scrollHeight;
+            console.log(`[${type.toUpperCase()}]`, msg);
+        }
+
+        debugToggle.addEventListener('click', () => {
+            debugOpen = !debugOpen;
+            debugPanel.classList.toggle('open', debugOpen);
+            debugToggle.innerHTML = debugOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bug"></i>';
+        });
+
+        // 捕获未处理的错误
+        window.onerror = function(message, source, lineno, colno, error) {
+            log(`全局错误: ${message} (${source}:${lineno}:${colno})`, 'error');
+            if (error && error.stack) log(error.stack, 'error');
+        };
+        // 捕获 Promise 拒绝
+        window.addEventListener('unhandledrejection', event => {
+            log(`未处理的 Promise 拒绝: ${event.reason}`, 'error');
+            if (event.reason && event.reason.stack) log(event.reason.stack, 'error');
+        });
+
+        // ===== 应用逻辑 =====
         let currentUser = null;
         let identities = [];
         let currentSort = 'latest';
@@ -465,7 +548,6 @@
         const modalImg = document.getElementById('modalImg');
         const closeModal = document.getElementById('closeModal');
 
-        // ===== 辅助 =====
         function escapeHtml(str) {
             if (!str) return '';
             return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m));
@@ -477,45 +559,52 @@
 
         // ===== 检查登录 =====
         async function checkAuth() {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) {
-                currentUser = user;
-                const { data: profile } = await supabase.from('profiles').select('username').eq('id', user.id).single();
-                const name = profile?.username || user.email?.split('@')[0] || '用户';
-                userDisplay.textContent = name;
-                logoutBtn.style.display = 'inline';
-                await loadIdentities();
-                postForm.style.display = 'block';
-            } else {
-                userDisplay.textContent = '未登录';
-                logoutBtn.style.display = 'none';
-                postForm.style.display = 'none';
-                postsContainer.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-sign-in-alt"></i>
-                        <p>请 <a href="login.html" style="color:var(--primary);font-weight:600;">登录</a> 后参与互动</p>
-                    </div>
-                `;
+            log('开始检查登录状态...', 'info');
+            try {
+                const { data: { user }, error } = await supabase.auth.getUser();
+                if (error) throw error;
+                if (user) {
+                    currentUser = user;
+                    log(`用户已登录: ${user.email} (${user.id})`, 'success');
+                    const { data: profile } = await supabase.from('profiles').select('username').eq('id', user.id).single();
+                    const name = profile?.username || user.email?.split('@')[0] || '用户';
+                    userDisplay.textContent = name;
+                    logoutBtn.style.display = 'inline';
+                    await loadIdentities();
+                    postForm.style.display = 'block';
+                } else {
+                    log('用户未登录', 'info');
+                    userDisplay.textContent = '未登录';
+                    logoutBtn.style.display = 'none';
+                    postForm.style.display = 'none';
+                }
+            } catch (err) {
+                log(`检查登录失败: ${err.message}`, 'error');
+                userDisplay.textContent = '登录异常';
             }
         }
 
         // ===== 加载身份 =====
         async function loadIdentities() {
             if (!currentUser) return;
-            const { data, error } = await supabase
-                .from('identities')
-                .select('*')
-                .eq('user_id', currentUser.id);
-            if (error) {
-                console.error('加载身份失败', error);
+            log(`加载用户 ${currentUser.id} 的身份...`, 'info');
+            try {
+                const { data, error } = await supabase
+                    .from('identities')
+                    .select('*')
+                    .eq('user_id', currentUser.id);
+                if (error) throw error;
+                identities = data || [];
+                log(`找到 ${identities.length} 个身份`, identities.length > 0 ? 'success' : 'info');
+                if (identities.length === 0) {
+                    identitySelect.innerHTML = `<option value="">⚠️ 无身份，请先插入身份数据</option>`;
+                    log('身份表为空，请执行 INSERT INTO identities ...', 'error');
+                } else {
+                    identitySelect.innerHTML = identities.map(id => `<option value="${id.id}">${id.display_name}</option>`).join('');
+                }
+            } catch (err) {
+                log(`加载身份失败: ${err.message}`, 'error');
                 identitySelect.innerHTML = `<option value="">加载失败，请刷新</option>`;
-                return;
-            }
-            identities = data || [];
-            if (identities.length === 0) {
-                identitySelect.innerHTML = `<option value="">暂无身份，请联系管理员添加</option>`;
-            } else {
-                identitySelect.innerHTML = identities.map(id => `<option value="${id.id}">${id.display_name}</option>`).join('');
             }
         }
 
@@ -531,35 +620,39 @@
             const images = postImages.value.trim().split(',').map(s => s.trim()).filter(Boolean);
             const video = postVideo.value.trim();
 
-            const { data, error } = await supabase
-                .from('posts')
-                .insert({
-                    user_id: currentUser.id,
-                    identity_id: parseInt(identityId),
-                    title: title,
-                    content: content,
-                    images: images.length ? images.join(',') : null,
-                    video_url: video || null,
-                })
-                .select();
-            if (error) {
-                alert('发布失败: ' + error.message);
-                return;
+            log(`发布帖子: 身份=${identityId}, 标题=${title || '(无)'}, 内容长度=${content.length}`, 'info');
+            try {
+                const { data, error } = await supabase
+                    .from('posts')
+                    .insert({
+                        user_id: currentUser.id,
+                        identity_id: parseInt(identityId),
+                        title: title,
+                        content: content,
+                        images: images.length ? images.join(',') : null,
+                        video_url: video || null,
+                    })
+                    .select();
+                if (error) throw error;
+                log('帖子发布成功', 'success');
+                postTitle.value = '';
+                postContent.value = '';
+                postImages.value = '';
+                postVideo.value = '';
+                charCount.textContent = '0';
+                loadPosts();
+            } catch (err) {
+                log(`发布失败: ${err.message}`, 'error');
+                alert('发布失败: ' + err.message);
             }
-            postTitle.value = '';
-            postContent.value = '';
-            postImages.value = '';
-            postVideo.value = '';
-            charCount.textContent = '0';
-            loadPosts();
         }
 
-        // ===== 加载帖子（修复版） =====
+        // ===== 加载帖子（详细日志） =====
         async function loadPosts() {
             postsContainer.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner"></i></div>';
+            log(`加载帖子，排序方式: ${currentSort}`, 'info');
             try {
                 const order = currentSort === 'latest' ? 'created_at' : 'likes_count';
-                // 先查帖子
                 const { data, error } = await supabase
                     .from('posts')
                     .select(`
@@ -569,11 +662,12 @@
                     .order(order, { ascending: false });
                 if (error) throw error;
                 posts = data || [];
+                log(`成功获取 ${posts.length} 条帖子`, 'success');
 
-                // 如果用户已登录，批量查询点赞状态
                 let likedMap = {};
                 if (currentUser && posts.length > 0) {
                     const postIds = posts.map(p => p.id);
+                    log(`查询用户点赞状态 (${postIds.length} 条)`, 'info');
                     const { data: likes, error: likeErr } = await supabase
                         .from('post_likes')
                         .select('post_id')
@@ -581,13 +675,15 @@
                         .in('post_id', postIds);
                     if (!likeErr && likes) {
                         likedMap = likes.reduce((acc, l) => { acc[l.post_id] = true; return acc; }, {});
+                        log(`已点赞 ${Object.keys(likedMap).length} 条`, 'success');
+                    } else if (likeErr) {
+                        log(`点赞状态查询失败: ${likeErr.message}`, 'error');
                     }
                 }
-                // 为每个帖子附加点赞状态
                 posts = posts.map(p => ({ ...p, userLiked: likedMap[p.id] || false }));
                 renderPosts();
             } catch (err) {
-                console.error('加载帖子失败:', err);
+                log(`加载帖子失败: ${err.message}`, 'error');
                 postsContainer.innerHTML = `
                     <div class="error-box">
                         <i class="fas fa-exclamation-circle"></i> 加载失败：${err.message}
@@ -597,7 +693,7 @@
             }
         }
 
-        // ===== 渲染帖子 =====
+        // ===== 渲染帖子（略，与之前相同） =====
         function renderPosts() {
             if (!posts.length) {
                 postsContainer.innerHTML = `<div class="empty-state"><i class="fas fa-comment"></i><p>还没有动态，快来发布第一条吧！</p></div>`;
@@ -655,7 +751,8 @@
             document.querySelectorAll('.share-btn').forEach(btn => btn.addEventListener('click', () => sharePost(btn)));
         }
 
-        // ===== 点赞 =====
+        // ===== 点赞、评论、转发（与之前相同，此处省略以节省篇幅，但实际代码应保留） =====
+        // 为了完整，我会包含所有函数，但下面只列出必要的，实际代码中全部存在。
         async function handleLike(btn) {
             if (!currentUser) { alert('请先登录'); return; }
             const postId = parseInt(btn.dataset.postId);
@@ -675,7 +772,6 @@
             } catch (err) { alert('操作失败: ' + err.message); }
         }
 
-        // ===== 评论展开/加载 =====
         async function toggleComments(btn) {
             const postId = btn.dataset.postId;
             const section = document.querySelector(`.comments-section[data-post-id="${postId}"]`);
@@ -706,7 +802,6 @@
             } catch (err) { list.innerHTML = '<div style="color:#999;">加载失败</div>'; }
         }
 
-        // ===== 提交评论 =====
         async function submitComment(btn) {
             if (!currentUser) { alert('请先登录'); return; }
             const postId = parseInt(btn.dataset.postId);
@@ -716,7 +811,6 @@
             try {
                 await supabase.from('post_comments').insert({ post_id: postId, user_id: currentUser.id, content });
                 input.value = '';
-                // 刷新评论列表
                 const section = document.querySelector(`.comments-section[data-post-id="${postId}"]`);
                 const list = section.querySelector('.comments-list');
                 const { data } = await supabase
@@ -738,7 +832,6 @@
             } catch (err) { alert('评论失败: ' + err.message); }
         }
 
-        // ===== 转发 =====
         function sharePost(btn) {
             const postId = btn.dataset.postId;
             const url = window.location.href + '?post=' + postId;
@@ -746,7 +839,7 @@
             else navigator.clipboard.writeText(url).then(() => alert('链接已复制'));
         }
 
-        // ===== 图片查看大图 =====
+        // ===== 图片查看 =====
         function openModal(src) {
             modalImg.src = src;
             imageModal.classList.add('active');
@@ -781,13 +874,24 @@
 
         // ===== 启动 =====
         (async () => {
+            log('页面初始化', 'info');
             await checkAuth();
-            if (currentUser) {
-                await loadPosts();
-            } else {
-                // 未登录仍然加载帖子（只读）
-                await loadPosts();
+            await loadPosts();
+            log('初始化完成', 'success');
+            // 显示提示：如果未登录且没有帖子，显示提示
+            if (!currentUser && posts.length === 0) {
+                postsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <p>请 <a href="login.html" style="color:var(--primary);font-weight:600;">登录</a> 后参与互动</p>
+                        <p style="font-size:0.8rem;color:#bbb;">（未登录仍可浏览现有帖子）</p>
+                    </div>
+                `;
             }
+            // 自动打开调试面板
+            setTimeout(() => {
+                debugToggle.click();
+            }, 1000);
         })();
     </script>
 </body>
