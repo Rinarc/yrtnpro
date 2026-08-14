@@ -619,6 +619,22 @@
         const SUPABASE_URL = 'https://uslzixbrazwuvrjhdgxy.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzbHppeGJyYXp3dXZyamhkZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczODExMDUsImV4cCI6MjA5Mjk1NzEwNX0.xiCB3qA3cciJRutHrv4DRi-hBvAQOiJRXhEmQA7TlmA';
         
+        // ===== 辅助函数：获取第一张图片 =====
+        function getFirstImage(article) {
+            // 优先使用 images 字段
+            if (article.images && typeof article.images === 'string' && article.images.trim() !== '') {
+                const urls = article.images.split(',').map(u => u.trim()).filter(u => u);
+                if (urls.length > 0) {
+                    return urls[0];
+                }
+            }
+            // 降级使用 image 字段
+            if (article.image && typeof article.image === 'string' && article.image.trim() !== '') {
+                return article.image.trim();
+            }
+            return '';
+        }
+
         // 创建动态粒子背景
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
@@ -683,11 +699,12 @@
             articles.sort((a, b) => new Date(b.date) - new Date(a.date));
             
             articles.forEach((article, index) => {
+                const imgUrl = getFirstImage(article);  // 使用辅助函数获取图片
                 const newsCard = document.createElement('div');
                 newsCard.className = 'archive-card';
                 newsCard.style.animationDelay = `${index * 0.1}s`;
                 newsCard.innerHTML = `
-                    <div class="card-image" style="background-image: url('${article.image}')">
+                    <div class="card-image" style="background-image: url('${imgUrl}')">
                         <span class="card-badge">${escapeHtml(article.category)}</span>
                     </div>
                     <div class="card-content">
