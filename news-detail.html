@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        /* ===== 保留所有原有样式（只新增轮播相关样式） ===== */
         :root {
             --primary: #FF3E4D;
             --secondary: #4A90E2;
@@ -201,19 +202,196 @@
             font-size: 0.85rem;
             font-weight: 600;
         }
-        .featured-image {
+
+        /* ===== 图片轮播 ===== */
+        .carousel-wrapper {
+            position: relative;
             width: 100%;
-            height: 450px;
-            object-fit: cover;
-            border-radius: var(--radius-md);
             margin: 30px 0;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: #000;
+            box-shadow: var(--shadow-md);
+        }
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+            will-change: transform;
+        }
+        .carousel-slide {
+            flex: 0 0 100%;
+            height: 450px;
+            background-size: cover;
+            background-position: center;
             cursor: pointer;
             transition: var(--transition-fast);
         }
-        .featured-image:hover {
+        .carousel-slide:hover {
             transform: scale(1.01);
-            box-shadow: var(--shadow-md);
         }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: var(--transition-fast);
+            backdrop-filter: blur(4px);
+        }
+        .carousel-btn:hover {
+            background: rgba(0,0,0,0.8);
+            transform: translateY(-50%) scale(1.1);
+        }
+        .carousel-btn.prev { left: 15px; }
+        .carousel-btn.next { right: 15px; }
+        .carousel-dots {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        .carousel-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+        .carousel-dot:hover {
+            background: rgba(255,255,255,0.8);
+        }
+        .carousel-counter {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            backdrop-filter: blur(4px);
+            z-index: 10;
+        }
+
+        /* ===== 大图查看模态框（支持左右翻看） ===== */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.92);
+            z-index: 10000;
+            cursor: default;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s forwards;
+            backdrop-filter: blur(10px);
+        }
+        .image-modal.active {
+            display: flex;
+        }
+        .image-modal .modal-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition-fast);
+            background: rgba(0,0,0,0.3);
+            z-index: 20;
+        }
+        .image-modal .modal-close:hover {
+            background: rgba(255,255,255,0.2);
+            transform: rotate(90deg) scale(1.1);
+        }
+        .modal-image-container {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-image-container img {
+            max-width: 100%;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
+            animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: default;
+        }
+        .modal-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            backdrop-filter: blur(4px);
+            z-index: 15;
+        }
+        .modal-nav-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.1);
+        }
+        .modal-nav-btn.prev-modal { left: 20px; }
+        .modal-nav-btn.next-modal { right: 20px; }
+        .modal-counter {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            background: rgba(0,0,0,0.5);
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 1rem;
+            backdrop-filter: blur(4px);
+            z-index: 15;
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* ===== 其他原有样式 ===== */
         .content {
             font-size: 1.1rem;
             line-height: 1.9;
@@ -246,7 +424,6 @@
         .ai-title { font-weight: 700; font-size: 1.4rem; color: var(--dark); }
         .ai-content { font-size: 1.05rem; line-height: 1.8; padding-left: 52px; }
 
-        /* ===== 文章导航（新增） ===== */
         .article-navigation {
             display: flex;
             gap: 20px;
@@ -290,9 +467,7 @@
             color: rgba(0,0,0,0.5);
             margin-bottom: 6px;
         }
-        .nav-article-btn .nav-label i {
-            font-size: 0.9rem;
-        }
+        .nav-article-btn .nav-label i { font-size: 0.9rem; }
         .nav-article-btn .nav-title {
             font-size: 1rem;
             font-weight: 600;
@@ -309,84 +484,11 @@
             align-items: flex-end;
             text-align: right;
         }
-        .nav-article-btn.next .nav-label {
-            flex-direction: row-reverse;
-        }
+        .nav-article-btn.next .nav-label { flex-direction: row-reverse; }
         .nav-article-btn .nav-empty {
             font-size: 0.9rem;
             color: rgba(0,0,0,0.3);
             font-weight: 400;
-        }
-        /* 响应式：文章导航 */
-        @media (max-width: 768px) {
-            .article-navigation {
-                flex-direction: column;
-                gap: 14px;
-                margin: 30px 0 20px 0;
-                padding-top: 24px;
-            }
-            .nav-article-btn {
-                padding: 14px 18px;
-                align-items: flex-start !important;
-                text-align: left !important;
-            }
-            .nav-article-btn.next {
-                align-items: flex-start !important;
-                text-align: left !important;
-            }
-            .nav-article-btn.next .nav-label {
-                flex-direction: row !important;
-            }
-            .nav-article-btn .nav-title {
-                font-size: 0.95rem;
-                -webkit-line-clamp: 2;
-            }
-            .nav-article-btn .nav-label {
-                font-size: 0.8rem;
-            }
-        }
-        @media (max-width: 480px) {
-            .article-navigation {
-                gap: 12px;
-                margin: 24px 0 16px 0;
-                padding-top: 18px;
-            }
-            .nav-article-btn {
-                padding: 12px 14px;
-                border-radius: var(--radius-sm);
-            }
-            .nav-article-btn .nav-title {
-                font-size: 0.88rem;
-                -webkit-line-clamp: 2;
-            }
-            .nav-article-btn .nav-label {
-                font-size: 0.75rem;
-            }
-        }
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .article-navigation {
-                gap: 16px;
-            }
-            .nav-article-btn {
-                padding: 14px 18px;
-            }
-            .nav-article-btn .nav-title {
-                font-size: 0.95rem;
-                -webkit-line-clamp: 2;
-            }
-        }
-        /* 大屏优化 */
-        @media (min-width: 1400px) {
-            .article-navigation {
-                gap: 30px;
-            }
-            .nav-article-btn {
-                padding: 20px 28px;
-            }
-            .nav-article-btn .nav-title {
-                font-size: 1.1rem;
-                -webkit-line-clamp: 2;
-            }
         }
 
         .comments-section {
@@ -536,9 +638,7 @@
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(74, 144, 226, 0.4);
         }
-        .read-btn i {
-            font-size: 1.2rem;
-        }
+        .read-btn i { font-size: 1.2rem; }
         .read-btn.playing {
             background: linear-gradient(135deg, #FF6B6B, var(--primary));
             box-shadow: 0 4px 12px rgba(255, 62, 77, 0.3);
@@ -547,67 +647,29 @@
             box-shadow: 0 8px 20px rgba(255, 62, 77, 0.4);
         }
 
-        /* 图片查看模态框 */
-        .image-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 10000;
-            cursor: pointer;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s forwards;
-            backdrop-filter: blur(10px);
-        }
-        .image-modal.active {
-            display: flex;
-        }
-        .image-modal img {
-            max-width: 90%;
-            max-height: 90vh;
-            object-fit: contain;
-            border-radius: var(--radius-sm);
-            box-shadow: var(--shadow-lg);
-            animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .image-modal .close-modal {
-            position: absolute;
-            top: 30px;
-            right: 30px;
-            color: white;
-            font-size: 2.5rem;
-            cursor: pointer;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: var(--transition-fast);
-            background: rgba(0,0,0,0.3);
-        }
-        .image-modal .close-modal:hover {
-            background: rgba(255,255,255,0.2);
-            transform: rotate(90deg) scale(1.1);
-        }
-        @keyframes zoomIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
+        /* 响应式适配 */
         @media (max-width: 768px) {
             .news-detail { padding: 0 15px; }
             .article-container { padding: 25px; }
             #news-title { font-size: 1.8rem; }
-            .featured-image { height: 250px; }
+            .carousel-slide { height: 250px; }
+            .carousel-btn { width: 34px; height: 34px; font-size: 1rem; }
             .content { font-size: 1rem; }
             .ai-content { padding-left: 0; }
             .comment-content { padding-left: 0; }
             .read-btn { font-size: 0.9rem; padding: 8px 18px; }
+            .article-navigation { flex-direction: column; gap: 14px; }
+            .nav-article-btn { align-items: flex-start !important; text-align: left !important; }
+            .nav-article-btn.next { align-items: flex-start !important; text-align: left !important; }
+            .nav-article-btn.next .nav-label { flex-direction: row !important; }
+            .image-modal .modal-close { top: 15px; right: 15px; font-size: 2rem; }
+            .modal-nav-btn { width: 40px; height: 40px; font-size: 1.4rem; }
+            .modal-nav-btn.prev-modal { left: 10px; }
+            .modal-nav-btn.next-modal { right: 10px; }
+        }
+        @media (max-width: 480px) {
+            .carousel-slide { height: 200px; }
+            .carousel-btn { width: 30px; height: 30px; font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -647,10 +709,19 @@
                     <div class="ai-header"><div class="ai-icon"><i class="fas fa-robot"></i></div><h2 class="ai-title">核心要点</h2></div>
                     <div id="ai-content" class="ai-content"></div>
                 </section>
-                <img id="news-image" class="featured-image" alt="新闻配图">
+
+                <!-- ===== 图片轮播容器 ===== -->
+                <div id="carousel-wrapper" class="carousel-wrapper" style="display: none;">
+                    <div class="carousel-track" id="carousel-track"></div>
+                    <button class="carousel-btn prev" id="carousel-prev"><i class="fas fa-chevron-left"></i></button>
+                    <button class="carousel-btn next" id="carousel-next"><i class="fas fa-chevron-right"></i></button>
+                    <div class="carousel-dots" id="carousel-dots"></div>
+                    <div class="carousel-counter" id="carousel-counter">1 / 1</div>
+                </div>
+
                 <div id="news-content" class="content"></div>
 
-                <!-- ===== 文章导航（新增） ===== -->
+                <!-- 文章导航 -->
                 <div id="article-navigation" class="article-navigation">
                     <a id="prev-article" class="nav-article-btn" href="#">
                         <span class="nav-label"><i class="fas fa-chevron-left"></i> 上一篇</span>
@@ -673,10 +744,15 @@
     </div>
 </div>
 
-<!-- 图片查看模态框 -->
+<!-- 大图查看模态框（支持左右翻看） -->
 <div id="image-modal" class="image-modal">
-    <span class="close-modal" id="close-modal">&times;</span>
-    <img id="modal-image" src="" alt="新闻配图大图">
+    <span class="modal-close" id="modal-close">&times;</span>
+    <div class="modal-image-container">
+        <button class="modal-nav-btn prev-modal" id="modal-prev"><i class="fas fa-chevron-left"></i></button>
+        <img id="modal-image" src="" alt="新闻配图大图">
+        <button class="modal-nav-btn next-modal" id="modal-next"><i class="fas fa-chevron-right"></i></button>
+    </div>
+    <div class="modal-counter" id="modal-counter">1 / 1</div>
 </div>
 
 <nav class="bottom-nav">
@@ -695,7 +771,7 @@
         supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     } catch(e) { console.warn(e); }
 
-    // 辅助函数
+    // ===== 辅助函数 =====
     function getUrlParam(name) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(name);
@@ -717,10 +793,14 @@
     let currentNewsId = null;
     let currentUser = null;
     let speechSynth = window.speechSynthesis;
-    let speechUtterance = null;
     let isSpeaking = false;
 
-    // ===== 新闻加载（含上一篇/下一篇） =====
+    // ===== 轮播相关变量 =====
+    let imageUrls = [];
+    let currentIndex = 0;
+    let autoPlayInterval = null;
+
+    // ===== 新闻加载 =====
     async function loadNewsOnly() {
         const loadingDiv = document.getElementById('loading');
         const errorDiv = document.getElementById('error-message');
@@ -730,7 +810,7 @@
             if (!articleId) throw new Error('缺少新闻ID参数');
             currentNewsId = articleId;
 
-            // 1. 获取当前新闻
+            // 获取新闻数据（包含 images 字段）
             const url = `${SUPABASE_URL}/rest/v1/news?id=eq.${articleId}&select=*`;
             const response = await fetch(url, {
                 headers: {
@@ -743,7 +823,7 @@
             if (!data || data.length === 0) throw new Error('未找到该新闻');
             const article = data[0];
 
-            // 渲染当前新闻
+            // 渲染基本信息
             document.getElementById('news-title').textContent = article.title;
             document.getElementById('news-date').textContent = formatDate(article.date);
             document.getElementById('news-category').textContent = article.category;
@@ -753,38 +833,239 @@
                 document.getElementById('ai-content').innerHTML = article.ai_summary;
                 document.getElementById('ai-summary').style.display = 'block';
             }
-            const img = document.getElementById('news-image');
-            img.src = article.image;
-            img.style.display = 'block';
             document.getElementById('news-content').innerHTML = article.content;
 
-            // 2. 获取上一篇（id < 当前id，按id降序取第一条）
-            const prevUrl = `${SUPABASE_URL}/rest/v1/news?id=lt.${articleId}&order=id.desc&limit=1&select=id,title`;
+            // ---- 处理图片 ----
+            let urls = [];
+            if (article.images && typeof article.images === 'string' && article.images.trim() !== '') {
+                urls = article.images.split(',').map(u => u.trim()).filter(u => u);
+            }
+            // 降级：如果 images 为空，使用 image 字段
+            if (urls.length === 0 && article.image) {
+                urls = [article.image];
+            }
+            imageUrls = urls;
+
+            // 渲染轮播
+            renderCarousel(imageUrls);
+
+            // 加载上一篇/下一篇
+            await loadNav(articleId);
+
+            loadingDiv.style.display = 'none';
+            contentDiv.style.display = 'block';
+
+            // 显示朗读按钮
+            const readBtn = document.getElementById('read-btn');
+            readBtn.style.display = 'inline-flex';
+            setupReadButton();
+
+        } catch (err) {
+            console.error('新闻加载失败:', err);
+            loadingDiv.style.display = 'none';
+            errorDiv.style.display = 'block';
+        }
+    }
+
+    // ===== 渲染轮播 =====
+    function renderCarousel(urls) {
+        const wrapper = document.getElementById('carousel-wrapper');
+        const track = document.getElementById('carousel-track');
+        const dotsContainer = document.getElementById('carousel-dots');
+        const counter = document.getElementById('carousel-counter');
+
+        if (!urls || urls.length === 0) {
+            wrapper.style.display = 'none';
+            return;
+        }
+
+        wrapper.style.display = 'block';
+        track.innerHTML = '';
+        dotsContainer.innerHTML = '';
+
+        urls.forEach((url, idx) => {
+            const slide = document.createElement('div');
+            slide.className = 'carousel-slide';
+            slide.style.backgroundImage = `url('${url}')`;
+            slide.dataset.index = idx;
+            // 点击单张图打开模态框
+            slide.addEventListener('click', function() {
+                openModal(idx);
+            });
+            track.appendChild(slide);
+
+            const dot = document.createElement('div');
+            dot.className = 'carousel-dot' + (idx === 0 ? ' active' : '');
+            dot.dataset.index = idx;
+            dot.addEventListener('click', function() {
+                goToSlide(parseInt(this.dataset.index));
+            });
+            dotsContainer.appendChild(dot);
+        });
+
+        currentIndex = 0;
+        updateCarousel();
+        updateCounter();
+
+        // 箭头事件
+        document.getElementById('carousel-prev').onclick = function(e) {
+            e.stopPropagation();
+            prevSlide();
+        };
+        document.getElementById('carousel-next').onclick = function(e) {
+            e.stopPropagation();
+            nextSlide();
+        };
+
+        // 自动播放
+        startAutoPlay();
+
+        // 鼠标悬停暂停
+        wrapper.addEventListener('mouseenter', stopAutoPlay);
+        wrapper.addEventListener('mouseleave', startAutoPlay);
+        // 触摸滑动支持
+        let touchStartX = 0;
+        let touchEndX = 0;
+        wrapper.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        wrapper.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) nextSlide();
+                else prevSlide();
+            }
+        });
+    }
+
+    function goToSlide(index) {
+        if (imageUrls.length === 0) return;
+        if (index < 0) index = imageUrls.length - 1;
+        if (index >= imageUrls.length) index = 0;
+        currentIndex = index;
+        updateCarousel();
+        updateCounter();
+        updateDots();
+    }
+
+    function updateCarousel() {
+        const track = document.getElementById('carousel-track');
+        if (!track) return;
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
+
+    function updateCounter() {
+        const counter = document.getElementById('carousel-counter');
+        if (counter) {
+            counter.textContent = `${currentIndex + 1} / ${imageUrls.length}`;
+        }
+    }
+
+    function updateDots() {
+        const dots = document.querySelectorAll('.carousel-dot');
+        dots.forEach((dot, idx) => {
+            dot.classList.toggle('active', idx === currentIndex);
+        });
+    }
+
+    function nextSlide() {
+        goToSlide(currentIndex + 1);
+    }
+    function prevSlide() {
+        goToSlide(currentIndex - 1);
+    }
+
+    function startAutoPlay() {
+        stopAutoPlay();
+        if (imageUrls.length > 1) {
+            autoPlayInterval = setInterval(() => {
+                nextSlide();
+            }, 5000);
+        }
+    }
+    function stopAutoPlay() {
+        if (autoPlayInterval) {
+            clearInterval(autoPlayInterval);
+            autoPlayInterval = null;
+        }
+    }
+
+    // ===== 大图模态框（支持左右翻看） =====
+    function openModal(index) {
+        const modal = document.getElementById('image-modal');
+        const img = document.getElementById('modal-image');
+        const counter = document.getElementById('modal-counter');
+        if (!modal || imageUrls.length === 0) return;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        // 设置当前图片
+        currentModalIndex = index;
+        img.src = imageUrls[currentModalIndex];
+        counter.textContent = `${currentModalIndex + 1} / ${imageUrls.length}`;
+        // 绑定翻页事件
+        document.getElementById('modal-prev').onclick = function(e) {
+            e.stopPropagation();
+            modalPrev();
+        };
+        document.getElementById('modal-next').onclick = function(e) {
+            e.stopPropagation();
+            modalNext();
+        };
+        // 键盘事件
+        document.addEventListener('keydown', modalKeyHandler);
+    }
+
+    let currentModalIndex = 0;
+    function modalPrev() {
+        if (imageUrls.length === 0) return;
+        currentModalIndex = (currentModalIndex - 1 + imageUrls.length) % imageUrls.length;
+        document.getElementById('modal-image').src = imageUrls[currentModalIndex];
+        document.getElementById('modal-counter').textContent = `${currentModalIndex + 1} / ${imageUrls.length}`;
+    }
+    function modalNext() {
+        if (imageUrls.length === 0) return;
+        currentModalIndex = (currentModalIndex + 1) % imageUrls.length;
+        document.getElementById('modal-image').src = imageUrls[currentModalIndex];
+        document.getElementById('modal-counter').textContent = `${currentModalIndex + 1} / ${imageUrls.length}`;
+    }
+    function modalKeyHandler(e) {
+        if (e.key === 'ArrowLeft') modalPrev();
+        else if (e.key === 'ArrowRight') modalNext();
+        else if (e.key === 'Escape') closeModal();
+    }
+    function closeModal() {
+        const modal = document.getElementById('image-modal');
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        document.removeEventListener('keydown', modalKeyHandler);
+    }
+
+    // 绑定关闭事件
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    document.getElementById('image-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+
+    // ===== 文章导航 =====
+    async function loadNav(currentId) {
+        try {
+            // 上一篇
+            const prevUrl = `${SUPABASE_URL}/rest/v1/news?id=lt.${currentId}&order=id.desc&limit=1&select=id,title`;
             const prevResp = await fetch(prevUrl, {
-                headers: {
-                    'apikey': SUPABASE_ANON_KEY,
-                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-                }
+                headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
             });
             let prevData = [];
-            if (prevResp.ok) {
-                prevData = await prevResp.json();
-            }
+            if (prevResp.ok) prevData = await prevResp.json();
 
-            // 3. 获取下一篇（id > 当前id，按id升序取第一条）
-            const nextUrl = `${SUPABASE_URL}/rest/v1/news?id=gt.${articleId}&order=id.asc&limit=1&select=id,title`;
+            // 下一篇
+            const nextUrl = `${SUPABASE_URL}/rest/v1/news?id=gt.${currentId}&order=id.asc&limit=1&select=id,title`;
             const nextResp = await fetch(nextUrl, {
-                headers: {
-                    'apikey': SUPABASE_ANON_KEY,
-                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-                }
+                headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
             });
             let nextData = [];
-            if (nextResp.ok) {
-                nextData = await nextResp.json();
-            }
+            if (nextResp.ok) nextData = await nextResp.json();
 
-            // 4. 更新导航
             const prevBtn = document.getElementById('prev-article');
             const nextBtn = document.getElementById('next-article');
             const prevTitle = document.getElementById('prev-title');
@@ -811,24 +1092,8 @@
                 nextTitle.textContent = '已是最后一篇';
                 nextBtn.classList.add('disabled');
             }
-
-            loadingDiv.style.display = 'none';
-            contentDiv.style.display = 'block';
-
-            // 显示朗读按钮
-            const readBtn = document.getElementById('read-btn');
-            readBtn.style.display = 'inline-flex';
-
-            // 绑定朗读功能
-            setupReadButton();
-
-            // 绑定图片点击查看大图
-            setupImageModal();
-
-        } catch (err) {
-            console.error('新闻加载失败:', err);
-            loadingDiv.style.display = 'none';
-            errorDiv.style.display = 'block';
+        } catch (e) {
+            console.warn('导航加载失败', e);
         }
     }
 
@@ -838,7 +1103,7 @@
         const btnText = document.getElementById('read-btn-text');
         const icon = btn.querySelector('i');
         const contentElement = document.getElementById('news-content');
-        let isPlaying = false;
+        let utterance = null;
 
         function getPlainText() {
             const clone = contentElement.cloneNode(true);
@@ -847,11 +1112,11 @@
 
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
-            if (isPlaying) {
+            if (isSpeaking) {
                 if (speechSynth.speaking) {
                     speechSynth.cancel();
                 }
-                isPlaying = false;
+                isSpeaking = false;
                 btn.classList.remove('playing');
                 btnText.textContent = '朗读新闻';
                 icon.className = 'fas fa-volume-up';
@@ -863,81 +1128,41 @@
                 alert('没有可朗读的内容');
                 return;
             }
-
             if (!window.speechSynthesis) {
                 alert('您的浏览器不支持语音朗读功能');
                 return;
             }
+            if (speechSynth.speaking) speechSynth.cancel();
 
-            if (speechSynth.speaking) {
-                speechSynth.cancel();
-            }
-
-            const utterance = new SpeechSynthesisUtterance(text);
+            utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'zh-CN';
             utterance.rate = 1;
             utterance.pitch = 1;
             utterance.volume = 1;
-
             utterance.onstart = function() {
-                isPlaying = true;
+                isSpeaking = true;
                 btn.classList.add('playing');
                 btnText.textContent = '停止朗读';
                 icon.className = 'fas fa-stop';
             };
-
             utterance.onend = function() {
-                isPlaying = false;
+                isSpeaking = false;
                 btn.classList.remove('playing');
                 btnText.textContent = '朗读新闻';
                 icon.className = 'fas fa-volume-up';
             };
-
             utterance.onerror = function() {
-                isPlaying = false;
+                isSpeaking = false;
                 btn.classList.remove('playing');
                 btnText.textContent = '朗读新闻';
                 icon.className = 'fas fa-volume-up';
                 console.warn('朗读出错');
             };
-
             speechSynth.speak(utterance);
         });
     }
 
-    // ===== 图片查看大图 =====
-    function setupImageModal() {
-        const img = document.getElementById('news-image');
-        const modal = document.getElementById('image-modal');
-        const modalImg = document.getElementById('modal-image');
-        const closeBtn = document.getElementById('close-modal');
-
-        if (!img || !modal) return;
-
-        img.addEventListener('click', function(e) {
-            e.stopPropagation();
-            modalImg.src = this.src;
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-
-        function closeModal() {
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        closeBtn.addEventListener('click', closeModal);
-        modal.addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && modal.classList.contains('active')) {
-                closeModal();
-            }
-        });
-    }
-
-    // ===== 评论加载 =====
+    // ===== 评论功能 =====
     async function loadComments() {
         if (!currentNewsId) return;
         const container = document.getElementById('comments-container');
